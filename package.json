@@ -1,0 +1,42 @@
+{
+    "name": "inscriptum",
+    "description": "blog inscriptum",
+    "version": "0.0.1",
+    "author": "Den Sumbaev @sumbad",
+    "private": true,
+    "scripts": {
+      "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.config.js",
+      "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack/webpack.config.js",
+      "deploy": "node .ghpages",
+      "start": "npm run build && lite-server --baseDir=build"
+    },
+    "dependencies": {
+      "babel-polyfill": "*",
+      "typescript": "*",
+      "whatwg-fetch": "*"
+    },
+    "devDependencies": {
+      "@types/node": "*",
+      "babel-core": "*",
+      "babel-loader": "*",
+      "babel-preset-latest": "*",
+      "clean-webpack-plugin": "*",
+      "copy-webpack-plugin": "*",
+      "cross-env": "*",
+      "css-loader": "*",
+      "extract-text-webpack-plugin": "*",
+      "file-loader": "*",
+      "gh-pages": "*",
+      "html-loader": "*",
+      "node-sass": "*",
+      "raw-loader": "*",
+      "sass-loader": "*",
+      "style-loader": "*",
+      "ts-loader": "*",
+      "typescript": "*",
+      "webpack": "*",
+      "webpack-dev-server": "*",
+      "webpack-merge": "*"
+    }
+  }
+  
