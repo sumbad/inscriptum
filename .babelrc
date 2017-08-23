@@ -1,8 +1,10 @@
 {
-    "presets": [
-      ["latest", {
-        "es2015": { "modules": false }
-      }]
-    ]
-  }
-  
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 9"]
+      },
+      "useBuiltIns": true
+    }]
+  ]
+}

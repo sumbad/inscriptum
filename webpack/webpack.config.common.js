@@ -59,8 +59,21 @@ module.exports = function (helper) {
         },
         {
           test: /\.(html|htm)$/,
-          loader: 'html-loader'
+          loader: 'html-loader',
+          exclude: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
         },
+        {
+          test: /\.(html|htm)$/,
+          use: [
+              {
+                  loader: 'babel-loader'
+              },
+              {
+                  loader: 'template-literals-loader'
+              },
+          ],
+          include: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
+      },
       ]
     },
     resolve: {

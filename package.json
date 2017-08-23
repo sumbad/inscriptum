@@ -1,7 +1,7 @@
 {
   "name": "inscriptum",
   "description": "blog inscriptum",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
@@ -11,31 +11,35 @@
     "start": "npm run build && lite-server --baseDir=build"
   },
   "dependencies": {
-    "babel-polyfill": "*",
-    "typescript": "*",
-    "whatwg-fetch": "*"
+    "babel-polyfill": "^6.26.0",
+    "file-loader": "^1.0.0",
+    "hyperhtml": "^1.2.0",
+    "typescript": "^2.5.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@types/node": "*",
-    "babel-core": "*",
-    "babel-loader": "*",
-    "babel-preset-latest": "*",
-    "clean-webpack-plugin": "*",
-    "copy-webpack-plugin": "*",
-    "cross-env": "*",
-    "css-loader": "*",
-    "extract-text-webpack-plugin": "*",
-    "file-loader": "*",
-    "gh-pages": "*",
-    "html-loader": "*",
-    "node-sass": "*",
-    "raw-loader": "*",
-    "sass-loader": "*",
-    "style-loader": "*",
-    "ts-loader": "*",
-    "typescript": "*",
-    "webpack": "*",
-    "webpack-dev-server": "*",
-    "webpack-merge": "*"
+    "@types/node": "^8.0.24",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-latest": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.0.5",
+    "css-loader": "^0.28.5",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^1.0.0",
+    "gh-pages": "^1.0.0",
+    "html-loader": "^0.5.1",
+    "node-sass": "^4.5.3",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "template-literals-loader": "^0.1.1",
+    "ts-loader": "^2.3.3",
+    "typescript": "^2.5.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-merge": "^4.1.0"
   }
 }

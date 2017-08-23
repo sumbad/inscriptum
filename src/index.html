@@ -32,12 +32,21 @@
 	<link rel="shortcut icon" href="favicon.png" >
 
 
+<!-- Web components polyfills -->
+<div id="ce-es5-shim">
+  <script>
+      if (!window.customElements) {
+        var ceShimContainer = document.querySelector('#ce-es5-shim');
+        ceShimContainer.parentElement.removeChild(ceShimContainer);
+      }
+  </script>
   <!-- Load Custom Elements es5 adapter -->
-<script src="/js/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <script src="/js/webcomponentsjs/custom-elements-es5-adapter.js"></script>  
+</div>
+  
 <!-- Load polyfills; note that "loader" will load these async -->
-<script src="/js/webcomponentsjs/webcomponents-loader.js"></script>
-
-
+<script src="/js/webcomponentsjs/webcomponents-loader.js"></script>  
+<!-- Web components polyfills -->
 </head>
 
 <body>
@@ -48,8 +57,6 @@
              <p>Task body</p>
            </li>
          </template>
-
-  <app id="app"></app>
 
   <app-component name="Den"></app-component>
 
