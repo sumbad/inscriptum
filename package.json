@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "file-loader": "^1.0.0",
     "hyperhtml": "^1.2.0",
     "typescript": "^2.5.1",
     "whatwg-fetch": "^2.0.3"
@@ -28,7 +27,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.5",
     "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^1.0.0",
+    "file-loader": "^0.11.2",
     "gh-pages": "^1.0.0",
     "html-loader": "^0.5.1",
     "node-sass": "^4.5.3",
