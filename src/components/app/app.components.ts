@@ -1,4 +1,5 @@
 import * as hyperHTML from 'hyperhtml';
+import * as Navigo from 'navigo';
 
 import articles from '../../data/articles/articles';
 
@@ -22,7 +23,7 @@ export class AppComponent extends HTMLElement {
         this.saying = sayings[randomIndexSay];
 
         /*************************************************
-      /* TODO: убрать jQuery */
+       /* TODO: убрать jQuery */
 
         /* Mobile Menu ------------------------------------------------------ */
         var toggle_button = $("<a>", {
@@ -61,17 +62,49 @@ export class AppComponent extends HTMLElement {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
 
-        this.articlesWire = articlesList.map(article => {
-            console.log(1111111111, article.name)
-            return hyperHTML.wire() `<article-preview article-name="${article.name}"></article-preview>`
+
+
+        // articlesList.map(article => {
+        //     // console.log(1111111111, article.name)
+        //     return hyperHTML.wire() `<article-preview article-name="${article.name}"></article-preview>`
+        // });
+
+
+        var router = new Navigo(null);
+
+        router.on(
+            {
+                'articles/:id': (params) => {
+                    console.log(params, `11111111111`);
+
+                },
+                'articles': (params) => {
+                    console.log(params,`33333333333`);
+                    this.articlesWire = hyperHTML.wire() `<articles-list></articles-list>`
+                }
+            }
+        );
+
+        // set the default route
+        // router.on(':id', () => { console.log(`222222222222222222`); });
+        router.on(() => {
+            console.log(`---------------------`);
+            this.articlesWire = hyperHTML.wire() `<articles-list></articles-list>`
         });
+
+        // set the 404 route
+        router.notFound(() => { console.log(`444444444444444`); });
+
+        router.resolve();
+
+
 
         this._render();
     }
 
 
     _render() {
-        console.log(this._template(this))
+        // console.log(this._template(this))
         return this._template(this, hyperHTML.bind(this));
     }
 }

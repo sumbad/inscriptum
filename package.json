@@ -13,6 +13,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "hyperhtml": "^1.2.0",
+    "navigo": "^5.3.1",
     "typescript": "^2.5.1",
     "whatwg-fetch": "^2.0.3"
   },

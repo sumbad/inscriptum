@@ -17,7 +17,8 @@ module.exports = function (helper) {
     output: {
       path: helper.PATHS.build,
       publicPath: '/',
-      filename: 'js/[name].js'
+      filename: 'js/[name].js',
+      chunkFilename: 'js/[name].bundle.js',
     },
     module: {
       rules: [

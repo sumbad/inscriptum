@@ -21,8 +21,9 @@ export class ArticlePreviewComponent extends HTMLElement {
 
 
     _render() {
-        if (typeof this._template !== 'undefined') {
-            console.log(this._template);
+        // console.log(1111111, this._template)
+        if (typeof this._template !== 'undefined' && typeof this._template === 'function') {
+            // console.log(this._template);
             this._template(this, hyperHTML.bind(this));
         }
         // console.log(this._template(this, hyperHTML.bind(this)))
@@ -52,12 +53,15 @@ export class ArticlePreviewComponent extends HTMLElement {
     set articleName(val) {
         if (this.articleName !== val) {
             this._articleName = val;
-            console.log(22222222, this.articleName)
-            this.article = articles.find(article => article.name===this.articleName);
+            this.article = articles.find(article => article.name === this.articleName);
             if (this.article) {
-                this._template = this.article.preview;
+                this._template = new Promise((resolve, reject) => { resolve(this.article.preview) }).then(
+                    r => {
+                        this._template = r;
+                        this._render();
+                    }
+                );
             }
-            this._render();
         }
     }
     get articleName() {
