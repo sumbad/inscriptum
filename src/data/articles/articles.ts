@@ -14,7 +14,7 @@ export default [
     {
         name: 'webcomponents-base',
         // template: require('./webcomponents-base/template.htm'),
-        preview: import('./webcomponents-base/').then(r => r.preview).catch(error => 'An error occurred while loading the component'),
+        // preview: import('./webcomponents-base/').then(r => r.preview).catch(error => 'An error occurred while loading the component'),
         datePublished: new Date('2017-07-03')
     },
     {

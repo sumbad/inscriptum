@@ -1,42 +1,18 @@
-<h1>Hello, ${this.getAttribute('name')}</h1>
+<article class="entry">
 
+  <header class="entry-header">
+    <h2 class="entry-title">
+      <router-link to="/webcomponents-base">Web Components. Основы</router-link>
+    </h2>
+    <div class="entry-meta">
+      <ul>
+        <li>3 июля 2017</li>
+      </ul>
+    </div>
+  </header>
 
-<!-- <template> -->
-    <!-- <div id="app"> -->
-        <!-- Header ================================================== -->
-        <header id="top">
-            <div class="row">
-                <div class="header-content twelve columns">
-                    <h1 id="logo-text"><a href="/" title="">inscriptum</a></h1>
-                    <p id="intro" v-html="saying"></p>
-                </div>
-            </div>
-    
-            <nav id="nav-wrap">
-                <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show Menu</a>
-                <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
+  <div class="entry-content">
+    <slot></slot>
+  </div>
 
-                <!--<a class="mobile-btn" href="#nav-wrap" title="Показать меню">Показать меню</a>
-                <a class="mobile-btn" href="#" title="Скрыть меню">Скрыть меню</a>-->
-                <div class="row">
-                    <ul id="nav" class="nav">
-                        <li class="current"><a href="/">Главная</a></li>
-                    </ul>
-                    <!-- end #nav -->
-                </div>
-            </nav>
-            <!-- end #nav-wrap -->
-        </header>
-        <!-- Header End -->
-    
-        <!-- Content ================================================== -->
-        <!-- <div id="content-wrap">
-            <div class="row">
-                <div id="main" class="twelve columns">
-                    <router-view></router-view>
-                </div>
-            </div>
-        </div> -->
-        <!-- end content-wrap -->
-    <!-- </div> -->
-<!-- </template> -->
+</article>

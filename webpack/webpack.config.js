@@ -49,6 +49,11 @@ let PREBUILD_CFG = {
         to: path.join(helper.PATHS.build, helper.PATHS.outputPath),
         toType: 'dir'
       },
+      {
+        from: helper.PATHS.src + '/data',
+        to: path.join(helper.PATHS.build, helper.PATHS.outputPath, '/data'),
+        toType: 'dir'
+      },
     ]),
   ]
 }
