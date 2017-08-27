@@ -206,15 +206,11 @@
 	#content-wrap { padding-top: 0; }
 	#content-wrap  #main { padding-right: 30px;}	
 
-	.page h2,
-	.entry h2,
-	.entry h2 a {
+	.page h2 {
 		font: 28px/36px 'opensans-semibold', sans-serif;	
 		letter-spacing: -.5px;
 	}
 
-	.entry h2,
-	.entry .entry-meta,
 	.page h2 {
 		text-align: center;
 	}
@@ -229,11 +225,6 @@
 		display: inline-block;
 		margin-right: 6px;
 	}
-
-	/* entry 
-	-------------------------------------------------------------- */
-	.entry .entry-meta ul { margin-top: 9px; }
-	.entry .entry-meta ul li { }
 
 	/* tags */
 	.tags { text-align: center; }

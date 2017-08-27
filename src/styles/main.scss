@@ -2,6 +2,8 @@
 @import "./layout";
 @import "./media-queries";
 
+@import "./_entry";
+
 .entry-content__img {
     &_center {
         text-align: center;

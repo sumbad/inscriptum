@@ -2,11 +2,11 @@
 
   <header class="entry-header">
     <h2 class="entry-title">
-      <router-link to="/webcomponents-base">Web Components. Основы</router-link>
+      <a onclick=${this.handleLink} href=${`articles/${this.articleName}`}>${this.articleTitle}</a>
     </h2>
     <div class="entry-meta">
       <ul>
-        <li>3 июля 2017</li>
+        <li>${this.articleDate}</li>
       </ul>
     </div>
   </header>

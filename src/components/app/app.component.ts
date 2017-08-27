@@ -1,19 +1,17 @@
 import * as hyperHTML from 'hyperhtml';
-import * as Navigo from 'navigo';
-
-import articles from '../../data/articles/articles';
+import { AppRouter } from "router";
 
 
 declare const $: any;
 
 export class AppComponent extends HTMLElement {
     private _template: any;
-    public articlesWire: any[];
+    public routerView: any;
 
     constructor(public saying) {
         super();
         // this.html = hyperHTML.bind(this);
-        this._template = require('./app.components.html');
+        this._template = require('./app.component.html');
     }
 
 
@@ -22,8 +20,42 @@ export class AppComponent extends HTMLElement {
         const randomIndexSay = Math.floor(Math.random() * sayings.length);
         this.saying = sayings[randomIndexSay];
 
+
+
+
+
+
+        AppRouter.router.on(
+            {
+                'articles/:id': (params) => {
+                    this.routerView = hyperHTML.wire() `<um-article article-name=${params.id}></um-article>`
+                    this._render();
+                },
+                'articles': (params) => {
+                    this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+                    this._render();
+                }
+            }
+        );
+
+        // set the default route
+        AppRouter.router.on(() => {
+            this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+            this._render();
+        });
+
+        // set the 404 route
+        AppRouter.router.notFound(() => {
+            this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+            this._render();
+        });
+
+        AppRouter.router.resolve();
+
+        this._render();
+
         /*************************************************
-       /* TODO: убрать jQuery */
+       /************* TODO: убрать jQuery **************/
 
         /* Mobile Menu ------------------------------------------------------ */
         var toggle_button = $("<a>", {
@@ -57,54 +89,10 @@ export class AppComponent extends HTMLElement {
         });
         /*************************************************
       */
-
-        const articlesList = articles.sort((a, b) => {
-            return (b.datePublished.getTime() - a.datePublished.getTime());
-        });
-
-
-
-        // articlesList.map(article => {
-        //     // console.log(1111111111, article.name)
-        //     return hyperHTML.wire() `<article-preview article-name="${article.name}"></article-preview>`
-        // });
-
-
-        var router = new Navigo(null);
-
-        router.on(
-            {
-                'articles/:id': (params) => {
-                    console.log(params, `11111111111`);
-
-                },
-                'articles': (params) => {
-                    console.log(params,`33333333333`);
-                    this.articlesWire = hyperHTML.wire() `<articles-list></articles-list>`
-                }
-            }
-        );
-
-        // set the default route
-        // router.on(':id', () => { console.log(`222222222222222222`); });
-        router.on(() => {
-            console.log(`---------------------`);
-            this.articlesWire = hyperHTML.wire() `<articles-list></articles-list>`
-        });
-
-        // set the 404 route
-        router.notFound(() => { console.log(`444444444444444`); });
-
-        router.resolve();
-
-
-
-        this._render();
     }
 
 
     _render() {
-        // console.log(this._template(this))
         return this._template(this, hyperHTML.bind(this));
     }
 }

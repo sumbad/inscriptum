@@ -16,7 +16,7 @@
       "suppressImplicitAnyIndexErrors": true,
       "allowSyntheticDefaultImports": true,
       "rootDir": "./",
-      "baseUrl": "./"
+      "baseUrl": "./src"
     },
     "compileOnSave": false
   }
