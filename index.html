@@ -1,36 +1,60 @@
-<!DOCTYPE html><html class=" js flexbox flexboxlegacy canvas canvastext no-webgl touch no-geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent no-video no-audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="ru" style=""><!--<![endif]--><head>
+<!DOCTYPE html>
+<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="ru"> <![endif]-->
+<!--[if IE 8 ]><html class="no-js ie ie8" lang="ru"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js ie ie9" lang="ru"> <![endif]-->
+<!--[if (gte IE 8)|!(IE)]><!-->
+<html class="no-js" lang="ru">
+<!--<![endif]-->
 
-   <!--- Basic Page Needs
+<head>
+
+  <!--- Basic Page Needs
    ================================================== -->
-   <meta charset="utf-8">
-	<title>inscriptum</title>
-	<meta name="description" content="">  
-	<meta name="author" content="">
+  <meta charset="utf-8">
+  <title>inscriptum</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-	<!-- mobile specific metas
+  <!-- mobile specific metas
    ================================================== -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-   <!-- CSS
+  <!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="/css/app.css">
-   <!--<link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <!--<link rel="stylesheet" href="css/default.css">
 	<link rel="stylesheet" href="css/layout.css">  
 	<link rel="stylesheet" href="css/media-queries.css"> -->
 
-   <!-- Script
+  <!-- Script
    ================================================== -->
-	<script src="/js/modernizr.js"></script>
+  <script src="/js/modernizr.js"></script>
 
-   <!-- Favicons
+  <!-- Favicons
 	================================================== -->
-	<link rel="shortcut icon" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.png">
 
-<style type="text/css"></style></head>
 
-<body style="">
+  <!-- Web components polyfills -->
+  <div id="ce-es5-shim">
+    <script>
+      if (!window.customElements) {
+        var ceShimContainer = document.querySelector('#ce-es5-shim');
+        ceShimContainer.parentElement.removeChild(ceShimContainer);
+      }
+    </script>
+    <!-- Load Custom Elements es5 adapter -->
+    <script src="/js/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+  </div>
 
-  <div id="app"><header id="top"><div class="row"><div class="header-content twelve columns"><h1 id="logo-text"><a href="/" title="">Блог inscriptum</a></h1> <p id="intro">Лучше износиться, чем заржаветь...<br> (Джордж Уойфилд, англ. проповедник-методист)</p></div></div> <nav id="nav-wrap"><a id="toggle-btn" title="Menu" href="#">Menu</a>  <div class="row"><ul id="nav" class="nav mobile"><li class="current"><a href="/">Главная</a></li></ul></div></nav></header> <div id="content-wrap"><div class="row"><div id="main" class="twelve columns"><div><article class="entry"><header class="entry-header"><h2 class="entry-title"><a href="/webcomponents-principles" class="">Web Components. Принцип использования</a></h2> <div class="entry-meta"><ul><li>3 августа 2017</li></ul></div></header> <div class="entry-content"><p class="lead"> По ходу статьи <strong>рассмотрим вопросы использования Web Components в приложении</strong>, какие существуют подходы, их плюсы и минусы. Увидим, как подключить компонент через HTML Imports и JavaScript. </p></div></article><article class="entry"><header class="entry-header"><h2 class="entry-title"><a href="/webcomponents-base" class="">Web Components. Основы</a></h2> <div class="entry-meta"><ul><li>3 июля 2017</li></ul></div></header> <div class="entry-content"><p class="lead"> В данной статье будут рассмотрены <strong>базовые вещи касательно Web Components</strong>. <ul class="disc"><li>Способы создания элементов веб-страницы на основе Web Components.</li> <li>Четыре спецификации Web Components.</li> <li>Фундаментальные аспекты компонентов.</li></ul></p></div></article><article class="entry"><header class="entry-header"><h2 class="entry-title"><a href="/webcomponents-introduction" class="">Web Components. Введение </a></h2> <div class="entry-meta"><ul><li>18 июня 2017</li></ul></div></header> <div class="entry-content"><p class="lead"> Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно <strong>нативные возможности Web Components</strong> без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS. Три основных вопроса, на которые вы найдете ответы: <ul class="disc"><li>Чем являются Web Components и почему они отличаются от современных web-фреймворков и библиотек?</li> <li>Каким образом происходит создание Web Components?</li> <li>Как можно использовать Web Components уже сегодня?</li></ul></p></div></article><article class="entry"><header class="entry-header"><h2 class="entry-title"><a href="/vue-web-components" class="">Использование Vue.js для создания пользовательских Web компонентов</a></h2> <div class="entry-meta"><ul><li>15 апреля 2017</li> <span class="meta-sep">•</span> <li> Перевод статьи Simon Tarchichi, <a href="http://vuetips.com/vue-web-components">Use Vue.js to create custom web components</a></li></ul></div></header> <div class="entry-content"><p class="lead"><strong>Web компоненты позволяют определять новые HTML теги,</strong> которые принято называть пользовательскими элементами (custom elements). Эти теги могут быть в дальнейшем использованы непосредственно в HTML коде вашего приложения. Применив немного JS магии <strong>вы можете прямо сейчас перевести ваши Vue.js компоненты в Web компоненты, </strong> что позволит использовать их в любых web приложениях, даже вместе с React, Angular. </p></div></article></div></div></div></div></div>
+  <!-- Load polyfills; note that "loader" will load these async -->
+  <script src="/js/webcomponentsjs/webcomponents-loader.js"></script>
+  <!-- Web components polyfills -->
+</head>
+
+<body>
+
+  <app-component></app-component>
 
 
   <!-- Footer
@@ -50,7 +74,7 @@
           <!--<li><a href="#"><i class="fa fa-skype"></i></a></li>-->
         </ul>
       </div>
-<!--
+      <!--
       <div class="six columns info">
 
         <h3>About Keep It Simple</h3>
@@ -109,7 +133,7 @@
         </ul>
       </div>
 -->
-      <p class="copyright">© Copyright 2017 Денис Сумбаев
+      <p class="copyright">&copy; Copyright 2017 Денис Сумбаев
         <!--&nbsp; Design by <a title="Styleshout" href="http://www.styleshout.com/">Styleshout</a>.-->
       </p>
 
@@ -132,6 +156,6 @@
   <script src="/js/main.js"></script>
   <script src="/js/app.js"></script>
 
+</body>
 
-
-</body></html>
+</html>
