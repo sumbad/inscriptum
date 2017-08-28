@@ -1,29 +1,19 @@
-// import "babel-polyfill";
+export default (async () => {
 
-// interface Array<T> {
-//     find(predicate: (search: T) => boolean) : T;
-// }
+    if (window.customElements) {
+        // await import('@webcomponents/webcomponentsjs/custom-elements-es5-adapter');
+        await import('@webcomponents/custom-elements/src/native-shim');
+    }
 
+    if (!window.customElements || window.customElements['forcePolyfill']) {
+        await import('@webcomponents/custom-elements');
+    }
 
-// if (!Array.prototype.find) {
-//   Array.prototype.find = function(predicate) {
-//     if (this == null) {
-//       throw new TypeError('Array.prototype.find called on null or undefined');
-//     }
-//     if (typeof predicate !== 'function') {
-//       throw new TypeError('predicate must be a function');
-//     }
-//     var list = Object(this);
-//     var length = list.length >>> 0;
-//     var thisArg = arguments[1];
-//     var value;
-
-//     for (var i = 0; i < length; i++) {
-//       value = list[i];
-//       if (predicate.call(thisArg, value, i, list)) {
-//         return value;
-//       }
-//     }
-//     return undefined;
-//   };
-// }
+    if (!('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype)
+        || (window['ShadyDOM'] && window['ShadyDOM'].force)) {
+        await import('@webcomponents/shadydom/');
+        await import('@webcomponents/shadycss/scoping-shim.min');
+        await import('@webcomponents/shadycss/apply-shim.min');
+        await import('@webcomponents/shadycss/custom-style-interface.min');
+    }
+})();

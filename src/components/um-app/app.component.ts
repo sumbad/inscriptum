@@ -20,11 +20,6 @@ export class AppComponent extends HTMLElement {
         const randomIndexSay = Math.floor(Math.random() * sayings.length);
         this.saying = sayings[randomIndexSay];
 
-
-
-
-
-
         AppRouter.router.on(
             {
                 'articles/:id': (params) => {

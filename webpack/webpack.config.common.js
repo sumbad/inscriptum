@@ -25,11 +25,17 @@ module.exports = function (helper) {
         {
           test: /\.ts$/,
           loader: 'ts-loader',
+          exclude: /node_modules/
         },
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          exclude: /node_modules/
+          // include: [
+          //   path.resolve(helper.PATHS.src),
+          //   path.resolve(helper.PATHS.node_modules, '@webcomponents/webcomponentsjs/custom-elements-es5-adapter')
+          // ]
+          // exclude: [path.resolve(helper.PATHS.node_modules, '@webcomponents/webcomponentsjs/custom-elements-es5-adapter')]
+          exclude: helper.PATHS.node_modules
         },
         {
           test: /\.(png|jpg|jpeg|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
