@@ -15,6 +15,7 @@
       "removeComments": true,
       "suppressImplicitAnyIndexErrors": true,
       "allowSyntheticDefaultImports": true,
+      "allowJs": true,
       "rootDir": "./",
       "baseUrl": "./src"
     },

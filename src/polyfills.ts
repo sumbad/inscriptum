@@ -1,8 +1,9 @@
 export default (async () => {
 
     if (window.customElements) {
-        // await import('@webcomponents/webcomponentsjs/custom-elements-es5-adapter');
-        await import('@webcomponents/custom-elements/src/native-shim');
+        await import('@webcomponents/webcomponentsjs/custom-elements-es5-adapter');
+        // await import('@webcomponents/custom-elements/src/native-shim');
+        // await import('@webcomponents/custom-elements/custom-elements.min');        
     }
 
     if (!window.customElements || window.customElements['forcePolyfill']) {

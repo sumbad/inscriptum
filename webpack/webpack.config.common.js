@@ -35,7 +35,8 @@ module.exports = function (helper) {
           //   path.resolve(helper.PATHS.node_modules, '@webcomponents/webcomponentsjs/custom-elements-es5-adapter')
           // ]
           // exclude: [path.resolve(helper.PATHS.node_modules, '@webcomponents/webcomponentsjs/custom-elements-es5-adapter')]
-          exclude: helper.PATHS.node_modules
+          exclude: [helper.PATHS.node_modules]
+          // exclude: /node_modules/
         },
         {
           test: /\.(png|jpg|jpeg|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
