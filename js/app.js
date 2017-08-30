@@ -11786,10 +11786,9 @@ var ArticlesListComponent = (function (_super) {
         req.open('GET', url);
         req.send();
         req.onload = function () {
-            console.log(123, req.responseText);
-            var a = document.getElementById('list');
-            a.innerHTML = req.responseText;
+            _this.previews = (_a = ["", ""], _a.raw = ["", ""], hyperHTML.wire()(_a, { html: req.responseText }));
             _this._render();
+            var _a;
         };
     };
     return ArticlesListComponent;
