@@ -11771,12 +11771,26 @@ var ArticlesListComponent = (function (_super) {
         return _this;
     }
     ArticlesListComponent.prototype.connectedCallback = function () {
+        this._render();
         var articlesList = articles_1.default.sort(function (a, b) {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
+        this.loadHTML('/data/articles/webcomponents-base/preview.html');
     };
     ArticlesListComponent.prototype._render = function () {
         return this._template(this, hyperHTML.bind(this));
+    };
+    ArticlesListComponent.prototype.loadHTML = function (url) {
+        var _this = this;
+        var req = new XMLHttpRequest();
+        req.open('GET', url);
+        req.send();
+        req.onload = function () {
+            console.log(123, req.responseText);
+            var a = document.getElementById('list');
+            a.innerHTML = req.responseText;
+            _this._render();
+        };
     };
     return ArticlesListComponent;
 }(HTMLElement));
@@ -11790,7 +11804,7 @@ exports.ArticlesListComponent = ArticlesListComponent;
 "use strict";
 
 
-var _templateObject = _taggedTemplateLiteral(["<!-- ", " -->\n<div>\n    123\n</div>"], ["<!-- ", " -->\n<div>\n    123\n</div>"]);
+var _templateObject = _taggedTemplateLiteral(["<div id=\"list\">\n    ", "\n</div>"], ["<div id=\"list\">\n    ", "\n</div>"]);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -11798,7 +11812,7 @@ module.exports = function (scope, callbackTag) {
     if (callbackTag) {
         return callbackTag(_templateObject, this.previews);
     } else {
-        return "<!-- " + this.previews + " -->\n<div>\n    123\n</div>";
+        return "<div id=\"list\">\n    " + this.previews + "\n</div>";
     }
 };
 
