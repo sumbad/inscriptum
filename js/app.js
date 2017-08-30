@@ -6153,7 +6153,7 @@ polyfills_1.default.then(function (p) { return __awaiter(_this, void 0, void 0, 
             case 0: return [4, Promise.all(components.map(function (c) { return Promise.resolve().then(function () { return __webpack_require__(354)("./" + c); }); }))];
             case 1:
                 _a.sent();
-                return [4, Promise.all(components.map(function (c) { return customElements.whenDefined(c); }))];
+                return [4, Promise.all(components.map(function (c) { return window.customElements.whenDefined(c); }))];
             case 2:
                 _a.sent();
                 return [2];
