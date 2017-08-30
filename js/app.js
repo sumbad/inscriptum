@@ -11786,7 +11786,8 @@ var ArticlesListComponent = (function (_super) {
         req.open('GET', url);
         req.send();
         req.onload = function () {
-            _this.previews = (_a = ["", ""], _a.raw = ["", ""], hyperHTML.wire()(_a, { html: req.responseText }));
+            _this.previews = (_a = ["<div>", "</div>"], _a.raw = ["<div>", "</div>"], hyperHTML.wire()(_a, { html: req.responseText }));
+            console.log(123, req, _this.previews);
             _this._render();
             var _a;
         };
