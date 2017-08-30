@@ -11093,6 +11093,9 @@ var AppComponent = (function (_super) {
         return _this;
     }
     AppComponent.prototype.connectedCallback = function () {
+        this.routerView = (_a = ["<articles-list></articles-list>"], _a.raw = ["<articles-list></articles-list>"], hyperHTML.wire()(_a));
+        this._render();
+        var _a;
     };
     AppComponent.prototype._render = function () {
         return this._template(this, hyperHTML.bind(this));
