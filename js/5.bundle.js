@@ -1,1 +1,25 @@
-webpackJsonp([5],{364:function(t,e){(function(){"use strict";function t(t){i=(!t||!t.shimcssproperties)&&(S||!(navigator.userAgent.match(/AppleWebKit\/601|Edge\/15/)||!window.CSS||!CSS.supports||!CSS.supports("box-shadow","0 0 0 var(--foo)")))}function e(t,e){for(var n in e)null===n?t.style.removeProperty(n):t.style.setProperty(n,e[n])}function n(){var t=c;requestAnimationFrame(function(){u?u(t):(d||(d=new Promise(function(t){r=t}),"complete"===document.readyState?r():document.addEventListener("readystatechange",function(){"complete"===document.readyState&&r()})),d.then(function(){t&&t()}))})}function o(){this.customStyles=[],this.enqueued=!1}function a(t){!t.enqueued&&c&&(t.enqueued=!0,n())}var i,S=!(window.ShadyDOM&&window.ShadyDOM.inUse);window.ShadyCSS&&void 0!==window.ShadyCSS.nativeCss?i=window.ShadyCSS.nativeCss:window.ShadyCSS?(t(window.ShadyCSS),window.ShadyCSS=void 0):t(window.WebComponents&&window.WebComponents.flags);var r,s=i,d=null,u=window.HTMLImports&&window.HTMLImports.whenReady||null,y=null,c=null;o.prototype.c=function(t){t.__seenByShadyCSS||(t.__seenByShadyCSS=!0,this.customStyles.push(t),a(this))},o.prototype.b=function(t){if(t.__shadyCSSCachedStyle)return t.__shadyCSSCachedStyle;return t.getStyle?t.getStyle():t},o.prototype.a=function(){for(var t=this.customStyles,e=0;e<t.length;e++){var n=t[e];if(!n.__shadyCSSCachedStyle){var o=this.b(n);o&&(o=o.__appliedElement||o,y&&y(o),n.__shadyCSSCachedStyle=o)}}return t},o.prototype.addCustomStyle=o.prototype.c,o.prototype.getStyleForCustomStyle=o.prototype.b,o.prototype.processStyles=o.prototype.a,Object.defineProperties(o.prototype,{transformCallback:{get:function(){return y},set:function(t){y=t}},validateCallback:{get:function(){return c},set:function(t){var e=!1;c||(e=!0),c=t,e&&a(this)}}});var l=new o;window.ShadyCSS||(window.ShadyCSS={prepareTemplate:function(){},styleSubtree:function(t,n){l.a(),e(t,n)},styleElement:function(){l.a()},styleDocument:function(t){l.a(),e(document.body,t)},getComputedStyleValue:function(t,e){return(t=window.getComputedStyle(t).getPropertyValue(e))?t.trim():""},nativeCss:s,nativeShadow:S}),window.ShadyCSS.CustomStyleInterface=l}).call(this)}});
+webpackJsonp([5],{
+
+/***/ 364:
+/***/ (function(module, exports) {
+
+(function(){/*
+
+Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+'use strict';var c=!(window.ShadyDOM&&window.ShadyDOM.inUse),f;function g(a){f=a&&a.shimcssproperties?!1:c||!(navigator.userAgent.match(/AppleWebKit\/601|Edge\/15/)||!window.CSS||!CSS.supports||!CSS.supports("box-shadow","0 0 0 var(--foo)"))}window.ShadyCSS&&void 0!==window.ShadyCSS.nativeCss?f=window.ShadyCSS.nativeCss:window.ShadyCSS?(g(window.ShadyCSS),window.ShadyCSS=void 0):g(window.WebComponents&&window.WebComponents.flags);var h=f;function k(a,b){for(var d in b)null===d?a.style.removeProperty(d):a.style.setProperty(d,b[d])};var l=null,m=window.HTMLImports&&window.HTMLImports.whenReady||null,n;function p(){var a=q;requestAnimationFrame(function(){m?m(a):(l||(l=new Promise(function(a){n=a}),"complete"===document.readyState?n():document.addEventListener("readystatechange",function(){"complete"===document.readyState&&n()})),l.then(function(){a&&a()}))})};var r=null,q=null;function t(){this.customStyles=[];this.enqueued=!1}function u(a){!a.enqueued&&q&&(a.enqueued=!0,p())}t.prototype.c=function(a){a.__seenByShadyCSS||(a.__seenByShadyCSS=!0,this.customStyles.push(a),u(this))};t.prototype.b=function(a){if(a.__shadyCSSCachedStyle)return a.__shadyCSSCachedStyle;var b;a.getStyle?b=a.getStyle():b=a;return b};
+t.prototype.a=function(){for(var a=this.customStyles,b=0;b<a.length;b++){var d=a[b];if(!d.__shadyCSSCachedStyle){var e=this.b(d);e&&(e=e.__appliedElement||e,r&&r(e),d.__shadyCSSCachedStyle=e)}}return a};t.prototype.addCustomStyle=t.prototype.c;t.prototype.getStyleForCustomStyle=t.prototype.b;t.prototype.processStyles=t.prototype.a;
+Object.defineProperties(t.prototype,{transformCallback:{get:function(){return r},set:function(a){r=a}},validateCallback:{get:function(){return q},set:function(a){var b=!1;q||(b=!0);q=a;b&&u(this)}}});var v=new t;window.ShadyCSS||(window.ShadyCSS={prepareTemplate:function(){},styleSubtree:function(a,b){v.a();k(a,b)},styleElement:function(){v.a()},styleDocument:function(a){v.a();k(document.body,a)},getComputedStyleValue:function(a,b){return(a=window.getComputedStyle(a).getPropertyValue(b))?a.trim():""},nativeCss:h,nativeShadow:c});window.ShadyCSS.CustomStyleInterface=v;}).call(this);
+
+//# sourceMappingURL=custom-style-interface.min.js.map
+
+
+/***/ })
+
+});
+//# sourceMappingURL=5.bundle.js.map
