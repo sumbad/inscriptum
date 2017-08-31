@@ -3147,7 +3147,7 @@ exports.default = window.customElements.define('um-article', article_component_1
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var article_preview_component_1 = __webpack_require__(99);
-exports.default = window.customElements.define('article-preview', article_preview_component_1.ArticlePreviewComponent);
+exports.default = window.customElements.define('um-article-preview', article_preview_component_1.ArticlePreviewComponent);
 
 
 /***/ }),
@@ -3158,7 +3158,7 @@ exports.default = window.customElements.define('article-preview', article_previe
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var articles_list_component_1 = __webpack_require__(100);
-exports.default = window.customElements.define('articles-list', articles_list_component_1.ArticlesListComponent);
+exports.default = window.customElements.define('um-articles-list', articles_list_component_1.ArticlesListComponent);
 
 
 /***/ }),
@@ -4110,18 +4110,18 @@ var AppComponent = (function (_super) {
                 var _a;
             },
             'articles': function (params) {
-                _this.routerView = (_a = ["<articles-list></articles-list>"], _a.raw = ["<articles-list></articles-list>"], hyperHTML.wire()(_a));
+                _this.routerView = (_a = ["<um-articles-list></um-articles-list>"], _a.raw = ["<um-articles-list></um-articles-list>"], hyperHTML.wire()(_a));
                 _this._render();
                 var _a;
             }
         });
         router_1.AppRouter.router.on(function () {
-            _this.routerView = (_a = ["<articles-list></articles-list>"], _a.raw = ["<articles-list></articles-list>"], hyperHTML.wire()(_a));
+            _this.routerView = (_a = ["<um-articles-list></um-articles-list>"], _a.raw = ["<um-articles-list></um-articles-list>"], hyperHTML.wire()(_a));
             _this._render();
             var _a;
         });
         router_1.AppRouter.router.notFound(function () {
-            _this.routerView = (_a = ["<articles-list></articles-list>"], _a.raw = ["<articles-list></articles-list>"], hyperHTML.wire()(_a));
+            _this.routerView = (_a = ["<um-articles-list></um-articles-list>"], _a.raw = ["<um-articles-list></um-articles-list>"], hyperHTML.wire()(_a));
             _this._render();
             var _a;
         });
@@ -4774,20 +4774,14 @@ var ArticlePreviewComponent = (function (_super) {
         _this.articleDate = articleDate;
         _this._template = __webpack_require__(141);
         _this._style = __webpack_require__(142);
-        _this._shadowRoot = _this.attachShadow({ mode: 'open' });
         return _this;
     }
     ArticlePreviewComponent.prototype.connectedCallback = function () {
-        this._shadowContent = document.createElement('div');
-        this._shadowStyle = document.createElement('style');
-        this._shadowStyle.textContent = this._style;
-        this._shadowRoot.appendChild(this._shadowStyle);
-        this._shadowRoot.appendChild(this._shadowContent);
         this._render();
     };
     ArticlePreviewComponent.prototype._render = function () {
         if (typeof this._template !== 'undefined' && typeof this._template === 'function') {
-            this._template(this, hyperHTML.bind(this._shadowContent));
+            this._template(this, hyperHTML.bind(this));
         }
     };
     ArticlePreviewComponent.prototype.handleLink = function (event) {
@@ -4891,7 +4885,7 @@ var ArticlesListComponent = (function (_super) {
         });
         this._loadPreviews(articlesList.map(function (a) { return a.name; })).then(function (previews) {
             _this.previews = previews.map(function (preview, index) {
-                return (_a = ["<div>", "<div>"], _a.raw = ["<div>", "<div>"], hyperHTML.wire()(_a, { html: preview }));
+                return (_a = ["\n                <um-article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                </um-article-preview>"], _a.raw = ["\n                <um-article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                </um-article-preview>"], hyperHTML.wire()(_a, articlesList[index].title, articlesList[index].name, articlesList[index].datePublished));
                 var _a;
             });
             _this._render();
@@ -6039,7 +6033,7 @@ module.exports = function (scope, callbackTag) {
 "use strict";
 
 
-var _templateObject = _taggedTemplateLiteral(["<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=", " href=", ">", "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>", "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n    <slot></slot>\n  </div>\n\n</article>"], ["<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=", " href=", ">", "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>", "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n    <slot></slot>\n  </div>\n\n</article>"]);
+var _templateObject = _taggedTemplateLiteral(["<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=", " href=", ">", "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>", "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n  </div>\n\n</article>"], ["<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=", " href=", ">", "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>", "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n  </div>\n\n</article>"]);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -6047,7 +6041,7 @@ module.exports = function (scope, callbackTag) {
   if (callbackTag) {
     return callbackTag(_templateObject, this.handleLink, "articles/" + this.articleName, this.articleTitle, this.articleDate);
   } else {
-    return "<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=" + this.handleLink + " href=" + ("articles/" + this.articleName) + ">" + this.articleTitle + "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>" + this.articleDate + "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n    <slot></slot>\n  </div>\n\n</article>";
+    return "<article class=\"entry\">\n\n  <header class=\"entry-header\">\n    <h2 class=\"entry-title\">\n      <a onclick=" + this.handleLink + " href=" + ("articles/" + this.articleName) + ">" + this.articleTitle + "</a>\n    </h2>\n    <div class=\"entry-meta\">\n      <ul>\n        <li>" + this.articleDate + "</li>\n      </ul>\n    </div>\n  </header>\n\n  <div class=\"entry-content\">\n  </div>\n\n</article>";
   }
 };
 
