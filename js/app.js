@@ -4890,7 +4890,7 @@ var ArticlesListComponent = (function (_super) {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
         fetch("/data/articles/webcomponents-base/preview.html").then(function (r) { return r.text(); }).then(function (preview) {
-            _this.previews = (_a = ["<div>1111111111111<div>"], _a.raw = ["<div>1111111111111<div>"], hyperHTML.wire()(_a));
+            _this.previews = (_a = ["<div>", "<div>"], _a.raw = ["<div>", "<div>"], hyperHTML.wire()(_a, { html: preview }));
             _this._render();
             var _a;
         });
