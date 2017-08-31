@@ -11824,14 +11824,10 @@ var ArticlesListComponent = (function (_super) {
     };
     ArticlesListComponent.prototype._loadPreviews = function (names) {
         return __awaiter(this, void 0, void 0, function () {
-            var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, Promise.all(names.map(function (name) { return fetch("/data/articles/" + name + "/preview.html"); }))];
-                    case 1:
-                        results = _a.sent();
-                        return [4, Promise.all(results.map(function (result) { return result.text(); }))];
-                    case 2: return [2, _a.sent()];
+                    case 0: return [4, ["<div>11111111111111111111</div>", "<div>11111111111111111111</div>", "<div>11111111111111111111</div>"]];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
