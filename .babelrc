@@ -1,12 +1,11 @@
 {
-  "presets": ["env"]
-  // "presets": [
-  //   ["env", {
-  //     "targets": {
-  //       "browsers": ["last 2 versions", "ie >= 11"]
-  //     },
-  //     "useBuiltIns": true
-  //   }
-  // ]
-  // ]
+  // "presets": ["env"]
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 11"]
+      },
+      "useBuiltIns": true
+    }]
+  ]
 }

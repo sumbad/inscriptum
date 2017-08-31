@@ -8,7 +8,7 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-(function () {
+(function() {
   'use strict';
   // global for (1) existence means `WebComponentsReady` will file,
   // (2) WebComponents.ready == true means event has fired.
@@ -35,7 +35,7 @@
   }
 
   if (polyfills.length) {
-    var script = document.querySelector('script[src*="' + name + '"]');
+    var script = document.querySelector('script[src*="' + name +'"]');
     var newScript = document.createElement('script');
     // Load it from the right place.
     var replacement = 'webcomponents-' + polyfills.join('-') + '.js';
@@ -55,17 +55,10 @@
     // however, we have to wait for the document to be in 'interactive' state,
     // otherwise a rAF may fire before scripts in <body>
 
-    // С обновлением до angular 4 событие readystatechange возбуждается несколько раз, что ломает проверку проверку загрузки Web Components
-    var isLoaded = false;
-    var fire = function () {
-      requestAnimationFrame(function () {
-        if (!isLoaded) {
-          window.WebComponents.ready = true;
-          document.dispatchEvent(new CustomEvent('WebComponentsReady', {
-            bubbles: true
-          }));
-          isLoaded = true;
-        }
+    var fire = function() {
+      requestAnimationFrame(function() {
+        window.WebComponents.ready = true;
+        document.dispatchEvent(new CustomEvent('WebComponentsReady', {bubbles: true}));
       });
     };
 
