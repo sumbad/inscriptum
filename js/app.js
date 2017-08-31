@@ -4902,8 +4902,14 @@ var ArticlesListComponent = (function (_super) {
     };
     ArticlesListComponent.prototype._loadPreviews = function (names) {
         return __awaiter(this, void 0, void 0, function () {
+            var results;
             return __generator(this, function (_a) {
-                return [2, Promise.all([new Promise(function (resolve) { return resolve('<div>111111111</div>'); }), new Promise(function (resolve) { return resolve('<div>111111111</div>'); })])];
+                switch (_a.label) {
+                    case 0:
+                        results = fetch("/data/articles/webcomponents-base/preview.html");
+                        return [4, results.then(function (result) { return result.text(); })];
+                    case 1: return [2, [_a.sent()]];
+                }
             });
         });
     };
