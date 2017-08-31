@@ -4890,7 +4890,7 @@ var ArticlesListComponent = (function (_super) {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
         fetch("/data/articles/webcomponents-base/preview.html").then(function (r) { return r.text(); }).then(function (preview) {
-            _this.previews = (_a = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], _a.raw = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], hyperHTML.wire()(_a, articlesList[1].title, articlesList[1].name, articlesList[1].datePublished, { html: preview }));
+            _this.previews = (_a = ["<div>1111111111111<div>"], _a.raw = ["<div>1111111111111<div>"], hyperHTML.wire()(_a));
             _this._render();
             var _a;
         });
