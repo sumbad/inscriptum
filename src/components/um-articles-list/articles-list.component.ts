@@ -10,28 +10,36 @@ declare const $: any;
 
 export class ArticlesListComponent extends HTMLElement {
     private _template: any;
-    public previews;
+    public articlesList: { name: string; title: string; datePublished: Date; }[] = [];
+    public previews: any[] = [];
+
 
     constructor(public saying) {
         super();
         this._template = require('./articles-list.component.html');
+        this.articlesList = articles.sort((a, b) => {
+            return (b.datePublished.getTime() - a.datePublished.getTime());
+        });
     }
 
 
     connectedCallback() {
-        const articlesList = articles.sort((a, b) => {
-            return (b.datePublished.getTime() - a.datePublished.getTime());
-        });
+        this._render();
 
-        this._loadPreviews(articlesList.map(a => a.name)).then(previews => {
-            this.previews = previews.map((preview, index) => {
-                return hyperHTML.wire() `
-                <article-preview article-title="${articlesList[index].title}" 
-                                 article-name="${articlesList[index].name}"
-                                 article-date="${articlesList[index].datePublished}">
-                    ${{ html: preview }}
-                </article-preview>`;
-            });
+        const $umArticlePrevie = <HTMLTemplateElement>this.querySelector('#umArticlePreview');
+        this._loadPreviews(this.articlesList.map(a => a.name)).then(previews => {
+
+            this.previews = previews.map((body, index)=>{
+                const $articlePreview = <Element>document.importNode($umArticlePrevie.content, true).querySelector('um-article-preview');
+                $articlePreview.setAttribute('article-title', this.articlesList[index].title);
+                $articlePreview.setAttribute('article-name', this.articlesList[index].name);
+                $articlePreview.setAttribute('article-date', this.articlesList[index].datePublished.toDateString());
+                $articlePreview.innerHTML = body;
+
+                return $articlePreview;
+            })
+
+
             this._render();
         });
     }
@@ -49,3 +57,14 @@ export class ArticlesListComponent extends HTMLElement {
     }
 
 }
+
+
+
+// ${this.previews.map((preview, index)=>{console.log(preview); return `
+// <um-article-preview id="${this.articlesList[index].name}"
+//                     article-title="${this.articlesList[index].title}" 
+//                     article-name="${this.articlesList[index].name}" 
+//                     article-date="${this.articlesList[index].datePublished}">
+//     <div>${preview}</div>
+// </um-article-preview>
+// `;})}
