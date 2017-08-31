@@ -105,7 +105,8 @@ module.exports = function (helper) {
       extensions: ['.ts', '.js', '.json']
     },
     plugins: [
-      extractSass
+      extractSass,
+      new webpack.IgnorePlugin(/vertx/)
     ]
   }
 }

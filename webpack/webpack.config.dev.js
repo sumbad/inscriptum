@@ -14,6 +14,7 @@ module.exports = function (helper) {
     devServer: {
       historyApiFallback: true,
       port: 3000,
+      // host: '192.168.1.8',
       // stats: 'minimal',
       // outputPath: helper.PATHS.build,
       // noInfo: true
