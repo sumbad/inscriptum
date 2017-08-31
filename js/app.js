@@ -4889,10 +4889,12 @@ var ArticlesListComponent = (function (_super) {
         var articlesList = articles_1.default.sort(function (a, b) {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
-        fetch("/data/articles/webcomponents-base/preview.html").then(function (r) { return r.text(); }).then(function (preview) {
-            _this.previews = (_a = ["<div>", "<div>"], _a.raw = ["<div>", "<div>"], hyperHTML.wire()(_a, { html: preview }));
+        this._loadPreviews(articlesList.map(function (a) { return a.name; })).then(function (previews) {
+            _this.previews = previews.map(function (preview, index) {
+                return (_a = ["<div>", "<div>"], _a.raw = ["<div>", "<div>"], hyperHTML.wire()(_a, { html: preview }));
+                var _a;
+            });
             _this._render();
-            var _a;
         });
     };
     ArticlesListComponent.prototype._render = function () {
@@ -4903,10 +4905,11 @@ var ArticlesListComponent = (function (_super) {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        results = fetch("/data/articles/webcomponents-base/preview.html");
-                        return [4, results.then(function (result) { return result.text(); })];
-                    case 1: return [2, [_a.sent()]];
+                    case 0: return [4, Promise.all(names.map(function (name) { return fetch("/data/articles/" + name + "/preview.html"); }))];
+                    case 1:
+                        results = _a.sent();
+                        return [4, Promise.all(results.map(function (result) { return result.text(); }))];
+                    case 2: return [2, _a.sent()];
                 }
             });
         });
