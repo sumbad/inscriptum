@@ -4884,15 +4884,16 @@ var ArticlesListComponent = (function (_super) {
         return _this;
     }
     ArticlesListComponent.prototype.connectedCallback = function () {
+        var _this = this;
         this._render();
         var articlesList = articles_1.default.sort(function (a, b) {
             return (b.datePublished.getTime() - a.datePublished.getTime());
         });
-        this.previews = fetch("/data/articles/webcomponents-base/preview.html").then(function (r) { return r.text(); }).then(function (preview) {
-            return (_a = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], _a.raw = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], hyperHTML.wire()(_a, articlesList[0].title, articlesList[0].name, articlesList[0].datePublished, { html: preview }));
+        fetch("/data/articles/webcomponents-base/preview.html").then(function (r) { return r.text(); }).then(function (preview) {
+            _this.previews = (_a = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], _a.raw = ["\n                <article-preview article-title=\"", "\" \n                                 article-name=\"", "\"\n                                 article-date=\"", "\">\n                    ", "\n                </article-preview>"], hyperHTML.wire()(_a, articlesList[1].title, articlesList[1].name, articlesList[1].datePublished, { html: preview }));
+            _this._render();
             var _a;
         });
-        this._render();
     };
     ArticlesListComponent.prototype._render = function () {
         return this._template(this, hyperHTML.bind(this));
