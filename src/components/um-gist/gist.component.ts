@@ -1,17 +1,22 @@
+import * as hyperHTML from 'hyperhtml';
+
 export class GistComponent extends HTMLElement {
     private _template: any;
+    public iframeEl: any;
 
 
     constructor(public iframeid) {
         super();
         this._template = require('./gist.component.html');
-        this.innerHTML = this._template(this);
+        //this._template(this);
     }
 
 
     connectedCallback() {
-        const iframeEl = <HTMLIFrameElement>this.querySelector('iframe');
-        let doc = iframeEl['contentDocument'] || iframeEl['contentWindow'];
+        this._render();
+        
+        this.iframeEl = <HTMLIFrameElement>this.querySelector('iframe');
+        let doc = this.iframeEl['contentDocument'] || this.iframeEl['contentWindow'];
         doc.open();
         doc.write(`
         <html>
@@ -30,8 +35,15 @@ export class GistComponent extends HTMLElement {
           </body>
         </html>`);
         doc.close();
-        iframeEl['contentWindow'].onload = () => {
-            iframeEl.style.height = doc.body.scrollHeight + "px";
+        this.iframeEl['contentWindow'].onload = () => {
+            this.iframeEl.style.height = doc.body.scrollHeight + "px";
+        }
+    }
+
+
+    _render() {
+        if (typeof this._template !== 'undefined' && typeof this._template === 'function') {
+            this._template(this, hyperHTML.bind(this));
         }
     }
 
