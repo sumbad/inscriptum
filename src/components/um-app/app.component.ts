@@ -23,11 +23,11 @@ export class AppComponent extends HTMLElement {
         AppRouter.router.on(
             {
                 'articles/:id': (params) => {
-                    this.routerView = hyperHTML.wire() `<um-article article-name=${params.id}></um-article>`
+                    this.routerView = hyperHTML.wire() `<um-article article-name=${params.id}></um-article>`;
                     this._render();
                 },
                 'articles': (params) => {
-                    this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+                    this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
                     this._render();
                 }
             }
@@ -35,13 +35,13 @@ export class AppComponent extends HTMLElement {
 
         // set the default route
         AppRouter.router.on(() => {
-            this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+            this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
             this._render();
         });
 
         // set the 404 route
         AppRouter.router.notFound(() => {
-            this.routerView = hyperHTML.wire() `<articles-list></articles-list>`
+            this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
             this._render();
         });
 

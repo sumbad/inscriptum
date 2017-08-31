@@ -1,7 +1,7 @@
 {
   "name": "inscriptum",
   "description": "blog inscriptum",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "@webcomponents/custom-elements": "^1.0.0",
     "@webcomponents/shadycss": "^1.0.5",
     "@webcomponents/shadydom": "^1.0.3",
+    "@webcomponents/template": "^1.0.0",
     "@webcomponents/webcomponentsjs": "^1.0.8",
     "babel-polyfill": "^6.26.0",
     "hyperhtml": "^1.2.0",

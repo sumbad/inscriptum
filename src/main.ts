@@ -12,9 +12,36 @@ const components = [
 ];
 
 
-
+// window.addEventListener('WebComponentsReady', (e) => {
 polyfills.then(
     async p => {
+
+
+        // await import('./components/um-app').then(
+        //     c => {
+        //         customElements.whenDefined('um-app');
+        //     }
+        // );
+        // await import('./components/um-articles-list').then(
+        //     c => {
+        //         customElements.whenDefined('um-articles-list');
+        //     }
+        // );
+        // await import('./components/um-article-preview').then(
+        //     c => {
+        //         customElements.whenDefined('um-article-preview');
+        //     }
+        // );
+        // await import('./components/um-article').then(
+        //     c => {
+        //         customElements.whenDefined('um-article');
+        //     }
+        // );
+        // await import('./components/um-gist').then(
+        //     c => {
+        //         customElements.whenDefined('um-gist');
+        //     }
+        // );
 
         // import all required sub components
         await Promise.all(components.map(
@@ -26,8 +53,10 @@ polyfills.then(
             c => customElements.whenDefined(c)
         ));
     }
-);
-
+).catch(e => {
+    console.log(e);
+});
+// });
 
 
 // import { AppComponent } from './components/app/app.component';
