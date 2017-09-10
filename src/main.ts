@@ -1,7 +1,7 @@
 import polyfills from './polyfills';
 
 import './styles/main.scss';
-import './public/font-awesome/scss/font-awesome.scss';
+
 
 const components = [
     'um-app',
@@ -9,6 +9,7 @@ const components = [
     'um-article-preview',
     'um-article',
     'um-gist',
+    'um-editor',
 ];
 
 

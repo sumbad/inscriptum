@@ -1,0 +1,159 @@
+<!-- <div class="the-editor"> -->
+<div class="the-editor-toolbar">
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'bold')}">
+    <i class="fa fa-bold"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'italic')}">
+    <i class="fa fa-italic"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'underline')}">
+    <i class="fa fa-underline"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'strikethrough')}">
+    <i class="fa fa-strikethrough"></i>
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'createLink')}">
+    <i class="fa fa-link"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'unlink')}">
+    <i class="fa fa-unlink"></i>
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'insertUnorderedList')}">
+    <i class="fa fa-list-ul"></i>
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'insertOrderedList')}">
+    <i class="fa fa-list-ol"></i> 
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'indent')}">
+    <i class="fa fa-indent"></i>
+  </button>
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'outdent')}">
+    <i class="fa fa-outdent"></i>
+  </button>
+
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'justifyLeft')}">
+    <i class="fa fa-align-left"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'justifyCenter')}">
+    <i class="fa fa-align-center"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'justifyRight')}">
+    <i class="fa fa-align-right"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event,'justifyFull')}">
+    <i class="fa fa-align-justify"></i> 
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <div href="#"
+       class="the-editor-toolbar-has-dropdown">
+    <i class="fa fa-header"></i>
+    <div class="the-editor-toolbar-dropdown">
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h1')}">
+        <h1>Heading 1</h1>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h2')}">
+        <h2>Heading 2</h2>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h3')}">
+        <h3>Heading 3</h3>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h4')}">
+        <h4>Heading 4</h4>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h5')}">
+        <h5>Heading 5</h5>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'h6')}">
+        <h6>Heading 6</h6>
+      </button>
+    </div>
+  </div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event, 'formatBlock', 'p')}">
+     <i class="fa fa-paragraph"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event, 'subscript')}">
+    <i class="fa fa-subscript"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event, 'superscript')}">
+    <i class="fa fa-superscript"></i>
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.doRichEditCommand($event, 'undo')}">
+    <i class="fa fa-undo"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          class="the-editor-toolbar-save">
+    <i class="fa fa-save"></i>
+  </button>
+
+</div>
+
+<div class="the-editor-content">
+  <article class="entry"
+           contenteditable></article>
+</div>
+<!-- </div> -->
+
+
+
+<!-- <div id="pell">
+  
+    </div>
+    <div>
+      Text output:
+      <div id="text-output"></div>
+      HTML output:
+      <pre id="html-output"></pre>
+    </div> -->

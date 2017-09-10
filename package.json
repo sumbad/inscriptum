@@ -1,7 +1,7 @@
 {
   "name": "inscriptum",
   "description": "blog inscriptum",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
@@ -11,19 +11,18 @@
     "start": "npm run build && lite-server --baseDir=build"
   },
   "dependencies": {
-    "@webcomponents/custom-elements": "^1.0.0",
+    "@webcomponents/custom-elements": "^1.0.2",
     "@webcomponents/shadycss": "^1.0.5",
-    "@webcomponents/shadydom": "^1.0.3",
+    "@webcomponents/shadydom": "^1.0.4",
     "@webcomponents/template": "^1.0.0",
-    "@webcomponents/webcomponentsjs": "^1.0.8",
+    "@webcomponents/webcomponentsjs": "^1.0.10",
     "babel-polyfill": "^6.26.0",
-    "hyperhtml": "^1.2.0",
+    "hyperhtml": "^1.7.1",
     "navigo": "^5.3.1",
-    "typescript": "^2.5.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@types/node": "^8.0.24",
+    "@types/node": "^8.0.28",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
@@ -31,9 +30,10 @@
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.5",
+    "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
+    "font-awesome": "^4.7.0",
     "gh-pages": "^1.0.0",
     "html-loader": "^0.5.1",
     "node-sass": "^4.5.3",
@@ -41,10 +41,10 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "template-literals-loader": "^0.1.1",
-    "ts-loader": "^2.3.3",
-    "typescript": "^2.5.1",
+    "ts-loader": "^2.3.6",
+    "typescript": "^2.5.2",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
-    "webpack": "^3.5.5",
+    "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1",
     "webpack-merge": "^4.1.0"
   }

@@ -29,6 +29,10 @@ export class AppComponent extends HTMLElement {
                 'articles': (params) => {
                     this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
                     this._render();
+                },
+                'editor': (params) => {
+                    this.routerView = hyperHTML.wire() `<um-editor></um-editor>`;
+                    this._render();
                 }
             }
         );
