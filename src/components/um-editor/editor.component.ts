@@ -6,7 +6,11 @@ import * as hyperHTML from 'hyperhtml';
 export class EditorComponent extends HTMLElement {
     private _template: any;
     private _style: any;
-    private _content: any;
+
+    private _isCodeMode: boolean = false;
+
+    public $style: any;
+    public $editorContent: HTMLElement;
 
     constructor() {
         super();
@@ -20,67 +24,14 @@ export class EditorComponent extends HTMLElement {
 
 
     connectedCallback() {
-        const style = document.createElement('style');
-        style.textContent = this._style;
-        this._content = document.createElement('div');
-
-        this.appendChild(style);
-        this.appendChild(this._content);
-
-        // this._shadowStyle.textContent = this._style;
-
+        this.$style = hyperHTML.wire() `<style>${this._style}</style>`;
         this.render();
-
-        // const pellEditor = pell.init({
-        //     element: this.querySelector('#pell'),
-        //     onChange: html => {
-        //         this.querySelector('#text-output')!.innerHTML = html
-        //         this.querySelector('#html-output')!.textContent = html
-        //     },
-        //     styleWithCSS: true,
-        //     actions: [
-        //         {
-        //             name:'heading1',
-        //             result: () => pell.exec('formatBlock', '<H2 class="213">')
-        //         }
-        //     //     'bold',
-        //     //     'underline',
-        //     //     {
-        //     //         name: 'italic',
-        //     //         result: () => window['pell'].exec('italic')
-        //     //     },
-        //     //     {
-        //     //         name: 'custom',
-        //     //         icon: '<b><u><i>C</i></u></b>',
-        //     //         title: 'Custom Action',
-        //     //         result: () => console.log('YOLO')
-        //     //     },
-        //     //     {
-        //     //         name: 'image',
-        //     //         result: () => {
-        //     //             const url = window.prompt('Enter the image URL')
-        //     //             if (url) window['pell'].exec('insertImage', url)
-        //     //         }
-        //     //     },
-        //     //     {
-        //     //         name: 'link',
-        //     //         result: () => {
-        //     //             const url = window.prompt('Enter the link URL')
-        //     //             if (url) window['pell'].exec('createLink', url)
-        //     //         }
-        //     //     }
-        //     ],
-        //     // classes: {
-        //     //     actionbar: 'pell-actionbar-custom-name',
-        //     //     button: 'pell-button-custom-name',
-        //     //     content: 'pell-content-custom-name'
-        //     // }
-        // })
+        this.$editorContent = <HTMLElement>this.querySelector('#editorContent');
     }
 
 
     render() {
-        this._template(this, hyperHTML.bind(this._content));
+        this._template(this, hyperHTML.bind(this));
     }
 
 
@@ -103,11 +54,41 @@ export class EditorComponent extends HTMLElement {
     }
 
 
+    switchMode() {
+        this._isCodeMode = !this._isCodeMode;
+        this._setDocMode(this._isCodeMode, this.$editorContent.firstElementChild);
+    }
+
+
     private _formatBlockClasses(aArg, selectedElement) {
         switch (aArg) {
             case 'h2':
                 selectedElement.classList.add("entry-title");
                 break;
+        }
+    }
+
+
+    private _setDocMode(codeMode, oArticle) {
+        let sArticleTxt = oArticle.innerHTML;
+        let oContent;
+        if (codeMode) {
+            oContent = document.createTextNode(sArticleTxt);
+            oArticle.innerHTML = "";
+
+            let oPre = document.createElement("pre");
+            oArticle.contentEditable = 'false';
+            oPre.id = "sourceText";
+            oPre.contentEditable = 'true';
+            oPre.appendChild(oContent);
+
+            oArticle.appendChild(oPre);
+        }
+        else {
+            oContent = document.createRange();
+            oContent.selectNodeContents(oArticle.firstChild);
+            oArticle.innerHTML = oContent.toString();
+            oArticle.contentEditable = 'true';
         }
     }
 

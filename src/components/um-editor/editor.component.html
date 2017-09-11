@@ -1,3 +1,5 @@
+${this.$style}
+
 <!-- <div class="the-editor"> -->
 <div class="the-editor-toolbar">
 
@@ -134,15 +136,64 @@
   </button>
 
   <button class="the-editor-toolbar-button"
+          onclick="${($event)=>this.switchMode()}">
+    <i class="fa fa-code" aria-hidden="true"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
           class="the-editor-toolbar-save">
     <i class="fa fa-save"></i>
   </button>
 
 </div>
 
-<div class="the-editor-content">
+
+
+<div class="the-editor-content"
+     id="editorContent">
   <article class="entry"
-           contenteditable></article>
+           contenteditable>
+
+    <!-- Sample data -->
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c"><br></font>
+      </font>
+    </h1>
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c"><br></font>
+      </font>
+    </h1>
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c">S</font>
+        <font color="#f39c12">W</font>
+        <font color="#e74c3c">E</font>
+        <font color="#95a5a6">ditor</font>
+      </font>
+      <font size="3"
+            face="Consolas, monaco, monospace"
+            color="#bdc3c7">v0.2.0</font><br></h1>
+    <p style="text-align: center;">
+      <font color="#d35400"
+            face="Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif">Added more fonts and added flat colors</font>
+    </p>
+    <p style="text-align: center;">
+      <a href="https://twitter.com/nakome">
+        <font color="#c0392b">@</font>
+        <font color="#3498db">nakome</font>
+      </a>
+    </p>
+    <p style="text-align: center;"><br></p>
+    <p></p>
+    <div style="text-align: center;"><b>Note:</b></div>
+    <div style="text-align: center;"><i><font color="#95a5a6">Text editor is responsive but for this demo the class main have 800px&nbsp;</font></i></div>
+    <div style="text-align: center;"><i><font color="#95a5a6">remove if you like.</font></i></div>
+    <div style="text-align: center;"><i><font color="#1abc9c">Thanks</font><font color="#95a5a6">.</font></i></div>
+
+  </article>
+
 </div>
 <!-- </div> -->
 
