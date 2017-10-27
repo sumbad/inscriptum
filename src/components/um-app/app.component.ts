@@ -1,17 +1,31 @@
 import * as hyperHTML from 'hyperhtml';
 import { AppRouter } from "router";
+import { BaseComponent } from 'components/base.component';
 
+
+
+
+let template = require('./app.component.html');
+
+function templateInterpolatesParser(strings, ...interpolations) {
+  let routerView = 1233333;
+  // interpolations = Object.keys(interpolatedValues);
+  // for(key in interpolatedValues) {
+  //   console.log(1111111111111, key)
+  // }
+  console.log(999999999999, arguments)
+}
+
+// template({routerView:1111111111111}, templateInterpolatesParser);
 
 declare const $: any;
 
-export class AppComponent extends HTMLElement {
-    private _template: any;
+export class AppComponent extends BaseComponent {
+    // private _template: any;
     public routerView: any;
 
     constructor(public saying) {
-        super();
-        // this.html = hyperHTML.bind(this);
-        this._template = require('./app.component.html');
+        super(template);
     }
 
 
@@ -24,15 +38,15 @@ export class AppComponent extends HTMLElement {
             {
                 'articles/:id': (params) => {
                     this.routerView = hyperHTML.wire() `<um-article article-name=${params.id}></um-article>`;
-                    this._render();
+                    this.render(this);
                 },
                 'articles': (params) => {
                     this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
-                    this._render();
+                    this.render(this);
                 },
                 'editor': (params) => {
                     this.routerView = hyperHTML.wire() `<um-editor></um-editor>`;
-                    this._render();
+                    this.render(this);
                 }
             }
         );
@@ -40,18 +54,18 @@ export class AppComponent extends HTMLElement {
         // set the default route
         AppRouter.router.on(() => {
             this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
-            this._render();
+            this.render(this);
         });
 
         // set the 404 route
         AppRouter.router.notFound(() => {
             this.routerView = hyperHTML.wire() `<um-articles-list></um-articles-list>`;
-            this._render();
+            this.render(this);
         });
 
         AppRouter.router.resolve();
 
-        this._render();
+        this.render(this);
 
         /*************************************************
        /************* TODO: убрать jQuery **************/
@@ -91,7 +105,7 @@ export class AppComponent extends HTMLElement {
     }
 
 
-    _render() {
-        return this._template(this, hyperHTML.bind(this));
-    }
+    // _render() {
+    //     return this._template(this, hyperHTML.bind(this));
+    // }
 }

@@ -88,6 +88,7 @@ module.exports = function (helper) {
         },
         {
           test: /\.(html|htm)$/,
+          // loader: "raw-loader",
           use: [
             {
               loader: 'babel-loader'

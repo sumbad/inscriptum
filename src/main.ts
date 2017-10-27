@@ -5,12 +5,12 @@ import './styles/main.scss';
 
 const components = [
     'um-app',
-    'um-articles-list',
-    'um-article-preview',
-    'um-article',
-    'um-gist',
-    'um-editor',
-    'um-spinner-round',
+    // 'um-articles-list',
+    // 'um-article-preview',
+    // 'um-article',
+    // 'um-gist',
+    // 'um-editor',
+    // 'um-spinner-round',
 ];
 
 
