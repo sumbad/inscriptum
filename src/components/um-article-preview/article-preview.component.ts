@@ -38,7 +38,9 @@ export class ArticlePreviewComponent extends HTMLElement {
 
     _render() {
         if (typeof this._template !== 'undefined' && typeof this._template === 'function') {
-            this._template(this, hyperHTML.bind(this._shadowContent));
+          let tempaleConfig = { scope: this, tag: hyperHTML.bind(this._shadowContent) };
+          this._template(tempaleConfig);
+            // this._template(this, hyperHTML.bind(this._shadowContent));
         }
     }
 

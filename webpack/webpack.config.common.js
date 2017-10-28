@@ -88,15 +88,16 @@ module.exports = function (helper) {
         },
         {
           test: /\.(html|htm)$/,
+          loader: "template-literals-loader",
           // loader: "raw-loader",
-          use: [
-            {
-              loader: 'babel-loader'
-            },
-            {
-              loader: 'template-literals-loader'
-            },
-          ],
+          // use: [
+          //   {
+          //     loader: 'babel-loader'
+          //   },
+          //   {
+          //     loader: 'template-literals-loader'
+          //   },
+          // ],
           include: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
         },
       ]

@@ -2,26 +2,13 @@ import * as hyperHTML from 'hyperhtml';
 import { AppRouter } from "router";
 import { BaseComponent } from 'components/base.component';
 
-
-
+declare const $: any;
 
 let template = require('./app.component.html');
 
-function templateInterpolatesParser(strings, ...interpolations) {
-  let routerView = 1233333;
-  // interpolations = Object.keys(interpolatedValues);
-  // for(key in interpolatedValues) {
-  //   console.log(1111111111111, key)
-  // }
-  console.log(999999999999, arguments)
-}
 
-// template({routerView:1111111111111}, templateInterpolatesParser);
-
-declare const $: any;
 
 export class AppComponent extends BaseComponent {
-    // private _template: any;
     public routerView: any;
 
     constructor(public saying) {
@@ -104,8 +91,4 @@ export class AppComponent extends BaseComponent {
       */
     }
 
-
-    // _render() {
-    //     return this._template(this, hyperHTML.bind(this));
-    // }
 }
