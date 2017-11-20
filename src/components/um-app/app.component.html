@@ -1,39 +1,48 @@
 <!-- <template> -->
 <div id="app">
-    <!-- Header ================================================== -->
-    <header id="top">
-        <div class="row">
-            <div class="header-content twelve columns">
-                <h1 id="logo-text"><a href="/" title="">inscriptum</a></h1>
-                <p id="intro" v-html="saying"></p>
-            </div>
-        </div>
-
-        <nav id="nav-wrap">
-            <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show Menu</a>
-            <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
-
-            <!--<a class="mobile-btn" href="#nav-wrap" title="Показать меню">Показать меню</a>
-                <a class="mobile-btn" href="#" title="Скрыть меню">Скрыть меню</a>-->
-            <div class="row">
-                <ul id="nav" class="nav">
-                    <li class="current"><a href="/">Главная</a></li>
-                </ul>
-                <!-- end #nav -->
-            </div>
-        </nav>
-        <!-- end #nav-wrap -->
-    </header>
-    <!-- Header End -->
-
-    <!-- Content ================================================== -->
-    <div id="content-wrap">
-        <div class="row">
-            <div id="main" class="twelve columns">
-                ${routerView}
-            </div>
-        </div>
+  <!-- Header ================================================== -->
+  <header id="top">
+    <div class="row">
+      <div class="header-content twelve columns">
+        <h1 id="logo-text"><a href="/"
+             title="">inscriptum</a></h1>
+        <p id="intro"
+           v-html="saying"></p>
+      </div>
     </div>
-    <!-- end content-wrap -->
+
+    <nav id="nav-wrap">
+      <a class="mobile-btn"
+         href="#nav-wrap"
+         title="Show navigation">Show Menu</a>
+      <a class="mobile-btn"
+         href="#"
+         title="Hide navigation">Hide Menu</a>
+
+      <!--<a class="mobile-btn" href="#nav-wrap" title="Показать меню">Показать меню</a>
+                <a class="mobile-btn" href="#" title="Скрыть меню">Скрыть меню</a>-->
+      <div class="row">
+        <ul id="nav"
+            class="nav">
+          <li class="current"><a href="/">Главная</a></li>
+        </ul>
+        <!-- end #nav -->
+      </div>
+    </nav>
+    <!-- end #nav-wrap -->
+  </header>
+  <!-- Header End -->
+
+  <!-- Content ================================================== -->
+  <div id="content-wrap">
+    <div class="row">
+      <div id="main"
+           class="twelve columns">
+        <um-spinner-round></um-spinner-round>
+        ${routerView}
+      </div>
+    </div>
+  </div>
+  <!-- end content-wrap -->
 </div>
 <!-- </template> -->

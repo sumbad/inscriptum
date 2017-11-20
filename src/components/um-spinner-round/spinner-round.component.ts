@@ -18,7 +18,7 @@ export class SpinnerRound extends BaseComponent {
   // private _content: any;
   // private _root: any;
   /*** id svg элемента*/
-  private _id;
+  public uuid;
   /*** размер спиннера в px */
   private _widthSpinner = 30;
 
@@ -35,7 +35,7 @@ export class SpinnerRound extends BaseComponent {
 
   constructor() {
     super(template, style);
-    this._id = Tools.uuidv4();
+    this.uuid = Tools.uuidv4();
 
     // try {
     //   this._template = require('./spinner-round.component.html');

@@ -10,7 +10,7 @@ const components = [
     // 'um-article',
     // 'um-gist',
     // 'um-editor',
-    // 'um-spinner-round',
+    'um-spinner-round',
 ];
 
 

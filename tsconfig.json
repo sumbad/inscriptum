@@ -1,23 +1,28 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "lib": [
-        "dom",
-        "es2015"
-      ],
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "isolatedModules": false,
-      "experimentalDecorators": true,
-      "noImplicitAny": false,
-      "noImplicitThis": true,
-      "strictNullChecks": true,
-      "removeComments": true,
-      "suppressImplicitAnyIndexErrors": true,
-      "allowSyntheticDefaultImports": true,
-      "allowJs": true,
-      "rootDir": "./",
-      "baseUrl": "./src"
-    },
-    "compileOnSave": false
-  }
+  "compilerOptions": {
+    // do not transpile stuff like classes, async/await, ...
+    "target": "esnext",
+    // leave imports as they are
+    "module": "esnext",
+    // resolve modules as you would expect
+    "moduleResolution": "node",
+    // produce a source map
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "isolatedModules": false,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "rootDir": "./",
+    "baseUrl": "./src"
+  },
+  "compileOnSave": false
+}

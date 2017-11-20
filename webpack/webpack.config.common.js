@@ -9,9 +9,10 @@ const extractSass = new ExtractTextPlugin({
 
 
 
-module.exports = function (helper) {
+module.exports = function(helper) {
   return {
     entry: {
+      // 'babel-polyfill': 'babel-polyfill',
       'app': path.resolve(helper.PATHS.src, 'main.ts')
     },
     output: {
@@ -21,10 +22,14 @@ module.exports = function (helper) {
       chunkFilename: 'js/[name].bundle.js',
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.ts$/,
-          loader: 'ts-loader',
+          // loader: 'ts-loader',
+          use: [{
+            loader: "babel-loader"
+          }, {
+            loader: "ts-loader"
+          }],
           exclude: /node_modules/
         },
         {
@@ -57,10 +62,15 @@ module.exports = function (helper) {
           test: /\.scss$/,
           use: extractSass.extract({
             use: [{
-              loader: "css-loader"
-            }, {
-              loader: "sass-loader"
-            }],
+                loader: "css-loader"
+              },
+              {
+                loader: 'postcss-loader',
+              },
+              {
+                loader: "sass-loader"
+              }
+            ],
             // use style-loader in development
             fallback: "style-loader"
           }),
@@ -68,13 +78,15 @@ module.exports = function (helper) {
         },
         {
           test: /\.scss$/,
-          use: [
-            {
+          use: [{
               loader: "raw-loader"
             },
             // {
             //   loader: "css-loader"
             // },
+            {
+              loader: 'postcss-loader',
+            },
             {
               loader: "sass-loader"
             }
@@ -88,17 +100,17 @@ module.exports = function (helper) {
         },
         {
           test: /\.(html|htm)$/,
-          loader: "template-literals-loader",
+          // loader: "template-literals-loader",
           // loader: "raw-loader",
-          // use: [
-          //   {
-          //     loader: 'babel-loader'
-          //   },
-          //   {
-          //     loader: 'template-literals-loader'
-          //   },
-          // ],
-          include: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
+          use: [
+            {
+              loader: 'babel-loader'
+            },
+            {
+              loader: 'template-literals-loader'
+            },
+          ],
+          include: [path.join(helper.PATHS.src, 'components')]
         },
       ]
     },

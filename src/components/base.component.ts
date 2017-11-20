@@ -54,7 +54,7 @@ export class BaseComponent extends HTMLElement {
    * Функция рендеринга компонента
    */
   render(scope: any = this): void {
-    let config = { scope, tag: hyperHTML.bind(this) };
+    let config = { scope, tag: hyperHTML.bind(this._content) };
     this._template(config);
   }
 
