@@ -34,7 +34,7 @@ export class SpinnerRound extends BaseComponent {
 
 
   constructor() {
-    super(template, style);
+    super(template, style, true);
     this.uuid = Tools.uuidv4();
 
     // try {

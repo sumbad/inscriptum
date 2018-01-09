@@ -7,9 +7,9 @@ const components = [
     'um-app',
     'um-articles-list',
     'um-article-preview',
-    // 'um-article',
-    // 'um-gist',
-    // 'um-editor',
+    'um-article',
+    'um-gist',
+    'um-editor',
     'um-spinner-round',
 ];
 

@@ -39,7 +39,7 @@ export class ArticlesListComponent extends HTMLElement {
         return $articlePreview;
       })
 
-
+      
       this._render();
     });
   }
