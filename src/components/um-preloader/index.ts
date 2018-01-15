@@ -1,3 +1,15 @@
-import { ArticleComponent } from "components/um-article/article.component";
+import * as hyperHTML from 'hyperhtml';
+import 'whatwg-fetch';
 
-export default window.customElements.define('um-article', ArticleComponent);
+import { BaseComponent, Define } from 'components/base.component';
+
+const template = require('./template.html');
+
+
+
+@Define('um-preloader')
+export class PreloaderComponent extends BaseComponent {
+  constructor() {
+    super(template);
+  }
+}

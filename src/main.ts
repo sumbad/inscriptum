@@ -16,6 +16,9 @@ const components = [
 
 polyfills.then(
     async p => {
+
+        await import('./components/um-preloader');
+
         // import all required sub components
         await Promise.all(components.map(
             c => import('./components/' + c)

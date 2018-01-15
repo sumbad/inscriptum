@@ -66,3 +66,10 @@ export class BaseComponent extends HTMLElement {
   }
 
 }
+
+
+export function Define(nameTag: string) {
+  return (originalConstructor: new (...args) => any) => {
+      customElements.define(nameTag, originalConstructor);
+  };
+}
