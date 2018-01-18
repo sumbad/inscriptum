@@ -1,4 +1,4 @@
-import * as hyperHTML from 'hyperhtml';
+import hyperHTML from 'hyperhtml/esm';
 
 export class GistComponent extends HTMLElement {
     private _template: any;

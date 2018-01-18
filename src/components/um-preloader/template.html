@@ -1,1 +1,9 @@
-11111111111111111111111111
+<div class="um-preloader">
+  <slot></slot>
+  <div
+    class="um-preloader__loader"
+    style="${{opacity: loading ? 1 : 0}}"
+  >
+    <um-spinner-round></um-spinner-round>
+  </div>
+</div>

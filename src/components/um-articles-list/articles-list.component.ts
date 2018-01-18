@@ -1,4 +1,4 @@
-import * as hyperHTML from 'hyperhtml';
+import hyperHTML from 'hyperhtml/esm';
 import * as Navigo from 'navigo';
 import 'whatwg-fetch';
 

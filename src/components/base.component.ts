@@ -1,13 +1,13 @@
-import * as hyperHTML from 'hyperhtml';
-
+import { bind, wire } from 'hyperhtml/esm';
 
 
 export class BaseComponent extends HTMLElement {
+  private html: any;
+  protected wire = wire;
+
   private _template: any;
   private _style: string;
-  private _content: any;
 
-  private _shadowRoot: any;
 
   constructor(template, style: string = '', shadow = false, mode: 'open' | 'closed' = 'open') {
     super();
@@ -18,15 +18,25 @@ export class BaseComponent extends HTMLElement {
       console.warn('Can not find a template!');
     }
 
-    this._content = this.appendChild(document.createElement('div'));
+    // this.content = this.appendChild(document.createElement('div'));
+
 
     if (shadow) {
-      this._shadowRoot = this.attachShadow({ mode });
-      this._shadowRoot.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
-      this._shadowRoot.appendChild(this._content);
+      this.html = bind(
+        this.attachShadow({ mode })
+      );
+      // this.root = this.attachShadow({ mode });
+      // this._shadowRoot.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
+      // this._shadowRoot.appendChild(this.content);
     } else {
-      this.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
-      this._content = this.appendChild(document.createElement('div'));
+      this.html = bind(this);
+      // this.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
+      // this.content = this.appendChild(document.createElement('div'));
+    }
+
+    
+    if(this._style && this._style !== ''){
+      this._style = wire() `<style>${this._style}</style>`;
     }
 
   }
@@ -39,6 +49,20 @@ export class BaseComponent extends HTMLElement {
   connectedCallback(initialPropsList: string[]): void {
     this._initialProps(initialPropsList);
     this.render();
+  }
+
+
+  /**
+   * LIFECYCLE
+   * Отслеживаемые параметры
+   * изменения в данных атрибутах будут непосредственно отслеживаться компонентом
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue && this[name] !== newValue) {
+      console.log(new Date(), 1111111111, name, oldValue, newValue, this[name]);
+      this[name] = newValue;
+      this.render();
+    }
   }
 
 
@@ -61,8 +85,12 @@ export class BaseComponent extends HTMLElement {
    * Функция рендеринга компонента
    */
   render(scope: any = this): void {
-    let config = { scope, tag: hyperHTML.bind(this._content) };
-    this._template(config);
+
+      
+
+    const config = { scope, tag: wire(this) };
+    this.html`${this._style}
+<div>${this._template(config)}</div>`;
   }
 
 }
@@ -70,6 +98,7 @@ export class BaseComponent extends HTMLElement {
 
 export function Define(nameTag: string) {
   return (originalConstructor: new (...args) => any) => {
-      customElements.define(nameTag, originalConstructor);
+    customElements.define(nameTag, originalConstructor);
   };
 }
+

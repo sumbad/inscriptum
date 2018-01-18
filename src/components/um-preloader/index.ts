@@ -1,15 +1,29 @@
-import * as hyperHTML from 'hyperhtml';
-import 'whatwg-fetch';
-
 import { BaseComponent, Define } from 'components/base.component';
-
-const template = require('./template.html');
+// import style from './style';
 
 
 
 @Define('um-preloader')
 export class PreloaderComponent extends BaseComponent {
+  loading: string;
+  static attributes = ['loading'];
+  static get observedAttributes() { return this.attributes; }
+
+
   constructor() {
-    super(template);
+    super(
+      require('./template.html'),
+      require('./style.scss'),
+      true
+    );
+  }
+
+
+  render() {
+    const loading = (this.loading === 'true');
+
+    super.render({
+      loading
+    });
   }
 }

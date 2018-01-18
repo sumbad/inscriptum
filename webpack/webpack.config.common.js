@@ -112,6 +112,15 @@ module.exports = function(helper) {
           ],
           include: [path.join(helper.PATHS.src, 'components')]
         },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: 'raw-loader'
+            },
+          ],
+          include: [path.join(helper.PATHS.src, 'components')]
+        },
       ]
     },
     resolve: {

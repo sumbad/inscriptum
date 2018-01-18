@@ -1,4 +1,4 @@
-import * as hyperHTML from 'hyperhtml';
+import hyperHTML from 'hyperhtml/esm';
 import { AppRouter } from "router";
 import { BaseComponent } from 'components/base.component';
 
@@ -10,15 +10,16 @@ let template = require('./app.component.html');
 
 export class AppComponent extends BaseComponent {
   public routerView: any = '';
-  public html = hyperHTML.wire();
 
   constructor(public saying) {
     super(template);
-    this.render();
   }
 
 
   connectedCallback() {
+    console.log(new Date());
+    const html = hyperHTML.wire();
+
     const sayings: string[] = require('../../data/sayings.json');
     const randomIndexSay = Math.floor(Math.random() * sayings.length);
     this.saying = sayings[randomIndexSay];
@@ -26,15 +27,15 @@ export class AppComponent extends BaseComponent {
     AppRouter.router.on(
       {
         'articles/:id': (params) => {
-          this.routerView = this.html`<um-article article-name=${params.id}></um-article>`;
+          this.routerView = html`<um-article article-name=${params.id}></um-article>`;
           this.render(this);
         },
         'articles': (params) => {
-          this.routerView = this.html`<um-articles-list></um-articles-list>`;
+          this.routerView = html`<um-articles-list></um-articles-list>`;
           this.render(this);
         },
         'editor': (params) => {
-          this.routerView = this.html`<um-editor></um-editor>`;
+          this.routerView = html`<um-editor></um-editor>`;
           this.render(this);
         }
       }
@@ -42,13 +43,16 @@ export class AppComponent extends BaseComponent {
 
     // set the default route
     AppRouter.router.on(() => {
-      this.routerView = this.html`<um-articles-list></um-articles-list>`;
-      this.render(this);
+      setTimeout(() => {
+        this.routerView = html`<um-articles-list></um-articles-list>`;
+        this.render(this);
+      }, 3000);
+
     });
 
     // set the 404 route
     AppRouter.router.notFound(() => {
-      this.routerView = this.html`<um-articles-list></um-articles-list>`;
+      this.routerView = html`<um-articles-list></um-articles-list>`;
       this.render(this);
     });
 
