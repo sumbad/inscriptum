@@ -1,10 +1,10 @@
 import { BaseComponent, Define } from 'components/base.component';
-// import style from './style';
-
+import '../um-spinner-round';
 
 
 @Define('um-preloader')
 export class PreloaderComponent extends BaseComponent {
+  loaderClass: string = '';
   loading: string;
   static attributes = ['loading'];
   static get observedAttributes() { return this.attributes; }
@@ -20,10 +20,23 @@ export class PreloaderComponent extends BaseComponent {
 
 
   render() {
+    const rendering = () => super.render({
+      loading,
+      loaderClass: this.loaderClass
+    });
+
     const loading = (this.loading === 'true');
 
-    super.render({
-      loading
-    });
+    if (loading && this.loaderClass === '') {
+      this.loaderClass = 'um-preloader__loader_fixed';
+    } else if (!loading && this.loaderClass !== '') {
+      setTimeout(() => {
+        this.loaderClass = '';
+        rendering();
+      }, 500);
+    }
+
+    rendering();
   }
+
 }

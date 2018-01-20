@@ -34,8 +34,8 @@ export class BaseComponent extends HTMLElement {
       // this.content = this.appendChild(document.createElement('div'));
     }
 
-    
-    if(this._style && this._style !== ''){
+
+    if (this._style && this._style !== '') {
       this._style = wire() `<style>${this._style}</style>`;
     }
 
@@ -85,10 +85,8 @@ export class BaseComponent extends HTMLElement {
    * Функция рендеринга компонента
    */
   render(scope: any = this): void {
-
-      
-
     const config = { scope, tag: wire(this) };
+
     this.html`${this._style}
 <div>${this._template(config)}</div>`;
   }

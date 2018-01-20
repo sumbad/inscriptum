@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 
 
 import articles from '../../data/articles/articles';
+import { PreloaderService } from 'components/um-preloader/service';
 
 
 declare const $: any;
@@ -39,8 +40,9 @@ export class ArticlesListComponent extends HTMLElement {
         return $articlePreview;
       })
 
-      
       this._render();
+
+      PreloaderService.isAppLoading.next(false);
     });
   }
 

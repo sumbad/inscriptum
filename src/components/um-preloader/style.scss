@@ -1,9 +1,9 @@
 .um-preloader {
-  position: relative;
+  // position: relative;
 }
 
 .um-preloader__loader {
-  position: relative;
+  // position: relative;
   z-index: 3;
   top: 0;
   left: 0;
@@ -16,4 +16,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.um-preloader__loader_fixed {
+  height: 100vh;
+  position: fixed;
 }

@@ -2,6 +2,12 @@ import hyperHTML from 'hyperhtml/esm';
 import { AppRouter } from "router";
 import { BaseComponent } from 'components/base.component';
 
+import { PreloaderService } from '../um-preloader/service';
+
+
+import '../um-editor';
+
+
 declare const $: any;
 
 let template = require('./app.component.html');
@@ -10,9 +16,15 @@ let template = require('./app.component.html');
 
 export class AppComponent extends BaseComponent {
   public routerView: any = '';
+  public isPreloader = true;
 
   constructor(public saying) {
     super(template);
+
+    PreloaderService.isAppLoading.subscribe((flag: boolean) => {
+      this.isPreloader = flag;
+      this.render();
+    });
   }
 
 

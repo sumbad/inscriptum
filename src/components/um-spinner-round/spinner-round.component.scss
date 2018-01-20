@@ -15,7 +15,7 @@
     padding-top: 100%;
   }
   &__linear-gradient-stop {
-    stop-color: var(--ispui-color__spinner-round, #E44592);
+    stop-color: var(--ispui-color__spinner-round, #555);
   }
   .circular {
     animation: isp-spinner-round__rotate 2s linear infinite;
