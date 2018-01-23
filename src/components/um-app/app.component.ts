@@ -1,4 +1,3 @@
-import hyperHTML from 'hyperhtml/esm';
 import { AppRouter } from "router";
 import { BaseComponent } from 'components/base.component';
 
@@ -22,20 +21,24 @@ export class AppComponent extends BaseComponent {
     super(template);
 
     PreloaderService.isAppLoading.subscribe((flag: boolean) => {
-      this.isPreloader = flag;
-      this.render();
+      if (this.isPreloader !== flag) {
+        this.isPreloader = flag;
+        this.render();
+      }
     });
   }
 
 
   connectedCallback() {
     console.log(new Date());
-    const html = hyperHTML.wire();
+    const html = this.wire();
 
     const sayings: string[] = require('../../data/sayings.json');
     const randomIndexSay = Math.floor(Math.random() * sayings.length);
     this.saying = sayings[randomIndexSay];
 
+    const info = {some: 'data'};
+    
     AppRouter.router.on(
       {
         'articles/:id': (params) => {
@@ -43,6 +46,7 @@ export class AppComponent extends BaseComponent {
           this.render(this);
         },
         'articles': (params) => {
+          const html = this.wire(info);
           this.routerView = html`<um-articles-list></um-articles-list>`;
           this.render(this);
         },
@@ -55,10 +59,10 @@ export class AppComponent extends BaseComponent {
 
     // set the default route
     AppRouter.router.on(() => {
-      setTimeout(() => {
-        this.routerView = html`<um-articles-list></um-articles-list>`;
-        this.render(this);
-      }, 3000);
+      // setTimeout(() => {
+      this.routerView = html`<um-articles-list></um-articles-list>`;
+      this.render(this);
+      // }, 3000);
 
     });
 

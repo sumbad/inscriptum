@@ -4,6 +4,7 @@ import { bind, wire } from 'hyperhtml/esm';
 export class BaseComponent extends HTMLElement {
   private html: any;
   protected wire = wire;
+  protected props: { [x: string]: string } = {};
 
   private _template: any;
   private _style: string;
@@ -47,6 +48,8 @@ export class BaseComponent extends HTMLElement {
    * Создание компонента
    */
   connectedCallback(initialPropsList: string[]): void {
+    // console.log(22222222222222, this)
+
     this._initialProps(initialPropsList);
     this.render();
   }
@@ -58,9 +61,8 @@ export class BaseComponent extends HTMLElement {
    * изменения в данных атрибутах будут непосредственно отслеживаться компонентом
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue && this[name] !== newValue) {
-      console.log(new Date(), 1111111111, name, oldValue, newValue, this[name]);
-      this[name] = newValue;
+    if (oldValue !== newValue && this.props[name] !== newValue) {
+      this.props[name] = newValue;
       this.render();
     }
   }
@@ -75,7 +77,7 @@ export class BaseComponent extends HTMLElement {
       props.forEach(prop => {
         const propAttr = this.getAttribute(prop);
         if (typeof propAttr !== 'undefined' && propAttr !== null) {
-          this[prop] = propAttr;
+          this.props[prop] = propAttr;
         }
       });
   }
@@ -87,8 +89,7 @@ export class BaseComponent extends HTMLElement {
   render(scope: any = this): void {
     const config = { scope, tag: wire(this) };
 
-    this.html`${this._style}
-<div>${this._template(config)}</div>`;
+    this.html`${this._style}<div>${this._template(config)}</div>`;
   }
 
 }

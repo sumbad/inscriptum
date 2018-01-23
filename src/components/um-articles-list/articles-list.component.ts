@@ -21,10 +21,14 @@ export class ArticlesListComponent extends HTMLElement {
     this.articlesList = articles.sort((a, b) => {
       return (b.datePublished.getTime() - a.datePublished.getTime());
     });
+
+    
   }
 
 
   connectedCallback() {
+    console.log(11111111)
+    
     this._render();
 
     const $umArticlePrevie = <HTMLTemplateElement>this.querySelector('#umArticlePreview');
@@ -42,7 +46,10 @@ export class ArticlesListComponent extends HTMLElement {
 
       this._render();
 
+      setTimeout(() => {
       PreloaderService.isAppLoading.next(false);
+        
+      }, 5000);
     });
   }
 

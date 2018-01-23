@@ -41,6 +41,7 @@
     "gh-pages": "^1.1.0",
     "html-loader": "^0.5.5",
     "node-sass": "^4.7.2",
+    "postcss-css-variables": "^0.8.0",
     "postcss-custom-properties": "^6.2.0",
     "postcss-loader": "^2.0.10",
     "raw-loader": "^0.5.1",
