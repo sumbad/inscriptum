@@ -1,4 +1,5 @@
-<um-preloader loading=${isPreloader}>
+export default (html, scope) => html`
+<um-preloader loading=${scope.isPreloader}>
   <!-- <template> -->
   <div id="app">
     <!-- Header ================================================== -->
@@ -8,6 +9,7 @@
           <h1 id="logo-text">
             <a
               href="/"
+              onclick=${scope.handleClick}
               title=""
             >inscriptum</a>
           </h1>
@@ -55,7 +57,7 @@
           id="main"
           class="twelve columns"
         >
-          ${ routerView }
+          ${scope.routerView}
         </div>
       </div>
     </div>
@@ -96,3 +98,4 @@
   <!-- End Footer-->
 
 </um-preloader>
+`;

@@ -1,18 +1,20 @@
+export default (html, scope) => html`
 <article id="article" class="entry">
 
     <header class="entry-header">
         <h1 class="entry-title">
-            ${articleTitle}
+            ${scope.articleTitle}
         </h1>
         <div class="entry-meta">
             <ul>
-                <li>${articleDate}</li>
+                <li>${scope.articleDate}</li>
             </ul>
         </div>
     </header>
 
     <div class="entry-content">
-        ${{ html: articleContent }}
+        ${{ html: scope.articleContent }}
     </div>
 
 </article>
+`;

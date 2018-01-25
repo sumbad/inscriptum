@@ -1,9 +1,12 @@
-import { BaseComponent, Define } from 'components/base.component';
-import '../um-spinner-round';
+import { Define, UmWebComponent } from "components/um-web.component";
+import './um-spinner-round';
+
+import template from './template';
+
 
 
 @Define('um-preloader')
-export class PreloaderComponent extends BaseComponent {
+export class PreloaderComponent extends UmWebComponent {
   loaderClass: string = '';
   static attributes = ['loading'];
   static get observedAttributes() { return this.attributes; }
@@ -11,7 +14,7 @@ export class PreloaderComponent extends BaseComponent {
 
   constructor() {
     super(
-      require('./template.html'),
+      template,
       require('./style.scss'),
       true
     );

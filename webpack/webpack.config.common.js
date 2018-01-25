@@ -13,7 +13,9 @@ module.exports = function(helper) {
   return {
     entry: {
       // 'babel-polyfill': 'babel-polyfill',
-      'app': path.resolve(helper.PATHS.src, 'main.ts')
+      'app': path.resolve(helper.PATHS.src, 'main.ts'),
+      'polyfills': path.resolve(helper.PATHS.src, 'polyfills.ts'),
+      'vendor':  path.resolve(helper.PATHS.src, 'vendor.ts'),
     },
     output: {
       path: helper.PATHS.build,
@@ -129,7 +131,27 @@ module.exports = function(helper) {
     },
     plugins: [
       extractSass,
-      new webpack.IgnorePlugin(/vertx/)
+      new webpack.IgnorePlugin(/vertx/),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: ['vendor', 'polyfills'],
+        // minChunks: Infinity
+      }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: "commons",
+      //   filename: "js/commons.js",
+      // }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: "manifest",
+      //   filename: "js/manifest.js",
+      //   minChunks: Infinity
+      // }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: "vendor",
+      //   filename: "js/vendor.js",
+      //   minChunks: function(module){
+      //     return module.context && module.context.includes("node_modules");
+      //   }
+      // }),
     ]
   }
 }

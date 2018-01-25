@@ -1,9 +1,10 @@
 import hyperHTML from 'hyperhtml/esm';
 import Tools from "utils/tools";
-import { BaseComponent } from 'components/base.component';
+import { Define, UmWebComponent } from "components/um-web.component";
 
-let template = require('./spinner-round.component.html');
+import template from './template';
 let style = require('./spinner-round.component.scss');
+
 
 
 /**
@@ -13,7 +14,8 @@ let style = require('./spinner-round.component.scss');
  * @param width - размер спиннера в px (необязательное свойство, по умолчанию цвет 100px)
  * @param --ispui-color__spinner-round - переменная цвета в css, задается в стилях темы (необязательное свойство, по умолчанию цвет #E44592)
  */
-export class SpinnerRound extends BaseComponent {
+@Define('um-spinner-round')
+export class SpinnerRound extends UmWebComponent {
 
   // private _content: any;
   // private _root: any;

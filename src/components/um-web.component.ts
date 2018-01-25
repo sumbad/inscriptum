@@ -1,7 +1,10 @@
 import { bind, wire } from 'hyperhtml/esm';
 
 
-export class BaseComponent extends HTMLElement {
+/**
+ * Основной компонент
+ */
+export abstract class UmWebComponent extends HTMLElement {
   private html: any;
   protected wire = wire;
   protected props: { [x: string]: string } = {};
@@ -19,20 +22,12 @@ export class BaseComponent extends HTMLElement {
       console.warn('Can not find a template!');
     }
 
-    // this.content = this.appendChild(document.createElement('div'));
-
-
     if (shadow) {
       this.html = bind(
         this.attachShadow({ mode })
       );
-      // this.root = this.attachShadow({ mode });
-      // this._shadowRoot.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
-      // this._shadowRoot.appendChild(this.content);
     } else {
       this.html = bind(this);
-      // this.appendChild(hyperHTML.wire() `<style>${this._style}</style>`);
-      // this.content = this.appendChild(document.createElement('div'));
     }
 
 
@@ -47,9 +42,7 @@ export class BaseComponent extends HTMLElement {
    * LIFECYCLE
    * Создание компонента
    */
-  connectedCallback(initialPropsList: string[]): void {
-    // console.log(22222222222222, this)
-
+  connectedCallback(initialPropsList: string[] = []): void {
     this._initialProps(initialPropsList);
     this.render();
   }
@@ -83,18 +76,22 @@ export class BaseComponent extends HTMLElement {
   }
 
 
+
   /**
    * Функция рендеринга компонента
+   * 
+   * @param scope область видимости в темплейте (this по умолчанию)
    */
   render(scope: any = this): void {
-    const config = { scope, tag: wire(this) };
-
-    this.html`${this._style}<div>${this._template(config)}</div>`;
+    this.html`${this._style}<div>${this._template(wire(this), scope)}</div>`;
   }
 
 }
 
 
+/**
+ * Директива определения Custom Element
+ */
 export function Define(nameTag: string) {
   return (originalConstructor: new (...args) => any) => {
     customElements.define(nameTag, originalConstructor);

@@ -1,17 +1,18 @@
+export default (html, scope) => html`
 <section class="entry">
 
   <header class="entry-header">
     <h2 class="entry-title">
       <a
-        onclick=${this.handleLink}
-        href=${`articles/${articleName}`}
+        onclick=${scope.handleLink}
+        href=${`articles/${scope.articleName}`}
       >
-        ${articleTitle}
+        ${scope.articleTitle}
       </a>
     </h2>
     <div class="entry-meta">
       <ul>
-        <li>${articleDate}</li>
+        <li>${scope.articleDate}</li>
       </ul>
     </div>
   </header>
@@ -20,5 +21,5 @@
     <slot></slot>
   </div>
 
-
 </section>
+`;

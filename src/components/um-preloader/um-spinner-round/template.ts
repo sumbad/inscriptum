@@ -1,3 +1,4 @@
+export default (html, scope) => html`
 <div class="um-spinner-round">
   <svg
     class="circular"
@@ -9,7 +10,7 @@
         y1="10%"
         x2="35%"
         y2="100%"
-        id="${uuid}"
+        id="${scope.uuid}"
       >
         <stop
           class="um-spinner-round__linear-gradient-stop"
@@ -29,8 +30,9 @@
       r="20"
       fill="none"
       stroke-width="3"
-      stroke="${'url(#' + uuid + ')'}"
+      stroke="${'url(#' + scope.uuid + ')'}"
       stroke-miterlimit="10"
     />
   </svg>
 </div>
+`;
