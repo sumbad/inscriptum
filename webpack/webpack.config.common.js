@@ -138,7 +138,9 @@ module.exports = function(helper) {
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(helper.PATHS.src, 'index.html'),
-
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(helper.PATHS.src, '404.html'),
       })
     ]
   }
