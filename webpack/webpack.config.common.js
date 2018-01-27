@@ -1,12 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 const extractSass = new ExtractTextPlugin({
   filename: "css/[name].css",
   disable: process.env.NODE_ENV === "development"
 });
-
 
 
 module.exports = function(helper) {
@@ -134,24 +135,11 @@ module.exports = function(helper) {
       new webpack.IgnorePlugin(/vertx/),
       new webpack.optimize.CommonsChunkPlugin({
         name: ['vendor', 'polyfills'],
-        // minChunks: Infinity
       }),
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   name: "commons",
-      //   filename: "js/commons.js",
-      // }),
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   name: "manifest",
-      //   filename: "js/manifest.js",
-      //   minChunks: Infinity
-      // }),
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   name: "vendor",
-      //   filename: "js/vendor.js",
-      //   minChunks: function(module){
-      //     return module.context && module.context.includes("node_modules");
-      //   }
-      // }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(helper.PATHS.src, 'index.html'),
+
+      })
     ]
   }
 }

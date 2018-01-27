@@ -5,19 +5,24 @@ import { bind, wire } from 'hyperhtml/esm';
  * Основной компонент
  */
 export abstract class UmWebComponent extends HTMLElement {
-  private html: any;
+  protected html: any;
   protected wire = wire;
   protected props: { [x: string]: string } = {};
 
-  private _template: any;
-  private _style: string;
+  protected _template: (html, scope) => any;
+  protected _style: string;
 
 
-  constructor(template, style: string = '', shadow = false, mode: 'open' | 'closed' = 'open') {
+  constructor(
+    templateFunction: (html, scope) => any,
+    staticStyle: string = '',
+    shadow = false,
+    mode: 'open' | 'closed' = 'open'
+  ) {
     super();
     try {
-      this._template = template;
-      this._style = style;
+      this._template = templateFunction;
+      this._style = staticStyle;
     } catch (error) {
       console.warn('Can not find a template!');
     }
@@ -83,7 +88,7 @@ export abstract class UmWebComponent extends HTMLElement {
    * @param scope область видимости в темплейте (this по умолчанию)
    */
   render(scope: any = this): void {
-    this.html`${this._style}<div>${this._template(wire(this), scope)}</div>`;
+    this.html`${this._style}${this._template(wire(this), scope)}`;
   }
 
 }

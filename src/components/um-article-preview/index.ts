@@ -13,46 +13,16 @@ import template from './template';
 
 @Define('um-article-preview')
 export class ArticlePreviewComponent extends UmWebComponent {
-  // private _template: any;
-  // private _style: any;
-  // private _shadowRoot: any;
-  // private _shadowContent: any;
-  // private _shadowStyle: any;
+  public green: 'green';
 
-
+  
   constructor(public articleTitle, public articleName, public articleDate) {
     super(
       template,
-      require('./article-preview.component.scss'),
+      require('./style.scss'),
       true
     );
-    // this._template = require('./article-preview.component.html'); //(scope, tag) => { return tag`<div>${this.articleName}</div><br/>` }//
-    // this._style = require('./article-preview.component.scss');
-    // this._shadowRoot = this.attachShadow({ mode: 'open' });
   }
-
-
-  // connectedCallback() {
-  //     this._shadowContent = document.createElement('div');
-  //     this._shadowStyle = document.createElement('style');
-  //     this._shadowStyle.textContent = this._style;
-
-  //     this._shadowRoot.appendChild(this._shadowStyle);
-  //     this._shadowRoot.appendChild(this._shadowContent);
-
-  //     this._render();
-  // }
-
-
-  // _render() {
-  //     if (typeof this._template !== 'undefined' && typeof this._template === 'function') {
-  //       let tempaleConfig = { scope: this, tag: hyperHTML.bind(this._shadowContent) };
-  //       this._template(tempaleConfig);
-  //         // this._template(this, hyperHTML.bind(this._shadowContent));
-  //     }
-  // }
-
-  // href=${`articles/${this.articleName}`}
 
 
   handleLink(event) {

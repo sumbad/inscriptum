@@ -27,7 +27,6 @@ export class EditorComponent extends UmWebComponent {
 
     doRichEditCommand(event, aName, aArg?) {
         event.preventDefault();
-        console.log(111111111111111)
         document.execCommand(aName, false, aArg);
         const selectedElement = window.getSelection().focusNode.parentElement;
         if (selectedElement) {

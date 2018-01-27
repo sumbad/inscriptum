@@ -25,16 +25,17 @@ export class ArticleComponent extends UmWebComponent {
 
 
   connectedCallback() {
+    super.connectedCallback(ArticleComponent.attributes);
     const article = articles.find(a => a.name === this.props['article-name']);
 
     if (typeof article !== 'undefined') {
+
+
       this.articleTitle = article.title;
       this.articleDate = DateUtilities.formatDate(new Date(article.datePublished), 'dd MMMM YYYY г.');
 
       this._loadHTML(article.name).then(body => {
-        // const content = <HTMLElement>this.querySelector('.entry-content');
         this.articleContent = body;
-        // content.innerHTML = this.articleContent;
         this.render();
         PreloaderService.isAppLoading.next(false);
       });
@@ -43,9 +44,9 @@ export class ArticleComponent extends UmWebComponent {
 
 
   async _loadHTML(name: string) {
-    return (await fetch(`/data/articles/${name}/template.html`)).text();
+    PreloaderService.isAppLoading.next(true);
 
-    // return await result.text();
+    return (await fetch(`/data/articles/${name}/template.html`)).text();
   }
 
 }

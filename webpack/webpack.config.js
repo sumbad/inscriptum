@@ -32,10 +32,10 @@ let PREBUILD_CFG = {
     }),
     // Copy directory contents to {output}/path/to/build/directory/
     new CopyWebpackPlugin([
-      {
-        from: helper.PATHS.src + '/index.html',
-        to: path.join(helper.PATHS.build)
-      },
+      // {
+      //   from: helper.PATHS.src + '/index.html',
+      //   to: path.join(helper.PATHS.build)
+      // },
       {
         from: helper.PATHS.root + '/CNAME',
         to: path.join(helper.PATHS.build)

@@ -32,9 +32,7 @@ export class ArticlesListComponent extends UmWebComponent {
 
 
   connectedCallback() {
-    console.log(11111111)
-    
-    this.render();
+    super.connectedCallback();
 
     const $umArticlePrevie = <HTMLTemplateElement>this.querySelector('#umArticlePreview');
     this._loadPreviews(this.articlesList.map(a => a.name)).then(previews => {
@@ -51,10 +49,7 @@ export class ArticlesListComponent extends UmWebComponent {
 
       this.render();
 
-      setTimeout(() => {
       PreloaderService.isAppLoading.next(false);
-        
-      }, 5000);
     });
   }
 

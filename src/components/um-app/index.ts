@@ -17,7 +17,7 @@ export class AppComponent extends UmWebComponent {
   constructor(public saying) {
     super(template);
 
-    PreloaderService.isAppLoading.subscribe((flag: boolean) => {
+    PreloaderService.isAppLoading.debounceTime(500).subscribe((flag: boolean) => {
       if (this.isPreloader !== flag) {
         this.isPreloader = flag;
         this.render();
@@ -56,11 +56,8 @@ export class AppComponent extends UmWebComponent {
 
     // set the default route
     AppRouter.router.on(() => {
-      // setTimeout(() => {
       this.routerView = html`<um-articles-list></um-articles-list>`;
       this.render();
-      // }, 3000);
-
     });
 
     // set the 404 route
@@ -111,7 +108,7 @@ export class AppComponent extends UmWebComponent {
   }
 
 
-  render(){
+  render() {
     super.render({
       isPreloader: this.isPreloader,
       routerView: this.routerView,
@@ -122,7 +119,6 @@ export class AppComponent extends UmWebComponent {
 
 
   handleClick(ev) {
-    console.log(this.isPreloader);
     this.isPreloader = !this.isPreloader;
   }
 
