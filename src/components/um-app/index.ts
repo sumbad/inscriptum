@@ -1,4 +1,5 @@
-import { AppRouter } from "router";
+// import { AppRouter } from "router";
+import page from 'page';
 import { Define, UmWebComponent } from "components/um-web.component";
 
 import { PreloaderService } from '../um-preloader/service';
@@ -27,46 +28,13 @@ export class AppComponent extends UmWebComponent {
 
 
   connectedCallback() {
-    console.log(new Date());
-    const html = this.wire();
-
     const sayings: string[] = require('../../data/sayings.json');
     const randomIndexSay = Math.floor(Math.random() * sayings.length);
     this.saying = sayings[randomIndexSay];
 
     const info = { some: 'data' };
 
-    AppRouter.router.on(
-      {
-        'articles/:id': (params) => {
-          this.routerView = html`<um-article article-name=${params.id}></um-article>`;
-          this.render();
-        },
-        'articles': (params) => {
-          const html = this.wire(info);
-          this.routerView = html`<um-articles-list></um-articles-list>`;
-          this.render();
-        },
-        'editor': (params) => {
-          this.routerView = html`<um-editor></um-editor>`;
-          this.render();
-        }
-      }
-    );
-
-    // set the default route
-    AppRouter.router.on(() => {
-      this.routerView = html`<um-articles-list></um-articles-list>`;
-      this.render();
-    });
-
-    // set the 404 route
-    AppRouter.router.notFound(() => {
-      this.routerView = html`<um-articles-list></um-articles-list>`;
-      this.render();
-    });
-
-    AppRouter.router.resolve();
+    this.routing();
 
     this.render();
 
@@ -108,6 +76,51 @@ export class AppComponent extends UmWebComponent {
   }
 
 
+  routing() {
+    const html = this.wire();
+
+    const articles = (ctx, next) => { 
+      this.routerView = html`<um-articles-list></um-articles-list>`;
+      this.render();
+    };
+
+    const article = (ctx, next) => {
+      this.routerView = html`<um-article article-name=${ctx.params.id}></um-article>`;
+      this.render();
+    };
+
+    const editor = (ctx, next) => {
+      this.routerView = html`<um-editor></um-editor>`;
+      this.render();
+    };
+
+    const router = [
+      {
+        path: '/',
+        callback: articles,
+      },
+      {
+        path: '/articles/:id',
+        callback: article
+      },
+      {
+        path: '/articles',
+        callback: articles
+      },
+      {
+        path: '/editor',
+        callback: editor
+      },
+      {
+        path: '*',
+        callback: articles
+      },
+    ];
+
+    super.routing(router);
+  }
+
+
   render() {
     super.render({
       isPreloader: this.isPreloader,
@@ -119,7 +132,7 @@ export class AppComponent extends UmWebComponent {
 
 
   handleClick(ev) {
-    this.isPreloader = !this.isPreloader;
+    // this.isPreloader = !this.isPreloader;
   }
 
 }

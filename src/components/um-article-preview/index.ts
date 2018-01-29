@@ -1,12 +1,9 @@
-import hyperHTML from 'hyperhtml/esm';
 import 'whatwg-fetch';
 
 import { DateUtilities } from 'utils';
-
-import articles from '../../data/articles/articles';
-import { AppRouter } from "router";
 import { Define, UmWebComponent } from "components/um-web.component";
 
+import articles from '../../data/articles/articles';
 import template from './template';
 
 
@@ -22,13 +19,6 @@ export class ArticlePreviewComponent extends UmWebComponent {
       require('./style.scss'),
       true
     );
-  }
-
-
-  handleLink(event) {
-    event.preventDefault();
-    const href = event.currentTarget.getAttribute('href');
-    AppRouter.router.navigate(href);
   }
 
 

@@ -3,10 +3,7 @@ export default (html, scope) => html`
 
   <header class="entry-header">
     <h2 class="entry-title">
-      <a
-        onclick=${scope.handleLink}
-        href=${`articles/${scope.articleName}`}
-      >
+      <a href=${`articles/${scope.articleName}`}>
         ${scope.articleTitle}
       </a>
     </h2>

@@ -13,4 +13,4 @@ import 'rxjs/add/operator/switchMap'
 import 'rxjs/add/operator/delay'
 
 
-import 'navigo';
+import 'page';

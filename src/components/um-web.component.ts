@@ -1,11 +1,13 @@
 import { bind, wire } from 'hyperhtml/esm';
+import page from 'page';
+
 
 
 /**
  * Основной компонент
  */
 export abstract class UmWebComponent extends HTMLElement {
-  protected html: any;
+  private html: any;
   protected wire = wire;
   protected props: { [x: string]: string } = {};
 
@@ -78,6 +80,16 @@ export abstract class UmWebComponent extends HTMLElement {
           this.props[prop] = propAttr;
         }
       });
+  }
+
+
+
+  routing(routers: { path: string, callback: string | ((ctx, next) => void) }[]) {
+    routers.forEach(router=>{
+      page(router.path, router.callback);
+    });
+
+    page();
   }
 
 

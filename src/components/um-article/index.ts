@@ -21,6 +21,7 @@ export class ArticleComponent extends UmWebComponent {
     public articleDate
   ) {
     super(template);
+    PreloaderService.isAppLoading.next(true);    
   }
 
 
@@ -44,8 +45,6 @@ export class ArticleComponent extends UmWebComponent {
 
 
   async _loadHTML(name: string) {
-    PreloaderService.isAppLoading.next(true);
-
     return (await fetch(`/data/articles/${name}/template.html`)).text();
   }
 

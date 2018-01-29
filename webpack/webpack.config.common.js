@@ -137,9 +137,11 @@ module.exports = function(helper) {
         name: ['vendor', 'polyfills'],
       }),
       new HtmlWebpackPlugin({
+        filename: 'index.html',
         template: path.resolve(helper.PATHS.src, 'index.html'),
       }),
       new HtmlWebpackPlugin({
+        filename: '404.html',
         template: path.resolve(helper.PATHS.src, '404.html'),
       })
     ]
