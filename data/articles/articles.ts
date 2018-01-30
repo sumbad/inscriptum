@@ -18,5 +18,10 @@ export default [
         name: 'webcomponents-principles',
         title: 'Web Components. Принцип использования',
         datePublished: new Date('2017-08-03')
+    },
+    {
+        name: 'review-he-who-thinks',
+        title: 'Обзор статьи "He who thinks change detection is depth-first and he who thinks it’s breadth-first are both usually right"',
+        datePublished: new Date('2018-01-30')
     }
 ];

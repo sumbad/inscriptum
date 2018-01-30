@@ -1,0 +1,37 @@
+<div class="entry-content__img entry-content__img_center">
+    <img src="/data/articles/review-he-who-thinks/images/main.png">
+</div>
+<p class="lead">Max NgWizard K рассматривает, чем же в сущности является механизм change detection (обнаружения изменений) в Angular -&nbsp;depth&nbsp;
+    first (в глубину)</span><span style="font-size: 18px;">&nbsp;или breadth first (в ширину). </span>
+    </span>depth&nbsp;first - это когда проверяются дочерние компоненты по отношению к текущему,&nbsp;breadth first - проверяются
+    соседние к текущему компоненту.
+</p>
+<p class="lead">Первое что делает автор, это помещает механизм логирования в метод&nbsp;ngDoCheck. В результате оказывается, что проверка
+    начинается алгоритмом&nbsp;breadth first, но затем останавливается на одной из ветвей дочерних компонентов и продолжается
+    в виде алгоритма&nbsp; depth&nbsp;first. Этот факт вносит смуту и&nbsp;Max NgWizard K переносит логирование к методу,
+    который вызывается в момент, когда механизм&nbsp;change detection оценивает выражения в шаблоне.</p>
+<p class="lead">В результате получается правильный&nbsp;depth-first алгоритм. Чтобы пояснить итоги двух проведенных экспериментов автор напоминает
+    ключевые операции в механизме&nbsp;change detection Angular:</p>
+<ul class="disc">
+    <li>обновление свойств дочерних компонентов;</li>
+    <li>вызов методов жизненного цикла NgDoCheck и NgOnChanges у дочерних компонентов;</li>
+    <li>обновление&nbsp;DOM текущего компонента;</li>
+    <li>запуск механизма&nbsp;change detection у дочерних компонентов.</li>
+</ul>
+<p class="lead">Получается, что Angular запускает&nbsp;change detection дочерних компонентов во время обновления DOM текущего компонента.
+    Такое поведение похоже на работу&nbsp;breadth-first алгоритма, что мы и увидели, когда поместили логирование в метод
+    ngDoCheck. Но мы помним, что наряду с этим все еще выполняется операция обновления DOM текущего компонента и только после
+    её завершения обновление перейдет к дочернему компоненту, а это уже depth first алгоритм.
+</p>
+<p class="lead">В итоге автор приходит к выводу, что&nbsp; механизм change detection в&nbsp;Angular реализует depth-first алгоритм с предварительным
+    вызовом метода ngDoCheck на соседних компонентах.</p>
+<h2>Ссылки</h2>
+<ul class="disc">
+    <li>
+        Статья Max NgWizard K
+        <a href="https://blog.angularindepth.com/he-who-thinks-change-detection-is-depth-first-and-he-who-thinks-its-breadth-first-are-both-usually-8b6bf24a63e6">
+            "He who thinks change detection is depth-first and he who thinks it’s breadth-first are both usually right"
+        </a> 
+          .
+    </li>
+</ul>
