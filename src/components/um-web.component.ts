@@ -37,11 +37,9 @@ export abstract class UmWebComponent extends HTMLElement {
       this.html = bind(this);
     }
 
-
     if (this._style && this._style !== '') {
       this._style = wire() `<style>${this._style}</style>`;
     }
-
   }
 
 
@@ -91,7 +89,6 @@ export abstract class UmWebComponent extends HTMLElement {
 
     page();
   }
-
 
 
   /**
