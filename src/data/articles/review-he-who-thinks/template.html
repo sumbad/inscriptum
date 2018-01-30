@@ -1,12 +1,12 @@
 <div class="entry-content__img entry-content__img_center">
     <img src="/data/articles/review-he-who-thinks/images/main.png">
 </div>
-<p class="lead">Max NgWizard K рассматривает, чем же в сущности является механизм change detection (обнаружения изменений) в Angular -&nbsp;depth&nbsp;
+<p class="lead">Max NgWizard K рассматривает чем же в сущности является механизм change detection (обнаружения изменений) в Angular -&nbsp;depth&nbsp;
     first (в глубину)</span><span style="font-size: 18px;">&nbsp;или breadth first (в ширину). </span>
     </span>depth&nbsp;first - это когда проверяются дочерние компоненты по отношению к текущему,&nbsp;breadth first - проверяются
     соседние к текущему компоненту.
 </p>
-<p class="lead">Первое что делает автор, это помещает механизм логирования в метод&nbsp;ngDoCheck. В результате оказывается, что проверка
+<p class="lead">Первое, что делает автор, это помещает механизм логирования в метод&nbsp;ngDoCheck. В результате оказывается, что проверка
     начинается алгоритмом&nbsp;breadth first, но затем останавливается на одной из ветвей дочерних компонентов и продолжается
     в виде алгоритма&nbsp; depth&nbsp;first. Этот факт вносит смуту и&nbsp;Max NgWizard K переносит логирование к методу,
     который вызывается в момент, когда механизм&nbsp;change detection оценивает выражения в шаблоне.</p>
