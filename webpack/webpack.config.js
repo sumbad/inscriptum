@@ -41,7 +41,7 @@ let PREBUILD_CFG = {
         to: path.join(helper.PATHS.build)
       },
       {
-        from: helper.PATHS.src + '/404.html',
+        from: helper.PATHS.src + '/slide.html',
         to: path.join(helper.PATHS.build)
       },
       {
