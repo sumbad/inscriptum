@@ -340,11 +340,28 @@ header {
     background-size: cover;
 }
 
+.page6_1 .cover {
+  background: transparent;
+  background-position: center center;
+  background-size: cover;
+  left: auto;
+  margin: 100px 100px;
+}
+
 .page7 .cover {
     background: transparent;
     background-position: center center;
     background-size: cover;
     left: auto;
+    margin: 100px 100px;
+}
+
+.page7_1 .cover {
+    background: transparent;
+    background-position: center center;
+    background-size: cover;
+    left: auto;
+    top: 35%;
     margin: 100px 100px;
 }
 
