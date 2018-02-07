@@ -1,4 +1,3 @@
-// import { AppRouter } from "router";
 import page from 'page';
 import { Define, UmWebComponent } from "components/um-web.component";
 
@@ -94,6 +93,10 @@ export class AppComponent extends UmWebComponent {
       this.render();
     };
 
+    const slide = (ctx, next) => {
+      window.location.href = '/slide.html';
+    };
+
     const router = [
       {
         path: '/',
@@ -110,6 +113,11 @@ export class AppComponent extends UmWebComponent {
       {
         path: '/editor',
         callback: editor
+      },
+      {
+        path: '/slide',
+        callback: slide,
+        dispatch: false
       },
       {
         path: '*',

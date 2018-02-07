@@ -1,268 +1,41 @@
-<!DOCTYPE html>
-<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="ru"> <![endif]-->
-<!--[if IE 8 ]><html class="no-js ie ie8" lang="ru"> <![endif]-->
-<!--[if IE 9 ]><html class="no-js ie ie9" lang="ru"> <![endif]-->
-<!--[if (gte IE 8)|!(IE)]><!-->
-<html class="no-js" lang="ru">
-<!--<![endif]-->
+<!doctype html>
+<html lang="en"
+    class="no-js">
+
 <head>
-  <meta charset="utf-8">
-  <title>inscriptum</title>
-  <meta name="description" content="Блог Дениса Сумбаева">
-  <meta name="author" content="Денис Сумбаев">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+      content="width=device-width, initial-scale=1">
 
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="slide/css/reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="slide/css/style.css"> <!-- Resource style -->
-  <link rel="stylesheet" href="slide/css/tooltip-classic.css">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700'
+      rel='stylesheet'
+      type='text/css'>
 
-  <script src="/js/modernizr.js"></script>
-  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet"
+      href="slide/css/reset.css">
+  <!-- CSS reset -->
+  <!-- <link rel="stylesheet" href="css/style.css"> -->
+  <!-- Resource style -->
+  <script src="js/modernizr.js"></script>
+  <!-- Modernizr -->
+
+  <title>Page Scroll Effects | CodyHouse</title>
 </head>
-<body data-hijacking="off" data-animation="gallery">
-  <header>
-      <div class="menu">
-        <a href="#">в начало</a>
-      </div>
-    </header>
+<!-- hijacking: on/off - animation: none/scaleDown/rotate/gallery/catch/opacity/fixed/parallax -->
 
+<body data-hijacking="off"
+    data-animation="scaleDown">
 
-    <section class="cd-section visible page1">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo">
-            <span class="year">17 февраля 2018 г.</span>
-            <h1>Web components</h1>
-            <h3>Стандарты разработки компонентов <img src="slide/imgs/arrow-right.svg"/></h3>
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
+  <um-slides></um-slides>
 
+  <!-- .cd-vertical-nav -->
+  <script src="slide/js/jquery-2.1.4.js"></script>
+  <script src="slide/js/velocity.min.js"></script>
+  <script src="slide/js/velocity.ui.min.js"></script>
+  <script src="/js/polyfills.js"></script>
+  <script src="/js/vendor.js"></script>
+  <script src="/js/slide.js"></script>
+  <!-- Resource jQuery -->
+</body>
 
-    <section class="cd-section page2">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo"
-            style="top: 25%;">
-            <span class="year">немного теории</span>
-            <h1>Web components это набор спецификаций W3C</h1>
-            <h3>Рецепт Web Components прост - это три фундаментальных блока: HTML, CSS и JavaScript. <img src="slide/imgs/arrow-right.svg"/></h3>
-          </div>
-          <div style="
-                  top: 30%;
-                  max-width: calc(50vw - 70px);
-                  color: #2C3138;
-                  text-decoration: none;
-                  text-transform: uppercase;
-                  font-size: 18px;
-                  position: relative;
-                  line-height: 2;
-                  margin-left: 5rem;
-              ">
-            HTML определяет каркас компонента, является разметкой как и для обычной страницы.
-            <br/> CSS отвечает за визуальное отображение.
-            <br/> JavaScript - это логика компонента, его поведение и функциональность.
-            <br/>
-            <br/> Спецификации Web Components позволяют нам использовать эти три технологии вместе для построения собственных компонентов.
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="cd-section page3">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo"
-            style="top: 25%;">
-            <span class="year">область применения</span>
-            <h1>Front-end microservices</h1>
-            <h3>создание слабосвязанных UI элементов <img src="slide/imgs/arrow-right.svg"/></h3>
-          </div>
-          <div style="
-                          top: 30%;
-                          max-width: calc(50vw - 70px);
-                          color: #2C3138;
-                          text-decoration: none;
-                          text-transform: uppercase;
-                          font-size: 18px;
-                          position: relative;
-                          line-height: 2;
-                          margin-left: 5rem;
-                      ">
-            Возможно создать как монолитное SPA так и отдельный элемент в приложении на одном из фреймворков/библиотек.
-            <br/>
-            <br/> Каждый из компонентов является отдельным элементом со своей функциональностью.
-            <br/>
-            <br/> Набор простых компонентов образует комплексную систему.
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
-    
-  
-    <section class="cd-section page4">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo">
-            <span class="year">производительность</span>
-            <h1>Performance или идеальные условия</h1>
-            <h3>For the initial load, Polymer was 6x faster than Angular
-              <img src="slide/imgs/arrow-right.svg" />
-            </h3>
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="cd-section page5">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo">
-            <span class="year">инструменты</span>
-            <h1>Комплексные решения</h1>
-            <h3>frameworks
-              <img src="slide/imgs/arrow-right.svg" />
-            </h3>
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="cd-section page6">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo"
-            style="top: 30%;">
-            <span class="year">инструменты</span>
-            <h1>Render функции</h1>
-            <h3>дополнительные библиотеки
-              <img src="slide/imgs/arrow-right.svg" />
-            </h3>
-          </div>
-          <div style="
-                                top: 40%;
-                                max-width: calc(50vw - 70px);
-                                color: #2C3138;
-                                text-decoration: none;
-                                text-transform: uppercase;
-                                font-size: 18px;
-                                position: relative;
-                                line-height: 2;
-                                margin-left: 5rem;
-                            ">
-            Упрощение работы, оптимизация создания и обновления компонента. Аналогично VDOM, но проще, меньше и использует встроенные
-            возможности ES 2015.
-            <br/>
-            <br/> Обе библиотеки использую template. Это позволяет снизить накладные расходы и не выходить за пределы спецификаций.
-            <br/>
-            <br/> Высокая скорость и гибкость использования.
-          </div>
-        </div>
-        <div class="cover">
-          <div class=""></div>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="cd-section page6_1">
-      <div>
-        <div class="ok-full">
-          <div class="cover">
-            <img src="slide/imgs/6_1.png" />
-          </div>
-        </div>
-    </section>
-
-
-    <section class="cd-section page7">
-      <div>
-        <div class="ok-full">
-          <div class="cover">
-            <img src="slide/imgs/7.png" />
-          </div>
-        </div>
-    </section>
-
-    
-    <section class="cd-section page7_1">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo"
-            style="top: 30%;">
-            <span class="year">будущее</span>
-            <h1>Сводка</h1>
-            <h3>поддержка спецификаций браузерами
-              <img src="slide/imgs/arrow-right.svg" />
-            </h3>
-          </div>
-          <div class="cover">
-            <img src="slide/imgs/7_1.png" />
-          </div>
-        </div>
-    </section>
-
-
-    <section class="cd-section page8">
-      <div>
-        <div class="ok-full">
-          <div class="conteudo"
-            style="left: auto;top: 30%;">
-            <img src="slide/imgs/8.png" />
-            <script type="text/javascript"
-              src="https://ssl.gstatic.com/trends_nrtr/1294_RC01/embed_loader.js"></script>
-            <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", { "comparisonItem": [{ "keyword": "React", "geo": "", "time": "today 12-m" }, { "keyword": "Angular", "geo": "", "time": "today 12-m" }, { "keyword": "Web Components", "geo": "", "time": "today 12-m" }, { "keyword": "Vue.js", "geo": "", "time": "today 12-m" }], "category": 0, "property": "" }, { "exploreQuery": "q=React,Angular,Web%20Components,Vue.js&date=today 12-m,today 12-m,today 12-m,today 12-m", "guestPath": "https://trends.google.com:443/trends/embed/" }); </script>
-          </div>
-        </div>
-    </section>
-
-
-    <section class="cd-section page9">
-        <div>
-          <div class="ok-full">
-            <div class="conteudo">
-              <span class="year">17 февраля 2018 г.</span>
-              <h1>Простое должно быть простым</h1>
-              <h3>97 этюдов для архитекторов программных систем <img src="slide/imgs/arrow-right.svg"/></h3>
-            </div>
-          </div>
-          <div class="cover">
-            <div class=""></div>
-          </div>
-        </div>
-      </section>
-
-
-    <nav>
-      <ul class="cd-vertical-nav">
-        <li><a href="#0" class="cd-prev inactive">Next</a></li>
-        <li><a href="#0" class="cd-next">Prev</a></li>
-      </ul>
-    </nav> <!-- .cd-vertical-nav -->
-    <script src="slide/js/jquery-2.1.4.js"></script>
-    <script src="slide/js/velocity.min.js"></script>
-    <script src="slide/js/velocity.ui.min.js"></script>
-    <script src="slide/js/main.js"></script> <!-- Resource jQuery -->
-  </body>
 </html>
