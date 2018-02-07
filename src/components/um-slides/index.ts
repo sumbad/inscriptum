@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import 'velocity-animate';
 
 import articles from '../../data/articles/articles';
 import { Define, UmWebComponent } from "components/um-web.component";
@@ -7,9 +8,15 @@ declare const $: any;
 
 import template from './template';
 
+import './um-slide';
+
+
 
 @Define('um-slides')
 export class SlidesComponent extends UmWebComponent {
+  opacity: string;
+  scale: string;
+  delta: any;
   nextArrow: any;
   prevArrow: any;
   verticalNav: any;
@@ -35,14 +42,30 @@ export class SlidesComponent extends UmWebComponent {
     super.connectedCallback(SlidesComponent.attributes);
 
     //variables
-    this.hijacking = $('body').data('hijacking'),
-      this.animationType = $('body').data('animation'),
-      this.scrollThreshold = 5;
+    this.hijacking = 'off';///$('body').data('hijacking');
+    this.animationType = 'scaleDown';///$('body').data('animation');
+    this.scrollThreshold = 5;
     this.actual = 1;
     this.animating = false;
 
+
+
+    const html = this.wire();
     //DOM elements
-    this.sectionsAvailable = $('.cd-section');
+    this.sectionsAvailable =
+      html`
+    <um-slide></um-slide>
+    <um-slide></um-slide>
+    <um-slide></um-slide>
+    `;
+
+    this.render();
+
+    // this.sectionsAvailable = this.sectionsAvailable.childNodes;
+    // $('.cd-section');
+
+    console.log(this.sectionsAvailable)
+
     this.verticalNav = $('.cd-vertical-nav');
     this.prevArrow = this.verticalNav.find('a.cd-prev');
     this.nextArrow = this.verticalNav.find('a.cd-next');
@@ -51,7 +74,6 @@ export class SlidesComponent extends UmWebComponent {
     //check the media query and bind corresponding events
     var MQ = this.deviceType(),
       bindToggle = false;
-
 
     this.bindEvents(MQ, true);
 
@@ -83,7 +105,7 @@ export class SlidesComponent extends UmWebComponent {
           event.preventDefault();
           this.nextSection();
         } else if (event.which == '38' && (!this.prevArrow.hasClass('inactive') || (this.prevArrow.hasClass('inactive') &&
-            $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top))) {
+          $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top))) {
           event.preventDefault();
           this.prevSection();
         }
@@ -104,7 +126,7 @@ export class SlidesComponent extends UmWebComponent {
 
   scrollAnimation() {
     //normal scroll - use requestAnimationFrame (if defined) to optimize performance
-    (!window.requestAnimationFrame) ? animateSection(): window.requestAnimationFrame(animateSection);
+    (!window.requestAnimationFrame) ? this.animateSection() : window.requestAnimationFrame(this.animateSection.bind(this));
   }
 
   animateSection() {
@@ -112,23 +134,23 @@ export class SlidesComponent extends UmWebComponent {
       windowHeight = $(window).height(),
       windowWidth = $(window).width();
 
-    sectionsAvailable.each(function() {
-      var actualBlock = $(this),
-        offset = scrollTop - actualBlock.offset().top;
+    this.sectionsAvailable.childNodes.forEach((actualBlock: HTMLDivElement) => {
+      console.log()
+      // var actualBlock = $(this),
+      let offset = scrollTop - actualBlock.getBoundingClientRect().top;
 
       //according to animation type and window scroll, define animation parameters
-      var animationValues = setSectionAnimation(offset, windowHeight, animationType);
+      var animationValues = this.setSectionAnimation(offset, windowHeight, this.animationType);
 
-      transformSection(actualBlock.children('div'), animationValues[0], animationValues[1], animationValues[2],
-        animationValues[3], animationValues[4]);
-      (offset >= 0 && offset < windowHeight) ? actualBlock.addClass('visible'): actualBlock.removeClass(
-        'visible');
+      this.transformSection(actualBlock.childNodes, animationValues[0], animationValues[1], animationValues[2], animationValues[3], animationValues[4]);
+      (offset >= 0 && offset < windowHeight) ? actualBlock.classList.add('visible') : actualBlock.classList.remove('visible');
     });
 
-    checkNavigation();
+    this.checkNavigation();
   }
 
   transformSection(element, translateY, scaleValue, rotateXValue, opacityValue, boxShadow) {
+    console.log(element)
     //transform sections - normal scroll
     element.velocity({
       translateY: translateY + 'vh',
@@ -142,15 +164,15 @@ export class SlidesComponent extends UmWebComponent {
 
   initHijacking() {
     // initialize section style - scrollhijacking
-    var visibleSection = sectionsAvailable.filter('.visible'),
+    var visibleSection = this.sectionsAvailable.filter('.visible'),
       topSection = visibleSection.prevAll('.cd-section'),
       bottomSection = visibleSection.nextAll('.cd-section'),
-      animationParams = selectAnimation(animationType, false),
+      animationParams = this.selectAnimation(this.animationType, false),
       animationVisible = animationParams[0],
       animationTop = animationParams[1],
       animationBottom = animationParams[2];
 
-    visibleSection.children('div').velocity(animationVisible, 1, function() {
+    visibleSection.children('div').velocity(animationVisible, 1, () => {
       visibleSection.css('opacity', 1);
       topSection.css('opacity', 1);
       bottomSection.css('opacity', 1);
@@ -162,11 +184,11 @@ export class SlidesComponent extends UmWebComponent {
   scrollHijacking(event) {
     // on mouse scroll - check if animate section
     if (event.originalEvent.detail < 0 || event.originalEvent.wheelDelta > 0) {
-      delta--;
-      (Math.abs(delta) >= scrollThreshold) && prevSection();
+      this.delta--;
+      (Math.abs(this.delta) >= this.scrollThreshold) && this.prevSection();
     } else {
-      delta++;
-      (delta >= scrollThreshold) && nextSection();
+      this.delta++;
+      (this.delta >= this.scrollThreshold) && this.nextSection();
     }
     return false;
   }
@@ -175,91 +197,93 @@ export class SlidesComponent extends UmWebComponent {
     //go to previous section
     typeof event !== 'undefined' && event.preventDefault();
 
-    var visibleSection = sectionsAvailable.filter('.visible'),
-      middleScroll = (hijacking == 'off' && $(window).scrollTop() != visibleSection.offset().top) ? true : false;
+    var visibleSection = this.sectionsAvailable.filter('.visible'),
+      middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != visibleSection.offset().top) ? true : false;
     visibleSection = middleScroll ? visibleSection.next('.cd-section') : visibleSection;
 
-    var animationParams = selectAnimation(animationType, middleScroll, 'prev');
-    unbindScroll(visibleSection.prev('.cd-section'), animationParams[3]);
+    var animationParams = this.selectAnimation(this.animationType, middleScroll, 'prev');
+    this.unbindScroll(visibleSection.prev('.cd-section'), animationParams[3]);
 
-    if (!animating && !visibleSection.is(":first-child")) {
-      animating = true;
+    if (!this.animating && !visibleSection.is(":first-child")) {
+      this.animating = true;
       visibleSection.removeClass('visible').children('div').velocity(animationParams[2], animationParams[3],
-          animationParams[4])
+        animationParams[4])
         .end().prev('.cd-section').addClass('visible').children('div').velocity(animationParams[0], animationParams[
-          3], animationParams[4], function() {
-          animating = false;
-          if (hijacking == 'off') $(window).on('scroll', scrollAnimation);
+        3], animationParams[4], () => {
+          this.animating = false;
+          if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation.bind(this));
         });
 
-      actual = actual - 1;
+      this.actual = this.actual - 1;
     }
 
-    resetScroll();
+    this.resetScroll();
   }
 
   nextSection(event?) {
     //go to next section
     typeof event !== 'undefined' && event.preventDefault();
 
-    var visibleSection = sectionsAvailable.filter('.visible'),
-      middleScroll = (hijacking == 'off' && $(window).scrollTop() != visibleSection.offset().top) ? true : false;
+    var visibleSection = this.sectionsAvailable.filter('.visible'),
+      middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != visibleSection.offset().top) ? true : false;
 
-    var animationParams = selectAnimation(animationType, middleScroll, 'next');
-    unbindScroll(visibleSection.next('.cd-section'), animationParams[3]);
+    var animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
+    this.unbindScroll(visibleSection.next('.cd-section'), animationParams[3]);
 
-    if (!animating && !visibleSection.is(":last-of-type")) {
-      animating = true;
+    if (!this.animating && !visibleSection.is(":last-of-type")) {
+      this.animating = true;
       visibleSection.removeClass('visible').children('div').velocity(animationParams[1], animationParams[3],
-          animationParams[4])
+        animationParams[4])
         .end().next('.cd-section').addClass('visible').children('div').velocity(animationParams[0], animationParams[
-          3], animationParams[4], function() {
-          animating = false;
-          if (hijacking == 'off') $(window).on('scroll', scrollAnimation);
+        3], animationParams[4], () => {
+          this.animating = false;
+          if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation.bind(this));
         });
 
-      actual = actual + 1;
+      this.actual = this.actual + 1;
     }
-    resetScroll();
+    this.resetScroll();
   }
 
   unbindScroll(section, time) {
     //if clicking on navigation - unbind scroll and animate using custom velocity animation
-    if (hijacking == 'off') {
-      $(window).off('scroll', scrollAnimation);
-      (animationType == 'catch') ? $('body, html').scrollTop(section.offset().top): section.velocity("scroll", {
+    if (this.hijacking == 'off') {
+      $(window).off('scroll', this.scrollAnimation.bind(this));
+      (this.animationType == 'catch') ? $('body, html').scrollTop(section.offset().top) : section.velocity("scroll", {
         duration: time
       });
     }
   }
 
   resetScroll() {
-    delta = 0;
-    checkNavigation();
+    this.delta = 0;
+    this.checkNavigation();
   }
 
   checkNavigation() {
     //update navigation arrows visibility
-    (sectionsAvailable.filter('.visible').is(':first-of-type')) ? prevArrow.addClass('inactive'): prevArrow.removeClass(
-      'inactive');
-    (sectionsAvailable.filter('.visible').is(':last-of-type')) ? nextArrow.addClass('inactive'): nextArrow.removeClass(
-      'inactive');
+    // (this.sectionsAvailable.filter('.visible').is(':first-of-type'))
+    //   ? this.prevArrow.addClass('inactive')
+    //   : this.prevArrow.removeClass('inactive');
+    // (this.sectionsAvailable.filter('.visible').is(':last-of-type'))
+    //   ? this.nextArrow.addClass('inactive')
+    //   : this.nextArrow.removeClass('inactive');
   }
 
   resetSectionStyle() {
     //on mobile - remove style applied with jQuery
-    sectionsAvailable.children('div').each(function() {
+    this.sectionsAvailable.children('div').each(() => {
       $(this).attr('style', '');
     });
   }
 
   deviceType() {
     //detect if desktop/mobile
-    return window.getComputedStyle(document.querySelector('body'), '::before').getPropertyValue('content').replace(
+    return window.getComputedStyle(<HTMLBodyElement>document.querySelector('body'), '::before').getPropertyValue('content').replace(
       /"/g, "").replace(/'/g, "");
   }
 
-  selectAnimation(animationName, middleScroll, direction) {
+  selectAnimation(animationName, middleScroll, direction?) {
     // select section animation - scrollhijacking
     var animationVisible = 'translateNone',
       animationTop = 'translateUp',
@@ -273,7 +297,7 @@ export class SlidesComponent extends UmWebComponent {
         easing = 'easeInCubic';
         break;
       case 'rotate':
-        if (hijacking == 'off') {
+        if (this.hijacking == 'off') {
           animationTop = 'rotation.scroll';
           animationBottom = 'translateNone';
         } else {
@@ -371,14 +395,14 @@ export class SlidesComponent extends UmWebComponent {
 
       switch (animationName) {
         case 'scaleDown':
-          scale = (1 - (sectionOffset * 0.3 / windowHeight)).toFixed(5);
-          opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
+          this.scale = (1 - (sectionOffset * 0.3 / windowHeight)).toFixed(5);
+          this.opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
           translateY = 0;
           boxShadowBlur = 40 * (sectionOffset / windowHeight);
 
           break;
         case 'rotate':
-          opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
+          this.opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
           rotateX = sectionOffset * 90 / windowHeight + 'deg';
           translateY = 0;
           break;

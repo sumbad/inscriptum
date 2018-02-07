@@ -19,6 +19,8 @@ polyfills.then(
         await Promise.all(components.map(
             c => customElements.whenDefined(c)
         ));
+
+        await import('./components/um-slides/um-slide');
     }
 ).catch(e => {
     console.warn(e);

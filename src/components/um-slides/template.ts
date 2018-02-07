@@ -1,4 +1,7 @@
 export default (html, scope) => html`
+
+${scope.sectionsAvailable}
+
 <section class="cd-section visible">
   <div>
     <h2>Page Scroll Effects</h2>

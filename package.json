@@ -21,6 +21,7 @@
     "hyperhtml": "^2.5.4",
     "page": "^1.8.3",
     "rxjs": "^5.5.6",
+    "velocity-animate": "^1.5.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
