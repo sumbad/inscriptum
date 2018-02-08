@@ -15,8 +15,6 @@ import './um-slide';
 
 @Define('um-slides')
 export class SlidesComponent extends UmWebComponent {
-  opacity: string;
-  scale: string;
   delta: any;
   nextArrow: Element;
   prevArrow: Element;
@@ -36,6 +34,8 @@ export class SlidesComponent extends UmWebComponent {
 
   constructor() {
     super(template, require('./style.scss'));
+
+    this.scrollAnimation = this.scrollAnimation.bind(this);
   }
 
 
@@ -99,42 +99,48 @@ export class SlidesComponent extends UmWebComponent {
         // window.addEventListener('DOMMouseScroll mousewheel', this.scrollHijacking.bind(this));
       } else {
         this.scrollAnimation();
-        window.addEventListener('scroll', this.scrollAnimation.bind(this));
+        window.addEventListener('scroll', this.scrollAnimation);
       }
 
-      this.prevArrow.addEventListener('click', this.prevSection.bind(this));
+      // this.prevArrow.addEventListener('click', this.prevSection.bind(this));
       this.nextArrow.addEventListener('click', this.nextSection.bind(this));
 
-      document.addEventListener('keydown', this.keyboardEventListener.bind(this));
+      // document.addEventListener('keydown', this.keyboardEventListener.bind(this));
       //set navigation arrows visibility
       this.checkNavigation();
     } else if (MQ == 'mobile') {
       //reset and unbind
       this.resetSectionStyle();
       window.removeEventListener('DOMMouseScroll mousewheel', this.scrollHijacking.bind(this));
-      window.removeEventListener('scroll', this.scrollAnimation.bind(this));
+      window.removeEventListener('scroll', this.scrollAnimation);
       this.prevArrow.removeEventListener('click', this.prevSection.bind(this));
       this.nextArrow.removeEventListener('click', this.nextSection.bind(this));
-      document.removeEventListener('keydown', this.keyboardEventListener.bind(this));
+      // document.removeEventListener('keydown', this.keyboardEventListener.bind(this));
     }
   }
 
 
-  keyboardEventListener(event) {
-    if (event.which === 40 && !this.nextArrow.classList.contains('inactive')) {
-      event.preventDefault();
-      this.nextSection();
-    } else if (event.which === 38 && (!this.prevArrow.classList.contains('inactive') || (this.prevArrow.classList.contains('inactive') &&
-      $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top))) {
-      event.preventDefault();
-      this.prevSection();
-    }
-  };
+  // keyboardEventListener(event) {
+  //   if (event.which === 40 && !this.nextArrow.classList.contains('inactive')) {
+  //     event.preventDefault();
+  //     this.nextSection();
+  //   } else if (event.which === 38 && (!this.prevArrow.classList.contains('inactive') || (this.prevArrow.classList.contains('inactive') &&
+  //     $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top))) {
+  //     event.preventDefault();
+  //     this.prevSection();
+  //   }
+  // };
 
 
+  /** 
+   * normal scroll - use requestAnimationFrame (if defined) to optimize performance
+   */
   scrollAnimation() {
+    // console.log(11111111111);
     //normal scroll - use requestAnimationFrame (if defined) to optimize performance
-    (!window.requestAnimationFrame) ? this.animateSection() : window.requestAnimationFrame(this.animateSection.bind(this));
+    (!window.requestAnimationFrame)
+      ? this.animateSection()
+      : window.requestAnimationFrame(() => this.animateSection());
   }
 
 
@@ -246,7 +252,7 @@ export class SlidesComponent extends UmWebComponent {
         .end().prev('.cd-section').addClass('visible').children('div').velocity(animationParams[0], animationParams[
           3], animationParams[4], () => {
             this.animating = false;
-            if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation.bind(this));
+            if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation);
           });
 
       this.actual = this.actual - 1;
@@ -270,36 +276,38 @@ export class SlidesComponent extends UmWebComponent {
     const visibleSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex];
     const nextSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex + 1];
 
-    let middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != visibleSection.getBoundingClientRect().top) ? true : false;
+    let middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
 
+    console.log(middleScroll)
 
     var animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
-    this.unbindScroll(nextSection.lastElementChild, animationParams[3]);
+    this.unbindScroll(nextSection, animationParams[3]);
 
     if (!this.animating && !visibleSection.matches(":last-of-type")) {
       this.animating = true;
       visibleSection.removeAttribute('visible');
 
-      Velocity(visibleSection.lastElementChild, animationParams[1], animationParams[3], animationParams[4], { queue: false }, () => {
-        nextSection.setAttribute('visible', '');
-        console.log(3333333, animationParams[0], animationParams[3], animationParams[4])
-        Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex + 1].lastElementChild, animationParams[0], animationParams[3], animationParams[4], { queue: false },
-          () => {
-            this.animating = false;
-            if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation.bind(this));
-          }
-        );
-      });
+      Velocity(visibleSection.lastElementChild, animationParams[1], animationParams[3], animationParams[4],
+        () => {
+          nextSection.setAttribute('visible', '');
+          // console.log(3333333, animationParams[0], animationParams[3], animationParams[4])
+          Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex + 1].lastElementChild, animationParams[0], animationParams[3], animationParams[4],
+            () => {
+              this.animating = false;
+              // if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+            }
+          );
+        }
+      );
+
+      // this.actual = this.actual + 1;
+    } 
+    // else {
+    //   Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex], 'stop');
+    //   Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex].lastElementChild, 'stop');
+    // }
 
 
-      // .end().next('.cd-section').addClass('visible').children('div').velocity(animationParams[0], animationParams[
-      //   3], animationParams[4], () => {
-      //     this.animating = false;
-      //     if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation.bind(this));
-      //   });
-
-      this.actual = this.actual + 1;
-    }
     this.resetScroll();
   }
 
@@ -312,13 +320,29 @@ export class SlidesComponent extends UmWebComponent {
    */
   unbindScroll(section, time) {
     if (this.hijacking == 'off') {
-      console.log(2222222222222, time);
 
-      window.removeEventListener('scroll', this.scrollAnimation.bind(this));
+      // $(window).off('scroll', this.scrollAnimation);
+      // window.removeEventListener('scroll', this.scrollAnimation);
 
+      // time = this.animating ? time - 300 : time;
+
+      // const scroll = (time) => 
       (this.animationType == 'catch')
         ? $('body, html').scrollTop(section.offset().top)
-        : Velocity(section, 'scroll', { duration: time }, { queue: false });
+        : Velocity(section, 'scroll', { duration: time });
+        // : Velocity(section, 'scroll', { duration: time, queue: false });
+
+      // if (this.animating) {
+      //   setTimeout(() => {
+      //     scroll(time - 500);
+      //   }, 500);
+      // } else {
+      //   scroll(time);
+      // }
+
+
+
+
 
 
       //     if (hijacking == 'off') {
@@ -385,7 +409,8 @@ export class SlidesComponent extends UmWebComponent {
    * Detect if desktop/mobile
    */
   deviceType() {
-    return window.getComputedStyle(<HTMLBodyElement>document.querySelector('body'), '::before').getPropertyValue('content').replace(/"/g, "").replace(/'/g, "");
+    return window.getComputedStyle(<HTMLBodyElement>document.querySelector('body'), '::before').
+      getPropertyValue('content').replace(/"/g, "").replace(/'/g, "");
   }
 
 
@@ -521,14 +546,14 @@ export class SlidesComponent extends UmWebComponent {
 
       switch (animationName) {
         case 'scaleDown':
-          this.scale = (1 - (sectionOffset * 0.3 / windowHeight)).toFixed(5);
-          this.opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
+          scale = 1 - (sectionOffset * 0.3 / windowHeight);
+          opacity = 1 - (sectionOffset / windowHeight);
           translateY = 0;
           boxShadowBlur = 40 * (sectionOffset / windowHeight);
 
           break;
         case 'rotate':
-          this.opacity = (1 - (sectionOffset / windowHeight)).toFixed(5);
+          opacity = 1 - (sectionOffset / windowHeight);
           rotateX = sectionOffset * 90 / windowHeight + 'deg';
           translateY = 0;
           break;
