@@ -2,7 +2,7 @@ export default (html, scope) => html`
 
 ${scope.sectionsAvailable}
 
-<section class="cd-section visible">
+<!-- <section class="cd-section visible">
   <div>
     <h2>Page Scroll Effects</h2>
   </div>
@@ -30,7 +30,7 @@ ${scope.sectionsAvailable}
   <div>
     <h2>Section 5</h2>
   </div>
-</section>
+</section> -->
 
 <nav>
   <ul class="cd-vertical-nav">

@@ -1,7 +1,7 @@
 export default (html, scope) => html`
-<section class="cd-section">
+<section>
   <div>
-    <h2>Page Scroll Effects</h2>
+    <h2>${scope.props.content}</h2>
   </div>
 </section>
 `;

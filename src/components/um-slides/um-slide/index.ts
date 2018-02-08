@@ -9,8 +9,8 @@ import template from './template';
 
 @Define('um-slide')
 export class SlideComponent extends UmWebComponent {
-  // static attributes = ['hijacking', 'animation'];
-  // static get observedAttributes() { return this.attributes; }
+  static attributes = ['content'];
+  static get observedAttributes() { return this.attributes; }
 
   constructor() {
     super(template, require('./style.scss'));
@@ -18,7 +18,7 @@ export class SlideComponent extends UmWebComponent {
 
 
   connectedCallback() {
-    super.connectedCallback();
+    super.connectedCallback(SlideComponent.attributes);
   }
 
 }
