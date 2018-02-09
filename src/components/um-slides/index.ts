@@ -36,6 +36,7 @@ export class SlidesComponent extends UmWebComponent {
     super(template, require('./style.scss'));
 
     this.scrollAnimation = this.scrollAnimation.bind(this);
+    this.nextSection = this.nextSection.bind(this);
   }
 
 
@@ -103,7 +104,7 @@ export class SlidesComponent extends UmWebComponent {
       }
 
       // this.prevArrow.addEventListener('click', this.prevSection.bind(this));
-      this.nextArrow.addEventListener('click', this.nextSection.bind(this));
+      this.nextArrow.addEventListener('click', this.nextSection);
 
       // document.addEventListener('keydown', this.keyboardEventListener.bind(this));
       //set navigation arrows visibility
@@ -111,10 +112,10 @@ export class SlidesComponent extends UmWebComponent {
     } else if (MQ == 'mobile') {
       //reset and unbind
       this.resetSectionStyle();
-      window.removeEventListener('DOMMouseScroll mousewheel', this.scrollHijacking.bind(this));
-      window.removeEventListener('scroll', this.scrollAnimation);
-      this.prevArrow.removeEventListener('click', this.prevSection.bind(this));
-      this.nextArrow.removeEventListener('click', this.nextSection.bind(this));
+      // window.removeEventListener('DOMMouseScroll mousewheel', this.scrollHijacking.bind(this));
+      // window.removeEventListener('scroll', this.scrollAnimation);
+      // this.prevArrow.removeEventListener('click', this.prevSection.bind(this));
+      // this.nextArrow.removeEventListener('click', this.nextSection.bind(this));
       // document.removeEventListener('keydown', this.keyboardEventListener.bind(this));
     }
   }
@@ -276,39 +277,44 @@ export class SlidesComponent extends UmWebComponent {
     const visibleSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex];
     const nextSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex + 1];
 
-    let middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
+    if (!visibleSection.matches(":last-of-type")) {
 
-    console.log(middleScroll)
+      const middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
+      const animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
 
-    var animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
-    this.unbindScroll(nextSection, animationParams[3]);
+      if (!this.animating) {
+        this.unbindScroll(nextSection, animationParams[3]);
+        this.animating = true;
 
-    if (!this.animating && !visibleSection.matches(":last-of-type")) {
-      this.animating = true;
-      visibleSection.removeAttribute('visible');
+        Velocity(visibleSection.lastElementChild, animationParams[1], animationParams[3], animationParams[4],
+          () => {
+            visibleSection.removeAttribute('visible');
+          }
+        );
+        Velocity(nextSection.lastElementChild, animationParams[0], animationParams[3], animationParams[4],
+          () => {
+            this.animating = false;
+            nextSection.setAttribute('visible', '');
+            if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+          }
+        );
 
-      Velocity(visibleSection.lastElementChild, animationParams[1], animationParams[3], animationParams[4],
-        () => {
-          nextSection.setAttribute('visible', '');
-          // console.log(3333333, animationParams[0], animationParams[3], animationParams[4])
-          Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex + 1].lastElementChild, animationParams[0], animationParams[3], animationParams[4],
-            () => {
-              this.animating = false;
-              // if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
-            }
-          );
-        }
-      );
-
-      // this.actual = this.actual + 1;
-    } 
-    // else {
-    //   Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex], 'stop');
-    //   Velocity(this.sectionsAvailable.childNodes[visibleSectionIndex].lastElementChild, 'stop');
-    // }
+        this.actual = this.actual + 1;
+      }
+      else {
+        this.animating = false;
+        visibleSection.removeAttribute('visible');
+        nextSection.setAttribute('visible', '');
+        Velocity(visibleSection.lastElementChild, 'finish');
+        Velocity(nextSection, 'finish');
+        Velocity(nextSection.lastElementChild, 'finish');
+        this.unbindScroll(nextSection, 100);
+        if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+      }
 
 
-    this.resetScroll();
+      this.resetScroll();
+    }
   }
 
 
@@ -322,15 +328,12 @@ export class SlidesComponent extends UmWebComponent {
     if (this.hijacking == 'off') {
 
       // $(window).off('scroll', this.scrollAnimation);
-      // window.removeEventListener('scroll', this.scrollAnimation);
-
-      // time = this.animating ? time - 300 : time;
-
+      window.removeEventListener('scroll', this.scrollAnimation);
       // const scroll = (time) => 
       (this.animationType == 'catch')
         ? $('body, html').scrollTop(section.offset().top)
         : Velocity(section, 'scroll', { duration: time });
-        // : Velocity(section, 'scroll', { duration: time, queue: false });
+      // : Velocity(section, 'scroll', { duration: time, queue: false });
 
       // if (this.animating) {
       //   setTimeout(() => {
@@ -666,8 +669,8 @@ export class SlidesComponent extends UmWebComponent {
       .RegisterEffect("translateNone", {
         defaultDuration: 1,
         calls: [
-          [{ translateY: '0', opacity: '1', scale: '1', rotateX: '0', boxShadowBlur: '0' }, 1]
-        ]
+          [{ translateY: 0, opacity: '1', scale: '1', rotateX: '0', boxShadowBlur: '0' }, 1]
+        ],
       });
 
     //scale down
@@ -690,7 +693,7 @@ export class SlidesComponent extends UmWebComponent {
       .RegisterEffect("rotation.scroll", {
         defaultDuration: 1,
         calls: [
-          [{ opacity: '0', rotateX: '90', translateY: '0' }, 1]
+          [{ opacity: '0', rotateX: '90', translateY: 0 }, 1]
         ]
       });
     //gallery
