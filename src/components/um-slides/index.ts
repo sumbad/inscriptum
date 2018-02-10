@@ -11,10 +11,11 @@ import template from './template';
 
 import './um-slide';
 
-
+// type TanimatingType = 'next' | 'prev'
 
 @Define('um-slides')
 export class SlidesComponent extends UmWebComponent {
+  animatingType: 'next' | 'prev';
   delta: any;
   nextArrow: Element;
   prevArrow: Element;
@@ -37,6 +38,8 @@ export class SlidesComponent extends UmWebComponent {
 
     this.scrollAnimation = this.scrollAnimation.bind(this);
     this.nextSection = this.nextSection.bind(this);
+    this.prevSection = this.prevSection.bind(this);
+    this.keyboardEventListener = this.keyboardEventListener.bind(this);
   }
 
 
@@ -103,10 +106,10 @@ export class SlidesComponent extends UmWebComponent {
         window.addEventListener('scroll', this.scrollAnimation);
       }
 
-      // this.prevArrow.addEventListener('click', this.prevSection.bind(this));
+      this.prevArrow.addEventListener('click', this.prevSection);
       this.nextArrow.addEventListener('click', this.nextSection);
 
-      // document.addEventListener('keydown', this.keyboardEventListener.bind(this));
+      document.addEventListener('keydown', this.keyboardEventListener);
       //set navigation arrows visibility
       this.checkNavigation();
     } else if (MQ == 'mobile') {
@@ -121,16 +124,20 @@ export class SlidesComponent extends UmWebComponent {
   }
 
 
-  // keyboardEventListener(event) {
-  //   if (event.which === 40 && !this.nextArrow.classList.contains('inactive')) {
-  //     event.preventDefault();
-  //     this.nextSection();
-  //   } else if (event.which === 38 && (!this.prevArrow.classList.contains('inactive') || (this.prevArrow.classList.contains('inactive') &&
-  //     $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top))) {
-  //     event.preventDefault();
-  //     this.prevSection();
-  //   }
-  // };
+  keyboardEventListener(event) {
+    if (event.which === 40 && !this.nextArrow.classList.contains('inactive')) {
+      event.preventDefault();
+      this.nextSection();
+    } else
+      if (event.which === 38
+        && (!this.prevArrow.classList.contains('inactive')
+          || (this.prevArrow.classList.contains('inactive') && $(window).scrollTop() != this.sectionsAvailable.eq(0).offset().top)
+        )
+      ) {
+        event.preventDefault();
+        this.prevSection();
+      }
+  };
 
 
   /** 
@@ -184,7 +191,7 @@ export class SlidesComponent extends UmWebComponent {
   transformSection(element: Element, translateY, scaleValue, rotateXValue, opacityValue, boxShadow) {
     // console.log(translateY)
     Velocity(element, {
-      translateY: translateY + 'vh',
+      translateY: translateY, //+ 'vh',
       scale: scaleValue,
       rotateX: rotateXValue,
       opacity: opacityValue,
@@ -235,31 +242,37 @@ export class SlidesComponent extends UmWebComponent {
   }
 
 
+  /**
+   * Go to previous section
+   * @param event 
+   */
   prevSection(event?) {
-    //go to previous section
     typeof event !== 'undefined' && event.preventDefault();
+    let visibleSectionIndex = (this.sectionsAvailable.childNodes as Element[]).findIndex(element => element.hasAttribute('visible'));
+    let visibleSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex];
+    let prevSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex - 1];
 
-    var visibleSection = this.sectionsAvailable.filter('.visible'),
-      middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != visibleSection.offset().top) ? true : false;
-    visibleSection = middleScroll ? visibleSection.next('.cd-section') : visibleSection;
-
-    var animationParams = this.selectAnimation(this.animationType, middleScroll, 'prev');
-    this.unbindScroll(visibleSection.prev('.cd-section'), animationParams[3]);
-
-    if (!this.animating && !visibleSection.is(":first-child")) {
-      this.animating = true;
-      visibleSection.removeClass('visible').children('div').velocity(animationParams[2], animationParams[3],
-        animationParams[4])
-        .end().prev('.cd-section').addClass('visible').children('div').velocity(animationParams[0], animationParams[
-          3], animationParams[4], () => {
-            this.animating = false;
-            if (this.hijacking == 'off') $(window).on('scroll', this.scrollAnimation);
-          });
-
-      this.actual = this.actual - 1;
+    const middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
+    if (middleScroll && this.animating && this.animatingType === 'next') {
+      console.log('middleScroll prevSection', middleScroll)
+      visibleSectionIndex++;
+      visibleSection = this.sectionsAvailable.childNodes[visibleSectionIndex];
+      prevSection = this.sectionsAvailable.childNodes[visibleSectionIndex - 1];
     }
 
-    this.resetScroll();
+    // if (!visibleSection.matches(":first-child")) {
+    if (prevSection) {
+      this.animatingType = 'prev';
+      const animationParams = this.selectAnimation(this.animationType, middleScroll, 'prev');
+      this.scrollingToSection(visibleSection, prevSection,
+        {
+          visible: animationParams[0],
+          goTo: animationParams[2],
+          duration: animationParams[3],
+          easing: animationParams[4]
+        }
+      );
+    }
   }
 
 
@@ -268,53 +281,76 @@ export class SlidesComponent extends UmWebComponent {
    * @param event 
    */
   nextSection(event?) {
-    //go to next section
     typeof event !== 'undefined' && event.preventDefault();
 
-    // var visibleSection = this.sectionsAvailable.filter('.visible'),
+    let visibleSectionIndex = (this.sectionsAvailable.childNodes as Element[]).findIndex(element => element.hasAttribute('visible'));
+    let visibleSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex];
+    let nextSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex + 1];
 
-    const visibleSectionIndex = (this.sectionsAvailable.childNodes as Element[]).findIndex(element => element.hasAttribute('visible'));
-    const visibleSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex];
-    const nextSection: Element = this.sectionsAvailable.childNodes[visibleSectionIndex + 1];
+    const middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
 
-    if (!visibleSection.matches(":last-of-type")) {
-
-      const middleScroll = (this.hijacking == 'off' && $(window).scrollTop() != $(visibleSection).offset().top) ? true : false;
-      const animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
-
-      if (!this.animating) {
-        this.unbindScroll(nextSection, animationParams[3]);
-        this.animating = true;
-
-        Velocity(visibleSection.lastElementChild, animationParams[1], animationParams[3], animationParams[4],
-          () => {
-            visibleSection.removeAttribute('visible');
-          }
-        );
-        Velocity(nextSection.lastElementChild, animationParams[0], animationParams[3], animationParams[4],
-          () => {
-            this.animating = false;
-            nextSection.setAttribute('visible', '');
-            if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
-          }
-        );
-
-        this.actual = this.actual + 1;
-      }
-      else {
-        this.animating = false;
-        visibleSection.removeAttribute('visible');
-        nextSection.setAttribute('visible', '');
-        Velocity(visibleSection.lastElementChild, 'finish');
-        Velocity(nextSection, 'finish');
-        Velocity(nextSection.lastElementChild, 'finish');
-        this.unbindScroll(nextSection, 100);
-        if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
-      }
-
-
-      this.resetScroll();
+    if (middleScroll && this.animating && this.animatingType === 'prev') {
+      console.log('middleScroll nextSection', middleScroll)
+      visibleSectionIndex--;
+      visibleSection = this.sectionsAvailable.childNodes[visibleSectionIndex];
+      nextSection = this.sectionsAvailable.childNodes[visibleSectionIndex + 1];
     }
+
+    // if (!visibleSection.matches(":last-of-type")) {
+    if (nextSection) {
+      this.animatingType = 'next';
+      const animationParams = this.selectAnimation(this.animationType, middleScroll, 'next');
+      this.scrollingToSection(visibleSection, nextSection,
+        {
+          visible: animationParams[0],
+          goTo: animationParams[1],
+          duration: animationParams[3],
+          easing: animationParams[4]
+        }
+      );
+    }
+  }
+
+
+
+  scrollingToSection(visibleSection, gotoSection, anim: { visible, goTo, duration, easing }) {
+    if (!this.animating) {
+      // console.log(anim)
+      this.unbindScroll(gotoSection, anim.duration);
+      this.animating = true;
+
+      Velocity(visibleSection.lastElementChild, anim.goTo, anim.duration, anim.easing);
+      Velocity(gotoSection.lastElementChild, anim.visible, anim.duration, anim.easing,
+        () => {
+          this.animating = false;
+          visibleSection.removeAttribute('visible');
+          gotoSection.setAttribute('visible', '');
+          if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+          this.checkNavigation();
+        }
+      );
+
+      this.actual = this.actual + 1;
+    }
+    else {
+      console.log('animating')
+      this.animating = false;
+      visibleSection.removeAttribute('visible');
+      gotoSection.setAttribute('visible', '');
+      (this.sectionsAvailable.childNodes as Element[]).forEach(element => {
+        Velocity(element, 'finish');
+        Velocity(element.lastElementChild, 'finish');
+      });
+      // Velocity(visibleSection.lastElementChild, 'finish');
+      // Velocity(gotoSection, 'finish');
+      // Velocity(gotoSection.lastElementChild, 'finish');
+      this.unbindScroll(gotoSection, 100);
+      if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+    }
+    // visibleSection.removeAttribute('visible');
+    // gotoSection.setAttribute('visible', '');
+
+    this.resetScroll();
   }
 
 
@@ -326,45 +362,14 @@ export class SlidesComponent extends UmWebComponent {
    */
   unbindScroll(section, time) {
     if (this.hijacking == 'off') {
-
-      // $(window).off('scroll', this.scrollAnimation);
       window.removeEventListener('scroll', this.scrollAnimation);
-      // const scroll = (time) => 
       (this.animationType == 'catch')
         ? $('body, html').scrollTop(section.offset().top)
         : Velocity(section, 'scroll', { duration: time });
       // : Velocity(section, 'scroll', { duration: time, queue: false });
-
-      // if (this.animating) {
-      //   setTimeout(() => {
-      //     scroll(time - 500);
-      //   }, 500);
-      // } else {
-      //   scroll(time);
-      // }
-
-
-
-
-
-
-      //     if (hijacking == 'off') {
-      //       $(window).off('scroll', scrollAnimation);
-      //       (animationType == 'catch') ? $('body, html').scrollTop(section.offset().top) : section.velocity("scroll", { duration: time });
-      //     }
-
-      // (this.animationType == 'catch')
-      //   ? $('body, html').scrollTop(section.offset().top)
-      //   : Velocity(section, 'scroll', {
-      //     duration: time
-      //   });
-
-
-      // section.velocity("scroll", {
-      //   duration: time
-      // });
     }
   }
+
 
 
   resetScroll() {
@@ -374,9 +379,11 @@ export class SlidesComponent extends UmWebComponent {
 
 
   /**
-   * update navigation arrows visibility
+   * Update navigation arrows visibility
    */
   checkNavigation() {
+    // console.log('first ', this.sectionsAvailable.first.hasAttribute('visible'))
+    // console.log('last ', this.sectionsAvailable.last.hasAttribute('visible'))
     this.sectionsAvailable.first.hasAttribute('visible')
       ? this.prevArrow.classList.add('inactive')
       : this.prevArrow.classList.remove('inactive');
@@ -499,7 +506,7 @@ export class SlidesComponent extends UmWebComponent {
       // console.log('section entering the viewport')
 
       // section entering the viewport
-      translateY = (-sectionOffset) * 100 / windowHeight;
+      translateY = (-sectionOffset) //* 100 / windowHeight;
 
       switch (animationName) {
         case 'scaleDown':
@@ -513,11 +520,11 @@ export class SlidesComponent extends UmWebComponent {
         case 'gallery':
           if (sectionOffset >= -windowHeight && sectionOffset < -0.9 * windowHeight) {
             scale = -sectionOffset / windowHeight;
-            translateY = (-sectionOffset) * 100 / windowHeight;
+            translateY = (-sectionOffset) //* 100 / windowHeight;
             boxShadowBlur = 400 * (1 + sectionOffset / windowHeight);
           } else if (sectionOffset >= -0.9 * windowHeight && sectionOffset < -0.1 * windowHeight) {
             scale = 0.9;
-            translateY = -(9 / 8) * (sectionOffset + 0.1 * windowHeight) * 100 / windowHeight;
+            translateY = -(9 / 8) * (sectionOffset + 0.1 * windowHeight) //* 100 / windowHeight;
             boxShadowBlur = 40;
           } else {
             scale = 1 + sectionOffset / windowHeight;
@@ -527,10 +534,10 @@ export class SlidesComponent extends UmWebComponent {
           break;
         case 'catch':
           if (sectionOffset >= -windowHeight && sectionOffset < -0.75 * windowHeight) {
-            translateY = 100;
+            translateY = windowHeight//100;
             boxShadowBlur = (1 + sectionOffset / windowHeight) * 160;
           } else {
-            translateY = -(10 / 7.5) * sectionOffset * 100 / windowHeight;
+            translateY = -(10 / 7.5) * sectionOffset //* 100 / windowHeight;
             boxShadowBlur = -160 * sectionOffset / (3 * windowHeight);
           }
           break;
@@ -545,7 +552,7 @@ export class SlidesComponent extends UmWebComponent {
       // console.log('section leaving the viewport - still has the .visible class')
 
       //section leaving the viewport - still has the '.visible' class
-      translateY = (-sectionOffset) * 100 / windowHeight;
+      translateY = (-sectionOffset) //* 100 / windowHeight;
 
       switch (animationName) {
         case 'scaleDown':
@@ -563,15 +570,15 @@ export class SlidesComponent extends UmWebComponent {
         case 'gallery':
           if (sectionOffset >= 0 && sectionOffset < 0.1 * windowHeight) {
             scale = (windowHeight - sectionOffset) / windowHeight;
-            translateY = -(sectionOffset / windowHeight) * 100;
+            translateY = -(sectionOffset)//-(sectionOffset / windowHeight) * 100;
             boxShadowBlur = 400 * sectionOffset / windowHeight;
           } else if (sectionOffset >= 0.1 * windowHeight && sectionOffset < 0.9 * windowHeight) {
             scale = 0.9;
-            translateY = -(9 / 8) * (sectionOffset - 0.1 * windowHeight / 9) * 100 / windowHeight;
+            translateY = -(9 / 8) * (sectionOffset - 0.1 * windowHeight / 9) //* 100 / windowHeight;
             boxShadowBlur = 40;
           } else {
             scale = sectionOffset / windowHeight;
-            translateY = -100;
+            translateY = -windowHeight//-100;
             boxShadowBlur = 400 * (1 - sectionOffset / windowHeight);
           }
           break;
@@ -591,7 +598,7 @@ export class SlidesComponent extends UmWebComponent {
           translateY = 0;
           break;
         case 'parallax':
-          translateY = (-sectionOffset) * 50 / windowHeight;
+          translateY = (-sectionOffset) * 0.5//50 / windowHeight;
           break;
 
       }
@@ -599,7 +606,7 @@ export class SlidesComponent extends UmWebComponent {
     } else if (sectionOffset < -windowHeight) {
       // console.log('section not yet visible')
       //section not yet visible
-      translateY = 100;
+      translateY = windowHeight//100;
 
       switch (animationName) {
         case 'scaleDown':
@@ -619,7 +626,7 @@ export class SlidesComponent extends UmWebComponent {
     } else {
       // console.log('section not visible anymore')
       //section not visible anymore
-      translateY = -100;
+      translateY = -windowHeight//-100;
 
       switch (animationName) {
         case 'scaleDown':
@@ -643,7 +650,7 @@ export class SlidesComponent extends UmWebComponent {
           translateY = 0;
           break;
         case 'parallax':
-          translateY = -50;
+          translateY = -windowHeight / 2//-50;
           break;
       }
     }
@@ -653,23 +660,26 @@ export class SlidesComponent extends UmWebComponent {
 
 
   registerEffectVelocity() {
+
+    const sectionHeight = (<Element>this.querySelector('um-slide')).getBoundingClientRect().height;
+
     Velocity.RegisterEffect("translateUp", {
       defaultDuration: 1,
       calls: [
-        [{ translateY: '-100%' }, 1]
+        [{ translateY: -sectionHeight }, 1]
       ]
     });
     Velocity.RegisterEffect("translateDown", {
       defaultDuration: 1,
       calls: [
-        [{ translateY: '100%' }, 1]
+        [{ translateY: sectionHeight }, 1]
       ]
     });
     Velocity
       .RegisterEffect("translateNone", {
         defaultDuration: 1,
         calls: [
-          [{ translateY: 0, opacity: '1', scale: '1', rotateX: '0', boxShadowBlur: '0' }, 1]
+          [{ translateY: 0, opacity: 1, scale: 1, rotateX: 0, boxShadowBlur: 0 }, 1]
         ],
       });
 
@@ -678,115 +688,115 @@ export class SlidesComponent extends UmWebComponent {
       .RegisterEffect("scaleDown", {
         defaultDuration: 1,
         calls: [
-          [{ opacity: '0', scale: '0.7', boxShadowBlur: '40px' }, 1]
+          [{ opacity: 0, scale: 0.7, boxShadowBlur: '40px' }, 1]
         ]
       });
     //rotation
-    Velocity
-      .RegisterEffect("rotation", {
-        defaultDuration: 1,
-        calls: [
-          [{ opacity: '0', rotateX: '90', translateY: '-100%' }, 1]
-        ]
-      });
-    Velocity
-      .RegisterEffect("rotation.scroll", {
-        defaultDuration: 1,
-        calls: [
-          [{ opacity: '0', rotateX: '90', translateY: 0 }, 1]
-        ]
-      });
-    //gallery
-    Velocity
-      .RegisterEffect("scaleDown.moveUp", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '-10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-          [{ translateY: '-100%' }, 0.60],
-          [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.20]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleDown.moveUp.scroll", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '-100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-          [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.40]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleUp.moveUp", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-          [{ translateY: '0%' }, 0.60],
-          [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleUp.moveUp.scroll", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '0%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-          [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.40]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleDown.moveDown", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-          [{ translateY: '100%' }, 0.60],
-          [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.20]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleDown.moveDown.scroll", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-          [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.40]
-        ]
-      });
-    Velocity
-      .RegisterEffect("scaleUp.moveDown", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '-90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-          [{ translateY: '0%' }, 0.60],
-          [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
-        ]
-      });
-    //catch up
-    Velocity
-      .RegisterEffect("translateUp.delay", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '0%' }, 0.8, { delay: 100 }],
-        ]
-      });
-    //opacity
-    Velocity
-      .RegisterEffect("hide.scaleUp", {
-        defaultDuration: 1,
-        calls: [
-          [{ opacity: '0', scale: '1.2' }, 1]
-        ]
-      });
-    Velocity
-      .RegisterEffect("hide.scaleDown", {
-        defaultDuration: 1,
-        calls: [
-          [{ opacity: '0', scale: '0.8' }, 1]
-        ]
-      });
-    //parallax
-    Velocity
-      .RegisterEffect("translateUp.half", {
-        defaultDuration: 1,
-        calls: [
-          [{ translateY: '-50%' }, 1]
-        ]
-      });
+    // Velocity
+    //   .RegisterEffect("rotation", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ opacity: '0', rotateX: '90', translateY: '-100%' }, 1]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("rotation.scroll", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ opacity: '0', rotateX: '90', translateY: 0 }, 1]
+    //     ]
+    //   });
+    // //gallery
+    // Velocity
+    //   .RegisterEffect("scaleDown.moveUp", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '-10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
+    //       [{ translateY: '-100%' }, 0.60],
+    //       [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.20]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleDown.moveUp.scroll", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '-100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
+    //       [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.40]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleUp.moveUp", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
+    //       [{ translateY: '0%' }, 0.60],
+    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleUp.moveUp.scroll", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '0%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
+    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.40]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleDown.moveDown", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
+    //       [{ translateY: '100%' }, 0.60],
+    //       [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.20]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleDown.moveDown.scroll", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
+    //       [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.40]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("scaleUp.moveDown", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '-90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
+    //       [{ translateY: '0%' }, 0.60],
+    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
+    //     ]
+    //   });
+    // //catch up
+    // Velocity
+    //   .RegisterEffect("translateUp.delay", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '0%' }, 0.8, { delay: 100 }],
+    //     ]
+    //   });
+    // //opacity
+    // Velocity
+    //   .RegisterEffect("hide.scaleUp", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ opacity: '0', scale: '1.2' }, 1]
+    //     ]
+    //   });
+    // Velocity
+    //   .RegisterEffect("hide.scaleDown", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ opacity: '0', scale: '0.8' }, 1]
+    //     ]
+    //   });
+    // //parallax
+    // Velocity
+    //   .RegisterEffect("translateUp.half", {
+    //     defaultDuration: 1,
+    //     calls: [
+    //       [{ translateY: '-50%' }, 1]
+    //     ]
+    //   });
   }
 }
