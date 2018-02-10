@@ -48,7 +48,7 @@ export class SlidesComponent extends UmWebComponent {
 
     //variables
     this.hijacking = 'off';///$('body').data('hijacking');
-    this.animationType = 'scaleDown';///$('body').data('animation');
+    this.animationType = 'gallery';//'scaleDown';///$('body').data('animation');
     this.scrollThreshold = 5;
     this.actual = 1;
     this.animating = false;
@@ -195,7 +195,7 @@ export class SlidesComponent extends UmWebComponent {
       scale: scaleValue,
       rotateX: rotateXValue,
       opacity: opacityValue,
-      boxShadowBlur: boxShadow + 'px',
+      boxShadowBlur: boxShadow, //+ 'px',
       translateZ: 0,
     }, 0)
     // element.velocity({
@@ -318,32 +318,35 @@ export class SlidesComponent extends UmWebComponent {
       // console.log(anim)
       this.unbindScroll(gotoSection, anim.duration);
       this.animating = true;
-
+      console.log('animating start')
       Velocity(visibleSection.lastElementChild, anim.goTo, anim.duration, anim.easing);
       Velocity(gotoSection.lastElementChild, anim.visible, anim.duration, anim.easing,
         () => {
-          this.animating = false;
-          visibleSection.removeAttribute('visible');
-          gotoSection.setAttribute('visible', '');
-          if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
-          this.checkNavigation();
+      console.log('animating stop')
+          if(this.animating) {
+            visibleSection.removeAttribute('visible');
+            gotoSection.setAttribute('visible', '');
+            if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
+  
+            this.animating = false;
+            this.checkNavigation();
+          }
         }
       );
 
       this.actual = this.actual + 1;
     }
     else {
-      console.log('animating')
-      this.animating = false;
-      visibleSection.removeAttribute('visible');
-      gotoSection.setAttribute('visible', '');
+      // setTimeout(() => {
+        this.animating = false;
+      // }, anim.duration);
+
       (this.sectionsAvailable.childNodes as Element[]).forEach(element => {
         Velocity(element, 'finish');
         Velocity(element.lastElementChild, 'finish');
       });
-      // Velocity(visibleSection.lastElementChild, 'finish');
-      // Velocity(gotoSection, 'finish');
-      // Velocity(gotoSection.lastElementChild, 'finish');
+      visibleSection.removeAttribute('visible');
+      gotoSection.setAttribute('visible', '');
       this.unbindScroll(gotoSection, 100);
       if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
     }
@@ -706,67 +709,74 @@ export class SlidesComponent extends UmWebComponent {
     //       [{ opacity: '0', rotateX: '90', translateY: 0 }, 1]
     //     ]
     //   });
-    // //gallery
-    // Velocity
-    //   .RegisterEffect("scaleDown.moveUp", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '-10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-    //       [{ translateY: '-100%' }, 0.60],
-    //       [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.20]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleDown.moveUp.scroll", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '-100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-    //       [{ translateY: '-100%', scale: '1', boxShadowBlur: '0' }, 0.40]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleUp.moveUp", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-    //       [{ translateY: '0%' }, 0.60],
-    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleUp.moveUp.scroll", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '0%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.40]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleDown.moveDown", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '10%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-    //       [{ translateY: '100%' }, 0.60],
-    //       [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.20]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleDown.moveDown.scroll", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '100%', scale: '0.9', boxShadowBlur: '40px' }, 0.60],
-    //       [{ translateY: '100%', scale: '1', boxShadowBlur: '0' }, 0.40]
-    //     ]
-    //   });
-    // Velocity
-    //   .RegisterEffect("scaleUp.moveDown", {
-    //     defaultDuration: 1,
-    //     calls: [
-    //       [{ translateY: '-90%', scale: '0.9', boxShadowBlur: '40px' }, 0.20],
-    //       [{ translateY: '0%' }, 0.60],
-    //       [{ translateY: '0%', scale: '1', boxShadowBlur: '0' }, 0.20]
-    //     ]
-    //   });
+    //gallery
+    Velocity
+      .RegisterEffect("scaleDown.moveUp", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: -sectionHeight * 0.1, scale: 0.9, boxShadowBlur: 40 }, 0.20],
+          [{ translateY: -sectionHeight }, 0.60],
+          [{ translateY: -sectionHeight, scale: 1, boxShadowBlur: 0 }, 0.20]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleDown.moveUp.scroll", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: -sectionHeight, scale: 0.9, boxShadowBlur: 40 }, 0.60],
+          [{ translateY: -sectionHeight, scale: 1, boxShadowBlur: 0 }, 0.40]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleUp.moveUp", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: sectionHeight * 0.9, scale: 0.9, boxShadowBlur: 40 }, 0.20],
+          [{ translateY: 0 }, 0.60],
+          [{ translateY: 0, scale: 1, boxShadowBlur: 0 }, 0.20]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleUp.moveUp.scroll", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: 0, scale: 0.9, boxShadowBlur: 40 }, 0.60],
+          [{ translateY: 0, scale: 1, boxShadowBlur: 0 }, 0.40]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleDown.moveDown", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: sectionHeight * 0.1, scale: 0.9, boxShadowBlur: 40 }, 0.20],
+          [{ translateY: sectionHeight }, 0.60],
+          [{ translateY: sectionHeight, scale: 1, boxShadowBlur: 0 }, 0.20]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleDown.moveDown.scroll", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: sectionHeight, scale: 0.9, boxShadowBlur: 40 }, 0.60],
+          [{ translateY: sectionHeight, scale: 1, boxShadowBlur: 0 }, 0.40]
+        ],
+        reset: { scale: 1 }
+      });
+    Velocity
+      .RegisterEffect("scaleUp.moveDown", {
+        defaultDuration: 1,
+        calls: [
+          [{ translateY: -sectionHeight * 0.9, scale: 0.9, boxShadowBlur: 40 }, 0.20],
+          [{ translateY: 0 }, 0.60],
+          [{ translateY: 0, scale: 1, boxShadowBlur: 0 }, 0.20]
+        ],
+        reset: { scale: 1 }
+      });
     // //catch up
     // Velocity
     //   .RegisterEffect("translateUp.delay", {
