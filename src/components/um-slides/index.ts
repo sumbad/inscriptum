@@ -342,8 +342,8 @@ export class SlidesComponent extends UmWebComponent {
       // }, anim.duration);
 
       (this.sectionsAvailable.childNodes as Element[]).forEach(element => {
-        Velocity(element, 'finish');
-        Velocity(element.lastElementChild, 'finish');
+        Velocity(element, 'finish', true);
+        Velocity(element.lastElementChild, 'finish', true);
       });
       visibleSection.removeAttribute('visible');
       gotoSection.setAttribute('visible', '');
