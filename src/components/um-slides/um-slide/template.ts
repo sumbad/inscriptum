@@ -1,7 +1,5 @@
 export default (html, scope) => html`
 <section>
-  <div>
-    <h2>${scope.props.content}</h2>
-  </div>
+  <um-slide-content>${{ html: scope.content }}</um-slide-content>
 </section>
 `;

@@ -6,27 +6,19 @@ declare const $: any;
 
 import template from './template';
 
-import './um-slide-content';
 
-
-
-@Define('um-slide')
-export class SlideComponent extends UmWebComponent {
+@Define('um-slide-content')
+export class SlideContentComponent extends UmWebComponent {
   // static attributes = ['content'];
   // static get observedAttributes() { return this.attributes; }
 
-  content;
-
   constructor() {
-    super(template);
-
-    const html = this.wire();
-    this.content = this.innerHTML;
+    super(template, require('./style.scss'), true);
   }
 
 
   // connectedCallback() {
-  //   super.connectedCallback(SlideComponent.attributes);
+    // super.connectedCallback(SlideComponent.attributes);
   // }
 
 }

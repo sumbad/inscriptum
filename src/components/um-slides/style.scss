@@ -14,11 +14,13 @@ html {
   font-size: 62.5%;
 }
 
-body {
+um-slides {
+  display: block;
   font-size: 1.6rem;
   font-family: "Open Sans", sans-serif;
   color: #ffffff;
-  background-color: #22283f;
+  background-color: #FFF;
+  // background-color: #22283f;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -86,25 +88,25 @@ um-slide:first-of-type>section::before {
   color: #6a7083;
 }
 
-um-slide:first-of-type>section {
-  background-color: #2b334f;
-}
+// um-slide:first-of-type>section {
+//   background-color: #2b334f;
+// }
 
-um-slide:nth-of-type(2)>section {
-  background-color: #2e5367;
-}
+// um-slide:nth-of-type(2)>section {
+//   background-color: #2e5367;
+// }
 
-um-slide:nth-of-type(3)>section {
-  background-color: #267481;
-}
+// um-slide:nth-of-type(3)>section {
+//   background-color: #267481;
+// }
 
-um-slide:nth-of-type(4)>section {
-  background-color: #fcb052;
-}
+// um-slide:nth-of-type(4)>section {
+//   background-color: #fcb052;
+// }
 
-um-slide:nth-of-type(5)>section {
-  background-color: #f06a59;
-}
+// um-slide:nth-of-type(5)>section {
+//   background-color: #f06a59;
+// }
 
 // [data-animation="parallax"] .cd-section>div,
 // [data-animation="fixed"] .cd-section>div,
@@ -139,10 +141,13 @@ um-slide:nth-of-type(5)>section {
 //     background-image: url("../img/img-5.jpg");
 // }
 @media only screen and (min-width: 1050px) {
-  um-slide h2 {
-    font-size: 4rem;
-    font-weight: 300;
-  } // [data-hijacking="on"] um-slide {
+  // um-slide h2 {
+  //   font-size: 4rem;
+  //   font-weight: 300;
+  // } 
+  
+  
+  // [data-hijacking="on"] um-slide {
   //   opacity: 0;
   //   visibility: hidden;
   //   position: absolute;
@@ -155,7 +160,10 @@ um-slide:nth-of-type(5)>section {
   // }
   [data-hijacking="off"] um-slide>section {
     opacity: 0;
-  } // [data-animation="rotate"] um-slide {
+  } 
+  
+  
+  // [data-animation="rotate"] um-slide {
   //   /* enable a 3D-space for children elements */
   //   -webkit-perspective: 1800px;
   //   -moz-perspective: 1800px;

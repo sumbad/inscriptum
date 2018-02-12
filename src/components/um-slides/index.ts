@@ -8,10 +8,11 @@ import { Define, UmWebComponent } from "components/um-web.component";
 declare const $: any;
 
 import template from './template';
+import slides, { styles as slidesStyle } from './slides';
 
 import './um-slide';
 
-// type TanimatingType = 'next' | 'prev'
+
 
 @Define('um-slides')
 export class SlidesComponent extends UmWebComponent {
@@ -34,7 +35,9 @@ export class SlidesComponent extends UmWebComponent {
 
 
   constructor() {
-    super(template, require('./style.scss'));
+    super(template, require('./style.scss').concat(slidesStyle));
+
+    console.log(slidesStyle);
 
     this.scrollAnimation = this.scrollAnimation.bind(this);
     this.nextSection = this.nextSection.bind(this);
@@ -53,18 +56,7 @@ export class SlidesComponent extends UmWebComponent {
     this.actual = 1;
     this.animating = false;
 
-
-
-    const html = this.wire();
-    //DOM elements
-    this.sectionsAvailable =
-      html`
-        <um-slide visible content="Page Scroll Effects"></um-slide>
-        <um-slide content="Section 2"></um-slide>
-        <um-slide content="Section 3"></um-slide>
-        <um-slide content="Section 4"></um-slide>
-        <um-slide content="Section 5"></um-slide>
-    `;
+    this.sectionsAvailable = slides(this.wire(), {});
 
     this.render();
     this.registerEffectVelocity();
@@ -322,12 +314,12 @@ export class SlidesComponent extends UmWebComponent {
       Velocity(visibleSection.lastElementChild, anim.goTo, anim.duration, anim.easing);
       Velocity(gotoSection.lastElementChild, anim.visible, anim.duration, anim.easing,
         () => {
-      console.log('animating stop')
-          if(this.animating) {
+          console.log('animating stop')
+          if (this.animating) {
             visibleSection.removeAttribute('visible');
             gotoSection.setAttribute('visible', '');
             if (this.hijacking == 'off') window.addEventListener('scroll', this.scrollAnimation);
-  
+
             this.animating = false;
             this.checkNavigation();
           }
@@ -338,7 +330,7 @@ export class SlidesComponent extends UmWebComponent {
     }
     else {
       // setTimeout(() => {
-        this.animating = false;
+      this.animating = false;
       // }, anim.duration);
 
       (this.sectionsAvailable.childNodes as Element[]).forEach(element => {
