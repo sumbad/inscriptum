@@ -49,7 +49,7 @@ header {
    background: #fff;    
 }
 header .header-content {
-	background: #fff url(../public/css/img/header-content-bg.png) no-repeat right top;
+	background: #fff url(/css/img/header-content-bg.png) no-repeat right top;
 	height: 288px;
 	border-bottom: 1px dashed #E8E8E8;
 	position: relative;	
@@ -60,7 +60,7 @@ header .header-content {
 (min-resolution: 192dpi) {
 
 	header .header-content {
-		background: #fff url(../public/css/img/header-content-bg_@2x.png) no-repeat right top;
+		background: #fff url(/css/img/header-content-bg_@2x.png) no-repeat right top;
 		background-size: 361px 256px;
 	}
 
@@ -289,7 +289,7 @@ ul#nav ul li a {
    border-radius: 3px;
 }
 #sidebar .widget_search .submit-search {
-	background:url(../public/css/img/search-icon.png) no-repeat;
+	background:url(/css/img/search-icon.png) no-repeat;
 	box-shadow: none;
 	border:none;
 	cursor:pointer;
@@ -307,7 +307,7 @@ ul#nav ul li a {
 (min-resolution: 192dpi) {
 
 	#sidebar .widget_search .submit-search {
-		background:url(../public/css/img/search-icon_@2x.png) no-repeat;
+		background:url(/css/img/search-icon_@2x.png) no-repeat;
 		background-size: 18px 18px;
 	}
 

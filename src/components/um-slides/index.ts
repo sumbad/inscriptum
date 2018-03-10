@@ -3,7 +3,7 @@ import * as Velocity from 'velocity-animate';
 import 'velocity-animate/velocity.ui';
 
 import articles from '../../data/articles/articles';
-import { Define, UmWebComponent } from "components/um-web.component";
+import { Define, UmWebComponent } from 'components/um-web.component';
 
 declare const $: any;
 
@@ -57,6 +57,8 @@ export class SlidesComponent extends UmWebComponent {
     this.animating = false;
 
     this.sectionsAvailable = slides(this.wire(), {});
+
+    console.log(this.sectionsAvailable)
 
     this.render();
     this.registerEffectVelocity();
@@ -163,6 +165,7 @@ export class SlidesComponent extends UmWebComponent {
 
       this.transformSection(<Element>actualBlock.lastElementChild, animationValues[0], animationValues[1], animationValues[2], animationValues[3], animationValues[4]);
 
+      console.log(22222222, $(actualBlock).offset().top);
       (offset >= 0 && offset < windowHeight) ? actualBlock.setAttribute('visible', '') : actualBlock.removeAttribute('visible');
     });
 
@@ -415,7 +418,7 @@ export class SlidesComponent extends UmWebComponent {
    */
   deviceType() {
     return window.getComputedStyle(<HTMLBodyElement>document.querySelector('body'), '::before').
-      getPropertyValue('content').replace(/"/g, "").replace(/'/g, "");
+      getPropertyValue('content').replace(/"/g, '').replace(/'/g, '');
   }
 
 
@@ -658,20 +661,20 @@ export class SlidesComponent extends UmWebComponent {
 
     const sectionHeight = (<Element>this.querySelector('um-slide')).getBoundingClientRect().height;
 
-    Velocity.RegisterEffect("translateUp", {
+    Velocity.RegisterEffect('translateUp', {
       defaultDuration: 1,
       calls: [
         [{ translateY: -sectionHeight }, 1]
       ]
     });
-    Velocity.RegisterEffect("translateDown", {
+    Velocity.RegisterEffect('translateDown', {
       defaultDuration: 1,
       calls: [
         [{ translateY: sectionHeight }, 1]
       ]
     });
     Velocity
-      .RegisterEffect("translateNone", {
+      .RegisterEffect('translateNone', {
         defaultDuration: 1,
         calls: [
           [{ translateY: 0, opacity: 1, scale: 1, rotateX: 0, boxShadowBlur: 0 }, 1]
@@ -680,7 +683,7 @@ export class SlidesComponent extends UmWebComponent {
 
     //scale down
     Velocity
-      .RegisterEffect("scaleDown", {
+      .RegisterEffect('scaleDown', {
         defaultDuration: 1,
         calls: [
           [{ opacity: 0, scale: 0.7, boxShadowBlur: '40px' }, 1]
@@ -703,7 +706,7 @@ export class SlidesComponent extends UmWebComponent {
     //   });
     //gallery
     Velocity
-      .RegisterEffect("scaleDown.moveUp", {
+      .RegisterEffect('scaleDown.moveUp', {
         defaultDuration: 1,
         calls: [
           [{ translateY: -sectionHeight * 0.1, scale: 0.9, boxShadowBlur: 40 }, 0.20],
@@ -713,7 +716,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleDown.moveUp.scroll", {
+      .RegisterEffect('scaleDown.moveUp.scroll', {
         defaultDuration: 1,
         calls: [
           [{ translateY: -sectionHeight, scale: 0.9, boxShadowBlur: 40 }, 0.60],
@@ -722,7 +725,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleUp.moveUp", {
+      .RegisterEffect('scaleUp.moveUp', {
         defaultDuration: 1,
         calls: [
           [{ translateY: sectionHeight * 0.9, scale: 0.9, boxShadowBlur: 40 }, 0.20],
@@ -732,7 +735,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleUp.moveUp.scroll", {
+      .RegisterEffect('scaleUp.moveUp.scroll', {
         defaultDuration: 1,
         calls: [
           [{ translateY: 0, scale: 0.9, boxShadowBlur: 40 }, 0.60],
@@ -741,7 +744,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleDown.moveDown", {
+      .RegisterEffect('scaleDown.moveDown', {
         defaultDuration: 1,
         calls: [
           [{ translateY: sectionHeight * 0.1, scale: 0.9, boxShadowBlur: 40 }, 0.20],
@@ -751,7 +754,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleDown.moveDown.scroll", {
+      .RegisterEffect('scaleDown.moveDown.scroll', {
         defaultDuration: 1,
         calls: [
           [{ translateY: sectionHeight, scale: 0.9, boxShadowBlur: 40 }, 0.60],
@@ -760,7 +763,7 @@ export class SlidesComponent extends UmWebComponent {
         reset: { scale: 1 }
       });
     Velocity
-      .RegisterEffect("scaleUp.moveDown", {
+      .RegisterEffect('scaleUp.moveDown', {
         defaultDuration: 1,
         calls: [
           [{ translateY: -sectionHeight * 0.9, scale: 0.9, boxShadowBlur: 40 }, 0.20],

@@ -1,6 +1,4 @@
-export default (html, scope) => html`
-
-${scope.sectionsAvailable}
+export default (html, scope) => html` ${scope.sectionsAvailable}
 
 <!-- <section class="cd-section visible">
   <div>
@@ -35,11 +33,14 @@ ${scope.sectionsAvailable}
 <nav>
   <ul class="cd-vertical-nav">
     <li>
-      <a href="#0" class="cd-prev inactive">Next</a>
+      <a href="#0" class="cd-prev inactive">
+        Next
+      </a>
     </li>
     <li>
-      <a href="#0" class="cd-next">Prev</a>
+      <a href="#0" class="cd-next">
+        Prev
+      </a>
     </li>
   </ul>
-</nav>
-`;
+</nav>`;
