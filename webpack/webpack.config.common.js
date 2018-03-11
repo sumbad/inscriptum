@@ -138,6 +138,7 @@ module.exports = function(helper) {
       }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
+        chunks: ['app', 'polyfills', 'vendor'],
         template: path.resolve(helper.PATHS.src, 'index.html'),
       }),
       new HtmlWebpackPlugin({
