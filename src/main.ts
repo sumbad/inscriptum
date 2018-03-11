@@ -1,33 +1,59 @@
+import HyperHTML from 'hyperhtml/esm';
+
 import polyfills from './polyfills';
 import { Router } from './router';
+import Tools from 'utils/tools';
 
 
 
-const components = [
-  'um-app',
-  'um-gist',
-  'um-preloader',
-  'um-articles-list',
-  'um-article-preview',
-  'um-article',
-  'um-editor',
-];
+let mainRouter;
+const mainElement = document.querySelector('main');
+
+if (mainElement !== null) {
+  const html = HyperHTML.bind(mainElement);
+
+  const articles = async (ctx, next) => {
+    await Tools.importWebComponent('inscriptum-posts', 'posts');
+    await Tools.importWebComponent('um-preloader', 'um-preloader');
+
+    html`
+<link href="/css/fontawesome_all.css" rel="stylesheet" />
+<inscriptum-posts></inscriptum-posts>
+    `;
+    next();
+  };
+
+  const presentation = async (ctx, next) => {
+    await Tools.importWebComponent('inscriptum-presentation', 'presentation');
+
+    html`
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+<inscriptum-presentation></inscriptum-presentation>
+    `;
+  };
+
+  mainRouter = [
+    {
+      path: '/presentation',
+      callback: presentation
+    },
+    {
+      path: '/articles',
+      callback: articles,
+    },
+    {
+      path: '*',
+      callback: articles,
+    },
+  ];
+
+};
 
 
 polyfills.then(
   async p => {
-
-    Router.initMainRouter();    
-
-    // import all required sub components
-    await Promise.all(components.map(
-      c => import('./components/' + c)
-    ));
-
-    // await all definitions
-    await Promise.all(components.map(
-      c => customElements.whenDefined(c)
-    ));
+    Router.routing(mainRouter);
   }
 ).catch(e => {
   console.warn(e);

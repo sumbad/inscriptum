@@ -15,7 +15,6 @@ module.exports = function(helper) {
     entry: {
       // 'babel-polyfill': 'babel-polyfill',
       'app': path.resolve(helper.PATHS.src, 'main.ts'),
-      'slide': path.resolve(helper.PATHS.src, 'slide.ts'),
       'polyfills': path.resolve(helper.PATHS.src, 'polyfills.ts'),
       'vendor':  path.resolve(helper.PATHS.src, 'vendor.ts'),
     },
@@ -142,11 +141,6 @@ module.exports = function(helper) {
         chunks: ['app', 'polyfills', 'vendor'],
         template: path.resolve(helper.PATHS.src, 'index.html'),
       }),
-      // new HtmlWebpackPlugin({
-      //   filename: 'slide.html',
-      //   chunks: ['slide', 'polyfills'],
-      //   template: path.resolve(helper.PATHS.src, 'slide.html'),
-      // }),
       new HtmlWebpackPlugin({
         filename: '404.html',
         template: path.resolve(helper.PATHS.src, '404.html'),
