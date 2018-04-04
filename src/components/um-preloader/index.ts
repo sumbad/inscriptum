@@ -1,4 +1,4 @@
-import { Define, UmWebComponent } from "components/um-web.component";
+import { Define, UmWebComponent } from 'components/um-web.component';
 import './um-spinner-round';
 
 import template from './template';
@@ -11,7 +11,7 @@ export class PreloaderComponent extends UmWebComponent {
   static attributes = ['loading'];
   static get observedAttributes() { return this.attributes; }
 
-
+  
   constructor() {
     super(
       template,

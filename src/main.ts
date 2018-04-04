@@ -17,26 +17,29 @@ if (mainElement !== null) {
     await Tools.importWebComponent('um-preloader', 'um-preloader');
 
     html`
-<link href="/css/fontawesome_all.css" rel="stylesheet" />
-<inscriptum-posts></inscriptum-posts>
+      <link href="/css/fontawesome_all.css" rel="stylesheet" />
+      <inscriptum-posts></inscriptum-posts>
     `;
     next();
   };
 
-  const presentation = async (ctx, next) => {
-    await Tools.importWebComponent('inscriptum-presentation', 'presentation');
-
+  const conference = async (ctx, next) => {
+    await Tools.importWebComponent('inscriptum-conference', 'conference');
     html`
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
-<inscriptum-presentation></inscriptum-presentation>
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+      <inscriptum-conference></inscriptum-conference>
     `;
   };
-
+  
   mainRouter = [
     {
-      path: '/presentation',
-      callback: presentation
+      path: '/conference',
+      callback: conference
+    },
+    {
+      path: '/conference/presentation',
+      callback: conference
     },
     {
       path: '/articles',
