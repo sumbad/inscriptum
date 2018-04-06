@@ -15,6 +15,8 @@ export class Router {
         page(router.path, router.callback);
       });
 
+      // console.log(33333, page.length)
+
       page.start();
     });
   }

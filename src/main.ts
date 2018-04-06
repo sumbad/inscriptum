@@ -30,15 +30,16 @@ if (mainElement !== null) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
       <inscriptum-conference></inscriptum-conference>
     `;
+    next();
   };
   
   mainRouter = [
+    // {
+    //   path: '/conference',
+    //   callback: conference
+    // },
     {
-      path: '/conference',
-      callback: conference
-    },
-    {
-      path: '/conference/presentation',
+      path: '/conference/*',
       callback: conference
     },
     {

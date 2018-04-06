@@ -20,7 +20,7 @@ export default class Tools {
     // https://stackoverflow.com/questions/44042816/what-is-wrong-with-crypto-getrandomvalues-in-internet-explorer-11
     const crypto = window.crypto || window['msCrypto']; // for IE 11
     return hash.replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      (c ^ crypto.getRandomValues(new Uint8Array(1))![0] & 15 >> c / 4).toString(16)
     );
   }
 }
