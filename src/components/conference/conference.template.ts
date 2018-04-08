@@ -1,7 +1,7 @@
 export default (html, scope) => html`
 <div>
   1111
-  ${{text: scope.routerView}}
+  <div>${scope.routerView}</div>
   2222
 </div>
 `;
