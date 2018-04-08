@@ -23,7 +23,10 @@ export default (html, scope) => html`
         <div class="row">
           <ul id="nav" class="nav">
             <li class="current">
-              <a href="/">Главная</a>
+              <a href="/articles">Статьи</a>
+            </li>
+            <li>
+              <a href="/conference">Слайды</a>
             </li>
           </ul>
           <!-- end #nav -->

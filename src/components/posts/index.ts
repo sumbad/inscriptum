@@ -1,3 +1,5 @@
+import page from 'page';
+
 import { Define, UmWebComponent } from 'components/um-web.component';
 
 import { PreloaderService } from '../um-preloader/service';
@@ -49,9 +51,8 @@ export class PostsComponent extends UmWebComponent {
 
     this.render();
 
-    /*************************************************
-   /************* TODO: убрать jQuery **************/
-
+    // TODO: убрать jQuery
+    //#region 
     /* Mobile Menu ------------------------------------------------------ */
     var toggle_button = $('<a>', {
       id: 'toggle-btn',
@@ -82,19 +83,21 @@ export class PostsComponent extends UmWebComponent {
     $('ul#nav li a').on('click', function () {
       if (nav.hasClass('mobile')) nav.fadeOut('fast');
     });
-    /*************************************************
-  */
+    //#endregion
   }
 
 
   routing() {
-    const html = this.wire();
+    const html = this.wire(this, ':articles');
+
+    const rootPath = '/articles';
 
     const articles = async (ctx, next) => {
       await Tools.importWebComponent('um-articles-list', 'posts/um-articles-list');
       await Tools.importWebComponent('um-article-preview', 'posts/um-articles-list/um-article-preview');
       this.routerView = html`<um-articles-list></um-articles-list>`;
       this.render();
+      ctx.handled = true;
     };
 
     const article = async (ctx, next) => {
@@ -102,6 +105,8 @@ export class PostsComponent extends UmWebComponent {
       await Tools.importWebComponent('um-gist', 'posts/um-article/um-gist');
       this.routerView = html`<um-article article-name=${ctx.params.id}></um-article>`;
       this.render();
+
+      ctx.handled = true;
     };
 
     // const editor = (ctx, next) => {
@@ -112,20 +117,27 @@ export class PostsComponent extends UmWebComponent {
 
     const router = [
       {
-        path: '/articles/:id',
+        path: '/:id',
         callback: article
       },
       {
-        path: '/articles',
+        path: '',
         callback: articles
       },
       {
         path: '*',
-        callback: articles
+        callback: (ctx, next) => {
+          if (ctx.handled) {
+            ctx.handled = false;
+            next();
+          } else {
+            page.replace(rootPath);
+          }
+        },
       },
     ];
 
-    Router.routing(router);
+    Router.routing(rootPath, router);
   }
 
 
