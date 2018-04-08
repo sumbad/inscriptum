@@ -24,7 +24,7 @@
     "bourbon": "^5.0.0",
     "hyperhtml": "^2.7.1",
     "page": "^1.8.6",
-    "presentarium": "0.0.5",
+    "presentarium": "^0.0.5",
     "rxjs": "^5.5.8",
     "velocity-animate": "^1.5.1",
     "whatwg-fetch": "^2.0.4"
