@@ -3,7 +3,7 @@ import HyperHTML from 'hyperhtml/esm';
 import polyfills from './polyfills';
 import { Router } from './router';
 import Tools from 'utils/tools';
-
+import page from 'page';
 
 
 let mainRouter;
@@ -12,7 +12,7 @@ const mainElement = document.querySelector('main');
 if (mainElement !== null) {
   const html = HyperHTML.bind(mainElement);
 
-  const articles = async (ctx, next) => {
+  const articles = async (ctx: PageJS.Context, next) => {   
     await Tools.importWebComponent('inscriptum-posts', 'posts');
     await Tools.importWebComponent('um-preloader', 'um-preloader');
 
@@ -20,6 +20,8 @@ if (mainElement !== null) {
       <link href="/css/fontawesome_all.css" rel="stylesheet" />
       <inscriptum-posts></inscriptum-posts>
     `;
+
+    ctx.handled = true;
     next();
   };
 
@@ -30,25 +32,30 @@ if (mainElement !== null) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
       <inscriptum-conference></inscriptum-conference>
     `;
+
+    ctx.handled = true;
     next();
   };
-  
+
   mainRouter = [
-    // {
-    //   path: '/conference',
-    //   callback: conference
-    // },
     {
-      path: '/conference/*',
+      path: '/conference*',
       callback: conference
     },
     {
-      path: '/articles',
+      path: '/articles*',
       callback: articles,
     },
     {
       path: '*',
-      callback: articles,
+      callback: (ctx, next) => {
+        if (ctx.handled) {
+          ctx.handled = false;
+          next();
+        } else {
+          page.replace('/articles');
+        }
+      },
     },
   ];
 
@@ -57,7 +64,7 @@ if (mainElement !== null) {
 
 polyfills.then(
   async p => {
-    Router.routing(mainRouter);
+    Router.routing('', mainRouter);
   }
 ).catch(e => {
   console.warn(e);
