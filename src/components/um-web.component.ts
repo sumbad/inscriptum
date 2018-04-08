@@ -1,4 +1,5 @@
 import { bind, wire } from 'hyperhtml/esm';
+import { Observer, Subscriber, Subject, Observable, Subscription } from 'rxjs';
 
 
 
@@ -12,6 +13,10 @@ export abstract class UmWebComponent extends HTMLElement {
 
   protected _template: (html, scope) => any;
   protected _style: string;
+  private _subscriptions: Subscription[] = [];
+  protected set sub(subscription: Subscription){
+    this._subscriptions.push(subscription);
+  }
 
 
   constructor(
@@ -60,6 +65,15 @@ export abstract class UmWebComponent extends HTMLElement {
       this.props[name] = newValue;
       this.render();
     }
+  }
+
+
+  /**
+   * LIFECYCLE
+   * Remove Custom element from page
+   */
+  disconnectedCallback() {
+    this._subscriptions.forEach(s=>s.unsubscribe());
   }
 
 
