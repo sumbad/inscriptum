@@ -8,8 +8,8 @@ import template from './template';
 
 
 
-@Define('um-article-preview')
-export class ArticlePreviewComponent extends UmWebComponent {
+@Define('inscriptum-post-preview')
+export class PostPreviewComponent extends UmWebComponent {
   public green: 'green';
 
   

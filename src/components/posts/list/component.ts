@@ -9,8 +9,8 @@ import template from './template';
 
 
 
-@Define('um-articles-list')
-export class ArticlesListComponent extends UmWebComponent {
+@Define('inscriptum-posts-list')
+export class PostsListComponent extends UmWebComponent {
   public articlesList: { name: string; title: string; datePublished: Date; }[] = [];
   public previews: any[] = [];
 
@@ -31,7 +31,7 @@ export class ArticlesListComponent extends UmWebComponent {
     this._loadPreviews(this.articlesList.map(a => a.name)).then(previews => {
 
       this.previews = previews.map((body, index) => {
-        const $articlePreview = <Element>document.importNode($umArticlePrevie.content, true).querySelector('um-article-preview');
+        const $articlePreview = <Element>document.importNode($umArticlePrevie.content, true).querySelector('inscriptum-post-preview');
         $articlePreview.setAttribute('article-title', this.articlesList[index].title);
         $articlePreview.setAttribute('article-name', this.articlesList[index].name);
         $articlePreview.setAttribute('article-date', this.articlesList[index].datePublished.toDateString());

@@ -1,6 +1,6 @@
 export default (html, scope) => html`
 <template id="umArticlePreview">
-  <um-article-preview></um-article-preview>
+  <inscriptum-post-preview></inscriptum-post-preview>
 </template>
 
 <div id="umArticlePrevieList">

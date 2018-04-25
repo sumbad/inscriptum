@@ -10,8 +10,8 @@ declare const $: any;
 import template from './template';
 
 
-@Define('um-article')
-export class ArticleComponent extends UmWebComponent {
+@Define('inscriptum-post')
+export class PostComponent extends UmWebComponent {
   static attributes = ['article-name'];
   static get observedAttributes() { return this.attributes; }
 
@@ -26,12 +26,10 @@ export class ArticleComponent extends UmWebComponent {
 
 
   connectedCallback() {
-    super.connectedCallback(ArticleComponent.attributes);
+    super.connectedCallback(PostComponent.attributes);
     const article = articles.find(a => a.name === this.props['article-name']);
 
     if (typeof article !== 'undefined') {
-
-
       this.articleTitle = article.title;
       this.articleDate = DateUtilities.formatDate(new Date(article.datePublished), 'dd MMMM YYYY г.');
 
