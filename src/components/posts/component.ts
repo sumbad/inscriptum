@@ -47,12 +47,7 @@ export class PostsComponent extends UmWebComponent {
     const html = this.wire(this, ':articles');
 
     this.sub = postRouter.$routePostsList.subscribe(async (d: { ctx, next }) => {
-      await Tools.importWebComponent(`inscriptum-posts-list`, 'posts');
-
-
-      // console.log(PostComponent.)
-      // @TODO: need it?
-      // await Tools.importWebComponent('inscriptum-post-preview', 'posts');
+      await import('./list');
       this.routerView = html`<inscriptum-posts-list></inscriptum-posts-list>`;
       this.render();
 
@@ -60,31 +55,7 @@ export class PostsComponent extends UmWebComponent {
     });
 
     this.sub = postRouter.$routePost.subscribe(async (d: { ctx, next }) => {
-      // await Tools.importWebComponent('inscriptum-post', 'posts');
-
-      // const post = {
-      //   tag: 'inscriptum-post',
-      //   import: import('./post/component')
-      // };
-      // const gist = {
-      //   tag: 'um-gist',
-      //   import: import('./post/um-gist/index')
-      // };
-
-      await import('./post/component');
-      await import('./post/um-gist/index');
-
-      // await importWebComponent([post, gist]);
-
-      // await Promise.all([post, gist]);
-      // PostComponent
-
-      // await import('./post/component');
-      // await customElements.whenDefined('inscriptum-post');
-
-      // await Tools.importWebComponent('um-gist', 'posts/post/um-gist');
-
-
+      await import('./post');
       this.routerView = html`<inscriptum-post article-name=${d.ctx.params.id}></inscriptum-post>`;
       this.render();
 

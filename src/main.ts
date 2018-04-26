@@ -12,9 +12,9 @@ const mainElement = document.querySelector('main');
 if (mainElement !== null) {
   const html = HyperHTML.bind(mainElement);
 
-  const articles = async (ctx: PageJS.Context, next) => {   
-    await Tools.importWebComponent('inscriptum-posts', 'posts');
-    await Tools.importWebComponent('um-preloader', 'um-preloader');
+  const articles = async (ctx: PageJS.Context, next) => {
+    await import('./components/posts/component');
+    await import('./components/um-preloader');
 
     html`
       <link href="/css/fontawesome_all.css" rel="stylesheet" />
@@ -26,7 +26,8 @@ if (mainElement !== null) {
   };
 
   const conference = async (ctx, next) => {
-    await Tools.importWebComponent('inscriptum-conference', 'conference');
+    await import('./components/conference/component');
+
     html`
       <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />

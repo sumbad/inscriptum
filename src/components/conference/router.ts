@@ -3,7 +3,7 @@ import { AbstractRouter, IRouters } from 'components/abstract.router';
 
 
 
-export class ConferenceService extends AbstractRouter {
+class ConferenceRouter extends AbstractRouter {
   goPresentation = new Subject();
   goConference = new Subject();
 
@@ -45,3 +45,5 @@ export class ConferenceService extends AbstractRouter {
   }
 
 }
+
+export const conferenceRouter = new ConferenceRouter();

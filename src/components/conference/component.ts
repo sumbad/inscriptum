@@ -1,7 +1,8 @@
 import { Define, UmWebComponent } from 'components/um-web.component';
 import Tools from 'utils/tools';
 
-import { conferenceService, conferenceTemplate } from '.';
+import template from './template';
+import { conferenceRouter } from './router';
 
 
 
@@ -11,20 +12,20 @@ export class ConferenceComponent extends UmWebComponent {
   public isPreloader = true;
 
   constructor() {
-    super(conferenceTemplate);
+    super(template);
   }
 
 
   connectedCallback() {
     const html = this.wire();
 
-    this.sub = conferenceService.goConference.subscribe((d: { ctx, next }) => {
+    this.sub = conferenceRouter.goConference.subscribe((d: { ctx, next }) => {
       this.routerView = html`<div>2222</div>`;
       this.render();
       d.ctx.handled = true;
     });
 
-    this.sub = conferenceService.goPresentation.subscribe(async (d: { ctx, next }) => {
+    this.sub = conferenceRouter.goPresentation.subscribe(async (d: { ctx, next }) => {
       await Tools.importWebComponent('inscriptum-presentation', 'conference/presentation');
       this.routerView = html`<inscriptum-presentation></inscriptum-presentation>`;
       this.render();
