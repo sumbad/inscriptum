@@ -4,28 +4,33 @@ import { AbstractRouter, IRouters } from 'components/abstract.router';
 
 
 class ConferenceRouter extends AbstractRouter {
-  goPresentation = new Subject();
-  goConference = new Subject();
+  rootPath: string;
 
+  $routePresentation = new Subject();
+  $routeConference = new Subject();
 
   getRouter(): IRouters {
-    const rootPath: string = '/conference';
+    const rootPath = '/conference';
+    this.rootPath = rootPath;
+
+    console.log(this.rootPath)
 
     return {
       rootPath,
       routers: [
         {
           path: '/presentation/:id',
-          callback: (ctx, next) => this.goPresentation.next({ ctx, next })
+          callback: (ctx, next) => this.$routePresentation.next({ ctx, next })
         },
         {
           path: '/:id',
-          callback: (ctx, next) => this.goConference.next({ ctx, next })
+          callback: (ctx, next) => this.$routeConference.next({ ctx, next })
         },
         {
           path: '',
           callback: (ctx, next) => {
-            this.goConference.next({ ctx, next });
+            this.page.replace(rootPath+'/presentation/webcomponents-common');
+            // this.$routeConference.next({ ctx, next });
             ctx.handled = true;
           }
         },

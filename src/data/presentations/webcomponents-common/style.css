@@ -29,48 +29,48 @@
 }
 
 #slide1 .slide__object {
-  background-image: url(/slide/imgs/web-components.svg);
+  background-image: url(images/web-components.svg);
   background-size: cover;
 }
 
 #slide2 .slide__object {
-  background-image: url(/slide/imgs/2.png);
+  background-image: url(images/2.png);
 }
 
 #slide3 .slide__object {
-  background-image: url(/slide/imgs/3.png);
+  background-image: url(images/3.png);
 }
 
 #slide4 .slide__object {
-  background-image: url(/slide/imgs/4.png);
+  background-image: url(images/4.png);
 }
 
 #slide5 .slide__object {
-  background-image: url(/slide/imgs/5.png);
+  background-image: url(images/5.png);
 }
 
 #slide6 .slide__object {
-  background-image: url(/slide/imgs/6.png);
+  background-image: url(images/6.png);
 }
 
 #slide7 .slide__object {
-  background-image: url(/slide/imgs/6_1.png);
+  background-image: url(images/6_1.png);
 }
 
 #slide8 .slide__object {
-  background-image: url(/slide/imgs/7.png);
+  background-image: url(images/7.png);
 }
 
 #slide9 .slide__object {
-  background-image: url(/slide/imgs/7_1.png);
+  background-image: url(images/7_1.png);
 }
 
 #slide10 .slide__object {
-  background-image: url(/slide/imgs/8.png);
+  background-image: url(images/8.png);
 }
 
 #slide11 .slide__object {
-  background-image: url(/slide/imgs/9.jpg);
+  background-image: url(images/9.jpg);
   background-size: cover;
 }
 

@@ -19,15 +19,15 @@ export class ConferenceComponent extends UmWebComponent {
   connectedCallback() {
     const html = this.wire();
 
-    this.sub = conferenceRouter.goConference.subscribe((d: { ctx, next }) => {
-      this.routerView = html`<div>2222</div>`;
+    this.sub = conferenceRouter.$routeConference.subscribe((d: { ctx, next }) => {
+      this.routerView = html`<a href=${conferenceRouter.rootPath + '/presentation/webcomponents-common'}>Web Components</a>`;
       this.render();
       d.ctx.handled = true;
     });
 
-    this.sub = conferenceRouter.goPresentation.subscribe(async (d: { ctx, next }) => {
+    this.sub = conferenceRouter.$routePresentation.subscribe(async (d: { ctx, next }) => {
       await Tools.importWebComponent('inscriptum-presentation', 'conference/presentation');
-      this.routerView = html`<inscriptum-presentation></inscriptum-presentation>`;
+      this.routerView = html`<inscriptum-presentation data-name="webcomponents-common"></inscriptum-presentation>`;
       this.render();
       d.ctx.handled = true;
     });
