@@ -13,8 +13,6 @@ class ConferenceRouter extends AbstractRouter {
     const rootPath = '/conference';
     this.rootPath = rootPath;
 
-    console.log(this.rootPath)
-
     return {
       rootPath,
       routers: [
