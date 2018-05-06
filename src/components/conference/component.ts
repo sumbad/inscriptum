@@ -1,18 +1,23 @@
 import { Define, UmWebComponent } from 'components/um-web.component';
 import Tools from 'utils/tools';
-
-import template from './template';
 import { conferenceRouter } from './router';
+import template from './template';
+
+const style = require('./styles/style.scss');
 
 
 
 @Define('inscriptum-conference')
 export class ConferenceComponent extends UmWebComponent {
+  logo: any;
+  triggerNav: any;
+  navigation: any;
+  projectsContainer: any;
   public routerView: any = '';
   public isPreloader = true;
 
   constructor() {
-    super(template);
+    super(template, style);
   }
 
 
@@ -33,6 +38,12 @@ export class ConferenceComponent extends UmWebComponent {
     });
 
     super.connectedCallback();
+
+
+    this.projectsContainer = this.querySelector('.cd-projects-container');
+		this.navigation = this.querySelector('.cd-primary-nav');
+		this.triggerNav = this.querySelector('.cd-nav-trigger');
+		this.logo = this.querySelector('.cd-logo');
   }
 
 

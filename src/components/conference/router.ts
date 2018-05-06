@@ -27,8 +27,8 @@ class ConferenceRouter extends AbstractRouter {
         {
           path: '',
           callback: (ctx, next) => {
-            this.page.replace(rootPath+'/presentation/webcomponents-common');
-            // this.$routeConference.next({ ctx, next });
+            // this.page.replace(rootPath+'/presentation/webcomponents-common');
+            this.$routeConference.next({ ctx, next });
             ctx.handled = true;
           }
         },
