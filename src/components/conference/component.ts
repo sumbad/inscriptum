@@ -27,7 +27,7 @@ export class ConferenceComponent extends UmWebComponent {
 
     this.sub = conferenceRouter.$routePresentation.subscribe(async (d: { ctx, next }) => {
       await Tools.importWebComponent('inscriptum-presentation', 'conference/presentation');
-      this.routerView = html`<inscriptum-presentation data-name="webcomponents-common"></inscriptum-presentation>`;
+      this.routerView = html`<inscriptum-presentation data-name=${d.ctx.params.id}></inscriptum-presentation>`;
       this.render();
       d.ctx.handled = true;
     });
