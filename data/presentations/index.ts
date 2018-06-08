@@ -2,6 +2,11 @@ export default [
     {
         name: 'webcomponents-common',
         title: 'Web components',
-        datePublished: new Date('2017-02-17')
+        datePublished: new Date('2018-02-17')
+    },
+    {
+        name: 'mobile',
+        title: 'Выбор инструментов создания мобильной версии',
+        datePublished: new Date('2018-06-08')
     }
 ];
