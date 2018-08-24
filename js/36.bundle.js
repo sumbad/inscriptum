@@ -1,1 +1,0 @@
-webpackJsonp([36],{712:function(e,r,t){"use strict";Object.defineProperty(r,"__esModule",{value:!0});var n,i,u=(n=["\n  <div>","</div>\n"],i=["\n  <div>","</div>\n"],Object.freeze(Object.defineProperties(n,{raw:{value:Object.freeze(i)}})));r.default=function(e,r){return e(u,r.routerView)}}});

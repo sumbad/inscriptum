@@ -1,1 +1,0 @@
-webpackJsonp([37],{720:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r,i,c=(r=["\n  <div>","</div>\n"],i=["\n  <div>","</div>\n"],Object.freeze(Object.defineProperties(r,{raw:{value:Object.freeze(i)}})));t.default=function(e,t){return e(c,{html:t.presentationContent})}}});

@@ -8,5 +8,10 @@ export default [
         name: 'mobile',
         title: 'Выбор инструментов создания мобильной версии',
         datePublished: new Date('2018-06-08')
+    },
+    {
+        name: 'mobile-sp3',
+        title: 'Спринт 3',
+        datePublished: new Date('2018-08-23')
     }
 ];

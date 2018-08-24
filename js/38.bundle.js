@@ -1,1 +1,0 @@
-webpackJsonp([38],{694:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),n.d(e,"AbstractRouter",function(){return a});var r=n(272);var a=function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),this.page=r.a.page;var e=this.getRouter();r.a.routing(e.rootPath,e.routers)}}});
