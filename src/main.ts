@@ -8,7 +8,6 @@ import page from 'page';
 
 let mainRouter;
 const mainElement = document.querySelector('main');
-
 if (mainElement !== null) {
   const html = HyperHTML.bind(mainElement);
 
