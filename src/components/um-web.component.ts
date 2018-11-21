@@ -1,5 +1,5 @@
 import { bind, wire } from 'hyperhtml/esm';
-import page from 'page';
+import { Observer, Subscriber, Subject, Observable, Subscription } from 'rxjs';
 
 
 
@@ -13,6 +13,10 @@ export abstract class UmWebComponent extends HTMLElement {
 
   protected _template: (html, scope) => any;
   protected _style: string;
+  private _subscriptions: Subscription[] = [];
+  protected set sub(subscription: Subscription){
+    this._subscriptions.push(subscription);
+  }
 
 
   constructor(
@@ -30,9 +34,7 @@ export abstract class UmWebComponent extends HTMLElement {
     }
 
     if (shadow) {
-      this.html = bind(
-        this.attachShadow({ mode })
-      );
+      this.html = bind(this.attachShadow({ mode }));
     } else {
       this.html = bind(this);
     }
@@ -67,6 +69,15 @@ export abstract class UmWebComponent extends HTMLElement {
 
 
   /**
+   * LIFECYCLE
+   * Remove Custom element from page
+   */
+  disconnectedCallback() {
+    this._subscriptions.forEach(s=>s.unsubscribe());
+  }
+
+
+  /**
    * Инициализация
    * @param props атрибуты для инициализации
    */
@@ -78,16 +89,6 @@ export abstract class UmWebComponent extends HTMLElement {
           this.props[prop] = propAttr;
         }
       });
-  }
-
-
-
-  routing(routers: { path: string, callback: string | ((ctx, next) => void) }[]) {
-    routers.forEach(router=>{
-      page(router.path, router.callback);
-    });
-
-    page();
   }
 
 

@@ -41,10 +41,6 @@ let PREBUILD_CFG = {
         to: path.join(helper.PATHS.build)
       },
       {
-        from: helper.PATHS.src + '/404.html',
-        to: path.join(helper.PATHS.build)
-      },
-      {
         from: helper.PATHS.src + '/public',
         to: path.join(helper.PATHS.build, helper.PATHS.outputPath),
         toType: 'dir'

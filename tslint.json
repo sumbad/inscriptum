@@ -1,0 +1,10 @@
+{
+  "defaultSeverity": "warning",
+  "rules": {
+    "no-unused-variable": true,
+    "quotemark": [
+      true,
+      "single"
+    ]
+  }
+}
