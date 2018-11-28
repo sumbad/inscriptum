@@ -24,5 +24,10 @@
     "rootDir": "./",
     "baseUrl": "./src"
   },
+  "exclude": [
+    "postcss.config.js",
+    "src/public",
+    "webpack"
+  ],
   "compileOnSave": false
 }
