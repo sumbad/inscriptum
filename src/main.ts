@@ -37,6 +37,17 @@ if (mainElement !== null) {
     next();
   };
 
+  const editor = async (ctx, next) => {
+    await import('./components/editor');
+
+    html`
+      <inscriptum-editor></inscriptum-editor>
+    `;
+
+    ctx.handled = true;
+    next();
+  };
+
   mainRouter = [
     {
       path: '/conference*',
@@ -45,6 +56,10 @@ if (mainElement !== null) {
     {
       path: '/articles*',
       callback: articles,
+    },
+    {
+      path: '/editor*',
+      callback: editor,
     },
     {
       path: '*',
