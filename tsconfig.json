@@ -10,7 +10,7 @@
     "sourceMap": true,
     "lib": [
       "dom",
-      "es2015"
+      "esnext"
     ],
     "isolatedModules": false,
     "experimentalDecorators": true,
@@ -27,7 +27,10 @@
   "exclude": [
     "postcss.config.js",
     "src/public",
-    "webpack"
+    "webpack",
+    "webpack.config.js",
+    "webpack.mix.js",
+    "babel.config.js"
   ],
   "compileOnSave": false
 }
