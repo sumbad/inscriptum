@@ -1,60 +1,55 @@
-import hyperHTML from 'hyperhtml/esm';
-import { Define, UmWebComponent } from 'components/um-web.component';
-// import pell from 'pell';
+import { TemplateResult } from 'lit-html';
+import { Define, AbstractElement } from 'abstract-element';
+import * as litHtml from 'lit-html';
+import litRender from 'abstract-element/render/lit';
 
-import template from './template';
-import { PreloaderService } from 'components/um-preloader/service';
 import Quill from './quill-register';
 
 
+/**
+ * The demo web component with lit-html render engine
+ */
 @Define('inscriptum-editor')
-export class EditorComponent extends UmWebComponent {
+export class DemoLitComponent extends AbstractElement {
+  html = litHtml.html;
+  css = require('./style.scss');
+
+  state = {
+    time: new Date().toLocaleTimeString()
+  };
+
 
   constructor() {
-    super(template, require('./style.scss'));
-    PreloaderService.isAppLoading.next(false);
+    super(litRender, false);
   }
 
 
   connectedCallback() {
     super.connectedCallback();
+    console.log(this.querySelector('#editor'), 'connectedCallback');
 
-    var quill = new Quill('#editor', {
+    var quill = new Quill(this.querySelector('#editor'), {
       theme: 'snow'
     });
 
     console.log(quill.getContents());
     console.log(quill.getText(0, quill.getLength()));
-    
-
-    // setTimeout(() => {
-    //   var quill = new Quill('#editor'
-    //   , {
-    //     // modules: {
-    //     //   toolbar: true
-    //     // }
-    //     theme: 'snow'
-    //   }
-    //   // , {
-    //   //   modules: { toolbar: true },
-    //   //   theme: 'snow'
-    //   // }
-    //   );
-    // }, 3000);
-
-
-  //   this.$editorContent = <HTMLElement>this.querySelector('#editorContent');
-
-  //   this.$editorContent.addEventListener("paste", function(e) {
-  //     // cancel paste
-  //     e.preventDefault();
-  
-  //     // get text representation of clipboard
-  //     var text = e.clipboardData.getData("text/plain");
-  
-  //     // insert text manually
-  //     document.execCommand("insertHTML", false, text);
-  // });
   }
 
+
+  render(): TemplateResult {
+    console.log(111, this.css);
+    
+    return this.html`
+      <style>
+        ${this.css}
+      </style>
+      
+      <div id="editor">
+        <p>Hello World!</p>
+        <p>Some initial <strong>bold</strong> text</p>
+        <p><br></p>
+      </div>
+    `;
+  }
 }
