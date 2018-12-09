@@ -32,5 +32,11 @@
     "webpack.mix.js",
     "babel.config.js"
   ],
-  "compileOnSave": false
+  "compileOnSave": false,
+  "plugins": [
+    {
+      "name": "typescript-lit-html-plugin",
+      "format": { "enabled": true }
+    }
+  ]
 }
