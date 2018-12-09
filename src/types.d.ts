@@ -22,6 +22,13 @@ declare module 'quill/blots/inline' {
   export default Parchment.Inline;
 }
 
+declare module 'quill-delta' {
+
+  import Delta from 'quill/node_modules/quill-delta/dist/Delta';
+
+  export default Delta;
+}
+
 
 
 declare module 'quill/blots/block' {

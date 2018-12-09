@@ -5,6 +5,7 @@ import litRender from 'abstract-element/render/lit';
 
 import Quill from './quill-register';
 import Block from 'quill/blots/block';
+import Delta from 'quill-delta';
 
 import fontawesome from '@fortawesome/fontawesome';
 import faBold from '@fortawesome/fontawesome-free-solid/faBold';
@@ -189,10 +190,16 @@ export class DemoLitComponent extends AbstractElement {
       this.active = !this.active;
       sidebarControlsEl.classList.toggle('active');
       // quill.focus();
-      console.log(quill.getContents());
+      console.log(JSON.stringify(quill.getContents()));
       console.log(quill.root.innerHTML);
     });
 
+
+    const delta = new Delta(
+      { 'ops': [{ 'insert': 'Реактивное программирование. RxJS' }, { 'attributes': { 'header': 'h1' }, 'insert': '\n' }, { 'insert': 'Реактивное программирование. Теория' }, { 'attributes': { 'header': 'h2' }, 'insert': '\n' }, { 'insert': '\n' }] }
+    );
+
+    quill.setContents(delta);
 
     window['quill'] = quill;
   }
