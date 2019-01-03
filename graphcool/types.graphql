@@ -1,0 +1,28 @@
+# type User @model {
+#     id: ID! @isUnique
+#     createdAt: DateTime!
+#     updatedAt: DateTime!
+#     auth0UserId: String! @isUnique
+#     email: String! @isUnique
+# }
+
+
+type User @model {
+  # Required system field:
+  id: ID! @isUnique # read-only (managed by Graphcool)
+
+  # Optional system fields (remove if not needed):
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+
+  email: String
+  auth0UserId: String @isUnique
+}
+
+type Post @model {
+    id: ID! @isUnique
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    title: String!
+    body: String!
+}
