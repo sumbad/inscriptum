@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const jwkRsa = require('jwks-rsa');
 const fromEvent = require('graphcool-lib').fromEvent;
 
+
+
 const verifyToken = token =>
   new Promise((resolve, reject) => {
     // Decode the JWT Token
@@ -18,6 +20,7 @@ const verifyToken = token =>
       cache: true,
       jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
     });
+
 
     // Retrieve the JKWS's signing key using the decode token's key identifier (kid)
     jkwsClient.getSigningKey(decoded.header.kid, (err, key) => {
@@ -41,13 +44,14 @@ const verifyToken = token =>
         }
       );
     });
+
   });
+
 
 //Retrieves the Graphcool user record using the Auth0 user id
 const getGraphcoolUser = (auth0UserId, api) =>
   api
-    .request(
-      `
+    .request(/* GraphQL */`
         query getUser($auth0UserId: String!){
           User(auth0UserId: $auth0UserId){
             id
@@ -58,11 +62,11 @@ const getGraphcoolUser = (auth0UserId, api) =>
     )
     .then(queryResult => queryResult.User);
 
+
 //Creates a new User record.
 const createGraphCoolUser = (auth0UserId, email, api) =>
   api
-    .request(
-      `
+    .request(/* GraphQL */`
         mutation createUser($auth0UserId: String!, $email: String) {
           createUser(
             auth0UserId: $auth0UserId
@@ -76,6 +80,9 @@ const createGraphCoolUser = (auth0UserId, email, api) =>
     )
     .then(queryResult => queryResult.createUser);
 
+
+
+    
 export default async event => {
   if (!process.env.AUTH0_DOMAIN) {
     return { error: 'Missing AUTH0_DOMAIN environment variable' };
