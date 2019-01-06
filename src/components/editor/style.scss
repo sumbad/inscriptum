@@ -1,3 +1,10 @@
+// @import "~@fortawesome/fontawesome-free/scss/fontawesome";
+
+// $fa-font-path: 'node_modules/@fortawesome/fontawesome-free/webfonts';
+// @import "~@fortawesome/fontawesome-free/scss/solid";
+// @import "~@fortawesome/fontawesome-free/scss/regular";
+// @import "~@fortawesome/fontawesome-free/scss/brands";
+
 @import "~quill/dist/quill.core";
 // @import "~quill/dist/quill.snow";
 
@@ -116,7 +123,14 @@ button {
   height: 32px;
   width: 32px;
   text-align: center;
+  border: none;
+  background: none;
 }
 button:active, button:focus {
   outline: none;
+}
+
+
+.editor__publish-btn {
+  margin: 20px;
 }
