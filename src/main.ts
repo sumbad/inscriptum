@@ -16,7 +16,6 @@ if (mainElement !== null) {
     await import('./components/um-preloader');
 
     html`
-      <link href="/css/fontawesome_all.css" rel="stylesheet" />
       <inscriptum-posts></inscriptum-posts>
     `;
 
