@@ -69,7 +69,7 @@ export default (html, scope) => html`
 
     <div id="go-top">
       <a class="smoothscroll" title="Back to Top" href="#top">
-        <i class="far fa-chevron-up"></i>
+        <i class="fas fa-chevron-up"></i>
       </a>
     </div>
 
