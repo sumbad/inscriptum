@@ -5,24 +5,30 @@ import litRender from 'abstract-element/render/lit';
 
 import Quill from './quill-register';
 import Block from 'quill/blots/block';
-import Delta from 'quill-delta';
 
-import fontawesome from '@fortawesome/fontawesome';
-import faBold from '@fortawesome/fontawesome-free-solid/faBold';
-import faItalic from '@fortawesome/fontawesome-free-solid/faItalic';
-import faLink from '@fortawesome/fontawesome-free-solid/faLink';
-import faQuoteRight from '@fortawesome/fontawesome-free-solid/faQuoteRight';
-import faHeading from '@fortawesome/fontawesome-free-solid/faHeading';
-import faCamera from '@fortawesome/fontawesome-free-solid/faCamera';
-import faPlay from '@fortawesome/fontawesome-free-solid/faPlay';
-import faMinus from '@fortawesome/fontawesome-free-solid/faMinus';
-import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
-import faTwitter from '@fortawesome/fontawesome-free-brands/faTwitter';
 import BlockBlot from 'parchment/dist/src/blot/block';
+import { AuthService } from './auth';
+import { StorageService } from './storage/storage.service';
+import { BehaviorSubject } from 'rxjs';
+
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faFileExport,
+  faBold,
+  faItalic,
+  faLink,
+  faQuoteRight,
+  faHeading,
+  faCamera,
+  faPlay,
+  faMinus,
+  faPlus
+} from '@fortawesome/free-solid-svg-icons';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 
-
-fontawesome.library.add(
+library.add(
+  faFileExport,
   faBold,
   faItalic,
   faLink,
@@ -34,6 +40,7 @@ fontawesome.library.add(
   faMinus,
   faPlus
 );
+
 
 
 /**
@@ -51,12 +58,58 @@ export class DemoLitComponent extends AbstractElement {
   @state()
   active: boolean = false;
 
+  /** draft id */
+  id: string;
 
-  constructor() {
+  /** the event a content changed */
+  changedContent$ = new BehaviorSubject<string | null>(null);
+
+
+  constructor(
+    private _storageService: StorageService = new StorageService(),
+    private _authService: AuthService = new AuthService(_storageService),
+  ) {
     super(litRender, false);
+    // this._storageService = new StorageService();
+    // this._authService = new AuthService(this._storageService);
+
+    let cacheLastSavedContent: string;
+
+    this.changedContent$
+      .skip(2)
+      .debounceTime(10000)
+      .subscribe(
+        d => {
+          if (d !== null) {
+            this._storageService
+              .updateDraft(this.id, d)
+              .then(
+                () => {
+                  cacheLastSavedContent = d;
+                }
+              );
+          }
+        }
+      );
+
+    window.addEventListener('beforeunload', (event) => {
+      const lastChanges = this.changedContent$.getValue();
+      if (lastChanges !== null && cacheLastSavedContent !== lastChanges) {
+        this._storageService.updateDraft(this.id, lastChanges)
+          .then(
+            () => {
+              cacheLastSavedContent = lastChanges;
+            }
+          );
+        event.returnValue = 'Has not saved content!';
+      }
+    });
   }
 
 
+  /**
+   * LIFECYCLE
+   */
   connectedCallback() {
     super.connectedCallback();
 
@@ -67,7 +120,6 @@ export class DemoLitComponent extends AbstractElement {
     let quill = new Quill(editorContainerEl);
     quill.addContainer(tooltipControlsEl);
     quill.addContainer(sidebarControlsEl);
-
 
     quill.on('editor-change', (eventType, range) => {
       if (eventType !== 'selection-change') { return; }
@@ -94,6 +146,7 @@ export class DemoLitComponent extends AbstractElement {
           // sidebarControlsEl.classList.remove('active');
           sidebarControlsEl.style.display = 'none';
         }
+        this.changedContent$.next(quill.getContents());
       } else {
         // $('#sidebar-controls, #sidebar-controls').hide();
         // $('#sidebar-controls').removeClass('active');
@@ -194,14 +247,25 @@ export class DemoLitComponent extends AbstractElement {
       console.log(quill.root.innerHTML);
     });
 
-
-    const delta = new Delta(
-      { 'ops': [{ 'insert': 'Реактивное программирование. RxJS' }, { 'attributes': { 'header': 'h1' }, 'insert': '\n' }, { 'insert': 'Реактивное программирование. Теория' }, { 'attributes': { 'header': 'h2' }, 'insert': '\n' }, { 'insert': '\n' }] }
+    this._authService.authenticated$.subscribe(
+      hasAuth => {
+        if (hasAuth) {
+          this._storageService.allDrafts().then(
+            drafts => {
+              this.id = drafts.allDrafts[0].id;
+              quill.setContents(drafts.allDrafts[0].contents);
+            }
+          );
+        }
+      }
     );
 
-    quill.setContents(delta);
-
+    // @TODO: only develop mode
     window['quill'] = quill;
+
+    // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
+    // continue doing this as the DOM changes.
+    dom.watch()
   }
 
 
@@ -250,6 +314,27 @@ export class DemoLitComponent extends AbstractElement {
       <div id="editor-container">
         <p>Tell your story...<p>
       </div>
+      
+      <button class="editor__publish-btn" @click=${this.clickHandlerPublish.bind(this)}>
+        <i class="fas fa-file-export fa-2x"></i>
+      </button>
     `;
+  }
+
+
+  /**
+   * Publish draft - save as HTML file
+   * @param event 
+   */
+  clickHandlerPublish(event: MouseEvent) {
+    event.preventDefault();
+
+    const content = this.querySelector('#editor-container>.ql-editor') as HTMLDivElement;
+    const a = document.createElement('a');
+    const blob = new Blob([content.innerHTML], { type: 'application/octet-stream' });
+
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'Download.html';
+    a.click();
   }
 }
