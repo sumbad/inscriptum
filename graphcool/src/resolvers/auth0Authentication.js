@@ -4,48 +4,114 @@ const fromEvent = require('graphcool-lib').fromEvent;
 
 
 
-const verifyToken = token =>
-  new Promise((resolve, reject) => {
-    // Decode the JWT Token
-    const decoded = jwt.decode(token, { complete: true });
-    if (!decoded || !decoded.header || !decoded.header.kid) {
-      reject('Unable to retrieve key identifier from token');
-    }
-    if (decoded.header.alg !== 'RS256') {
-      reject(
-        `Wrong signature algorithm, expected RS256, got ${decoded.header.alg}`
+export default async event => {
+  const { accessToken, idToken } = event.data;
+  const authToken = accessToken || idToken;
+  const audience = accessToken !== undefined ? process.env.AUTH0_API_IDENTIFIER : process.env.AUTH0_CLIENT_ID;
+
+  if (!process.env.AUTH0_DOMAIN) {
+    return { error: 'Missing AUTH0_DOMAIN environment variable' };
+  }
+
+  if (accessToken && !process.env.AUTH0_API_IDENTIFIER) {
+    return { error: 'Missing AUTH0_API_IDENTIFIER environment variable' };
+  }
+
+  if (idToken && !process.env.AUTH0_CLIENT_ID) {
+    return { error: 'Missing AUTH0_CLIENT_ID environment variable' };
+  }
+
+  try {
+    const graphcool = fromEvent(event);
+    const api = graphcool.api('simple/v1');
+
+    const decodedToken = await verifyToken(authToken, audience);
+    let graphCoolUser = await getGraphcoolUser(decodedToken.sub, api);
+
+    //If the user doesn't exist, a new record is created.
+    if (graphCoolUser === null) {
+      let email = decodedToken.email;
+
+      // fetch email if scope includes it and accessToken exists
+      if (!email && accessToken && decodedToken.scope.includes('email')) {
+        email = await fetchAuth0Email(accessToken);
+      }
+
+      graphCoolUser = await createGraphCoolUser(
+        decodedToken.sub,
+        email,
+        api
       );
     }
-    const jkwsClient = jwkRsa({
-      cache: true,
-      jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
-    });
+
+    // custom exp does not work yet, see https://github.com/graphcool/graphcool-lib/issues/19
+    const token = await graphcool.generateNodeToken(
+      graphCoolUser.id,
+      'User',
+      decodedToken.exp
+    );
+
+    return { data: { id: graphCoolUser.id, token } };
+  } catch (err) {
+    return { error: err };
+  }
+};
 
 
-    // Retrieve the JKWS's signing key using the decode token's key identifier (kid)
+
+/**
+ * Validates the request JWT token
+ * @param {string} token 
+ * @param {string} audience 
+ */
+function verifyToken(token, audience) {
+  //Decode the JWT Token
+  const decoded = jwt.decode(token, { complete: true });
+
+  if (!decoded || !decoded.header || !decoded.header.kid) {
+    throw new Error('Unable to retrieve key identifier from token ');
+  }
+
+  if (decoded.header.alg !== 'RS256') {
+    throw new Error(
+      `Wrong signature algorithm, expected RS256, got ${decoded.header.alg}`
+    );
+  }
+
+  const jkwsClient = jwkRsa({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    // jwksUri: "https://inscriptum.auth0.com/.well-known/jwks.json"
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+  });
+
+
+  return new Promise(resolve => {
+    //Retrieve the JKWS's signing key using the decode token's key identifier (kid)
     jkwsClient.getSigningKey(decoded.header.kid, (err, key) => {
-      if (err) return reject(err);
+      if (err) throw new Error(err);
 
       const signingKey = key.publicKey || key.rsaPublicKey;
-
-      // Validate the token against the JKWS's signing key
+      //if the JWT Token was valid, verify its validity against the JKWS's signing key
       jwt.verify(
         token,
         signingKey,
         {
           algorithms: ['RS256'],
-          ignoreExpiration: false,
-          issuer: `https://${process.env.AUTH0_DOMAIN}/`,
-          audience: `${process.env.AUTH0_CLIENT_ID}`,
+          // ignoreExpiration: false,
+          issuer: "https://inscriptum.auth0.com/",//`https://${process.env.AUTH0_DOMAIN}/`,
+          audience
         },
         (err, decoded) => {
-          if (err) return reject(err);
-          resolve(decoded);
+          if (err) throw new Error(err);
+          return resolve(decoded);
         }
       );
     });
-
   });
+}
+
 
 
 //Retrieves the Graphcool user record using the Auth0 user id
@@ -61,6 +127,7 @@ const getGraphcoolUser = (auth0UserId, api) =>
       { auth0UserId }
     )
     .then(queryResult => queryResult.User);
+
 
 
 //Creates a new User record.
@@ -82,41 +149,10 @@ const createGraphCoolUser = (auth0UserId, email, api) =>
 
 
 
-    
-export default async event => {
-  if (!process.env.AUTH0_DOMAIN) {
-    return { error: 'Missing AUTH0_DOMAIN environment variable' };
-  }
-  if (!process.env.AUTH0_CLIENT_ID) {
-    return { error: 'Missing AUTH0_CLIENT_ID environment variable' };
-  }
 
-  try {
-    const { idToken } = event.data;
-    const graphcool = fromEvent(event);
-    const api = graphcool.api('simple/v1');
-
-    const decodedToken = await verifyToken(idToken);
-    let graphCoolUser = await getGraphcoolUser(decodedToken.sub, api);
-
-    //If the user doesn't exist, a new record is created.
-    if (graphCoolUser === null) {
-      graphCoolUser = await createGraphCoolUser(
-        decodedToken.sub,
-        decodedToken.email,
-        api
-      );
-    }
-
-    // custom exp does not work yet, see https://github.com/graphcool/graphcool-lib/issues/19
-    const token = await graphcool.generateNodeToken(
-      graphCoolUser.id,
-      'User',
-      decodedToken.exp
-    );
-
-    return { data: { id: graphCoolUser.id, token } };
-  } catch (err) {
-    return { error: err };
-  }
-};
+const fetchAuth0Email = accessToken =>
+  fetch(
+    `https://${process.env.AUTH0_DOMAIN}/userinfo?access_token=${accessToken}`
+  )
+    .then(response => response.json())
+    .then(json => json.email)

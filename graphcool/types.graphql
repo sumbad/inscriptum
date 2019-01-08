@@ -1,12 +1,3 @@
-# type User @model {
-#     id: ID! @isUnique
-#     createdAt: DateTime!
-#     updatedAt: DateTime!
-#     auth0UserId: String! @isUnique
-#     email: String! @isUnique
-# }
-
-
 type User @model {
   # Required system field:
   id: ID! @isUnique # read-only (managed by Graphcool)
@@ -25,4 +16,21 @@ type Post @model {
     updatedAt: DateTime!
     title: String!
     body: String!
+}
+
+
+type Draft @model {
+  contents: Json! @defaultValue(value: "{}")
+  id: ID! @isUnique
+}
+
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
 }

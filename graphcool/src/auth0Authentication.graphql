@@ -1,8 +1,8 @@
-type AuthenticatedUser {
+type AuthenticateUserPayload {
   id: String!
   token: String!
 }
 
 extend type Mutation {
-  authenticateUser(idToken: String!): AuthenticatedUser!
+  authenticateUser(accessToken: String, idToken: String): AuthenticateUserPayload!
 }

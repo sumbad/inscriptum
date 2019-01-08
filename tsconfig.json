@@ -24,6 +24,9 @@
     "rootDir": "./",
     "baseUrl": "./src"
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "postcss.config.js",
     "src/public",
