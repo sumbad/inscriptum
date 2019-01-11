@@ -8,12 +8,14 @@ const webpackConfigCommon = require('@insum/config/webpack/webpack.config.common
 
 
 
+const isDevMode = process.env.NODE_ENV === 'development';
+
 module.exports = function (helper) {
 
   let commonCFG = webpackConfigCommon(helper);
 
   commonCFG.plugins = [
-    new CleanPlugin([helper.PATHS.dist], {
+    new CleanPlugin([helper.PATHS.build], {
       root: helper.PATHS.root,
       dry: false,
       verbose: true,
@@ -22,16 +24,16 @@ module.exports = function (helper) {
     new CopyWebpackPlugin([
       {
         from: helper.PATHS.root + '/CNAME',
-        to: path.join(helper.PATHS.dist)
+        to: path.join(helper.PATHS.build)
       },
       {
         from: helper.PATHS.src + '/public',
-        to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
+        to: path.join(helper.PATHS.build, helper.PATHS.outputPath),
         toType: 'dir'
       },
       {
         from: helper.PATHS.src + '/data',
-        to: path.join(helper.PATHS.dist, helper.PATHS.outputPath, '/data'),
+        to: path.join(helper.PATHS.build, helper.PATHS.outputPath, '/data'),
         toType: 'dir'
       },
     ]),
@@ -53,12 +55,22 @@ module.exports = function (helper) {
       minify: false,
       cache: true,
     }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+    }),
   ]
 
   commonCFG.entry = {
     'app': path.resolve(helper.PATHS.src, 'main.ts'),
     'vendor': path.resolve(helper.PATHS.src, 'vendor.ts'),
   };
+
+  commonCFG.output = {
+    path: helper.PATHS.build,
+    publicPath: '/',
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[name].bundle.js',
+  }
 
   commonCFG.resolve = {
     modules: [helper.PATHS.src, helper.PATHS.node_modules],
@@ -80,27 +92,18 @@ module.exports = function (helper) {
     exclude: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
   };
 
-  commonCFG.optimization = {
-    splitChunks: {
-      cacheGroups: {
-        default: {
-          enforce: true,
-          priority: 1
-        },
-        polyfills: {
-          name: 'polyfills',
-          priority: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: 3,
-          name: 'vendors',
-          enforce: true,
-          chunks: 'all'
-        }
-      }
+  commonCFG.module.rules.unshift(
+    {
+      test: /\.scss$/,
+      use: [
+        isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+        'postcss-loader',
+        'sass-loader',
+      ],
+      exclude: [path.join(helper.PATHS.src, 'components')]
     }
-  };
+  );
 
   return commonCFG;
 };

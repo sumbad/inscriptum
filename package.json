@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack --progress --verbose --hide-modules --config webpack/webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack --progress --verbose --hide-modules",
     "deploy": "node .ghpages",
     "start": "npm run build && lite-server --baseDir=build"
   },

@@ -12,7 +12,7 @@ let helper = {
     root: path.join(__dirname, './'),
     src: path.join(__dirname, './src'),
     node_modules: path.join(__dirname, './node_modules'),
-    dist: path.join(__dirname, './dist'),
+    build: path.join(__dirname, './build'),
     publicPath: '',
     outputPath: '' //process.env.NODE_ENV === 'production' ? 'public/' : ''
   },
