@@ -3,62 +3,40 @@ import Inline from 'quill/blots/inline';
 import Block from 'quill/blots/block';
 import { BlockEmbed } from 'quill/blots/block';
 
+import Bold from 'quill/formats/bold';
+import Italic from 'quill/formats/italic';
+import Header from 'quill/formats/header';
+import List, { ListItem } from 'quill/formats/list';
+import Link from 'quill/formats/link';
+
+import Bubble from 'quill/themes/bubble';
+import Toolbar from 'quill/modules/toolbar';
 
 
-class BoldBlot extends Inline { };
+// class BoldBlot extends Inline { };
 
-BoldBlot.blotName = 'bold';
-BoldBlot.tagName = 'strong';
-
-class ItalicBlot extends Inline { }
-ItalicBlot.blotName = 'italic';
-ItalicBlot.tagName = 'em';
-
-Quill.register(BoldBlot);
-Quill.register(ItalicBlot);
+// BoldBlot.blotName = 'bold';
+// BoldBlot.tagName = 'strong';
 
 
-
-class LinkBlot extends Inline {
-  static create(value) {
-    let node = super.create(value) as Element;
-    // Sanitize url value if desired
-    node.setAttribute('href', value);
-    // Okay to set other non-format related attributes
-    // These are invisible to Parchment so must be static
-    node.setAttribute('target', '_blank');
-    return node;
-  }
-
-  static formats(node) {
-    // We will only be called with a node already
-    // determined to be a Link blot, so we do
-    // not need to check ourselves
-    return node.getAttribute('href');
-  }
-}
-LinkBlot.blotName = 'link';
-LinkBlot.tagName = 'a';
-
-Quill.register(LinkBlot);
+// class ItalicBlot extends Inline { }
+// ItalicBlot.blotName = 'italic';
+// ItalicBlot.tagName = 'em';
 
 
-class BlockquoteBlot extends Block { }
-BlockquoteBlot.blotName = 'blockquote';
-BlockquoteBlot.tagName = 'blockquote';
+// Quill.register(ItalicBlot);
 
-Quill.register(BlockquoteBlot);
+Quill.register({
+  'modules/toolbar': Toolbar,
+  'themes/bubble': Bubble,
+  'formats/bold': Bold,
+  'formats/italic': Italic,
+  'formats/header': Header,
+  'formats/list': List,
+  'formats/list-item': ListItem,
+  'formats/link': Link,
+});
 
-
-class HeaderBlot extends Block {
-  // static formats(node) {
-  //   return HeaderBlot.tagName.indexOf(node.tagName) + 1;
-  // }
-}
-HeaderBlot.blotName = 'header';
-HeaderBlot.tagName = ['h1', 'h2'] as any;
-
-Quill.register(HeaderBlot);
 
 
 class DividerBlot extends BlockEmbed { }

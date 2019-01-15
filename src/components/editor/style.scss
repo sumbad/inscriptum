@@ -1,5 +1,6 @@
 @import "~quill/dist/quill.core";
 // @import "~quill/dist/quill.snow";
+@import "~quill/dist/quill.bubble";
 
 * {
   box-sizing: border-box;
@@ -17,7 +18,9 @@ html, body {
   font-size: 1.2em;
   height: 100%;
   margin: 0 auto;
-  width: 450px;
+  max-width: 740px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 #editor-container .ql-editor {
   min-height: 100%;
@@ -126,4 +129,16 @@ button:active, button:focus {
 
 .editor__publish-btn {
   margin: 20px;
+}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////\
+
+
+.ql-container.ql-bubble:not(.ql-disabled) a {
+  white-space: initial;
 }

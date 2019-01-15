@@ -114,11 +114,29 @@ export class DemoLitComponent extends AbstractElement {
     super.connectedCallback();
 
     const editorContainerEl = this.querySelector('#editor-container') as HTMLDivElement;
-    const tooltipControlsEl = this.querySelector('#tooltip-controls') as HTMLDivElement;
+    // const tooltipControlsEl = this.querySelector('#tooltip-controls') as HTMLDivElement;
     const sidebarControlsEl = this.querySelector('#sidebar-controls') as HTMLDivElement;
     const showControlsEl = this.querySelector('#show-controls') as HTMLDivElement;
-    let quill = new Quill(editorContainerEl);
-    quill.addContainer(tooltipControlsEl);
+
+
+
+
+    let quill = new Quill(
+      editorContainerEl,
+      {
+        bounds: '#editor-container',
+        // modules: {
+        //   'syntax': true
+        // },
+        theme: 'bubble'
+      }
+    );
+
+
+
+
+
+    // quill.addContainer(tooltipControlsEl);
     quill.addContainer(sidebarControlsEl);
 
     quill.on('editor-change', (eventType, range) => {
@@ -126,7 +144,7 @@ export class DemoLitComponent extends AbstractElement {
       if (range == null) { return; }
       if (range.length === 0) {
         // $('#tooltip-controls').hide();
-        tooltipControlsEl.style.display = 'none';
+        // tooltipControlsEl.style.display = 'none';
         let [block, offset] = quill.scroll.scroll.descendant<BlockBlot>(Block as any, range.index);
         if (block != null && block.domNode.firstChild instanceof HTMLBRElement) {
           let lineBounds = quill.getBounds(range);
@@ -141,7 +159,7 @@ export class DemoLitComponent extends AbstractElement {
           sidebarControlsEl.style.top = `${lineBounds.top - 5}px`;
         } else {
           // $('#tooltip-controls, #sidebar-controls').hide();
-          tooltipControlsEl.style.display = 'none';
+          // tooltipControlsEl.style.display = 'none';
           // $('#sidebar-controls').removeClass('active');
           // sidebarControlsEl.classList.remove('active');
           sidebarControlsEl.style.display = 'none';
@@ -154,14 +172,14 @@ export class DemoLitComponent extends AbstractElement {
         sidebarControlsEl.classList.remove('active');
         this.active = false;
 
-        let rangeBounds = quill.getBounds(range);
+        // let rangeBounds = quill.getBounds(range);
         // $('#tooltip-controls').show().css({
         //   left: rangeBounds.left + rangeBounds.width / 2 - $('#tooltip-controls').outerWidth() / 2,
         //   top: rangeBounds.bottom + 10
         // });
-        tooltipControlsEl.style.display = 'initial';
-        tooltipControlsEl.style.left = `${rangeBounds.left + rangeBounds.width / 2 - tooltipControlsEl.offsetWidth / 2}px`;
-        tooltipControlsEl.style.top = `${rangeBounds.bottom + 10}px`;
+        // tooltipControlsEl.style.display = 'initial';
+        // tooltipControlsEl.style.left = `${rangeBounds.left + rangeBounds.width / 2 - tooltipControlsEl.offsetWidth / 2}px`;
+        // tooltipControlsEl.style.top = `${rangeBounds.bottom + 10}px`;
       }
     });
 
