@@ -26,6 +26,7 @@
     "auth0-lock": "^11.12.1",
     "bourbon": "^5.0.0",
     "graphql-request": "^1.8.2",
+    "highlight.js": "^9.13.1",
     "hyperhtml": "^2.7.1",
     "lit-html": "^0.13.0",
     "page": "^1.8.6",
