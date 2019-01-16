@@ -23,6 +23,8 @@ export abstract class AbstractRouter {
   constructor() {
     const router = this.getRouter();
     Router.routing(router.rootPath, router.routers);
+
+    // console.log(this.page['callbacks']);
   }
 
 
