@@ -7,8 +7,8 @@ import Quill from './quill-register';
 import Block from 'quill/blots/block';
 
 import BlockBlot from 'parchment/dist/src/blot/block';
-import { AuthService } from './auth';
-import { StorageService } from './storage/storage.service';
+import { AuthService } from '../../auth';
+import { StorageService } from 'storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
@@ -247,7 +247,7 @@ export class DemoLitComponent extends AbstractElement {
       console.log(quill.root.innerHTML);
     });
 
-    this._authService.authenticated$.subscribe(
+    this._authService.$authenticated.subscribe(
       hasAuth => {
         if (hasAuth) {
           this._storageService.allDrafts().then(

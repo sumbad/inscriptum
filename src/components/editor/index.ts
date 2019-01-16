@@ -7,8 +7,8 @@ import Quill from './quill-register';
 import Block from 'quill/blots/block';
 
 import BlockBlot from 'parchment/dist/src/blot/block';
-import { AuthService } from './auth';
-import { StorageService } from './storage/storage.service';
+import { AuthService } from '../../auth';
+import { StorageService } from 'storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
@@ -47,13 +47,11 @@ library.add(
  * The demo web component with lit-html render engine
  */
 @Define('inscriptum-editor')
-export class DemoLitComponent extends AbstractElement {
+export class EditorComponent extends AbstractElement {
+  static attributes = { draftId: 'draft-id' };
+
   html = litHtml.html;
   css = require('./style.scss');
-
-  state = {
-    time: new Date().toLocaleTimeString()
-  };
 
   @state()
   active: boolean = false;
@@ -265,18 +263,22 @@ export class DemoLitComponent extends AbstractElement {
       console.log(quill.root.innerHTML);
     });
 
-    this._authService.authenticated$.subscribe(
-      hasAuth => {
-        if (hasAuth) {
-          this._storageService.allDrafts().then(
-            drafts => {
-              this.id = drafts.allDrafts[0].id;
-              quill.setContents(drafts.allDrafts[0].contents);
-            }
-          );
+
+
+    if (this._authService.$authenticated.getValue()) {
+      this.loadContent(quill);
+    } else {
+      this._authService.$authenticated.subscribe(
+        hasAuth => {
+          if (hasAuth) {
+            this.loadContent(quill);
+          }
         }
-      }
-    );
+      );
+    }
+
+
+
 
     // @TODO: only develop mode
     window['quill'] = quill;
@@ -354,5 +356,19 @@ export class DemoLitComponent extends AbstractElement {
     a.href = window.URL.createObjectURL(blob);
     a.download = 'Download.html';
     a.click();
+  }
+
+
+  /**
+   * Load editor content
+   * @param quill - quill instance
+   */
+  loadContent(quill) {
+    this._storageService.getDraft(this.attr[EditorComponent.attributes.draftId]).then(
+      data => {
+        this.id = data.Draft.id;
+        quill.setContents(data.Draft.contents);
+      }
+    );
   }
 }

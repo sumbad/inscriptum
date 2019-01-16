@@ -40,7 +40,7 @@ if (mainElement !== null) {
     await import('./components/editor');
 
     html`
-      <inscriptum-editor></inscriptum-editor>
+      <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
     `;
 
     ctx.handled = true;
@@ -57,7 +57,7 @@ if (mainElement !== null) {
       callback: articles,
     },
     {
-      path: '/editor*',
+      path: '/editor/:id',
       callback: editor,
     },
     {
