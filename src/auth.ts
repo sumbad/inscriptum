@@ -13,22 +13,10 @@ export class AuthService {
   /** subject to observe authenticate event */
   $authenticated = new BehaviorSubject<boolean>(false);
 
-  /** option to get auth */
-  private _options: Auth0LockConstructorOptions = {
-    auth: {
-      // redirect: false,
-      redirectUrl: 'http://localhost:3000/editor',
-      responseType: 'token id_token',
-      params: {
-        scope: 'openid email'
-      },
-      audience: 'https://inscriptum.js.org'
-    }
-  };
-
 
   constructor(
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    redirectUrl?: string,
   ) {
     if (AuthService.instance) {
       return AuthService.instance;
@@ -37,7 +25,17 @@ export class AuthService {
     const lock = new Auth0Lock(
       'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
       'inscriptum.auth0.com',
-      this._options,
+      {
+        auth: {
+          // redirect: false,
+          redirectUrl: redirectUrl || 'http://localhost:3000/editor',
+          responseType: 'token id_token',
+          params: {
+            scope: 'openid email'
+          },
+          audience: 'https://inscriptum.js.org'
+        }
+      }
     );
 
     // Listening for the authenticated event
