@@ -43,7 +43,7 @@ export class DraftComponent extends AbstractElement {
           );
         }
       }
-    )
+    );
   }
 
 
