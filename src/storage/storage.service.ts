@@ -4,6 +4,7 @@ import allDrafts from './queries/allDrafts';
 import authenticateUser from './mutations/authenticateUser';
 import updateDraft from './mutations/updateDraft';
 import getDraft from './queries/getDraft';
+import createDraft from './mutations/createDraft';
 
 
 
@@ -70,6 +71,14 @@ export class StorageService {
       id,
       contents
     });
+  };
+
+
+  /**
+   * Create new draft
+   */
+  createDraft(): Promise<{ createDraft: { id: string, contents: any } }> {
+    return this._graphQLClient.request(createDraft);
   };
 
 

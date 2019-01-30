@@ -3,6 +3,7 @@ import { TemplateResult, html } from 'lit-html';
 import { StorageService } from 'storage/storage.service';
 import { AuthService } from 'auth';
 import litRender from 'abstract-element/render/lit';
+import page from 'page';
 
 
 @Define('inscriptum-drafts')
@@ -51,23 +52,34 @@ export class DraftsComponent extends AbstractElement {
   render(): TemplateResult {
     const draftListEl = this.draftList.map(
       draft => {
-        let previewContent: string = draft.contents.ops[1].insert;
+        let previewTitle = '';
+        let previewContent = '';
+        if (
+          draft !== undefined
+          && draft.contents !== undefined
+          && draft.contents.ops !== undefined
+          && draft.contents.ops.length > 0
+        ) {
+          previewTitle = draft.contents.ops[0].insert;
 
-        for (const [index, value] of draft.contents.ops.entries()) {
-          if (index > 1) {
-            if (previewContent.length > 100) {
-              break;
+          for (const [index, value] of draft.contents.ops.entries()) {
+            if (index > 0) {
+              if (previewContent.length > 100) {
+                break;
+              }
+              previewContent += ' ' + value.insert;
             }
-            previewContent += ' ' + value.insert;
           }
         }
-
         previewContent = previewContent.trim() + '...';
 
         return html`
           <div class="um-drafts__item">
             <a class="um-drafts__item-link" href=${'/editor/' + draft.id}>
-              <h6 class="docs-header">${draft.contents.ops[0].insert}</h6>
+              <h6 class="docs-header">
+                ${previewTitle}
+                <span class="um-drafts__item-subheader">${draft.id}</span>
+              </h6>
               <p class="docs-preview">${previewContent}</p>
             </a>
           </div>
@@ -90,10 +102,10 @@ export class DraftsComponent extends AbstractElement {
             </ul>
           </div>
         </nav>
-
+      
         <div class="row">
           <div class="twelve columns um-drafts__submenu">
-            <button>Новый черновик</button>
+            <button @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
           </div>
         </div>
       
@@ -101,5 +113,14 @@ export class DraftsComponent extends AbstractElement {
       
       </div>
     `;
+  }
+
+
+  /**
+   * Create new draft
+   */
+  async handleBtnCreateNewDraft() {
+    const newDraftId = (await this._storageService.createDraft()).createDraft.id;
+    page('/editor/' + newDraftId);
   }
 }
