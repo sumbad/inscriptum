@@ -15,13 +15,9 @@ export class DraftsComponent extends AbstractElement {
       ${require('./styles/normalize.css')}
       ${require('./styles/skeleton.css')}
       ${require('./styles/custom.css')}
+      ${require('./styles/drafts.less')}
     </style>
   `;
-
-  // private _subscriptions: Subscription[] = [];
-  // protected set sub(subscription: Subscription) {
-  //   this._subscriptions.push(subscription);
-  // }
 
 
   constructor(
@@ -44,7 +40,6 @@ export class DraftsComponent extends AbstractElement {
             drafts => {
               console.log(drafts);
               this.draftList = drafts.allDrafts;
-              // PreloaderService.isAppLoading.next(false);
             }
           );
         }
@@ -63,26 +58,24 @@ export class DraftsComponent extends AbstractElement {
             if (previewContent.length > 100) {
               break;
             }
-            previewContent += '\n' + value.insert;
+            previewContent += ' ' + value.insert;
           }
         }
 
         previewContent = previewContent.trim() + '...';
 
         return html`
-          <div class="docs-section" id="intro">
-            <h6 class="docs-header">${draft.contents.ops[0].insert}</h6>
-            <p class="docs-preview">${previewContent}</p>
-            <p>
-              <code>${draft.id}</code> <a class="button" href=${'/editor/' + draft.id}>Редактировать</a>
-            </p>
+          <div class="um-drafts__item">
+            <a class="um-drafts__item-link" href=${'/editor/' + draft.id}>
+              <h6 class="docs-header">${draft.contents.ops[0].insert}</h6>
+              <p class="docs-preview">${previewContent}</p>
+            </a>
           </div>
       `}
     );
 
 
     return html`
-      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
       ${this.styles}
       
       <div class="container">
@@ -91,70 +84,18 @@ export class DraftsComponent extends AbstractElement {
         <nav class="navbar">
           <div class="container">
             <ul class="navbar-list">
-              <li class="navbar-item"><a class="navbar-link" href="#intro">Intro</a></li>
-              <li class="navbar-item">
-                <a class="navbar-link" href="#" data-popover="#codeNavPopover">Code</a>
-                <div id="codeNavPopover" class="popover">
-                  <ul class="popover-list">
-                    <li class="popover-item">
-                      <a class="popover-link" href="#grid">Grid</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#typography">Typography</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#buttons">Buttons</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#forms">Forms</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#lists">Lists</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#code">Code</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#tables">Tables</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#queries">Queries</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="#utilities">Utilities</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="navbar-item"><a class="navbar-link" href="#examples">Examples</a></li>
-              <li class="navbar-item">
-                <a class="navbar-link" href="#" data-popover="#moreNavPopover">More</a>
-                <div id="moreNavPopover" class="popover">
-                  <ul class="popover-list">
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton">On Github</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton#browser-support">Browsers</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton#license">License</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton#extensions">Extensions</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton/releases">Versions</a>
-                    </li>
-                    <li class="popover-item">
-                      <a class="popover-link" href="https://github.com/dhg/Skeleton#colophon">Colophon</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+              <li class="navbar-item"><a class="navbar-link" href="/notes">Конспекты</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="/notes/drafts">Черновики</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="#">Слайды</a></li>
             </ul>
           </div>
         </nav>
+
+        <div class="row">
+          <div class="twelve columns um-drafts__submenu">
+            <button>Новый черновик</button>
+          </div>
+        </div>
       
         ${draftListEl}
       
