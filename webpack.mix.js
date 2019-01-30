@@ -105,5 +105,17 @@ module.exports = function (helper) {
     }
   );
 
+  commonCFG.module.rules.unshift(
+    {
+      test: /\.less$/,
+      use: [
+        'raw-loader',
+        'postcss-loader',
+        'less-loader',
+      ],
+      include: [path.join(helper.PATHS.src, 'components')]
+    }
+  );
+
   return commonCFG;
 };
