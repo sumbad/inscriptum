@@ -5,6 +5,7 @@ import authenticateUser from './mutations/authenticateUser';
 import updateDraft from './mutations/updateDraft';
 import getDraft from './queries/getDraft';
 import createDraft from './mutations/createDraft';
+import deleteDraft from './mutations/deleteDraft';
 
 
 
@@ -70,6 +71,17 @@ export class StorageService {
     return this._graphQLClient.request(updateDraft, {
       id,
       contents
+    });
+  };
+
+
+  /**
+   * Delete a draft by ID
+   * @param id - draft id
+   */
+  deleteDraft(id: string): Promise<{ deleteDraft: { id: string, contents: string } }> {
+    return this._graphQLClient.request(deleteDraft, {
+      id
     });
   };
 

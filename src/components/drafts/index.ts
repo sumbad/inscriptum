@@ -5,6 +5,16 @@ import { AuthService } from 'auth';
 import litRender from 'abstract-element/render/lit';
 import page from 'page';
 
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faAngleDown
+} from '@fortawesome/free-solid-svg-icons';
+import { takeWhile } from 'rxjs/operators';
+
+library.add(
+  faAngleDown
+);
+
 
 @Define('inscriptum-drafts')
 export class DraftsComponent extends AbstractElement {
@@ -14,8 +24,8 @@ export class DraftsComponent extends AbstractElement {
   styles = html`
     <style>
       ${require('./styles/normalize.css')}
-      ${require('./styles/skeleton.css')}
-      ${require('./styles/custom.css')}
+      ${require('./styles/skeleton.less')}
+      ${require('./styles/custom.less')}
       ${require('./styles/drafts.less')}
     </style>
   `;
@@ -31,24 +41,50 @@ export class DraftsComponent extends AbstractElement {
   }
 
 
+  /**
+   * LIFECYCLE
+   * Create Custom element on page
+   */
   connectedCallback() {
     super.connectedCallback();
 
-    this._authService.$authenticated.subscribe(
-      (hasAuth) => {
-        if (hasAuth) {
-          this._storageService.allDrafts().then(
-            drafts => {
-              console.log(drafts);
-              this.draftList = drafts.allDrafts;
-            }
-          );
+    this._authService.$authenticated
+      .pipe(
+        takeWhile(() => this.draftList.length === 0)
+      )
+      .subscribe(
+        (hasAuth) => {
+          if (hasAuth) {
+            this._storageService.allDrafts().then(
+              drafts => {
+                console.log(drafts);
+                this.draftList = drafts.allDrafts;
+              }
+            );
+          }
         }
-      }
-    )
+      );
+
+    // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
+    // continue doing this as the DOM changes.
+    dom.watch();
+
+    document.addEventListener('click', this.closePopovers.bind(this));
   }
 
 
+  /**
+   * LIFECYCLE
+   * Remove Custom element from page
+   */
+  disconnectedCallback() {
+    document.removeEventListener('click', this.closePopovers.bind(this));
+  }
+
+
+  /**
+   * RENDER
+   */
   render(): TemplateResult {
     const draftListEl = this.draftList.map(
       draft => {
@@ -78,10 +114,24 @@ export class DraftsComponent extends AbstractElement {
             <a class="um-drafts__item-link" href=${'/editor/' + draft.id}>
               <h6 class="docs-header">
                 ${previewTitle}
-                <span class="um-drafts__item-subheader">${draft.id}</span>
               </h6>
               <p class="docs-preview">${previewContent}</p>
             </a>
+            <div class="um-drafts__item-actions">
+              <span @click=${this.openPopover.bind(this)} class="um-drafts__item-subcontent" data-popover=${draft.id}>
+                ${draft.id} <i class="fas fa-angle-down" style="color:#999"></i>
+              </span>
+              <div id=${draft.id} class="popover popover_right">
+                <ul class="popover-list">
+                  <li class="popover-item">
+                    <a class="popover-link" @click=${() => this.handleBtnDeleteDraft(draft.id)} href="#grid">удалить</a>
+                  </li>
+                  <li class="popover-item">
+                    <a class="popover-link" href="#typography">опубликовать</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
       `}
     );
@@ -122,5 +172,49 @@ export class DraftsComponent extends AbstractElement {
   async handleBtnCreateNewDraft() {
     const newDraftId = (await this._storageService.createDraft()).createDraft.id;
     page('/editor/' + newDraftId);
+  }
+
+
+  /**
+   * Delete a draft
+   * 
+   * @param id - draft id
+   */
+  handleBtnDeleteDraft(id: string) {
+    this._storageService.deleteDraft(id)
+      .then(
+        (d) => {
+          this.draftList = this.draftList.filter(draft => draft.id !== d.deleteDraft.id);
+        }
+      );
+  }
+
+
+  /**
+   * Open a popover with actions on a draft
+   * 
+   * @param event - click event
+   */
+  openPopover(event: MouseEvent) {
+    event.preventDefault()
+    this.closePopovers();
+
+    const element = this.querySelector<Element>('#' + (event.target || { popover: {} })['dataset'].popover);
+    if (element !== null) {
+      element.classList.add('open');
+    }
+    event.stopImmediatePropagation();
+  }
+
+
+  /**
+   * Close all opened popovers
+   */
+  closePopovers() {
+    this.querySelectorAll('.popover.open').forEach(
+      el => {
+        el.classList.remove('open');
+      }
+    );
   }
 }
