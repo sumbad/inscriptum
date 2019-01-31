@@ -162,6 +162,10 @@
   .has-docked-nav .navbar > .container {
     width: 80%; }
 
+
+
+
+
   /* Popover */
   .popover.open {
     display: block;
@@ -178,7 +182,15 @@
     left: -50%;
     -webkit-filter: drop-shadow(0 0 6px rgba(0,0,0,.1));
        -moz-filter: drop-shadow(0 0 6px rgba(0,0,0,.1));
-            filter: drop-shadow(0 0 6px rgba(0,0,0,.1)); }
+            filter: drop-shadow(0 0 6px rgba(0,0,0,.1)); 
+    &_right {
+      left: auto;
+      right: 0;
+      top: calc(100% + 11px);
+    }
+  }
+
+
   .popover-item:first-child .popover-link:after, 
   .popover-item:first-child .popover-link:before {
     bottom: 100%;
