@@ -3,6 +3,8 @@ import { Define, AbstractElement, state } from 'abstract-element';
 import * as litHtml from 'lit-html';
 import litRender from 'abstract-element/render/lit';
 
+import hljs from 'highlight.js';
+
 import Quill from './quill-register';
 import Block from 'quill/blots/block';
 
@@ -22,7 +24,8 @@ import {
   faCamera,
   faPlay,
   faMinus,
-  faPlus
+  faPlus,
+  faCode
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
@@ -38,9 +41,15 @@ library.add(
   faPlay,
   faTwitter,
   faMinus,
-  faPlus
+  faPlus,
+  faCode
 );
 
+
+
+hljs.configure({
+  languages: ['javascript', 'typescript', 'html', 'css']
+});
 
 
 /**
@@ -116,23 +125,18 @@ export class EditorComponent extends AbstractElement {
     const sidebarControlsEl = this.querySelector('#sidebar-controls') as HTMLDivElement;
     const showControlsEl = this.querySelector('#show-controls') as HTMLDivElement;
 
-
-
-
     let quill = new Quill(
       editorContainerEl,
       {
         bounds: '#editor-container',
-        // modules: {
-        //   'syntax': true
-        // },
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value
+          }
+        },
         theme: 'bubble'
       }
     );
-
-
-
-
 
     // quill.addContainer(tooltipControlsEl);
     quill.addContainer(sidebarControlsEl);
@@ -193,6 +197,7 @@ export class EditorComponent extends AbstractElement {
     const imageButtonEl = this.querySelector('#image-button') as HTMLButtonElement;
     const videoButtonEl = this.querySelector('#video-button') as HTMLButtonElement;
     const tweetButtonEl = this.querySelector('#tweet-button') as HTMLButtonElement;
+    const codeBlockButtonEl = this.querySelector('#code-block-button') as HTMLButtonElement;
 
 
     boldButtonEl.addEventListener('click', () => {
@@ -218,6 +223,10 @@ export class EditorComponent extends AbstractElement {
 
     header2ButtonEl.addEventListener('click', () => {
       quill.format('header', 2);
+    });
+
+    codeBlockButtonEl.addEventListener('click', () => {
+      quill.format('code-block', true);
     });
 
     dividerButtonEl.addEventListener('click', () => {
@@ -326,6 +335,7 @@ export class EditorComponent extends AbstractElement {
         </button>
         <span class="controls">
           <button id="image-button"><i class="fas fa-camera"></i></button>
+          <button id="code-block-button"><i class="fas fa-code"></i></button>
           <button id="video-button"><i class="fas fa-play"></i></button>
           <button id="tweet-button"><i class="fab fa-twitter"></i></button>
           <button id="divider-button"><i class="fas fa-minus"></i></button>

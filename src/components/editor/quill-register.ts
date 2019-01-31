@@ -11,6 +11,7 @@ import Link from 'quill/formats/link';
 
 import Bubble from 'quill/themes/bubble';
 import Toolbar from 'quill/modules/toolbar';
+import Syntax from 'quill/modules/syntax';
 
 
 // class BoldBlot extends Inline { };
@@ -28,13 +29,14 @@ import Toolbar from 'quill/modules/toolbar';
 
 Quill.register({
   'modules/toolbar': Toolbar,
+  'modules/syntax': Syntax,
   'themes/bubble': Bubble,
   'formats/bold': Bold,
   'formats/italic': Italic,
   'formats/header': Header,
   'formats/list': List,
   'formats/list-item': ListItem,
-  'formats/link': Link,
+  'formats/link': Link
 });
 
 
