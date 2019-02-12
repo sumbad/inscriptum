@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 
 export default (async () => {
     // NOTE: any browser that does not have template or ES6 features

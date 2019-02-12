@@ -6,6 +6,9 @@ import Tools from 'utils/tools';
 import page from 'page';
 
 
+import * as litHtml from 'lit-html';
+
+
 let mainRouter;
 const mainElement = document.querySelector('main');
 if (mainElement !== null) {
@@ -16,7 +19,6 @@ if (mainElement !== null) {
     await import('./components/um-preloader');
 
     html`
-      <link href="/css/fontawesome_all.css" rel="stylesheet" />
       <inscriptum-posts></inscriptum-posts>
     `;
 
@@ -37,6 +39,23 @@ if (mainElement !== null) {
     next();
   };
 
+  const editor = async (ctx, next) => {
+    await import('./components/editor');
+
+    // html`
+    //   <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
+    // `;
+
+    litHtml.render(litHtml.html`
+      <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
+    `, mainElement);
+
+    // mainElement.innerHTML = `<inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>`;
+
+    ctx.handled = true;
+    next();
+  };
+
   mainRouter = [
     {
       path: '/conference*',
@@ -45,6 +64,18 @@ if (mainElement !== null) {
     {
       path: '/articles*',
       callback: articles,
+    },
+    {
+      path: '/editor/:id',
+      callback: editor,
+    },
+    {
+      path: '/notes*',
+      callback: async (ctx, next) => {
+        await import('./routes/notes');
+        ctx.handled = true;
+        next();
+      },
     },
     {
       path: '*',

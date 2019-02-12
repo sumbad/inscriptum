@@ -1,8 +1,3 @@
-import fontawesome from '@fortawesome/fontawesome';
-import faGithubSquare from '@fortawesome/fontawesome-free-brands/faGithubSquare';
-import faBars from '@fortawesome/fontawesome-free-solid/faBars';
-import faChevronUp from '@fortawesome/fontawesome-free-solid/faChevronUp';
-
 import { Define, UmWebComponent } from 'components/um-web.component';
 import page from 'page';
 import { Router } from 'router';
@@ -14,7 +9,14 @@ import template from './template';
 import { hasCustomElement, importWebComponent } from 'utils/common';
 
 
-fontawesome.library.add(
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faChevronUp,
+  faBars
+} from '@fortawesome/free-solid-svg-icons';
+import { faGithubSquare } from '@fortawesome/free-brands-svg-icons';
+
+library.add(
   faGithubSquare,
   faChevronUp,
   faBars
@@ -22,6 +24,7 @@ fontawesome.library.add(
 
 
 declare const $: any;
+declare const jQuery: any;
 
 
 
@@ -45,6 +48,15 @@ export class PostsComponent extends UmWebComponent {
 
   connectedCallback() {
     const html = this.wire(this, ':articles');
+
+    this.sub = postRouter.$routeDraft.subscribe(async (d: { ctx, next }) => {
+      await import('./draft');
+      this.routerView = html`<inscriptum-draft></inscriptum-draft>`;
+      this.render();
+
+      d.ctx.handled = true;
+      d.next();
+    });
 
     this.sub = postRouter.$routePostsList.subscribe(async (d: { ctx, next }) => {
       await import('./list');
@@ -74,13 +86,16 @@ export class PostsComponent extends UmWebComponent {
     // TODO: убрать jQuery
     //#region 
     /* Mobile Menu ------------------------------------------------------ */
-    var toggle_button = $('<a>', {
-      id: 'toggle-btn',
-      html: 'Menu',
-      title: 'Menu',
-      href: '#'
-    }
+    var toggle_button = $(
+      '<a>',
+      {
+        id: 'toggle-btn',
+        html: '<i class="fas fa-bars"></i>',
+        title: 'Menu',
+        href: '#',
+      }
     );
+
     var nav_wrap = $('nav#nav-wrap')
     var nav = $('ul#nav');
 
@@ -103,7 +118,58 @@ export class PostsComponent extends UmWebComponent {
     $('ul#nav li a').on('click', function () {
       if (nav.hasClass('mobile')) nav.fadeOut('fast');
     });
+
+    /*-----------------------------------------------------------------------------------
+    /*
+    /* Main JS
+    /*
+    ----------------------------------------------------------------------------------- */
+
+    (function ($) {
+
+      /* Smooth Scrolling
+      ------------------------------------------------------ */
+      $('.smoothscroll').on('click', function (e) {
+
+        e.preventDefault();
+
+        var target = this.hash,
+          $target = $(target);
+
+        $('html, body').stop().animate({
+          'scrollTop': $target.offset().top
+        }, 800, 'swing', function () {
+          window.location.hash = target;
+        });
+
+      });
+
+
+      /*	Back To Top Button
+    ------------------------------------------------------- */
+      var pxShow = 300; //height on which the button will show
+      var fadeInTime = 400; //how slow/fast you want the button to show
+      var fadeOutTime = 400; //how slow/fast you want the button to hide
+      var scrollSpeed = 300; //how slow/fast you want the button to scroll to top. can be a value, 'slow', 'normal' or 'fast'
+
+      // Show or hide the sticky footer button
+      $(window).scroll(function () {
+
+        if ($(window).scrollTop() >= pxShow) {
+          $('#go-top').fadeIn(fadeInTime);
+        } else {
+          $('#go-top').fadeOut(fadeOutTime);
+        }
+
+      });
+
+
+    })(jQuery);
     //#endregion
+
+    // Replace any existing <i> tags with <svg> and set up a MutationObserver to
+    // continue doing this as the DOM changes.
+    dom.watch()
   }
 
 

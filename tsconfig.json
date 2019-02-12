@@ -10,7 +10,7 @@
     "sourceMap": true,
     "lib": [
       "dom",
-      "es2015"
+      "esnext"
     ],
     "isolatedModules": false,
     "experimentalDecorators": true,
@@ -24,5 +24,22 @@
     "rootDir": "./",
     "baseUrl": "./src"
   },
-  "compileOnSave": false
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "postcss.config.js",
+    "src/public",
+    "webpack",
+    "webpack.config.js",
+    "webpack.mix.js",
+    "babel.config.js"
+  ],
+  "compileOnSave": false,
+  "plugins": [
+    {
+      "name": "typescript-lit-html-plugin",
+      "format": { "enabled": true }
+    }
+  ]
 }

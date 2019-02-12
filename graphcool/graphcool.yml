@@ -1,0 +1,35 @@
+types: ./types.graphql
+functions:
+  authenticate:
+    handler:
+      code:
+        src: ./src/resolvers/auth0Authentication.js
+        environment:
+          AUTH0_DOMAIN: ${env:AUTH0_DOMAIN}
+          AUTH0_API_IDENTIFIER: ${env:AUTH0_API_IDENTIFIER}
+          AUTH0_CLIENT_ID: ${env:AUTH0_CLIENT_ID} 
+    type: resolver
+    schema: ./src/auth0Authentication.graphql
+
+permissions:
+  - operation: Post.read
+  - operation: Post.create
+    authenticated: true
+  - operation: Draft.read
+    authenticated: true
+  - operation: Draft.create
+    authenticated: true
+  - operation: Draft.update
+    authenticated: true
+    fields:
+    - contents
+  - operation: Draft.delete
+    authenticated: true
+  - operation: File.read
+  - operation: File.create
+  - operation: File.update
+  - operation: File.delete
+  - operation: User.read
+  - operation: User.create
+  - operation: User.update
+  - operation: User.delete

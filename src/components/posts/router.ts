@@ -6,6 +6,7 @@ import { AbstractRouter, IRouters } from 'components/abstract.router';
 class PostRouter extends AbstractRouter {
   $routePost = new Subject();
   $routePostsList = new Subject();
+  $routeDraft = new Subject();
 
 
   getRouter(): IRouters {
@@ -14,6 +15,10 @@ class PostRouter extends AbstractRouter {
     return {
       rootPath,
       routers: [
+        {
+          path: '/draft/*',
+          callback: (ctx, next) => this.$routeDraft.next({ ctx, next })
+        },
         {
           path: '/:id',
           callback: (ctx, next) => this.$routePost.next({ ctx, next })

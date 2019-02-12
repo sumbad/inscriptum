@@ -90,28 +90,15 @@
   #nav-wrap>a {
     text-align: left;
     border: none;
-    font-size: 12px;
     height: 54px;
     line-height: 54px;
-    font: 0/0 a;
     text-shadow: none;
-    color: transparent;
     float: right;
     position: relative;
     top: 0px;
     right: 36px;
-  }
-  #nav-wrap>a:before {
-    font-family: 'Font Awesome\ 5 Free';
-    font-weight: 900;
-    content: "\f0c9";
-    color: #666666;
-    margin: 0;
     font-size: 25px;
-    line-height: 54px;
-    text-align: left;
-    display: block;
-    float: right;
+    color: #666666;
   }
   /* hide menu panel */
   #nav-wrap ul#nav {
@@ -322,6 +309,7 @@
   /* Go To Top Button */
   #go-top {
     right: 20px;
+    opacity: 0.5;
   }
   #go-top a {
     width: 42px;

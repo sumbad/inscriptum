@@ -48,7 +48,8 @@ module.exports = function (helper) {
         loader: 'file-loader',
         options: {
           name: '[folder]/[name].[ext]?[hash]'
-        }
+        },
+        exclude: [helper.PATHS.node_modules]
       },
       // {
       //   test: /\.(png|jpg|gif|svg|ttf)(\?v=\d+\.\d+\.\d+)?$/,
@@ -57,6 +58,7 @@ module.exports = function (helper) {
       {
         test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?$/,
         use: 'file-loader?name=[folder]/[name].[ext]',
+        exclude: [helper.PATHS.node_modules]
       },
       {
         test: /\.scss$/,
@@ -79,7 +81,7 @@ module.exports = function (helper) {
         include: [path.join(helper.PATHS.src, 'components')]
       },
       {
-        test: /\.(html|htm)$/,
+        test: /\.(html|htm|svg)$/,
         loader: 'html-loader',
         exclude: [path.join(helper.PATHS.src, 'components'), path.join(helper.PATHS.src, 'data')]
       },
@@ -110,7 +112,7 @@ module.exports = function (helper) {
     },
     resolve: {
       modules: [helper.PATHS.src, helper.PATHS.node_modules],
-      extensions: ['.ts', '.js', '.json']
+      extensions: ['.ts', '.js', '.json', '.svg']
     },
     optimization: {
       splitChunks: {

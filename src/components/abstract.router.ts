@@ -20,9 +20,12 @@ export abstract class AbstractRouter {
   page = Router.page;
 
 
-  constructor() {
+  constructor(public routerOutlet: Element = document.querySelector('main') || document.body) {
     const router = this.getRouter();
     Router.routing(router.rootPath, router.routers);
+
+    // console.log(this.page['current']);
+    // console.log(this.page['callbacks']);
   }
 
 

@@ -5,6 +5,7 @@ var webpack = require('webpack');
 
 module.exports = function (helper) {
   return {
+    mode: 'development',
     // output: {
     //   path: helper.PATHS.build,
     //   publicPath: '/',

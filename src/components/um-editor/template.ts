@@ -135,6 +135,10 @@ ${scope.$style}
           onclick="${($event)=>scope.doRichEditCommand($event, 'undo')}">
     <i class="fa fa-undo"></i>
   </button>
+  <button class="the-editor-toolbar-button"
+          onclick="${($event)=>scope.doRichEditCommand($event, 'styleWithCSS')}">
+    <i class="fa fa-undo"></i>
+  </button>
 
   <button class="the-editor-toolbar-button"
           onclick="${($event)=>scope.switchMode()}">
