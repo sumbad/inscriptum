@@ -1,2 +1,2 @@
 # inscriptum
-blog inscriptum
+[blog inscriptum](https://inscriptum.js.org)
