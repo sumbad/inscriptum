@@ -1,3 +1,6 @@
+@import '_variables.less';
+
+
 .um-drafts__submenu {
   display: flex;
   flex-direction: row-reverse;
@@ -32,6 +35,18 @@
   font-weight: normal;
   display: block;
   cursor: pointer;
+}
+
+.um-drafts__export-all {
+  margin: 0 0 10px 10px;
+  stroke: #ffffff;
+  stroke-width: 30px;
+  color: @border-color;
+
+  &:hover {
+    color: lighten(@dark-grey, 33.3%);
+    cursor: pointer;
+  }
 }
 
 /* Larger than phone */

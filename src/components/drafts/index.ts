@@ -4,15 +4,19 @@ import { StorageService } from 'storage/storage.service';
 import { AuthService } from 'auth';
 import litRender from 'abstract-element/render/lit';
 import page from 'page';
+import { takeWhile } from 'rxjs/operators';
 
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import {
-  faAngleDown
+  faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
-import { takeWhile } from 'rxjs/operators';
+import {
+  faSave
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
-  faAngleDown
+  faAngleDown,
+  faSave
 );
 
 
@@ -124,7 +128,7 @@ export class DraftsComponent extends AbstractElement {
               <div id=${draft.id} class="popover popover_right">
                 <ul class="popover-list">
                   <li class="popover-item">
-                    <a class="popover-link" @click=${() => this.handleBtnDeleteDraft(draft.id)} href="#grid">удалить</a>
+                    <a class="popover-link" @click=${()=> this.handleBtnDeleteDraft(draft.id)} href="#grid">удалить</a>
                   </li>
                   <li class="popover-item">
                     <a class="popover-link" href="#typography">опубликовать</a>
@@ -155,6 +159,10 @@ export class DraftsComponent extends AbstractElement {
       
         <div class="row">
           <div class="twelve columns um-drafts__submenu">
+            <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
+              <i class="far fa-save fa-2x"></i>
+            </span>
+      
             <button @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
           </div>
         </div>
@@ -187,6 +195,23 @@ export class DraftsComponent extends AbstractElement {
           this.draftList = this.draftList.filter(draft => draft.id !== d.deleteDraft.id);
         }
       );
+  }
+
+
+  /**
+   * Save all drafts as JSON file
+   * @param event 
+   */
+  handleBtnExportAllDrafts(event: MouseEvent) {
+    event.preventDefault();
+
+    const content = JSON.stringify(this.draftList);
+    const a = document.createElement('a');
+    const blob = new Blob([content], { type: 'application/octet-stream' });
+
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'drafts.json';
+    a.click();
   }
 
 
