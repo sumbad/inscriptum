@@ -41,7 +41,7 @@ export class DraftsComponent extends AbstractElement {
   ) {
     super(litRender, false);
 
-    this._authService = new AuthService(this._storageService, document.URL);
+    this._authService = new AuthService(this._storageService);
   }
 
 

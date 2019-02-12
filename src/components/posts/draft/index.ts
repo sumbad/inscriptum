@@ -32,7 +32,7 @@ export class DraftComponent extends AbstractElement {
 
   constructor(
     private _storageService: StorageService = new StorageService(),
-    private _authService: AuthService = new AuthService(_storageService, 'http://localhost:3000/articles/draft/list'),
+    private _authService: AuthService = new AuthService(_storageService),
   ) {
     super(litRender, false);
   }

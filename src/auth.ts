@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(
     private _storageService: StorageService,
-    redirectUrl?: string,
+    redirectUrl: string = document.URL,
   ) {
     if (AuthService.instance) {
       return AuthService.instance;
@@ -28,7 +28,7 @@ export class AuthService {
       {
         auth: {
           // redirect: false,
-          redirectUrl: redirectUrl || 'http://localhost:3000/editor',
+          redirectUrl,
           responseType: 'token id_token',
           params: {
             scope: 'openid email'
