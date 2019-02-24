@@ -8,24 +8,14 @@ import Italic from 'quill/formats/italic';
 import Header from 'quill/formats/header';
 import List, { ListItem } from 'quill/formats/list';
 import Link from 'quill/formats/link';
+import Image from 'quill/formats/image';
 
 import Bubble from 'quill/themes/bubble';
 import Toolbar from 'quill/modules/toolbar';
 import Syntax from 'quill/modules/syntax';
 
 
-// class BoldBlot extends Inline { };
 
-// BoldBlot.blotName = 'bold';
-// BoldBlot.tagName = 'strong';
-
-
-// class ItalicBlot extends Inline { }
-// ItalicBlot.blotName = 'italic';
-// ItalicBlot.tagName = 'em';
-
-
-// Quill.register(ItalicBlot);
 
 Quill.register({
   'modules/toolbar': Toolbar,
@@ -36,7 +26,8 @@ Quill.register({
   'formats/header': Header,
   'formats/list': List,
   'formats/list-item': ListItem,
-  'formats/link': Link
+  'formats/link': Link,
+  'formats/image': Image
 });
 
 
@@ -48,25 +39,25 @@ DividerBlot.tagName = 'hr';
 Quill.register(DividerBlot);
 
 
-class ImageBlot extends BlockEmbed {
-  static create(value) {
-    let node = super.create(null) as Element;
-    node.setAttribute('alt', value.alt);
-    node.setAttribute('src', value.url);
-    return node;
-  }
+// class ImageBlot extends BlockEmbed {
+//   static create(value) {
+//     let node = super.create(null) as Element;
+//     node.setAttribute('alt', value.alt);
+//     node.setAttribute('src', value.url);
+//     return node;
+//   }
 
-  static value(node) {
-    return {
-      alt: node.getAttribute('alt'),
-      url: node.getAttribute('src')
-    };
-  }
-}
-ImageBlot.blotName = 'image';
-ImageBlot.tagName = 'img';
+//   static value(node) {
+//     return {
+//       alt: node.getAttribute('alt'),
+//       url: node.getAttribute('src')
+//     };
+//   }
+// }
+// ImageBlot.blotName = 'image';
+// ImageBlot.tagName = 'img';
 
-Quill.register(ImageBlot);
+// Quill.register(ImageBlot);
 
 
 class VideoBlot extends BlockEmbed {

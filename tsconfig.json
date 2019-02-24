@@ -25,7 +25,7 @@
     "baseUrl": "./src"
   },
   "include": [
-    "src"
+    "src", "src/components/editor/register/.ts"
   ],
   "exclude": [
     "postcss.config.js",

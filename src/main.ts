@@ -46,9 +46,12 @@ if (mainElement !== null) {
     //   <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
     // `;
 
-    litHtml.render(litHtml.html`
-      <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
-    `, mainElement);
+    litHtml.render(
+      litHtml.html`
+        <inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>
+      `,
+      mainElement
+    );
 
     // mainElement.innerHTML = `<inscriptum-editor draft-id=${ctx.params.id}></inscriptum-editor>`;
 
@@ -66,7 +69,8 @@ if (mainElement !== null) {
       callback: articles,
     },
     {
-      path: '/editor/:id',
+      // path: '/editor/:id',
+      path: '/editor*',
       callback: editor,
     },
     {
