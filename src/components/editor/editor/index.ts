@@ -1,3 +1,5 @@
+import { loadImage } from 'blueimp-load-image';
+
 import Delta from 'quill-delta';
 import Block, { BlockEmbed } from 'quill/blots/block';
 import Quill from 'quill/core';
@@ -22,6 +24,7 @@ import Bold from 'quill/formats/bold';
 import Italic from 'quill/formats/italic';
 import { HeaderBlot } from './HeaderBlot';
 import { SubheaderBlot } from './SubheaderBlot';
+import { uploadFileService } from '../image.service';
 
 
 Quill.register({
@@ -86,14 +89,14 @@ let $header_button = document.querySelector('#_header_button') as HTMLElement;
 let $subheader_button = document.querySelector('#_subheader_button') as HTMLElement;
 let $quote_button = document.querySelector('#_quote_button') as HTMLElement;
 
-let $image_button = document.querySelector('#_image_button');
-let $embed_button = document.querySelector('#_embed_button');
+let $image_button = document.querySelector('#_image_button') as HTMLButtonElement;
+let $embed_button = document.querySelector('#_embed_button') as HTMLButtonElement;
 
 let $edit_button = document.querySelector('#_edit_button');
 let $publish_button = document.querySelector('#_publish_button');
 
 let $account = document.querySelector('.account');
-let $error_msg = document.querySelector('#_error_msg');
+let $error_msg = document.querySelector('#_error_msg') as HTMLElement;
 
 
 let formatTTOptions = {
@@ -215,10 +218,6 @@ function initQuill() {
 
   var quill = new MyQuill('#_tl_editor', {
     readOnly: true,
-    // fileSizeLimit: 5 * 1024 * 1024,
-    // fileSizeLimitCallback: function () {
-    //   showError('File too big (up to 5 MB allowed)');
-    // },
     // updatePhoto: updatePhoto,
     formats: [
       'bold', 'italic', 'underline', 'strike', 'code', 'link',
@@ -545,6 +544,7 @@ function initQuill() {
     if (!quill.isEnabled()) return;
     if (range == null) return;
     checkFigureBlots(range);
+
     let [block, offset] = quill.scroll.descendant(Block, range.index);
     if (range.length === 0) {
       hideFormatTooltip();
@@ -554,7 +554,8 @@ function initQuill() {
         !(block instanceof PullquoteBlot) &&
         !(block instanceof CodeBlock) &&
         !(block instanceof ListItem) &&
-        !(block.domNode as HTMLElement).innerText.length) {
+        block.domNode.textContent === ''
+      ) {
         showBlocksTooltip(range);
       } else {
         hideBlocksTooltip();
@@ -923,7 +924,7 @@ function checkOncePlaceholder() {
   const placeholder_once = document.querySelector('.placeholder_once');
   if (placeholder_once !== null) {
     placeholder_once.removeAttribute('data-placeholder')
-    placeholder_once.classList.remove('placeholder_once empty');
+    placeholder_once.classList.remove('placeholder_once', 'empty');
   }
 }
 
@@ -1163,7 +1164,7 @@ function tooltipUpdatePosition($tooltip: HTMLElement, range, options) {
   }
   console.log('2_tt = ', tt);
   console.log('2_quillOffset = ', quillOffset);
-  
+
   $tooltip['_left'] = tt.left;
   $tooltip['_top'] = tt.top;
   $tooltip.style.left = tt.left + 'px';
@@ -1258,7 +1259,7 @@ function isOverElement(bounds1, $elem2: HTMLElement, padding) {
   }
   bounds1.bottom = bounds1.top + bounds1.height;
   bounds1.right = bounds1.left + bounds1.width;
-  let pos2 = {_left: $elem2.offsetLeft, _top: $elem2.offsetTop};//.position();
+  let pos2 = { _left: $elem2.offsetLeft, _top: $elem2.offsetTop };//.position();
   let bounds2 = {
     top: pos2._top,
     bottom: pos2._top + $elem2.offsetHeight,
@@ -1343,10 +1344,17 @@ export function handleDomCaptionOnkeydown(figureBlot: FigureBlot, e: KeyboardEve
 }
 
 
+export function uploadFileOnErrorFigureBlot(figureBlot: FigureBlot) {
+  quill.deleteText(figureBlot.offset(quill.scroll), figureBlot.length(), Quill.sources.SILENT);
+}
 
-export function uploadFile(file_data, onProgress?, onSuccess?, onError?) {
-  var data = new FormData();
-  data.append('file', uploadDataToBlob(file_data));
+
+export async function uploadFile(file_data, onProgress?, onSuccess?, onError?) {
+  // var data = new FormData();
+  // data.append('file', uploadDataToBlob(file_data));
+
+
+
   // $.ajax({
   //   url: '/upload',
   //   type: 'POST',
@@ -1379,6 +1387,14 @@ export function uploadFile(file_data, onProgress?, onSuccess?, onError?) {
   //     return onError && onError('Network error');
   //   }
   // });
+
+  try {
+    const doneFile = await uploadFileService(uploadDataToBlob(file_data), onProgress);
+    onSuccess && onSuccess(doneFile);
+  } catch (error) {
+    onError && onError('Network error');
+  }
+  
 }
 
 
@@ -1535,6 +1551,48 @@ function toolbarPromptHide($el: HTMLElement) {
 }
 
 
+function updatePhoto(file, callback) {
+  if (file.type == 'image/jpg' || file.type == 'image/jpeg') {
+    return loadImage(file, (canvas) => {
+      if (canvas.type === 'error') {
+        callback(file);
+      } else {
+        if (canvas.toBlob) {
+          canvas.toBlob(function (file) {
+            callback(file);
+          }, file.type);
+        } else {
+          var dataurl = canvas.toDataURL(file.type);
+          var file_data = {
+            type: file.type,
+            base64_data: dataurl.split(',')[1]
+          };
+          callback(uploadDataToBlob(file_data));
+        }
+      }
+    }, {
+        canvas: true,
+        orientation: true
+      });
+  }
+  callback(file);
+}
+
+
+export function showError(error) {
+  $error_msg.innerText = error;
+  clearTimeout($error_msg['to']);
+  $error_msg.classList.add('shown');
+  $error_msg['to'] = setTimeout(
+    () => {
+      $error_msg.classList.remove('shown');
+    },
+    3000
+  );
+}
+
+
+
 
 $tl_tooltip.onmouseover = ((e) => {
   let button = e.target as Element;
@@ -1630,7 +1688,7 @@ $header_button.onclick = (e) => {
   let range = quill.getSelection(true);
   quill.format('blockHeader', !active);
   let blots = quill.scroll.descendants(HeaderBlot, range.index, range.length);
-  
+
   blots.forEach((blot) => {
     let index = blot.offset(quill.scroll);
     let length = blot.length();
@@ -1679,70 +1737,79 @@ $quote_button.onclick = (e) => {
   // toolbarUpdate(range);
 };
 
-// $image_button.click(function () {
-//   let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]');
-//   if (fileInput == null) {
-//     fileInput = document.createElement('input');
-//     fileInput.setAttribute('type', 'file');
-//     fileInput.setAttribute('accept', browser.safari_mobile ? 'image/gif, image/jpeg, image/jpg, image/png' : 'image/gif, image/jpeg, image/jpg, image/png, video/mp4');
-//     fileInput.classList.add('ql-image');
-//     fileInput.addEventListener('change', () => {
-//       if (fileInput.files != null && fileInput.files[0] != null) {
-//         var file = fileInput.files[0];
-//         updatePhoto(file, (file) => {
-//           if (quill.fileSizeLimit && file.size > quill.fileSizeLimit) {
-//             return quill.fileSizeLimitCallback && quill.fileSizeLimitCallback();
-//           }
-//           var reader = new FileReader();
-//           reader.onload = function (e) {
-//             let figure_value = getFigureValueByUrl(e.target.result);
-//             if (figure_value) {
-//               let range = quill.getSelection(true);
-//               quill.updateContents(new Delta()
-//                 .retain(range.index)
-//                 .delete(range.length)
-//                 .insert({ blockFigure: figure_value })
-//                 , Quill.sources.USER);
-//             } else {
-//               showError('Invalid file format');
-//             }
-//             fileInput.value = '';
-//             fileInput.setAttribute('data-status', 'ready');
-//           };
-//           reader.readAsDataURL(file);
-//         });
-//       }
-//     });
-//     quill.container.appendChild(fileInput);
-//   }
-//   fileInput.setAttribute('data-status', 'busy');
-//   fileInput.click();
-// });
+$image_button.onclick = () => {
+  let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]') as HTMLInputElement;
+  if (fileInput == null) {
+    fileInput = document.createElement('input');
+    fileInput.setAttribute('type', 'file');
+    fileInput.setAttribute('accept', browser.safari_mobile ? 'image/gif, image/jpeg, image/jpg, image/png' : 'image/gif, image/jpeg, image/jpg, image/png, video/mp4');
+    fileInput.classList.add('ql-image');
+    fileInput.addEventListener('change', () => {
+      if (fileInput && fileInput.files != null && fileInput.files[0] != null) {
+        var file = fileInput.files[0];
 
-// $embed_button.click(function (e) {
-//   // toolbarPrompt($tl_blocks, 'Paste a YouTube, Vimeo or Twitter link, and press Enter', function(value) {
-//   //   let figure_value = getFigureValueByUrl(value);
-//   //   let insert = figure_value ? {blockFigure: figure_value} : value + '\n';
-//   //   let range = quill.getSelection(true);
-//   //   quill.updateContents(new Delta()
-//   //     .retain(range.index)
-//   //     .delete(range.length)
-//   //     .insert(insert)
-//   //   , Quill.sources.USER);
-//   //   quill.focus();
-//   //   blocksUpdatePosition(quill.getSelection());
-//   // });
-//   let range = quill.getSelection(true);
-//   let [line,] = quill.scroll.line(range.index);
-//   if (line) {
-//     let value = $(line.domNode).text();
-//     if (!value) {
-//       line.domNode.setAttribute('data-placeholder', 'Paste a YouTube, Vimeo or Twitter link, and press Enter');
-//       $(line.domNode).addClass('placeholder_once empty');
-//       hideBlocksTooltip();
-//     }
-//   }
-// });
+        const fileSizeLimitCallback = function () {
+          showError('File too big (up to 5 MB allowed)');
+        };
+
+        const fileSizeLimit = 5 * 1024 * 1024;
+        updatePhoto(file, (file) => {
+          if (file.size > fileSizeLimit) {
+            return fileSizeLimitCallback && fileSizeLimitCallback();
+          }
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            if (e && e.target !== null) {
+              let figure_value = getFigureValueByUrl(e.target['result']);
+              if (figure_value) {
+                let range = quill.getSelection(true);
+                quill.updateContents(new Delta()
+                  .retain(range.index)
+                  .delete(range.length)
+                  .insert({ blockFigure: figure_value })
+                  , Quill.sources.USER);
+              } else {
+                showError('Invalid file format');
+              }
+              fileInput.value = '';
+              fileInput.setAttribute('data-status', 'ready');
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    });
+    quill.container.appendChild(fileInput);
+  }
+  fileInput.setAttribute('data-status', 'busy');
+  fileInput.click();
+};
+
+$embed_button.onclick = (e) => {
+  // toolbarPrompt($tl_blocks, 'Paste a YouTube, Vimeo or Twitter link, and press Enter', function(value) {
+  //   let figure_value = getFigureValueByUrl(value);
+  //   let insert = figure_value ? {blockFigure: figure_value} : value + '\n';
+  //   let range = quill.getSelection(true);
+  //   quill.updateContents(new Delta()
+  //     .retain(range.index)
+  //     .delete(range.length)
+  //     .insert(insert)
+  //   , Quill.sources.USER);
+  //   quill.focus();
+  //   blocksUpdatePosition(quill.getSelection());
+  // });
+  let range = quill.getSelection(true);
+  let [line,] = quill.scroll.line(range.index);
+  const node = line.domNode as HTMLElement;
+  if (line) {
+    let value = node.textContent;
+    if (!value) {
+      node.setAttribute('data-placeholder', 'Paste a YouTube, Vimeo or Twitter link, and press Enter');
+      node.classList.add('placeholder_once', 'empty');
+      hideBlocksTooltip();
+    }
+  }
+};
 
 // $publish_button.click(function () {
 //   savePage();

@@ -8,7 +8,7 @@ const unsignedUploadPreset = 'cz5pibn5';
 
 
 // *********** Upload file to Cloudinary ******************** //
-export function uploadFile(file): Promise<any> {
+export function uploadFileService(file, onProgress): Promise<any> {
   return new Promise(
     (resolve, reject) => {
       var url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
@@ -21,13 +21,13 @@ export function uploadFile(file): Promise<any> {
       //  document.getElementById('progress').style.width = 0;
 
       // Update progress (can be used to show progress indicator)
-      xhr.upload.addEventListener('progress', function (e) {
-        var progress = Math.round((e.loaded * 100.0) / e.total);
-        // document.getElementById('progress').style.width = progress + "%";
-
-        console.log(`fileuploadprogress data.loaded: ${e.loaded},
-      data.total: ${e.total}`);
+      xhr.upload.addEventListener('progress', function (event) {
+        if (event.lengthComputable) {
+          onProgress && onProgress(event.loaded, event.total);
+        }
       });
+
+      onProgress && onProgress(0, 1);
 
       fd.append('upload_preset', unsignedUploadPreset);
       fd.append('tags', 'browser_upload'); // Optional - add tag for image admin in Cloudinary
@@ -37,6 +37,7 @@ export function uploadFile(file): Promise<any> {
       xhr.onreadystatechange = (e) => {
         if (xhr.readyState == 4 && xhr.status == 200) {
           // File uploaded successfully
+          
           var response = JSON.parse(xhr.responseText);
           // https://res.cloudinary.com/cloudName/image/upload/v1483481128/public_id.jpg
           // var url = response.secure_url;
@@ -49,6 +50,8 @@ export function uploadFile(file): Promise<any> {
 
 
           console.log(1111, response);
+
+          response.src = response.secure_url;
 
           resolve(response);
 

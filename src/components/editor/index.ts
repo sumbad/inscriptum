@@ -29,7 +29,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import Delta from 'quill-delta';
-import { uploadFile } from './image.service';
 
 
 library.add(

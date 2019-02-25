@@ -1,6 +1,16 @@
 import Quill from 'quill/core';
 import { BlockEmbed } from 'quill/blots/block';
-import { updateEditableText, handleDomCursorOnkeydown, handleDomCaptionOnkeydown, handleDomWrapperClick, draftSave, uploadFile, sanitize } from '.';
+import {
+  updateEditableText,
+  handleDomCursorOnkeydown,
+  handleDomCaptionOnkeydown,
+  handleDomWrapperClick,
+  draftSave,
+  uploadFile,
+  sanitize,
+  showError,
+  uploadFileOnErrorFigureBlot
+} from '.';
 import Keyboard from 'quill/modules/keyboard';
 
 
@@ -167,25 +177,25 @@ export class FigureBlot extends BlockEmbed {
       }
       this.domProgressBar.style.width = persent + '%';
     },
-      // (data) => {
-      //   if (data) {
-      //     let src = this.sanitize(data.src);
-      //     if (file_data.type.substr(0, 6) == 'video/') {
-      //       let video = this.domWrapper.querySelector('video');
-      //       video && video.setAttribute('src', src);
-      //     } else {
-      //       let image = this.domWrapper.querySelector('img');
-      //       image && image.setAttribute('src', src);
-      //     }
-      //     this.domWrapper.classList.remove('loading');
-      //     draftSave();
-      //   }
-      // },
-      // (error) => {
-      //   quill.deleteText(this.offset(quill.scroll), this.length(), Quill.sources.SILENT);
-      //   draftSave();
-      //   return showError(error);
-      // }
+      (data) => {
+        if (data) {
+          let src = this.sanitize(data.src);
+          if (file_data.type.substr(0, 6) == 'video/') {
+            let video = this.domWrapper.querySelector('video');
+            video && video.setAttribute('src', src);
+          } else {
+            let image = this.domWrapper.querySelector('img');
+            image && image.setAttribute('src', src);
+          }
+          this.domWrapper.classList.remove('loading');
+          draftSave();
+        }
+      },
+      (error) => {
+        uploadFileOnErrorFigureBlot(this);
+        draftSave();
+        return showError(error);
+      }
     );
   }
 
