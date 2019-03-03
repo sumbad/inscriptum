@@ -24,6 +24,7 @@
     "@webcomponents/webcomponentsjs": "^1.3.3",
     "abstract-element": "^4.3.0",
     "auth0-lock": "^11.14.0",
+    "autosize": "^4.0.2",
     "blueimp-load-image": "^2.20.1",
     "bourbon": "^5.0.0",
     "cloudinary-core": "^2.6.2",
