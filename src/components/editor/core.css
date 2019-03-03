@@ -580,21 +580,7 @@ body.mobile .button_hover {
   margin: 0 21px 12px;
   word-wrap: break-word;
 }
-.tl_article .tl_article_content code,
-.tl_article .tl_article_content pre {
-  font-family: Menlo, 'Courier New', Courier, monospace;
-  font-size: 16px;
-  background: #F5F8FC;
-}
-.tl_article .tl_article_content code {
-  padding: 1px 3px;
-}
-.tl_article .tl_article_content pre {
-  margin: 14px 0;
-  padding: 7px 21px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
+
 .tl_article .tl_article_content h3,
 .tl_article .tl_article_content h4 {
   font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;

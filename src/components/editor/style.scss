@@ -2,14 +2,76 @@
 // @import "~quill/dist/quill.snow";
 @import "~quill/dist/quill.bubble";
 
+@import '~highlight.js/styles/monokai-sublime';
+
 @import './fonts';
 @import "./core";
 
-@import '~highlight.js/styles/monokai-sublime';
 
 .buttons, .button_group, .tl_blocks .buttons {
   display: flex;
 }
+
+.buttons, .button_group, .tl_blocks .buttons {
+  display: flex;
+}
+
+
+.tl_article .tl_article_content code {
+  font-family: Menlo, 'Courier New', Courier, monospace;
+  font-size: 16px;
+  &:not(.hljs) {
+    background: #F5F8FC;
+  }
+}
+.tl_article .tl_article_content code {
+  padding: 1px 3px;
+}
+.tl_article .tl_article_content pre {
+  margin: 14px 0;
+  // padding: 7px 21px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+
+
+// Colors
+$bg-color: #232B2B;
+$selector-color: #c7d3de;
+
+
+.ql-syntax code.hljs {
+  background: $bg-color;
+  border-radius: 3px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  border-left: 6px solid lighten($bg-color, 20%);
+  margin: 20px auto;
+  white-space: pre-wrap; 
+  padding: 20px 20px 20px 50px;
+  color: $selector-color;
+  counter-reset: step;
+  counter-increment: step 0;
+  position: relative;
+  font-size: 12px;
+  span.l {
+    line-height: 1.4em;
+    &:before {
+      color: lighten($bg-color, 20%);
+      position: absolute;
+      left: 15px;
+      content: counter(step);
+      counter-increment: step;
+    }
+  }
+}
+
+
+
+
+
+
 
 // * {
 //   box-sizing: border-box;
