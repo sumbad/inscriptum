@@ -3,13 +3,16 @@ import autosize from 'autosize';
 
 import Delta from 'quill-delta';
 import Block, { BlockEmbed } from 'quill/blots/block';
+import Inline from 'quill/blots/inline';
 import Quill from 'quill/core';
 
+// import CodeBlock from 'quill/formats/code';
 import List, { ListItem } from 'quill/formats/list';
 import { Code } from 'quill/formats/code';
 import Keyboard from 'quill/modules/keyboard';
 import { Blot } from 'parchment/dist/src/blot/abstract/blot';
 
+import { CodeBlot } from './CodeBlot';
 import { BlockquoteBlot } from './BlockquoteBlot';
 import { BreakBlot } from './BreakBlot';
 import { FieldBlot } from './FieldBlot';
@@ -26,20 +29,264 @@ import Italic from 'quill/formats/italic';
 import { HeaderBlot } from './HeaderBlot';
 import { SubheaderBlot } from './SubheaderBlot';
 import { uploadFileService } from '../image.service';
+import Syntax, { CodeToken, CodeBlock } from 'quill/modules/syntax';
 import hljs from 'highlight.js';
-import { InsSyntaxModule } from './InsSyntaxModule';
-import { CodeBlock } from 'quill/modules/syntax';
-
+import Parchment from 'parchment';
 
 
 hljs.configure({
   languages: ['javascript', 'typescript', 'html', 'css']
 });
 
+// var Clipboard = Quill.import('modules/clipboard');
+// var Delta = Quill.import('delta');
+
+
+export class CodeEndLineFlag extends Inline { 
+  static formats(node) {
+    let format: { height?: string, width?: string } = {};
+    if (node.hasAttribute('height')) {
+      format.height = node.getAttribute('height');
+    }
+    if (node.hasAttribute('width')) {
+      format.width = node.getAttribute('width');
+    }
+    return format;
+  }
+}
+CodeEndLineFlag.blotName = 'code-end';
+CodeEndLineFlag.className = 'l';
+CodeEndLineFlag.tagName = 'SPAN';
+Quill.register(CodeEndLineFlag);
+
+
+// class CustomCode extends BlockEmbed {
+//   static create(value) {
+//     let {lang, content} = value;
+//     let node = super.create(value);
+//     const code = document.createElement('code');
+//     // code.setAttribute('class', lang);
+//     code.textContent = content;
+//     node.appendChild(code);
+//     return node;
+//   }
+
+//   static value(node) {
+//     return {
+//       lang: node.firstChild.getAttribute('class'),
+//       content: node.firstChild.innerText
+//     };
+//   }
+// }
+
+// CustomCode.blotName = 'code-custom';
+// CustomCode.tagName = 'PRE';
+// Quill.register(CustomCode);
+
+
+export class InsSyntaxCodeBlock extends CodeBlock {
+  [x: string]: any;
+  cachedElement: HTMLPreElement;
+  cachedText = '';
+
+  static create(value) {
+    // let { lang, content } = value;
+    // let node = super.create(value);
+    // const code = document.createElement('code');
+    // code.setAttribute('class', lang);
+    // code.textContent = content;
+    // node.appendChild(code);
+
+
+
+    let domNode = super.create(value) as Element;
+
+    console.log('[InsSyntaxCodeBlock][value]', domNode.parentNode);
+
+
+
+    // const preDomNode = document.createElement('pre');
+    // code.classList.add('hljs');
+    // preDomNode.appendChild(domNode);
+
+
+
+    // code.innerHTML = domNode.innerHTML;
+    // domNode.innerHTML = code.outerHTML;
+
+    console.log('[InsSyntaxCodeBlock][create]', domNode.innerHTML);
+
+
+
+    return domNode;
+  }
+
+  // constructor(public domNode: HTMLElement, value) {
+  //   super(domNode);
+  //   const code = document.createElement('code');
+  //   code.classList.add('hljs');
+  //   domNode.appendChild(code);
+  //   // this.domNode.appendChild(this.domCaption);
+  // }
+
+  replaceWith(block) {
+    console.log('[InsSyntaxCodeBlock][replaceWith].block', block);
+    // this.domNode.textContent = this.domNode.textContent;
+    // this.attach();
+    super.replaceWith(block);
+  }
+
+
+  highlight(highlight) {
+    console.log('[InsSyntaxCodeBlock][highlight].this.domNode.innerHTML_1', this.domNode.innerHTML);
+    let text: string = this.domNode.textContent || '';
+    console.log('[InsSyntaxCodeBlock][highlight].text', text);
+    if (this.cachedText.trim() !== text.trim()) {
+      if (text.trim().length > 0 || this.cachedText == null) {
+        // this.domNode.innerHTML = highlight(text);
+        // const code = document.createElement('code');
+        // code.classList.add('hljs');
+        // code.innerHTML = highlight(text);
+
+
+        // text = text.split('\n').join('<span class="l"></span>')
+
+        this.domNode.innerHTML =
+          // `<PRE class="ql-syntax">${highlight(text)}</PRE>`;
+          // highlight(text)
+          `<code class="hljs">${highlight(text)}</code>`;
+
+        this.domNode.innerHTML = this.domNode.innerHTML.split('\n').join('<span class="l"></span>\n');
+
+
+        // this.domNode.normalize();
+
+        console.log('[InsSyntaxCodeBlock][highlight].this.domNode.innerHTML_2', this.domNode.innerHTML);
+
+        // this.attach();
+      }
+      this.cachedElement = (this.domNode as HTMLPreElement).cloneNode(true) as HTMLPreElement;
+      this.cachedText = text;
+    }
+  }
+
+
+  delta() {
+    console.log('[InsSyntaxCodeBlock][delta]', this.domNode.innerHTML);
+    const a = super.delta();
+
+    // const code = this.domNode.querySelector('code');
+    // let text = '';
+    // if (code !== null) {
+    //   text = code.textContent || text;
+    // }
+    // if (text.endsWith('\n')) {      // Should always be true
+    //   text = text.slice(0, -1);
+    // }
+
+    // console.log('[InsSyntaxCodeBlock][delta].text', text);
+
+    // return text.split('\n').reduce((delta, frag) => {
+    //   return delta.insert(frag).insert('\n', this.formats());
+    // }, new Delta());
+    // console.log('[InsSyntaxCodeBlock][delta].a', a);
+    return a;
+  }
+
+  format(name, value) {
+    console.log('[InsSyntaxCodeBlock][format]');
+    super.format(name, value);
+  }
+
+  formatAt(index, length, name, value) {
+    console.log('[InsSyntaxCodeBlock][formatAt]');
+    super.formatAt(index, length, name, value);
+  }
+
+  insertAt(index, value, def) {
+    console.log('[InsSyntaxCodeBlock][insertAt]');
+    super.insertAt(index, value, def);
+  }
+
+  length() {
+    console.log('[InsSyntaxCodeBlock][length]', super.length());
+
+    const element = this.cachedElement || this.domNode;
+
+    return super.length();
+    // let length = (element.textContent || '').length;
+    // if (element.textContent && !element.textContent.endsWith('\n')) {
+    //   return length + 1;
+    // }
+    // return length;
+  }
+
+  newlineIndex(searchIndex, reverse = false) {
+    console.log('[InsSyntaxCodeBlock][newlineIndex]');
+    return super.newlineIndex(searchIndex, reverse);
+  }
+
+  optimize(context) {
+    console.log('[InsSyntaxCodeBlock][optimize]');
+    // super.optimize(context);
+
+    // const lineNumberContent = this.domNode.innerHTML.split('\n').map(
+    //   (domNodePiece: string) => {
+    //     if(domNodePiece.endsWith('<span class="l"></span>')) {
+    //       return domNodePiece;
+    //     } else {
+    //       return domNodePiece + '<span class="l"></span>';
+    //     }
+    //   }
+    // ).join('\n');
+
+    // if(lineNumberContent !== this.domNode.innerHTML) {
+    //   this.domNode.innerHTML = lineNumberContent;
+    // }
+
+    // this.domNode.innerHTML = this.domNode.innerHTML.split('\n').join('<span class="l"></span>\n');
+
+
+
+    if (this.domNode.textContent && !this.domNode.textContent.endsWith('\n')) {
+      this.appendChild(Parchment.create('text', '\n'));
+    }
+    console.log('[InsSyntaxCodeBlock][optimize].__blot', this.domNode['__blot'] != null, this.domNode['__blot']);
+    // if (this.domNode[Registry.DATA_KEY] != null) {
+    //   // @ts-ignore
+    //   delete this.domNode[Registry.DATA_KEY].mutations;
+    // }
+    super.optimize(context);
+    let next = this.next;
+    if (next != null && next.prev === this &&
+        next.statics.blotName === this.statics.blotName &&
+        this.statics.formats(this.domNode) === next.statics.formats(next.domNode)) {
+      next.optimize(context);
+      next.moveChildren(this);
+      next.remove();
+    }
+  }
+
+  replace(target) {
+    super.replace(target);
+    console.log('[InsSyntaxCodeBlock][replace]');
+  }
+}
+
+// CodeBlock.tagName = 'CODE';
+
+
+class InsSyntax extends Syntax {
+  static register() {
+    Quill.register(CodeToken, true);
+    Quill.register(InsSyntaxCodeBlock, true);
+  }
+}
 
 
 Quill.register({
-  'modules/syntax': InsSyntaxModule,
+  // 'formats/code-block': CodeBlot,
+  'modules/syntax': InsSyntax,
   'formats/bold': Bold,
   'formats/italic': Italic,
   'formats/list': List,
@@ -47,6 +294,9 @@ Quill.register({
   'formats/code': Code,
 });
 
+// CodeBlot['blotName'] = 'code-block';
+// CodeBlot['tagName'] = 'pre';
+// Quill.register(CodeBlot);
 
 
 let ua = navigator.userAgent.toLowerCase();
@@ -248,7 +498,17 @@ function initQuill() {
     ],
     modules: {
       syntax: {
-        highlight: text => hljs.highlightAuto(text).value
+        highlight: text => {
+
+          // const code = document.createElement('code');
+          // code.classList.add('hljs');
+
+          // code.innerHTML = hljs.highlightAuto(text).value;
+
+          console.log('[modules][syntax][highlight].text', text);
+
+          return hljs.highlightAuto(text).value//code.outerHTML;
+        }
       },
       clipboard: {
         matchers: [
