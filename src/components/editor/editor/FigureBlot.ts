@@ -12,7 +12,7 @@ import {
   uploadFileOnErrorFigureBlot
 } from '.';
 import Keyboard from 'quill/modules/keyboard';
-
+import autosize from 'autosize';
 
 
 export class FigureBlot extends BlockEmbed {
@@ -93,9 +93,6 @@ export class FigureBlot extends BlockEmbed {
       handleDomCaptionOnkeydown(this, e);
     };
 
-    this.domCaption.onpaste = (e) => {
-      e.stopPropagation();
-    };
 
     // $(this.domCaption).on('keyup drop change input textInput paste cut', (e) => {
     //   $(this.domCaption).toggleClass('empty', !e.target.value);
@@ -103,17 +100,22 @@ export class FigureBlot extends BlockEmbed {
     //   draftSave();
     // });
 
-    const domCaptionListenerFunc = (e) => {
-      this.domCaption.classList.toggle('empty');
-      // autosize.update(e.target);
-      draftSave();
+    const domCaptionListenerFunc = (e: Event) => {
+      if (e !== null && e.target !== null) {
+        this.domCaption.classList.toggle('empty', !e.target['value']);
+        autosize.update(e.target);
+        draftSave();
+      }
     };
 
+    this.domCaption.onpaste = (e) => {
+      e.stopPropagation();
+      domCaptionListenerFunc(e);
+    };
     this.domCaption.onkeyup = domCaptionListenerFunc;
     this.domCaption.ondrop = domCaptionListenerFunc;
     this.domCaption.onchange = domCaptionListenerFunc;
     this.domCaption.oninput = domCaptionListenerFunc;
-    this.domCaption.onpaste = domCaptionListenerFunc;
     this.domCaption.oncut = domCaptionListenerFunc;
 
     this.domCaption.onclick = (e) => {
