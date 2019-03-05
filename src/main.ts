@@ -69,8 +69,8 @@ if (mainElement !== null) {
       callback: articles,
     },
     {
-      // path: '/editor/:id',
-      path: '/editor*',
+      path: '/editor/:id',
+      // path: '/editor*',
       callback: editor,
     },
     {

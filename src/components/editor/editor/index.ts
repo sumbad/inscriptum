@@ -72,14 +72,24 @@ let T: {
   apiUrl: string;
   datetime: number;
   pageId: number;
-  saveHash?;
+  saveHash?: any;
 } = {
   apiUrl: 'https:\/\/inscriptum.js.org',
   datetime: 0,
   pageId: 0
 };
 
-(function () { var b = document.querySelector('time'); if (b && T.datetime) { var a = new Date(1E3 * T.datetime), d = 'January February March April May June July August September October November December'.split(' ')[a.getMonth()], c = a.getDate(); b.textContent = d + ' ' + (10 > c ? '0' : '') + c + ', ' + a.getFullYear() } })();
+(
+  function () {
+    var b = document.querySelector('time');
+    if (b && T.datetime) {
+      var a = new Date(1E3 * T.datetime)
+      let d = 'January February March April May June July August September October November December'.split(' ')[a.getMonth()]
+      let c = a.getDate();
+      b.textContent = d + ' ' + (10 > c ? '0' : '') + c + ', ' + a.getFullYear()
+    }
+  }
+)();
 
 var pageContent: boolean | string = false;
 
@@ -135,11 +145,11 @@ checkAuth();
 
 
 function initQuill() {
-  let draft = draftGet();
-  if (draft && $tl_editor) {
-    // $('#_tl_editor').html(draft);
-    $tl_editor.innerHTML = draft;
-  }
+  // let draft = draftGet();
+  // if (draft && $tl_editor) {
+  //   // $('#_tl_editor').html(draft);
+  //   $tl_editor.innerHTML = draft;
+  // }
 
   function getSimpleMatcher(tag, attributes) {
     return [tag, function (node, delta) {

@@ -1,12 +1,7 @@
 import { TemplateResult } from 'lit-html';
-import { Define, AbstractElement, state } from 'abstract-element';
+import { Define, AbstractElement, state, attr } from 'abstract-element';
 import * as litHtml from 'lit-html';
 import litRender from 'abstract-element/render/lit';
-
-import hljs from 'highlight.js';
-
-// import Quill from './register';
-import Block from 'quill/blots/block';
 
 import BlockBlot from 'parchment/dist/src/blot/block';
 import { AuthService } from '../../auth';
@@ -48,11 +43,6 @@ library.add(
 
 
 
-hljs.configure({
-  languages: ['javascript', 'typescript', 'html', 'css']
-});
-
-
 import template from './template';
 
 /**
@@ -62,6 +52,13 @@ import template from './template';
 export class EditorComponent extends AbstractElement {
   html = litHtml.html;
   css = require('./style.scss');
+
+  /** draft id */
+  @attr('draft-id')
+  id: string;
+
+  /** the event a content changed */
+  changedContent$ = new BehaviorSubject<string | null>(null);
 
 
   constructor(
@@ -78,16 +75,61 @@ export class EditorComponent extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
 
-    setTimeout(() => {
-      const a = require('./editor/index');
-    }, 500);
+    // setTimeout(() => {
+    if (this._authService.$authenticated.getValue()) {
+      this.loadContent();
+    } else {
+      this._authService.$authenticated.subscribe(
+        hasAuth => {
+          if (hasAuth) {
+            this.loadContent();
+          }
+        }
+      );
+    }
+
+    const a = require('./editor/index');
+    // }, 500);
 
     // @TODO: only develop mode
     // window['quill'] = quill;
 
     // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
     // continue doing this as the DOM changes.
-    dom.watch()
+    dom.watch();
+
+
+    // Store accumulated changes
+    var change = new Delta();
+    window['quill'].on('text-change', (delta) => {
+      change = change.compose(delta);
+      this.changedContent$.next(window['quill'].getContents());
+    });
+
+    // Save periodically
+    this.changedContent$
+      .skip(2)
+      .debounceTime(10000)
+      .subscribe(
+        d => {
+          if (d !== null) {
+            this._storageService
+              .updateDraft(this.id, d)
+              .then(
+                () => {
+                  change = new Delta();
+                }
+              );
+          }
+        }
+      );
+
+    // Check for unsaved data
+    window.onbeforeunload = function () {
+      if (change.length() > 0) {
+        return 'There are unsaved changes. Are you sure you want to leave?';
+      }
+    }
   }
 
 
@@ -95,6 +137,23 @@ export class EditorComponent extends AbstractElement {
     const style = this.html`<style>${this.css}</style>`;
 
     return template(this.html, { style });
+  }
+
+
+  /**
+ * Load editor content
+ * @param quill - quill instance
+ */
+  loadContent() {
+    this._storageService.getDraft(this.id).then(
+      data => {
+        console.log('id = ' + this.id);
+        console.log(data);
+        window['quill'].setContents(data.Draft.contents);
+        // this.id = data.Draft.id;
+        // quill.setContents(data.Draft.contents);
+      }
+    );
   }
 
 }
