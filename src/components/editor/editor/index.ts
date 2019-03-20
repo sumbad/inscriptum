@@ -1,4 +1,4 @@
-import { loadImage } from 'blueimp-load-image';
+import loadImage from 'blueimp-load-image';
 import autosize from 'autosize';
 
 import Delta from 'quill-delta';
@@ -29,6 +29,7 @@ import { uploadFileService } from '../image.service';
 import hljs from 'highlight.js';
 import { InsSyntaxModule } from './InsSyntaxModule';
 import { CodeBlock } from 'quill/modules/syntax';
+import { PlainTextClipboard } from './PlainTextClipboard';
 
 
 
@@ -37,6 +38,7 @@ hljs.configure({
 });
 
 
+// Quill.register('modules/clipboard', PlainTextClipboard, true);
 
 Quill.register({
   'modules/syntax': InsSyntaxModule,
@@ -44,7 +46,7 @@ Quill.register({
   'formats/italic': Italic,
   'formats/list': List,
   'formats/list-item': ListItem,
-  'formats/code': Code,
+  'formats/code': Code
 });
 
 
@@ -140,7 +142,7 @@ let linkTTOptions = {
 
 
 var quill = initQuill();
-window['quill'] = quill;
+// window['quill'] = quill;
 checkAuth();
 
 
@@ -243,6 +245,7 @@ function initQuill() {
   }
 
   var quill = new MyQuill('#_tl_editor', {
+    scrollingContainer: 'html, body',
     readOnly: true,
     // updatePhoto: updatePhoto,
     formats: [
@@ -614,12 +617,13 @@ function initQuill() {
     draftSave();
   });
 
-  quill.on(Quill.events['TEXT_PASTE'], function () {
-    let range = quill.getSelection();
-    if (range) {
-      detectLinkHandler(range);
-    }
-  });
+  // quill.on(Quill.events.TEXT_PASTE, function () {
+  //   debugger
+  //   let range = quill.getSelection();
+  //   if (range) {
+  //     detectLinkHandler(range);
+  //   }
+  // });
 
   quill.on(Quill.events.SCROLL_OPTIMIZE, function (mutations) {
     mutations.forEach((mutation) => {
@@ -833,15 +837,15 @@ function isEdit(): boolean {
 
 
 function checkFigureBlots(range) {
-  let [embed,] = quill.scroll.descendant(FigureBlot, range.index);
-  let embeds = quill.scroll.descendants(FigureBlot, 0, quill.scroll.length());
+  let [embed,] = quill.scroll.descendant(FigureBlot, range.index) as Blot[] as FigureBlot[];
+  let embeds = quill.scroll.descendants(FigureBlot, 0, quill.scroll.length()) as FigureBlot[];
   embeds.forEach((blot) => {
     if (embed !== blot) {
-      (blot as any).blur();
+      blot.blur();
     }
   });
   if (embed) {
-    (embed as any).focus();
+    embed.focus();
     hideFormatTooltip();
     hideBlocksTooltip();
   }
@@ -1084,7 +1088,7 @@ function getPageContent(for_draft) {
   cursor_wrapper.forEach(el => el.remove());
 
 
-  console.log(55555555555, $node.innerHTML);
+  // console.log(55555555555, $node.innerHTML);
 
   if (!for_draft) {
     ($node.querySelector('h1,address') as HTMLElement).remove();
@@ -1217,7 +1221,7 @@ function blocksUpdatePosition(range) {
   if (typeof range === 'undefined') {
     range = quill.getSelection();
   }
-  if (range == null || !window['quill']) return;
+  if (range == null || !quill) return;
   let lineBounds = quill.getBounds(range);
   $tl_blocks.style.top = (lineBounds.top + lineBounds.height / 2) + 'px';
 }
@@ -1531,7 +1535,7 @@ function migratePages(migrate_hash) {
 function updateEditable(is_editable) {
   $tl_article && $tl_article.classList.toggle('tl_article_edit', is_editable);
   updateEditableText(document.body);
-  if (window['quill']) {
+  if (quill) {
     quill.enable(is_editable);
     if (is_editable) {
       quill.focus();

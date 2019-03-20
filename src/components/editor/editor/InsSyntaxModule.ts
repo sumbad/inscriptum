@@ -42,8 +42,39 @@ export class InsSyntaxCodeBlock extends CodeBlock {
 
 
 export class InsSyntaxModule extends Syntax {
+  quill: any;
+  options: any;
+
   static register() {
     Quill.register(CodeToken, true);
     Quill.register(InsSyntaxCodeBlock, true);
+  }
+
+  highlight() {
+    // console.log(1111, this.quill.selection);
+    // console.log(22222, document.querySelectorAll(':hover'));
+
+    if (this.quill.selection.composing) return;
+    this.quill.update(Quill.sources.USER);
+    let range = this.quill.getSelection();
+
+    // console.log(44444, this.quill.scroll.descendants(InsSyntaxCodeBlock));
+
+
+    this.quill.scroll.descendants(InsSyntaxCodeBlock).forEach((code) => {
+      code.highlight(this.options.highlight);
+    });
+    this.quill.update(Quill.sources.SILENT);
+
+    // console.log(range);
+    // console.log(111111, document.activeElement);
+    // console.log(222222, this.quill.container);
+
+    if (
+      range != null
+      && document.activeElement === this.quill.container.querySelector('[contenteditable]')
+    ) {
+      this.quill.setSelection(range, Quill.sources.SILENT);
+    }
   }
 }
