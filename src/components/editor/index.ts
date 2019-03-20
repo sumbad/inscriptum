@@ -1,3 +1,4 @@
+import page from 'page';
 import { TemplateResult } from 'lit-html';
 import { Define, AbstractElement, state, attr } from 'abstract-element';
 import * as litHtml from 'lit-html';
@@ -63,9 +64,13 @@ export class EditorComponent extends AbstractElement {
 
   constructor(
     private _storageService: StorageService = new StorageService(),
-    private _authService: AuthService = new AuthService(_storageService),
+    private _authService: AuthService = new AuthService(_storageService, '/notes/drafts'),
   ) {
     super(litRender, false);
+
+    if (!this._authService.$authenticated.getValue()) {
+      page('/notes/drafts');
+    }
   }
 
 
@@ -75,7 +80,6 @@ export class EditorComponent extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
 
-    // setTimeout(() => {
     if (this._authService.$authenticated.getValue()) {
       this.loadContent();
     } else {
@@ -89,7 +93,6 @@ export class EditorComponent extends AbstractElement {
     }
 
     const a = require('./editor/index');
-    // }, 500);
 
     // @TODO: only develop mode
     // window['quill'] = quill;
