@@ -11,7 +11,7 @@ export class AuthService {
   private static instance: AuthService;
 
   /** subject to observe authenticate event */
-  $authenticated = new BehaviorSubject<boolean>(false);
+  $authenticated = new BehaviorSubject<boolean | null>(null);
 
 
   constructor(
@@ -93,6 +93,7 @@ export class AuthService {
         this.$authenticated.next(true);
       }
     } catch (error) {
+      this.$authenticated.next(false);
       lock.show();
     }
   }

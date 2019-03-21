@@ -64,13 +64,9 @@ export class EditorComponent extends AbstractElement {
 
   constructor(
     private _storageService: StorageService = new StorageService(),
-    private _authService: AuthService = new AuthService(_storageService, '/notes/drafts'),
+    private _authService: AuthService = new AuthService(_storageService, `${document.location.origin}/notes/drafts`),
   ) {
     super(litRender, false);
-
-    if (!this._authService.$authenticated.getValue()) {
-      page('/notes/drafts');
-    }
   }
 
 
@@ -85,7 +81,9 @@ export class EditorComponent extends AbstractElement {
     } else {
       this._authService.$authenticated.subscribe(
         hasAuth => {
-          if (hasAuth) {
+          if (hasAuth === false) {
+            page('/notes/drafts');
+          } else if (hasAuth) {
             this.loadContent();
           }
         }
