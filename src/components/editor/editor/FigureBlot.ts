@@ -1,18 +1,9 @@
 import Quill from 'quill/core';
 import { BlockEmbed } from 'quill/blots/block';
-import {
-  updateEditableText,
-  handleDomCursorOnkeydown,
-  handleDomCaptionOnkeydown,
-  handleDomWrapperClick,
-  draftSave,
-  uploadFile,
-  sanitize,
-  showError,
-  uploadFileOnErrorFigureBlot
-} from '.';
 import Keyboard from 'quill/modules/keyboard';
 import autosize from 'autosize';
+import { uploadFileService } from '../image.service';
+import { uploadDataToBlob, updateEditableText, showError, sanitize } from './utils';
 
 
 export class FigureBlot extends BlockEmbed {
@@ -77,11 +68,27 @@ export class FigureBlot extends BlockEmbed {
     }
 
     this.domWrapper.onclick = () => {
-      handleDomWrapperClick(this);
+      if (!this.domNode.classList.contains('focus')) {
+        let index = this.offset(this.scroll);
+        this.focus();
+        FigureBlot.quillSetSelection(index);
+      }
     };
 
     this.domCursor.onkeydown = (e) => {
-      handleDomCursorOnkeydown(this, e);
+      let key = e.which || e.keyCode;
+      if (key == Keyboard.keys.BACKSPACE) {
+        let offset = this.offset(this.scroll);
+        FigureBlot.quillDeleteText(offset, this.length());
+        FigureBlot.quillSetSelection(offset - 1);
+        e.preventDefault();
+      } else if (key == Keyboard.keys.ENTER) {
+        let index = this.offset(this.scroll) + this.length();
+        this.focus();
+        FigureBlot.quillInsertText(index, '\n');
+        FigureBlot.quillSetSelection(index);
+        e.preventDefault();
+      }
     };
 
     this.domCursor.onpaste = (e) => {
@@ -90,7 +97,44 @@ export class FigureBlot extends BlockEmbed {
     };
 
     this.domCaption.onkeydown = (e) => {
-      handleDomCaptionOnkeydown(this, e);
+      let key = e.which || e.keyCode;
+      let $target = e.target as HTMLTextAreaElement;
+      if (key == Keyboard.keys.ENTER) {
+        if (e.shiftKey) { return; }
+        // let pos = $target.selection('getPos');
+        let pos = { start: $target.selectionStart, end: $target.selectionEnd };
+        let value = $target.value;
+        if (pos.start != pos.end) {
+          value = value.substr(0, pos.start) + value.substr(pos.end);
+          // $target.val(value).selection('setPos', { start: value.length, end: value.length });
+          $target.setSelectionRange(value.length, value.length);
+        } else if (pos.end == value.length) {
+          let index = this.offset(this.scroll) + this.length();
+          this.focus();
+          FigureBlot.quillInsertText(index, '\n');
+          FigureBlot.quillSetSelection(index);
+        }
+        e.preventDefault();
+      } else if (key == Keyboard.keys.DOWN || key == Keyboard.keys.TAB || key == Keyboard.keys.RIGHT) {
+        // let pos = $target.selection('getPos');
+        let pos = { start: $target.selectionStart, end: $target.selectionEnd };
+        let value = $target.value;
+        if (pos.start == pos.end && pos.end == value.length) {
+          let index = this.offset(this.scroll) + this.length();
+          this.focus();
+          FigureBlot.quillSetSelection(index, 0);
+          e.preventDefault();
+        }
+      } else if (key == Keyboard.keys.LEFT || key == Keyboard.keys.UP) {
+        // let pos = $target.selection('getPos');
+        let pos = { start: $target.selectionStart, end: $target.selectionEnd };
+        if (pos.start == pos.end && pos.start === 0) {
+          let index = this.offset(this.scroll) - 1;
+          this.focus();
+          FigureBlot.quillSetSelection(index, 0);
+          e.preventDefault();
+        }
+      }
     };
 
 
@@ -104,7 +148,7 @@ export class FigureBlot extends BlockEmbed {
       if (e !== null && e.target !== null) {
         this.domCaption.classList.toggle('empty', !e.target['value']);
         autosize.update(e.target);
-        draftSave();
+        FigureBlot.draftSave();
       }
     };
 
@@ -171,7 +215,7 @@ export class FigureBlot extends BlockEmbed {
   }
 
   uploadFile(file_data) {
-    uploadFile(file_data, (loaded, total) => {
+    this.uploadFileStart(file_data, (loaded, total) => {
       let persent = 0;
       if (total && loaded) {
         persent = (loaded * 100 / total);
@@ -190,12 +234,12 @@ export class FigureBlot extends BlockEmbed {
             image && image.setAttribute('src', src);
           }
           this.domWrapper.classList.remove('loading');
-          draftSave();
+          FigureBlot.draftSave();
         }
       },
       (error) => {
-        uploadFileOnErrorFigureBlot(this);
-        draftSave();
+        FigureBlot.quillDeleteText(this.offset(this.scroll), this.length(), Quill.sources.SILENT);
+        FigureBlot.draftSave();
         return showError(error);
       }
     );
@@ -303,7 +347,26 @@ export class FigureBlot extends BlockEmbed {
   position(index: number, inclusive?: boolean | undefined): [Node, number] {
     return [this.domCursor, 0];
   }
+
+  static draftSave: () => void;
+
+  static quillSetSelection: (index: number, length?: number) => any;
+
+  static quillDeleteText: (offset: number, length: number, source?: 'api' | 'user' | 'silent' | undefined) => any;
+  static quillInsertText: (index: number, text: string) => any;
+
+  async uploadFileStart(file_data, onProgress?, onSuccess?, onError?) {
+    try {
+      const doneFile = await uploadFileService(uploadDataToBlob(file_data), onProgress);
+      onSuccess && onSuccess(doneFile);
+    } catch (error) {
+      onError && onError('Network error');
+    }
+  }
+
 }
-FigureBlot.blotName = 'blockFigure';
-FigureBlot.tagName = 'figure';
-Quill.register(FigureBlot);
+
+
+// FigureBlot.blotName = 'blockFigure';
+// FigureBlot.tagName = 'figure';
+// Quill.register(FigureBlot);
