@@ -45,6 +45,10 @@ library.add(
 
 
 import template from './template';
+import { EditorTooltipComponent } from './editor/tooltip';
+import * as QuillRegister from './editor';
+
+
 
 /**
  * The demo web component with lit-html render engine
@@ -53,6 +57,8 @@ import template from './template';
 export class EditorComponent extends AbstractElement {
   html = litHtml.html;
   css = require('./style.scss');
+  tooltip = new EditorTooltipComponent();
+  $tl_article: HTMLDivElement;
 
   /** draft id */
   @attr('draft-id')
@@ -75,36 +81,37 @@ export class EditorComponent extends AbstractElement {
    */
   connectedCallback() {
     super.connectedCallback();
+    // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
+    // continue doing this as the DOM changes.
+    dom.watch();
+
+    // let $tl_article = this.getElementsByClassName('tl_article')[0];
+    const editorContainerEl = this.querySelector('#_tl_editor') as HTMLDivElement;
+
+    const quill = QuillRegister.editor(this.tooltip, editorContainerEl);
 
     if (this._authService.$authenticated.getValue()) {
-      this.loadContent();
+      this.loadContent(quill);
     } else {
       this._authService.$authenticated.subscribe(
         hasAuth => {
           if (hasAuth === false) {
             page('/notes/drafts');
           } else if (hasAuth) {
-            this.loadContent();
+            this.loadContent(quill);
           }
         }
       );
     }
 
-    const a = require('./editor/index');
-
     // @TODO: only develop mode
-    // window['quill'] = quill;
-
-    // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
-    // continue doing this as the DOM changes.
-    dom.watch();
-
+    window['quill'] = quill;
 
     // Store accumulated changes
     var change = new Delta();
-    window['quill'].on('text-change', (delta) => {
+    quill.on('text-change', (delta) => {
       change = change.compose(delta);
-      this.changedContent$.next(window['quill'].getContents());
+      this.changedContent$.next(quill.getContents());
     });
 
     // Save periodically
@@ -125,32 +132,40 @@ export class EditorComponent extends AbstractElement {
         }
       );
 
-    // Check for unsaved data
-    window.onbeforeunload = function () {
-      if (change.length() > 0) {
-        return 'There are unsaved changes. Are you sure you want to leave?';
-      }
-    }
+    // // Check for unsaved data
+    // window.onbeforeunload = function () {
+    //   if (change.length() > 0) {
+    //     return 'There are unsaved changes. Are you sure you want to leave?';
+    //   }
+    // }
+  }
+
+
+  /**
+   * LIFECYCLE
+   */
+  disconnectedCallback() {
+    window.onbeforeunload = null;
   }
 
 
   render(): TemplateResult {
     const style = this.html`<style>${this.css}</style>`;
 
-    return template(this.html, { style });
+    return template(this.html, { style, tooltip: this.tooltip });
   }
 
 
   /**
- * Load editor content
- * @param quill - quill instance
- */
-  loadContent() {
+   * Load editor content
+   * @param quill - quill instance
+   */
+  loadContent(quill) {
     this._storageService.getDraft(this.id).then(
       data => {
         console.log('id = ' + this.id);
         console.log(data);
-        window['quill'].setContents(data.Draft.contents);
+        quill.setContents(data.Draft.contents);
         // this.id = data.Draft.id;
         // quill.setContents(data.Draft.contents);
       }
