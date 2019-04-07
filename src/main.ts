@@ -40,6 +40,7 @@ if (mainElement !== null) {
   };
 
   const editor = async (ctx, next) => {
+    await import('./components/um-preloader');
     await import('./components/editor');
 
     // html`
@@ -76,6 +77,7 @@ if (mainElement !== null) {
     {
       path: '/notes*',
       callback: async (ctx, next) => {
+        await import('./components/um-preloader');
         await import('./routes/notes');
         ctx.handled = true;
         next();

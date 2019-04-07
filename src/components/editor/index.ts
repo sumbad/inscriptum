@@ -56,9 +56,12 @@ import * as QuillRegister from './editor';
 @Define('inscriptum-editor')
 export class EditorComponent extends AbstractElement {
   html = litHtml.html;
-  css = require('./style.scss');
+  styles = require('./style.scss');
   tooltip = new EditorTooltipComponent();
   $tl_article: HTMLDivElement;
+
+  @state()
+  isPreloader = true;
 
   /** draft id */
   @attr('draft-id')
@@ -150,9 +153,7 @@ export class EditorComponent extends AbstractElement {
 
 
   render(): TemplateResult {
-    const style = this.html`<style>${this.css}</style>`;
-
-    return template(this.html, { style, tooltip: this.tooltip });
+    return template.call({...this});
   }
 
 
@@ -166,6 +167,8 @@ export class EditorComponent extends AbstractElement {
         console.log('id = ' + this.id);
         console.log(data);
         quill.setContents(data.Draft.contents);
+
+        this.isPreloader = false;
         // this.id = data.Draft.id;
         // quill.setContents(data.Draft.contents);
       }

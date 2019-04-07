@@ -24,6 +24,8 @@ library.add(
 export class DraftsComponent extends AbstractElement {
   @state()
   public draftList: any[] = [];
+  @state()
+  isPreloader = true;
 
   styles = html`
     <style>
@@ -63,6 +65,7 @@ export class DraftsComponent extends AbstractElement {
               drafts => {
                 console.log(drafts);
                 this.draftList = drafts.allDrafts;
+                this.isPreloader = false;
               }
             );
           }
@@ -157,6 +160,7 @@ export class DraftsComponent extends AbstractElement {
           </div>
         </nav>
       
+        <um-preloader loading=${this.isPreloader}>
         <div class="row">
           <div class="twelve columns um-drafts__submenu">
             <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
@@ -168,6 +172,7 @@ export class DraftsComponent extends AbstractElement {
         </div>
       
         ${draftListEl}
+        </um-preloader>
       
       </div>
     `;
