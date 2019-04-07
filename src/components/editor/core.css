@@ -518,10 +518,10 @@ body.mobile .button_hover {
 .tl_article.tl_article.tl_article_edit .ql-editor {
   text-align: left;
 }
-.tl_article .tl_article_content,
+/* .tl_article .tl_article_content,
 .tl_article .tl_article_content .ql-editor * {
   white-space: pre-wrap;
-}
+} */
 .tl_article .tl_article_content.ql-container {
   white-space: normal;
 }
@@ -631,18 +631,18 @@ body.mobile .button_hover {
 .tl_article .tl_article_content ol {
   padding: 0;
   margin: 21px;
-  list-style: none;
+  /* list-style: none;
   list-style-image: none;
-  counter-reset: list;
+  counter-reset: list; */
 }
 .tl_article .tl_article_content ul li,
 .tl_article .tl_article_content ol li {
-  margin-left: 30px;
+  /* margin-left: 30px; */
   margin-bottom: 14px;
-  padding: 0;
-  position: relative;
+  /* padding: 0;
+  position: relative; */
 }
-.tl_article .tl_article_content ul li:before,
+/* .tl_article .tl_article_content ul li:before,
 .tl_article .tl_article_content ol li:before {
   position: absolute;
   display: inline-block;
@@ -651,7 +651,7 @@ body.mobile .button_hover {
   margin: 0;
   margin-left: -78px;
   text-align: right;
-}
+} */
 .tl_article .tl_article_content ul li:before {
   padding: 1px 15px 0 0;
   content: '\2022';
@@ -661,8 +661,8 @@ body.mobile .button_hover {
   -moz-font-feature-settings: 'liga' on, 'lnum' on;
   -webkit-font-feature-settings: 'liga' on, 'lnum' on;
   padding-right: 12px;
-  counter-increment: list;
-  content: counter(list) '.';
+  /* counter-increment: list;
+  content: counter(list) '.'; */
 }
 .tl_article .tl_article_content img,
 .tl_article .tl_article_content video,

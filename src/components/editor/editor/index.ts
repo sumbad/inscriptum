@@ -4,7 +4,9 @@ import Delta from 'quill-delta';
 import Block, { BlockEmbed } from 'quill/blots/block';
 import Quill from 'quill/core';
 
-import List, { ListItem } from 'quill/formats/list';
+import { ListItem } from 'quill/formats/list';
+import { ListContinuer } from './ListContinuer';
+import { IndentClass } from 'quill/formats/indent';
 import { Code } from 'quill/formats/code';
 import Keyboard from 'quill/modules/keyboard';
 import { Blot } from 'parchment/dist/src/blot/abstract/blot';
@@ -31,7 +33,6 @@ import { CodeBlock } from 'quill/modules/syntax';
 import { PlainTextClipboard } from './PlainTextClipboard';
 import { EditorTooltipComponent } from './tooltip';
 import { draftSave, T, getPageContent, updateEditableText, sanitize, uploadDataToBlob, showError, isEdit } from './utils';
-
 
 
 hljs.configure({
@@ -71,8 +72,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   LinkBlot.blotName = 'link';
   LinkBlot.tagName = 'a';
   LinkBlot.showLinkTooltip = (link) => {
-    console.log(link);
-    
+    // console.log(link);
     tooltip.showLinkTooltip(link, link.value, isEdit(), quill)};
   LinkBlot.hideLinkTooltip = () => tooltip.hideLinkTooltip(quill);
   MyQuill.register(LinkBlot, true);
@@ -92,7 +92,8 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     'modules/syntax': InsSyntaxModule,
     'formats/bold': Bold,
     'formats/italic': Italic,
-    'formats/list': List,
+    'formats/indent': IndentClass,
+    'formats/list': ListContinuer,
     'formats/list-item': ListItem,
     'formats/code': Code
   }, true);
@@ -140,17 +141,17 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     scrollingContainer: 'html, body',
     readOnly: true,
     // updatePhoto: updatePhoto,
-    formats: [
-      'bold', 'italic', 'underline', 'strike', 'code', 'link',
-      'textBreak',
-      'blockTitle', 'blockAuthor',
-      'blockHeader', 'blockSubheader',
-      'blockBlockquote', 'blockPullquote',
-      'blockDivider',
-      'blockFigure',
-      'code-block',
-      'list',
-    ],
+    // formats: [
+    //   'bold', 'italic', 'underline', 'strike', 'code', 'link',
+    //   'textBreak',
+    //   'blockTitle', 'blockAuthor',
+    //   'blockHeader', 'blockSubheader',
+    //   'blockBlockquote', 'blockPullquote',
+    //   'blockDivider',
+    //   'blockFigure',
+    //   'code-block',
+    //   'list',
+    // ],
     modules: {
       syntax: {
         highlight: text => hljs.highlightAuto(text).value
@@ -184,25 +185,25 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
       },
       keyboard: {
         bindings: {
-          'indent': {
-            handler: function () {
-              console.log('keyboard.bindings.indent.handler');
-              return true;
-            }
-          },
-          'outdent': {
-            handler: function () {
-              console.log('keyboard.bindings.outdent.handler');
-              return true;
-            }
-          },
-          'tab': {
-            key: Keyboard.keys.TAB,
-            handler: function () {
-              console.log('keyboard.bindings.tab.handler');
-              return true;
-            }
-          },
+          // 'indent': {
+          //   handler: function () {
+          //     console.log('keyboard.bindings.indent.handler');
+          //     return true;
+          //   }
+          // },
+          // 'outdent': {
+          //   handler: function () {
+          //     console.log('keyboard.bindings.outdent.handler');
+          //     return true;
+          //   }
+          // },
+          // 'tab': {
+          //   key: Keyboard.keys.TAB,
+          //   handler: function () {
+          //     console.log('keyboard.bindings.tab.handler');
+          //     return true;
+          //   }
+          // },
           'required enter': {
             key: Keyboard.keys.ENTER,
             collapsed: true,
@@ -367,17 +368,66 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
           },
           'list autofill': {
             key: ' ',
+            shiftKey: null,
             collapsed: true,
-            format: { list: false },
-            prefix: /^(1\.|-|\*)$/,
-            handler: function (range, context) {
-              console.log('keyboard.bindings.list_autofill.handler');
-              let length = context.prefix.length;
-              this.quill.scroll.deleteAt(range.index - length, length);
-              this.quill.formatLine(range.index - length, 1, 'list', length === 1 ? 'bullet' : 'ordered', Quill.sources.USER);
+            format: {
+              list: false,
+              'code-block': false,
+              blockquote: false,
+              header: false,
+              table: false,
+            },
+            prefix: /^\s*?(\d+\.|-|\*|\[ ?\]|\[x\])$/,
+            handler(range, context) {
+              if (this.quill.scroll.query && this.quill.scroll.query('list') == null) return true;
+              const { length } = context.prefix;
+              const [line, offset] = this.quill.getLine(range.index);
+              if (offset > length) return true;
+              let value;
+              switch (context.prefix.trim()) {
+                case '[]':
+                case '[ ]':
+                  value = 'unchecked';
+                  break;
+                case '[x]':
+                  value = 'checked';
+                  break;
+                case '-':
+                case '*':
+                  value = 'bullet';
+                  break;
+                default:
+                  value = {type: 'ordered', start: Number(context.prefix.slice(0, -1))  - 1};
+              }
+              this.quill.insertText(range.index, ' ', Quill.sources.USER);
+              this.quill.history.cutoff();
+              console.log('keyboard.bindings.list_autofill.handler', range, context);
+              const delta = new Delta()
+                .retain(range.index - offset)
+                .delete(length + 1)
+                .retain(line.length() - 2 - offset)
+                .retain(1, { list: value, start: value.start });
+              console.log('keyboard.bindings.list_autofill.handler', delta);
+              const newContend = this.quill.updateContents(delta, Quill.sources.USER);
+              console.log('keyboard.bindings.list_autofill.handler', newContend);
+              this.quill.history.cutoff();
               this.quill.setSelection(range.index - length, Quill.sources.SILENT);
-            }
+              return false;
+            },
           },
+          // 'list autofill': {
+          //   key: ' ',
+          //   collapsed: true,
+          //   format: { list: false },
+          //   prefix: /^(\d*\.|-|\*)$/,
+          //   handler: function (range, context) {
+          //     let length = context.prefix.length;
+          //     console.log('keyboard.bindings.list_autofill.handler', range, context);
+          //     this.quill.scroll.deleteAt(range.index - length, length);
+          //     this.quill.formatLine(range.index - length, 1, 'list', length === 1 ? 'bullet' : 'ordered', Quill.sources.USER);
+          //     this.quill.setSelection(range.index - length, Quill.sources.SILENT);
+          //   }
+          // },
           'pre wrap': {
             key: 192, // `
             collapsed: true,
