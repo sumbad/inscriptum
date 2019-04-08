@@ -1,9 +1,18 @@
-export default function () {
-  return this.html`
-<style>${this.styles}</style>
+import { TemplateResult, html } from 'lit-html';
 
-<um-preloader loading=${this.isPreloader}>
+interface IProps {
+  styles: TemplateResult;
+  isPreloader: boolean;
+  tooltip: HTMLElement;
+}
+
+
+export default (props: IProps) => html`
+${props.styles}
+
+<um-preloader loading=${props.isPreloader}>
   <div class="tl_page_wrap">
+
     <div class="tl_page">
       <section class="tl_article">
         <header class="tl_article_header">
@@ -14,10 +23,11 @@ export default function () {
           </address>
         </header>
         <article id="_tl_editor" class="tl_article_content">
-          <h1><br></h1><address><br></address>
+          <h1><br></h1>
+          <address><br></address>
           <p><br></p>
         </article>
-        ${this.tooltip}
+        ${props.tooltip}
         <aside class="tl_article_buttons">
           <div class="account account_top"></div>
           <button id="_edit_button" class="button edit_button">Edit</button>
@@ -31,4 +41,4 @@ export default function () {
 </um-preloader>
 
 <div id="_tl_alerts" class="tl_alerts"></div>
-`};
+`;

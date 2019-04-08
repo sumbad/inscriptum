@@ -1,30 +1,17 @@
-import page from 'page';
-import { TemplateResult } from 'lit-html';
-import { Define, AbstractElement, state, attr } from 'abstract-element';
-import * as litHtml from 'lit-html';
-import litRender from 'abstract-element/render/lit';
-
-import BlockBlot from 'parchment/dist/src/blot/block';
-import { AuthService } from '../../auth';
-import { StorageService } from 'storage/storage.service';
-import { BehaviorSubject } from 'rxjs';
-
-import { library, dom } from '@fortawesome/fontawesome-svg-core';
-import {
-  faFileExport,
-  faBold,
-  faItalic,
-  faLink,
-  faQuoteRight,
-  faHeading,
-  faCamera,
-  faPlay,
-  faMinus,
-  faPlus,
-  faCode
-} from '@fortawesome/free-solid-svg-icons';
+import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faBold, faCamera, faCode, faFileExport, faHeading, faItalic, faLink, faMinus, faPlay, faPlus, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import { AbstractElement, attr, Define, state } from 'abstract-element';
+import litRender from 'abstract-element/render/lit';
+import { html, TemplateResult } from 'lit-html';
+import page from 'page';
 import Delta from 'quill-delta';
+import { BehaviorSubject } from 'rxjs';
+import { StorageService } from 'storage/storage.service';
+import { AuthService } from '../../auth';
+import * as QuillRegister from './editor';
+import { EditorTooltipComponent } from './editor/tooltip';
+import template from './template';
 
 
 library.add(
@@ -44,19 +31,12 @@ library.add(
 
 
 
-import template from './template';
-import { EditorTooltipComponent } from './editor/tooltip';
-import * as QuillRegister from './editor';
-
-
-
 /**
  * The demo web component with lit-html render engine
  */
 @Define('inscriptum-editor')
 export class EditorComponent extends AbstractElement {
-  html = litHtml.html;
-  styles = require('./style.scss');
+  styles = html`<style>${require('./style.scss')}</style>`;
   tooltip = new EditorTooltipComponent();
   $tl_article: HTMLDivElement;
 
@@ -153,7 +133,13 @@ export class EditorComponent extends AbstractElement {
 
 
   render(): TemplateResult {
-    return template.call({...this});
+    return template(
+      {
+        isPreloader: this.isPreloader,
+        styles: this.styles,
+        tooltip: this.tooltip
+      }
+    );
   }
 
 
