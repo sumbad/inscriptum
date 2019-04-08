@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[62],{810:function(n,o){n.exports=""}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[62],{726:function(e,t,o){"use strict";o.r(t),o.d(t,"PullquoteBlot",function(){return a});var n=o(530),s=o(532);class a extends s.c{}a.blotName="blockPullquote",a.tagName="aside",n.a.register(a)}}]);

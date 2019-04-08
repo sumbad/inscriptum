@@ -1,11 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{1188:function(t,e){
-/**
-@license @nocompile
-Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
-!function(){"use strict";!function(){if(void 0===window.Reflect||void 0===window.customElements||window.customElements.hasOwnProperty("polyfillWrapFlushCallback"))return;const t=HTMLElement;window.HTMLElement=function(){return Reflect.construct(t,[],this.constructor)},HTMLElement.prototype=t.prototype,HTMLElement.prototype.constructor=HTMLElement,Object.setPrototypeOf(HTMLElement,t)}()}()}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{725:function(e,t,i){"use strict";i.r(t),i.d(t,"MyQuill",function(){return s});var n=i(530);class s extends n.a{formatLine(){super.formatLine(...arguments),this.updateSelection()}formatText(){super.formatText(...arguments),this.updateSelection()}updateSelection(e){if(this.hasFocus()){e=e||s.sources.SILENT;let t=this.getSelection(!0);this.setSelection(++t.index,t.length,e),this.setSelection(--t.index,t.length,e)}}}}}]);

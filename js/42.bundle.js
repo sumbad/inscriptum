@@ -1,13 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[42],{587:function(n,o,s){"use strict";s.r(o),o.default=((n,o)=>n`
-<div class="um-preloader">
-  <slot></slot>
-  ${function(n,o){return o.loading?n`
-      <div
-        class="${"um-preloader__loader "+o.loaderClass}"
-        style="${{opacity:o.showSpinner?1:0}}"
-      >
-        <um-spinner-round></um-spinner-round>
-      </div>
-    `:""}(n,o)}
-</div>
-`)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[42,54],{50:function(t,e){var r;r=function(){return this}();try{r=r||new Function("return this")()}catch(t){"object"==typeof window&&(r=window)}t.exports=r},563:function(t,e,r){"use strict";r.r(e),r.d(e,"AbstractRouter",function(){return o});var n=r(85);class o{constructor(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:document.querySelector("main")||document.body;this.routerOutlet=t,this.page=n.a.page;const e=this.getRouter();n.a.routing(e.rootPath,e.routers)}}},754:function(t,e,r){"use strict";r.r(e),r.d(e,"draftRouter",function(){return s});r(202);var n=r(203),o=r(563);const s=new class extends o.AbstractRouter{constructor(){super(...arguments),this.$routeEdit=new n.Subject,this.$routeDraftsList=new n.Subject}getRouter(){return{rootPath:"/articles/draft",routers:[{path:"/list",callback:(t,e)=>this.$routeDraftsList.next({ctx:t,next:e})},{path:"/*",callback:(t,e)=>{t.handled?(t.handled=!1,e()):this.page.replace("/articles/draft/list")}}]}}}}}]);

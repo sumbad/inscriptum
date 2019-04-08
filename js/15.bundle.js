@@ -1,3 +1,50 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[15,38],{547:function(t,e,n){"use strict";n.r(e),n.d(e,"GistComponent",function(){return c});var i,s=n(522),r=n(577),o=function(t,e,n,i){var s,r=arguments.length,o=r<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,n):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(t,e,n,i);else for(var c=t.length-1;c>=0;c--)(s=t[c])&&(o=(r<3?s(o):r>3?s(e,n,o):s(e,n))||o);return r>3&&o&&Object.defineProperty(e,n,o),o};let c=i=class extends s.UmWebComponent{constructor(){super(r.default)}static get observedAttributes(){return this.attributes}connectedCallback(){super.connectedCallback(i.attributes),this.iframeEl=this.querySelector("iframe");let t=this.iframeEl.contentDocument||this.iframeEl.contentWindow;t.open(),t.write('\n      <html>\n        <style>\n          .gist-meta {\n            display: none;\n          } \n          .gist .blob-code {\n            line-height: 25px !important; \n            font-size: 14px !important;\n          }\n        </style>\n        <body>\n          <link rel="stylesheet" href="https://assets-cdn.github.com/assets/gist-embed-9f0a4ad9c85ca776e669003688baa9d55f9db315562ce4d231d37dab2714c70a.css">\n          <scr'+`ipt type="text/javascript" src="https://gist.github.com/sumbad/${this.props.iframeid}.js"></sc`+"ript>\n        </body>\n      </html>\n      "),t.close(),this.iframeEl.contentWindow.onload=(()=>{this.iframeEl.style.height=t.body.scrollHeight+"px"})}};c.attributes=["iframeid"],c=i=o([Object(s.Define)("um-gist")],c)},577:function(t,e,n){"use strict";n.r(e),e.default=((t,e)=>t`
-<iframe id="iframeid" scrolling="no" style="width:100%; height:0"></iframe>
-`)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[15,17,71,72,104,105],{653:function(e,t,r){"use strict";r.r(t),r.d(t,"SpinnerRound",function(){return s});var n=r(941),o=r(550),i=r(720);let s=class extends o.UmWebComponent{constructor(){super(i.default,r(748),!0),this._widthSpinner="30px",this.uuid=n.a.uuidv4()}static get observedAttributes(){return["width"]}};s=function(e,t,r,n){var o,i=arguments.length,s=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(o=e[a])&&(s=(i<3?o(s):i>3?o(t,r,s):o(t,r))||s);return i>3&&s&&Object.defineProperty(t,r,s),s}([Object(o.Define)("um-spinner-round")],s)},720:function(e,t,r){"use strict";r.r(t),t.default=((e,t)=>e`
+<div class="um-spinner-round">
+  <svg
+    class="circular"
+    viewBox="25 25 50 50"
+  >
+    <defs>
+      <linearGradient
+        x1="100%"
+        y1="10%"
+        x2="35%"
+        y2="100%"
+        id="${t.uuid}"
+      >
+        <stop
+          class="um-spinner-round__linear-gradient-stop"
+          offset="0%"
+        ></stop>
+        <stop
+          class="um-spinner-round__linear-gradient-stop"
+          stop-opacity="0.001"
+          offset="100%"
+        ></stop>
+      </linearGradient>
+    </defs>
+    <circle
+      class="path"
+      cx="50"
+      cy="50"
+      r="20"
+      fill="none"
+      stroke-width="3"
+      stroke="${"url(#"+t.uuid+")"}"
+      stroke-miterlimit="10"
+    />
+  </svg>
+</div>
+`)},740:function(e,t,r){"use strict";r.r(t),r.d(t,"PreloaderComponent",function(){return s});var n=r(550),o=(r(653),r(749)),i=function(e,t,r,n){var o,i=arguments.length,s=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(o=e[a])&&(s=(i<3?o(s):i>3?o(t,r,s):o(t,r))||s);return i>3&&s&&Object.defineProperty(t,r,s),s};let s=class extends n.UmWebComponent{constructor(){super(o.default,r(942),!0),this.showSpinner=!0,this.loaderClass=""}static get observedAttributes(){return this.attributes}render(){this.loaderClass="um-preloader__loader_fixed";let e=!0;const t=()=>super.render({loading:e,loaderClass:this.loaderClass,showSpinner:this.showSpinner});"true"===this.props.loading?(e=!0,this.showSpinner=!0):(this.showSpinner=!1,setTimeout(()=>{e=!1,t()},600)),t()}};s.attributes=["loading"],s=i([Object(n.Define)("um-preloader")],s)},748:function(e,t){e.exports=":host{--um-spinner-round:  #555}.um-spinner-round{position:relative;margin:0 auto;width:100px}.um-spinner-round:before{content:'';display:block;padding-top:100%}.um-spinner-round__linear-gradient-stop{stop-color:#a11919;stop-color:var(--um-spinner-round, #a11919)}.um-spinner-round .circular{animation:um-spinner-round__rotate 2s linear infinite;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto}.um-spinner-round .path{stroke-dasharray:1, 50, 50;stroke-dashoffset:0;stroke-linecap:round}@keyframes um-spinner-round__rotate{100%{transform:rotate(360deg)}}\n"},749:function(e,t,r){"use strict";r.r(t),t.default=((e,t)=>e`
+<div class="um-preloader">
+  <slot></slot>
+  ${function(e,t){return t.loading?e`
+      <div
+        class="${"um-preloader__loader "+t.loaderClass}"
+        style="${{opacity:t.showSpinner?1:0}}"
+      >
+        <um-spinner-round></um-spinner-round>
+      </div>
+    `:""}(e,t)}
+</div>
+`)},942:function(e,t){e.exports=".um-preloader__loader{z-index:3;top:0;left:0;width:100%;position:absolute;transition:opacity 0.5s ease, height 0.2s ease;background-color:rgba(255,255,255,0.7);background-repeat:no-repeat;background-position:50% 50%;display:flex;justify-content:center;align-items:center}.um-preloader__loader_fixed{height:100vh;position:fixed}\n"}}]);
