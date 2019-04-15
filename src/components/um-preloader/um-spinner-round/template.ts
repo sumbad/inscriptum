@@ -29,7 +29,7 @@ export default (html, scope) => html`
       cy="50"
       r="20"
       fill="none"
-      stroke-width="3"
+      stroke-width="1"
       stroke="${'url(#' + scope.uuid + ')'}"
       stroke-miterlimit="10"
     />
