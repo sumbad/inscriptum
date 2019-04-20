@@ -28,3 +28,22 @@ export async function importWebComponent(components: IWebComponent4Import[]) {
     c => customElements.whenDefined(c.tag)
   ));
 }
+
+
+/**
+ * Load style from css file dynamically
+ * @param path - path to css file
+ */
+export function loadStyleFile(path: string) {
+  if (!document.getElementById(path))
+  {
+      var head  = document.getElementsByTagName('head')[0];
+      var link  = document.createElement('link');
+      link.id   = path;
+      link.rel  = 'stylesheet';
+      link.type = 'text/css';
+      link.href = document.location.origin + path;
+      link.media = 'all';
+      head.appendChild(link);
+  }
+}

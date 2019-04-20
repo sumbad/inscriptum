@@ -12,6 +12,7 @@ import { AuthService } from '../../auth';
 import * as QuillRegister from './editor';
 import { EditorTooltipComponent } from './editor/tooltip';
 import template from './template';
+import { loadStyleFile } from 'utils/common';
 
 
 library.add(
@@ -56,6 +57,7 @@ export class EditorComponent extends AbstractElement {
     private _authService: AuthService = new AuthService(_storageService, `${document.location.origin}/notes/drafts`),
   ) {
     super(litRender, false);
+    loadStyleFile('/css/custom_editor_fonts.css');
   }
 
 
