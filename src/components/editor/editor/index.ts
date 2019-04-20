@@ -27,18 +27,12 @@ import Italic from 'quill/formats/italic';
 import { HeaderBlot } from './HeaderBlot';
 import { SubheaderBlot } from './SubheaderBlot';
 import { uploadFileService } from '../image.service';
-import hljs from 'highlight.js';
 import { InsSyntaxModule } from './InsSyntaxModule';
 import { CodeBlock } from 'quill/modules/syntax';
 import { PlainTextClipboard } from './PlainTextClipboard';
 import { EditorTooltipComponent } from './tooltip';
 import { draftSave, T, getPageContent, updateEditableText, sanitize, uploadDataToBlob, showError, isEdit } from './utils';
-
-
-hljs.configure({
-  languages: ['javascript', 'typescript', 'html', 'css']
-});
-
+import highlightjs from './highlightjs';
 
 
 
@@ -154,7 +148,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     // ],
     modules: {
       syntax: {
-        highlight: text => hljs.highlightAuto(text).value
+        highlight: text => highlightjs.highlightAuto(text).value
       },
       clipboard: {
         matchers: [
