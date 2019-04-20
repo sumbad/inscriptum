@@ -5,10 +5,12 @@
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack --progress --verbose --hide-modules",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --progress",
+    "build": "NODE_ENV=production webpack --progress --verbose --hide-modules",
     "deploy": "node .ghpages",
-    "start": "npm run build && lite-server --baseDir=build"
+    "start": "npm run build && lite-server --baseDir=build",
+    "report": "rm -rf build && mkdir build && NODE_ENV=production webpack --progress --profile --json > build/stats.json && webpack-bundle-analyzer build/stats.json",
+    "r1": "NODE_ENV=production webpack --progress"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -16,7 +18,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.7.2",
     "@fortawesome/free-regular-svg-icons": "^5.7.2",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
-    "@types/auth0-lock": "^11.4.11",
     "@webcomponents/custom-elements": "^1.1.0",
     "@webcomponents/shadycss": "^1.9.0",
     "@webcomponents/shadydom": "^1.5.0",
@@ -46,7 +47,6 @@
     "@types/node": "^8.10.40",
     "@types/page": "^1.8.0",
     "@types/quill": "^2.0.2",
-    "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
@@ -66,12 +66,14 @@
     "sass-loader": "^6.0.7",
     "style-loader": "^0.18.2",
     "template-literals-loader": "^1.1.2",
+    "terser-webpack-plugin": "^1.2.3",
     "ts-loader": "^4.5.0",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3",
     "typescript-lit-html-plugin": "^0.9.0",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^4.29.3",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.2.1"

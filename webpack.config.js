@@ -21,12 +21,32 @@ let helper = {
 
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = [
+  const conf = [
     merge(
       webpackConfigMix(helper),
-      webpackConfigProd(helper)
-    )
+      // webpackConfigProd(helper),
+      {
+        mode: 'production',
+        stats: {
+          // Examine all modules
+          maxModules: Infinity,
+          // Display bailout reasons
+          // optimizationBailout: true,
+
+          colors: false,
+          hash: true,
+          timings: true,
+          assets: true,
+          chunks: true,
+          chunkModules: true,
+          modules: true,
+          children: true,
+        },
+      }
+    ),
   ];
+  
+  module.exports = conf;
 } else {
   module.exports = [
     merge(

@@ -1,11 +1,10 @@
-const path = require('path')
-const CleanPlugin = require('clean-webpack-plugin');
+const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const webpackConfigCommon = require('@insum/config/webpack/webpack.config.common.js');
-
 
 
 const isDevMode = process.env.NODE_ENV === 'development';
@@ -15,11 +14,6 @@ module.exports = function (helper) {
   let commonCFG = webpackConfigCommon(helper);
 
   commonCFG.plugins = [
-    new CleanPlugin([helper.PATHS.build], {
-      root: helper.PATHS.root,
-      dry: false,
-      verbose: true,
-    }),
     // Copy directory contents to {output}/path/to/dist/directory/
     new CopyWebpackPlugin([
       {
@@ -116,6 +110,19 @@ module.exports = function (helper) {
       include: [path.join(helper.PATHS.src, 'components')]
     }
   );
+
+  commonCFG.optimization = {
+    minimize: !isDevMode,
+    minimizer: [new TerserPlugin()],
+    sideEffects: false,
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          enforce: true
+        }
+      }
+    }
+  };
 
   return commonCFG;
 };
