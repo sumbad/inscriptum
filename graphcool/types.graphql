@@ -10,12 +10,15 @@ type User @model {
   auth0UserId: String @isUnique
 }
 
-type Post @model {
+type Note @model {
     id: ID! @isUnique
+    name: String! @isUnique
+    author: String! @isUnique
     createdAt: DateTime!
     updatedAt: DateTime!
     title: String!
-    body: String!
+    subtitle: String
+    content: String
 }
 
 
