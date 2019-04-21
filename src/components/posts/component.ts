@@ -34,7 +34,7 @@ export class PostsComponent extends UmWebComponent {
   public isPreloader = true;
 
 
-  constructor(public saying) {
+  constructor(public saying?) {
     super(template, require('./styles/main.scss'));
 
     PreloaderService.isAppLoading.debounceTime(500).subscribe((flag: boolean) => {

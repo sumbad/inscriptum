@@ -16,7 +16,7 @@ export interface IRouters {
 
 
 
-export abstract class AbstractRouter {
+export abstract class AbstractRoute {
   page = Router.page;
 
 

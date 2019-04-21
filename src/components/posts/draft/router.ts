@@ -1,9 +1,9 @@
 import { Subject } from 'rxjs';
-import { AbstractRouter, IRouters } from 'components/abstract.router';
+import { AbstractRoute, IRouters } from 'components/abstract.router';
 
 
 
-class DraftRouter extends AbstractRouter {
+class DraftRouter extends AbstractRoute {
   $routeEdit = new Subject();
   $routeDraftsList = new Subject();
 

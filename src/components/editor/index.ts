@@ -45,7 +45,7 @@ export class EditorComponent extends AbstractElement {
   isPreloader = true;
 
   /** draft id */
-  @attr('draft-id')
+  @attr('data-id')
   id: string;
 
   /** the event a content changed */

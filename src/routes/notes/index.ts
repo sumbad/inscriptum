@@ -1,10 +1,10 @@
 import {html, render} from 'lit-html';
 
-import { AbstractRouter, IRouters } from 'components/abstract.router';
+import { AbstractRoute, IRouters } from 'components/abstract.router';
 
 
 
-class NotesRouter extends AbstractRouter {
+class NotesRoute extends AbstractRoute {
   getRouter(): IRouters {
     const rootPath: string = '/notes';
 
@@ -46,4 +46,4 @@ class NotesRouter extends AbstractRouter {
 
 }
 
-export const notesRouter = new NotesRouter();
+export const notesRoute = new NotesRoute();

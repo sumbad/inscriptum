@@ -1,9 +1,9 @@
 import { Subject } from 'rxjs';
-import { AbstractRouter, IRouters } from 'components/abstract.router';
+import { AbstractRoute, IRouters } from 'components/abstract.router';
 
 
 
-class ConferenceRouter extends AbstractRouter {
+class ConferenceRouter extends AbstractRoute {
   rootPath: string;
 
   $routePresentation = new Subject();
