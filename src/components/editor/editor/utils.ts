@@ -99,12 +99,11 @@ export function getPageContent(for_draft, quill: Quill) {
   const cursor_wrapper = $node.querySelectorAll('.cursor_wrapper');
   cursor_wrapper.forEach(el => el.remove());
 
-
-  // console.log(55555555555, $node.innerHTML);
-
   if (!for_draft) {
-    ($node.querySelector('h1,address') as HTMLElement).remove();
-    ($node.querySelector('br.inline') as HTMLElement).replaceWith('\n');
+    const h1Address = $node.querySelector('h1,address');
+    h1Address && h1Address.remove();
+    const brInline = $node.querySelector('br.inline');
+    brInline && brInline.replaceWith('\n');
     return {
       data: JSON.stringify(wrapDomElement($node).children),
       length: $node.innerHTML.length

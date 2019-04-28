@@ -57,6 +57,7 @@ export class EditorComponent extends AbstractElement {
     private _authService: AuthService = new AuthService(_storageService, `${document.location.origin}/notes/drafts`),
   ) {
     super(litRender, false);
+    loadStyleFile('/css/core_editor.css');
     loadStyleFile('/css/custom_editor_fonts.css');
   }
 

@@ -67,7 +67,8 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   LinkBlot.tagName = 'a';
   LinkBlot.showLinkTooltip = (link) => {
     // console.log(link);
-    tooltip.showLinkTooltip(link, link.value, isEdit(), quill)};
+    tooltip.showLinkTooltip(link, link.value, isEdit(), quill)
+  };
   LinkBlot.hideLinkTooltip = () => tooltip.hideLinkTooltip(quill);
   MyQuill.register(LinkBlot, true);
   // }
@@ -99,10 +100,9 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     document.body.classList.add('mobile');
   }
 
-  let $tl_page = document.querySelector('.tl_page');
-  let $tl_article = document.querySelector('.tl_article');
-  let $tl_header = document.querySelector('.tl_article_header');
-  let $tl_content = document.querySelector('.tl_article_content');
+  let $tl_article = document.querySelector('.tl_article') as HTMLElement;
+  let $tl_header = document.querySelector('.tl_article_header') as HTMLElement;
+  let $tl_content = document.querySelector('.tl_article_content') as HTMLElement;
 
   let $bold_button = document.querySelector('#_bold_button') as HTMLElement;
   let $italic_button = document.querySelector('#_italic_button') as HTMLElement;
@@ -115,7 +115,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   let $embed_button = document.querySelector('#_embed_button') as HTMLButtonElement;
 
   let $edit_button = document.querySelector('#_edit_button');
-  let $publish_button = document.querySelector('#_publish_button');
+  let $publish_button = document.querySelector('#_publish_button') as HTMLButtonElement;
 
   let $account = document.querySelector('.account');
 
@@ -391,7 +391,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
                   value = 'bullet';
                   break;
                 default:
-                  value = {type: 'ordered', start: Number(context.prefix.slice(0, -1))  - 1};
+                  value = { type: 'ordered', start: Number(context.prefix.slice(0, -1)) - 1 };
               }
               this.quill.insertText(range.index, ' ', Quill.sources.USER);
               this.quill.history.cutoff();
@@ -773,7 +773,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
       }
     }
     pageContent = getPageContent(true, quill) as any;
-    updateEditable(isEdit());
+    updateEditable(isEdit(), quill, tooltip, $tl_article, $tl_content, $tl_header);
     // }
     // });
   }
@@ -1030,31 +1030,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   }
 
 
-  function updateEditable(is_editable) {
-    $tl_article && $tl_article.classList.toggle('tl_article_edit', is_editable);
-    updateEditableText(document.body);
-    if (quill) {
-      quill.enable(is_editable);
-      if (is_editable) {
-        quill.focus();
-      }
-    }
-    if (!is_editable && $tl_content && $tl_header) {
-      var title = ($tl_content.querySelector('h1') as HTMLElement).textContent;
-      var author = ($tl_content.querySelector('address') as HTMLElement).textContent;
-      var author_url = ($tl_content.querySelector('address a') as HTMLElement).getAttribute('href');
-      ($tl_header.querySelector('h1') as HTMLElement).textContent = title;
-      ($tl_header.querySelector('address a') as HTMLElement).textContent = author;
-      if (author_url) {
-        ($tl_header.querySelector('address a') as HTMLElement).setAttribute('href', author_url);
-      } else {
-        ($tl_header.querySelector('address a') as HTMLElement).removeAttribute('href');
-      }
-      // tooltip.hideLinkTooltip();
-      tooltip.hideFormatTooltip(quill);
-      tooltip.hideBlocksTooltip();
-    }
-  }
+
 
   function toolbarPrompt($el: HTMLElement, text, onEnter) {
     let $input = $el.querySelector('.prompt_input') as HTMLInputElement;
@@ -1316,9 +1292,9 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     }
   };
 
-  // $publish_button.click(function () {
-  //   savePage();
-  // });
+  $publish_button.onclick = () => {
+    savePage(quill, tooltip, $tl_article, $tl_content, $tl_header);
+  };
 
   // $edit_button.click(function () {
   //   updateEditable(true);
@@ -1331,4 +1307,252 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     }
   );
   return quill;
+}
+
+
+
+
+
+function updateEditable(is_editable, quill: MyQuill, tooltip, $tl_article: HTMLElement, $tl_content: HTMLElement, $tl_header: HTMLElement) {
+  $tl_article && $tl_article.classList.toggle('tl_article_edit', is_editable);
+  updateEditableText(document.body);
+  if (quill) {
+    quill.enable(is_editable);
+    if (is_editable) {
+      quill.focus();
+    }
+  }
+  if (!is_editable && $tl_content && $tl_header) {
+    const titleEl = $tl_content.querySelector('h1')
+    const title = titleEl ? titleEl.textContent : '';
+    const authorEl = $tl_content.querySelector('address');
+    const author = authorEl ? authorEl.textContent : '';
+    const authorUrlEl = $tl_content.querySelector('address a')
+    const author_url = authorUrlEl && authorUrlEl.getAttribute('href');
+
+    ($tl_header.querySelector('h1') as HTMLElement).textContent = title;
+    ($tl_header.querySelector('address a') as HTMLElement).textContent = author;
+
+    if (author_url) {
+      ($tl_header.querySelector('address a') as HTMLElement).setAttribute('href', author_url);
+    } else {
+      ($tl_header.querySelector('address a') as HTMLElement).removeAttribute('href');
+    }
+    // tooltip.hideLinkTooltip();
+    tooltip.hideFormatTooltip(quill);
+    tooltip.hideBlocksTooltip();
+  }
+}
+
+
+
+function savePage(quill: MyQuill, tooltip, $tl_article: HTMLElement, $tl_content: HTMLElement, $tl_header: HTMLElement) {
+  if ($tl_article.classList.contains('tl_article_saving')) {
+    return false;
+  }
+
+  console.log($tl_article, $tl_content, $tl_header);
+
+
+  let title = ($tl_content.querySelector('h1') as HTMLHeadElement).textContent || '';
+  let author = ($tl_content.querySelector('address') as HTMLElement).textContent;
+  // let author_url = ($tl_content.querySelector('address a') as HTMLLinkElement).href || '';
+
+  if (title.length < 2) {
+    clearTimeout($tl_article['to']);
+    $tl_article.classList.add('title_required');
+    $tl_article['to'] = setTimeout(() => {
+      $tl_article.classList.remove('title_required');
+    }, 3000);
+    quill.focus();
+    let [title] = quill.scroll.descendants(TitleBlot, 0, quill.scroll.length());
+    quill.setSelection(title.offset(), title.length() - 1);
+    quill.selection.scrollIntoView();
+    return showError('Title is too small');
+  }
+
+  // let loading_images = $('img[src^="data:"],video[src^="data:"]');
+  let loading_images = $tl_content.querySelectorAll('img[src^="data:"],video[src^="data:"]');
+  if (loading_images.length) {
+    return showError('Upload in progress.\nPlease wait...');
+  }
+
+  /** @todo - not need */
+  let content = getPageContent(false, quill);
+  if (content.length > 65536) {
+    return showError('Content is too big');
+  }
+
+  $tl_article.classList.add('tl_article_saving');
+  updateEditable(false, quill, tooltip, $tl_article, $tl_content, $tl_header);
+
+  // let boundary = '---------------------------TelegraPhBoundary21',
+  //   body = '--' + boundary + '\r\n'
+  //     + 'Content-Disposition: form-data; name="Data";'
+  //     + 'filename="content.html"\r\n'
+  //     + 'Content-type: plain/text\r\n\r\n'
+  //     + content['data'] + '\r\n'
+  //     + '--' + boundary + '\r\n'
+  //     + 'Content-Disposition: form-data; name="title"\r\n\r\n'
+  //     + title + '\r\n'
+  //     + '--' + boundary + '\r\n'
+  //     + 'Content-Disposition: form-data; name="author"\r\n\r\n'
+  //     + author + '\r\n'
+  //     + '--' + boundary + '\r\n'
+  //     // + 'Content-Disposition: form-data; name="author_url"\r\n\r\n'
+  //     // + author_url + '\r\n'
+  //     // + '--' + boundary + '\r\n'
+  //     + 'Content-Disposition: form-data; name="save_hash"\r\n\r\n'
+  //     + (T.saveHash || '') + '\r\n'
+  //     + '--' + boundary + '\r\n'
+  //     + 'Content-Disposition: form-data; name="page_id"\r\n\r\n'
+  //     + T.pageId + '\r\n'
+  //     + '--' + boundary + '--';
+
+
+
+  let firstImgSrc = '';
+
+  /** @todo - add logic from getPageContent */
+  const pageEl = document.querySelector('.tl_page_wrap');
+  
+  if (pageEl !== null) {
+    const head = pageEl.querySelector('article .ql-editor h1')
+    head && head.remove();
+
+    const address = pageEl.querySelector('article .ql-editor address')
+    address && address.remove();
+
+    const qlClipboard = pageEl.querySelector('article .ql-clipboard')
+    qlClipboard && qlClipboard.remove();
+
+    const _tl_link_tooltip = pageEl.querySelector('#_tl_link_tooltip')
+    _tl_link_tooltip && _tl_link_tooltip.remove();
+
+    const _tl_tooltip = pageEl.querySelector('#_tl_tooltip')
+    _tl_tooltip && _tl_tooltip.remove();
+
+    const _tl_blocks = pageEl.querySelector('#_tl_blocks')
+    _tl_blocks && _tl_blocks.remove();
+
+    const inscriptum_editor_tooltip = pageEl.querySelector('inscriptum-editor-tooltip')
+    inscriptum_editor_tooltip && inscriptum_editor_tooltip.remove();
+
+    const aside = pageEl.querySelector('aside')
+    aside && aside.remove();
+
+    const firstImg: HTMLImageElement | null = pageEl.querySelector('figure img');
+
+    firstImgSrc = firstImg ? firstImg.src : '';
+  }
+  const pageHTML = pageEl ? pageEl.innerHTML : '';
+
+
+  console.log(quill.getContents());
+
+  const draft = quill.getContents();
+
+  /** @todo - common code */
+  let previewTitle = '';
+  let previewContent = '';
+  if (
+    draft !== undefined
+    && draft.ops !== undefined
+    && draft.ops.length > 0
+  ) {
+    previewTitle = draft.ops[0].insert;
+
+    for (const [index, value] of draft.ops.entries()) {
+      if (index > 2) {
+        if (previewContent.length > 100) {
+          break;
+        }
+        previewContent += ' ' + value.insert;
+      }
+    }
+  }
+  previewContent = previewContent.trim() + '...';
+
+
+
+  const note = `<html>
+<head>
+  <meta charset="utf-8">
+  <title>${title}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="MobileOptimized" content="176">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="robots" content="index, follow">
+  <meta property="og:site_name" content="inscriptum">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${previewContent}">
+  <meta property="og:image" content="${firstImgSrc}">
+  <!-- <meta property="article:published_time" content="..."> -->
+  <!-- <meta property="article:modified_time" content="..."> -->
+  <meta property="article:author" content="${author}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:description" content="${previewContent}">
+  <meta name="twitter:image" content="${firstImgSrc}">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link href="/css/core_editor.css" rel="stylesheet">
+</head>
+<body>${pageHTML}</body>
+</html>`;
+
+
+  const a = document.createElement('a');
+  const blob = new Blob([note], { type: 'application/octet-stream' });
+
+  a.href = window.URL.createObjectURL(blob);
+  a.download = `${transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-')}.html`;
+
+  a.click();
+
+  // console.log(a.download);
+
+
+
+  // $.ajax(T.apiUrl + '/save', {
+  //   contentType: 'multipart/form-data; boundary=' + boundary,
+  //   data: body,
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   xhrFields: {
+  //     withCredentials: true,
+  //   },
+  //   success: function (data) {
+  //     $tl_article.removeClass('tl_article_saving');
+  //     if (data.error) {
+  //       updateEditable(true);
+  //       return showError(data.error);
+  //     }
+  //     draftClear();
+  //     if (!T.pageId && data.path) {
+  //       location.href = '/' + data.path;
+  //     }
+  //   },
+  //   error: function (xhr) {
+  //     $tl_article.removeClass('tl_article_saving');
+  //     updateEditable(true);
+  //     return showError('Network error');
+  //   }
+  // });
+}
+
+
+
+//Если с английского на русский, то передаём вторым параметром true.
+function transliterate(text: string, engToRus = false) {
+  const rus = 'щ   ш  ч  ц  ю  я  ё  ж  ъ  ы  э  а б в г д е з и й к л м н о п р с т у ф х ь'.split(/ +/g);
+  const eng = 'shh sh ch cz yu ya yo zh `` y\' e` a b v g d e z i j k l m n o p r s t u f x `'.split(/ +/g);
+
+  for (let x = 0; x < rus.length; x++) {
+    text = text.split(engToRus ? eng[x] : rus[x]).join(engToRus ? rus[x] : eng[x]);
+    text = text.split(engToRus ? eng[x].toUpperCase() : rus[x].toUpperCase()).join(engToRus ? rus[x].toUpperCase() : eng[x].toUpperCase());
+  }
+  return text;
 }

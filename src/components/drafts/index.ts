@@ -106,7 +106,7 @@ export class DraftsComponent extends AbstractElement {
           previewTitle = draft.contents.ops[0].insert;
 
           for (const [index, value] of draft.contents.ops.entries()) {
-            if (index > 0) {
+            if (index > 2) {
               if (previewContent.length > 100) {
                 break;
               }
