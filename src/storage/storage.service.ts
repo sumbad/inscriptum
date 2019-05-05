@@ -7,6 +7,8 @@ import getDraft from './queries/getDraft';
 import createDraft from './mutations/createDraft';
 import deleteDraft from './mutations/deleteDraft';
 import createNote from './mutations/createNote';
+import updateNote from './mutations/updateNote';
+import getNote from './queries/getNote';
 
 
 
@@ -96,6 +98,14 @@ export class StorageService {
 
 
   /**
+   * Get a note by ID
+   */
+  getNote(id: string): Promise<{ Note: { content: any } }> {
+    return this._graphQLClient.request(getNote, { id });
+  };
+
+
+  /**
    * Create new note
    */
   createNote(author: string, name: string, title: string, content: object)
@@ -109,7 +119,22 @@ export class StorageService {
   };
 
 
-
+  /**
+   * Create new note
+   */
+  updateNote(id: string, author: string, name: string, title: string, content: object)
+    : Promise<{ updateNote: { id: string, createdAt: number, updatedAt: number } }> {
+    return this._graphQLClient.request(
+      updateNote,
+      {
+        id,
+        author,
+        name,
+        title,
+        content
+      }
+    );
+  };
 
 
   /**

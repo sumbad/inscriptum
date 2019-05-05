@@ -5,9 +5,12 @@ interface IProps {
   isPreloader: boolean;
   tooltip: HTMLElement;
 }
+interface IHandlers {
+  publish: () => void
+}
 
 
-export default (props: IProps) => html`
+export default (props: IProps, handlers: IHandlers) => html`
 ${props.styles}
 
 <um-preloader loading=${props.isPreloader}>
@@ -31,7 +34,7 @@ ${props.styles}
         <aside class="tl_article_buttons">
           <div class="account account_top"></div>
           <button id="_edit_button" class="button edit_button">Edit</button>
-          <button id="_publish_button" class="button publish_button">Publish</button>
+          <button @click=${handlers.publish} class="button publish_button">Publish</button>
           <div class="account account_bottom"></div>
           <div id="_error_msg" class="error_msg"></div>
         </aside>

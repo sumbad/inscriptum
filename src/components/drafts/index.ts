@@ -68,6 +68,8 @@ export class DraftsComponent extends AbstractElement {
                 this.isPreloader = false;
               }
             );
+          } else if (hasAuth !== null) {
+            this._authService.handleAuthentication();
           }
         }
       );
@@ -131,7 +133,7 @@ export class DraftsComponent extends AbstractElement {
               <div id=${draft.id} class="popover popover_right">
                 <ul class="popover-list">
                   <li class="popover-item">
-                    <a class="popover-link" @click=${()=> this.handleBtnDeleteDraft(draft.id)} href="#grid">удалить</a>
+                    <a class="popover-link" @click=${() => this.handleBtnDeleteDraft(draft.id)} href="#grid">удалить</a>
                   </li>
                   <li class="popover-item">
                     <a class="popover-link" href="#typography">опубликовать</a>
@@ -161,17 +163,17 @@ export class DraftsComponent extends AbstractElement {
         </nav>
       
         <um-preloader loading=${this.isPreloader}>
-        <div class="row">
-          <div class="twelve columns um-drafts__submenu">
-            <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
-              <i class="far fa-save fa-2x"></i>
-            </span>
+          <div class="row">
+            <div class="twelve columns um-drafts__submenu">
+              <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
+                <i class="far fa-save fa-2x"></i>
+              </span>
       
-            <button @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
+              <button @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
+            </div>
           </div>
-        </div>
       
-        ${draftListEl}
+          ${draftListEl}
         </um-preloader>
       
       </div>

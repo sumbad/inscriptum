@@ -37,7 +37,7 @@ class RootRoute extends AbstractRoute {
           }
         },
         {
-          path: '/editor/:id',
+          path: '/editor/:id/:flag?',
           // path: '/editor*',
           callback: async (ctx: PageJS.Context, next) => {
             if (!this.routerOutlet.hasChildNodes()) {
@@ -45,7 +45,8 @@ class RootRoute extends AbstractRoute {
               const editor = await import('../components/editor');
               const editorComponent = new editor.EditorComponent();
 
-              editorComponent.dataset['id'] = ctx.params.id;              
+              editorComponent.dataset['id'] = ctx.params.id;
+              editorComponent.dataset['flag'] = ctx.params.flag;
               this.routerOutlet.appendChild(editorComponent);
             }
 
@@ -65,6 +66,19 @@ class RootRoute extends AbstractRoute {
             next();
           },
         },
+        // {
+        //   path: '/note*',
+        //   callback: async (ctx, next) => {
+
+        //     // if (!this.routerOutlet.hasChildNodes()) {
+        //     //   await import('../components/um-preloader');
+        //     //   await import('./notes');
+        //     // }
+        //     await import('../note');
+        //     ctx.handled = true;
+        //     next();
+        //   },
+        // },
         {
           path: '*',
           callback: (ctx, next) => {
