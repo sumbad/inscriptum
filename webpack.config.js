@@ -51,7 +51,14 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = [
     merge(
       webpackConfigMix(helper),
-      webpackConfigDev(helper)
+      webpackConfigDev(helper),
+      // devServer = {
+      //   watchOptions: {
+      //     ignored: [
+      //       path.resolve(helper.PATHS.src, 'public', 'note')
+      //     ]
+      //   }
+      // },
     )
   ];
 }

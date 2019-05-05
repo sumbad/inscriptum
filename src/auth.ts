@@ -24,7 +24,7 @@ export class AuthService {
 
   constructor(
     private _storageService: StorageService,
-    redirectUrl: string = document.URL,
+    redirectUrl: string = document.URL
   ) {
     if (AuthService.instance) {
       return AuthService.instance;
@@ -37,12 +37,12 @@ export class AuthService {
       scope: 'openid email',
       audience: 'https://inscriptum.js.org'
     });
-    
+
     // check auth
     if (localStorage.getItem('isLoggedIn') === 'true') {
       this.renewTokens();
     } else {
-      this.handleAuthentication();
+      this.$authenticated.next(false);
     }
 
     AuthService.instance = this;
@@ -53,18 +53,20 @@ export class AuthService {
    * Handle token from url
    */
   handleAuthentication() {
-    this.webAuth.parseHash( (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.localLogin(authResult);
-      } else if (err) {
-        console.warn(
-          'Error: ' + err.error + '. Check the console for further details.'
-        );
-      } else {
-        this.webAuth.authorize();
+    this.webAuth.parseHash(
+      (err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          window.location.hash = '';
+          this.localLogin(authResult);
+        } else if (err) {
+          console.warn(
+            'Error: ' + err.error + '. Check the console for further details.'
+          );
+        } else {
+          this.webAuth.authorize();
+        }
       }
-    });
+    );
   }
 
 
@@ -97,8 +99,6 @@ export class AuthService {
     this.expiresAt = 0;
 
     this.$authenticated.next(false);
-
-    this.handleAuthentication();
   }
 
 
