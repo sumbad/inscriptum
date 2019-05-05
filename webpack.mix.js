@@ -57,6 +57,7 @@ module.exports = function (helper) {
   commonCFG.entry = {
     'app': path.resolve(helper.PATHS.src, 'main.ts'),
     'vendor': path.resolve(helper.PATHS.src, 'vendor.ts'),
+    'note': path.resolve(helper.PATHS.src, 'note/index.ts'),
   };
 
   commonCFG.output = {
@@ -90,14 +91,19 @@ module.exports = function (helper) {
     {
       test: /\.scss$/,
       use: [
-        isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+        {loader:  MiniCssExtractPlugin.loader,},
         'css-loader',
         'postcss-loader',
         'sass-loader',
       ],
-      exclude: [path.join(helper.PATHS.src, 'components')]
+      include: [path.join(helper.PATHS.src, 'note')]
     }
   );
+
+  commonCFG.module.rules[5] = {
+    ...commonCFG.module.rules[5],
+    exclude: [path.join(helper.PATHS.src, 'note')]
+  };
 
   commonCFG.module.rules.unshift(
     {
