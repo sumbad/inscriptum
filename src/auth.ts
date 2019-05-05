@@ -97,6 +97,8 @@ export class AuthService {
     this.expiresAt = 0;
 
     this.$authenticated.next(false);
+
+    this.handleAuthentication();
   }
 
 
