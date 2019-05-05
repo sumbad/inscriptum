@@ -13,12 +13,11 @@ type User @model {
 type Note @model {
     id: ID! @isUnique
     name: String! @isUnique
-    author: String! @isUnique
+    author: String!
     createdAt: DateTime!
     updatedAt: DateTime!
     title: String!
-    subtitle: String
-    content: String
+    content: Json!
 }
 
 

@@ -7,5 +7,8 @@
     "graphcool-lib": "^0.1.4",
     "jsonwebtoken": "^8.1.0",
     "jwks-rsa": "^1.2.1"
+  },
+  "scripts": {
+    "deploy": ". env.sh && graphcool deploy"
   }
 }
