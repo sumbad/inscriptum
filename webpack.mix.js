@@ -57,7 +57,7 @@ module.exports = function (helper) {
   commonCFG.entry = {
     'app': path.resolve(helper.PATHS.src, 'main.ts'),
     'vendor': path.resolve(helper.PATHS.src, 'vendor.ts'),
-    'note': path.resolve(helper.PATHS.src, 'note/index.ts'),
+    'note': path.resolve(helper.PATHS.src, 'modules/note/index.ts'),
   };
 
   commonCFG.output = {
@@ -96,13 +96,13 @@ module.exports = function (helper) {
         'postcss-loader',
         'sass-loader',
       ],
-      include: [path.join(helper.PATHS.src, 'note')]
+      include: [path.join(helper.PATHS.src, 'modules/note')]
     }
   );
 
   commonCFG.module.rules[5] = {
     ...commonCFG.module.rules[5],
-    exclude: [path.join(helper.PATHS.src, 'note')]
+    exclude: [path.join(helper.PATHS.src, 'modules/note')]
   };
 
   commonCFG.module.rules.unshift(
@@ -113,7 +113,7 @@ module.exports = function (helper) {
         'postcss-loader',
         'less-loader',
       ],
-      include: [path.join(helper.PATHS.src, 'components')]
+      // include: [path.join(helper.PATHS.src, 'components')]
     }
   );
 
