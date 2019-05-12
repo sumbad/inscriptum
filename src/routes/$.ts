@@ -55,11 +55,25 @@ class RootRoute extends AbstractRoute {
           }
         },
         {
+          path: '/drafts*',
+          callback: async (ctx, next) => {
+            if (!this.routerOutlet.hasChildNodes()) {
+              await import('../components/um-preloader');
+              import('modules/drafts');
+              render(html`<inscriptum-drafts></inscriptum-drafts>`, this.routerOutlet);
+            }
+
+            ctx.handled = true;
+            next();
+          },
+        },
+        {
           path: '/notes*',
           callback: async (ctx, next) => {
             if (!this.routerOutlet.hasChildNodes()) {
               await import('../components/um-preloader');
-              await import('./notes');
+              await import('modules/notes');
+              render(html`<inscriptum-notes></inscriptum-notes>`, this.routerOutlet);
             }
 
             ctx.handled = true;

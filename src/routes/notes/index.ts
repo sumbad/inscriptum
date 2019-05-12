@@ -25,7 +25,7 @@ class NotesRoute extends AbstractRoute {
             // this.routerOutlet.innerHTML = '<inscriptum-drafts></inscriptum-drafts>';
             render(html`<inscriptum-drafts></inscriptum-drafts>`, this.routerOutlet);
 
-            import('components/drafts');
+            import('components/list');
             ctx.handled = true;
           }
         },
