@@ -12,7 +12,7 @@ import { AuthService } from '../../auth';
 import * as QuillRegister from './editor';
 import { EditorTooltipComponent } from './editor/tooltip';
 import template from './template';
-import { loadStyleFile } from 'utils/common';
+import { loadStyleFile, quillDelta2Preview } from 'utils/common';
 import { MyQuill } from './editor/MyQuill';
 import { showError, getPageContent, transliterate, updateEditable, draftClear } from './editor/utils';
 import { TitleBlot } from './editor/TitleBlot';
@@ -272,26 +272,7 @@ export class EditorComponent extends AbstractElement {
 
     const draft = this.quill.getContents();
 
-    /** @todo - common code */
-    let previewTitle = '';
-    let previewContent = '';
-    if (
-      draft !== undefined
-      && draft.ops !== undefined
-      && draft.ops.length > 0
-    ) {
-      previewTitle = draft.ops[0].insert;
-
-      for (const [index, value] of draft.ops.entries()) {
-        if (index > 2) {
-          if (previewContent.length > 100) {
-            break;
-          }
-          previewContent += ' ' + value.insert;
-        }
-      }
-    }
-    previewContent = previewContent.trim() + '...';
+    const { content: previewContent } = quillDelta2Preview(draft);
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
