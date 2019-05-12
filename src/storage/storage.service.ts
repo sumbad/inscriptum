@@ -9,6 +9,8 @@ import deleteDraft from './mutations/deleteDraft';
 import createNote from './mutations/createNote';
 import updateNote from './mutations/updateNote';
 import getNote from './queries/getNote';
+import allNotes from './queries/allNotes';
+import Delta from 'quill-delta';
 
 
 
@@ -134,6 +136,24 @@ export class StorageService {
         content
       }
     );
+  };
+
+
+  /**
+   * Get all notes
+   */
+  allNotes(): Promise<{
+    allNotes: {
+      author: string
+      content: Delta
+      createdAt: string
+      id: string
+      name: string
+      title: string
+      updatedAt: string
+    }[]
+  }> {
+    return this._graphQLClient.request(allNotes);
   };
 
 
