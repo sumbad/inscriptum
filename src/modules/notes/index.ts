@@ -27,8 +27,7 @@ enum NoteAction {
 export class DraftComponent extends AbstractElement {
   styles = html`
   <style>
-    ${require('./styles/normalize.css')}
-    ${require('./styles/skeleton.less')}
+    ${require('./styles/$.less')}
   </style>
 `;
 

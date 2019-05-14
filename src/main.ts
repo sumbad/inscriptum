@@ -1,3 +1,4 @@
+import './skeleton.less';
 import polyfills from './polyfills';
 
 
