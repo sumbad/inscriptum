@@ -266,21 +266,19 @@ export class EditorComponent extends AbstractElement {
     }
 
     const firstImg: HTMLImageElement | null = pageEl.querySelector('figure img');
-
     firstImgSrc = firstImg ? firstImg.src : '';
-    pageHTML = pageEl ? pageEl.outerHTML : '';
 
-    const draft = this.quill.getContents();
+    const quillDelta = this.quill.getContents();
 
-    const { content: previewContent } = quillDelta2Preview(draft);
+    const { content: previewContent } = quillDelta2Preview(quillDelta);
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
     let noteInfo: { id: any; createdAt: any; updatedAt: any; };
     if (this.isPosted) {
-      noteInfo = (await this._storageService.updateNote(this.id, author, name, title, draft)).updateNote;
+      noteInfo = (await this._storageService.updateNote(this.id, author, name, title, quillDelta)).updateNote;
     } else {
-      noteInfo = (await this._storageService.createNote(author, name, title, draft)).createNote;
+      noteInfo = (await this._storageService.createNote(author, name, title, quillDelta)).createNote;
       // delete this draft
       this._storageService.deleteDraft(this.id);
       draftClear();
@@ -291,6 +289,11 @@ export class EditorComponent extends AbstractElement {
     window.history.pushState(noteInfo, document.title, `${document.location.origin}/editor/${this.id}/posted`);
     $tl_article.classList.remove('tl_article_saving');
     updateEditable(true, this.quill, this.tooltip, $tl_article, $tl_content, $tl_header);
+
+    if(pageEl!==null) {
+      (pageEl.querySelector('#_edit_button') as HTMLLinkElement).href = `/editor/${this.id}/posted`;
+      pageHTML = pageEl.outerHTML;
+    }
 
     const note = /*html*/`  
 <html>

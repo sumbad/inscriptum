@@ -2,6 +2,8 @@ import page from 'page';
 import { html, render } from 'lit-html';
 
 import { AbstractRoute, IRouters } from 'components/abstract.router';
+import { AuthService } from 'auth';
+import { StorageService } from 'storage/storage.service';
 
 
 
@@ -80,19 +82,16 @@ class RootRoute extends AbstractRoute {
             next();
           },
         },
-        // {
-        //   path: '/note*',
-        //   callback: async (ctx, next) => {
-
-        //     // if (!this.routerOutlet.hasChildNodes()) {
-        //     //   await import('../components/um-preloader');
-        //     //   await import('./notes');
-        //     // }
-        //     await import('../note');
-        //     ctx.handled = true;
-        //     next();
-        //   },
-        // },
+        {
+          path: '/login',
+          callback: async (ctx, next) => {
+            const _storageService = new StorageService();
+            const _authService = new AuthService(_storageService, `${document.location.origin}/notes`);
+            _authService.login();
+            ctx.handled = true;
+            next();
+          },
+        },
         {
           path: '*',
           callback: (ctx, next) => {

@@ -95,7 +95,7 @@ export class DraftComponent extends AbstractElement {
               }
             );
           } else if (hasAuth !== null) {
-            this._authService.handleAuthentication();
+            this._authService.login();
           }
         }
       );

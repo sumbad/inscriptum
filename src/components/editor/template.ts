@@ -33,7 +33,7 @@ ${props.styles}
         ${props.tooltip}
         <aside class="tl_article_buttons">
           <div class="account account_top"></div>
-          <button id="_edit_button" class="button edit_button">Edit</button>
+          <a id="_edit_button" class="button edit_button">Edit</a>
           <button @click=${handlers.publish} class="button publish_button">Publish</button>
           <div class="account account_bottom"></div>
           <div id="_error_msg" class="error_msg"></div>

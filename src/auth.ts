@@ -42,7 +42,7 @@ export class AuthService {
     if (localStorage.getItem('isLoggedIn') === 'true') {
       this.renewTokens();
     } else {
-      this.$authenticated.next(false);
+      this.handleAuthentication();
     }
 
     AuthService.instance = this;
@@ -62,8 +62,9 @@ export class AuthService {
           console.warn(
             'Error: ' + err.error + '. Check the console for further details.'
           );
+          this.$authenticated.next(false);
         } else {
-          this.webAuth.authorize();
+          this.$authenticated.next(false);
         }
       }
     );
@@ -84,6 +85,14 @@ export class AuthService {
         this.logout();
       }
     });
+  }
+
+
+  /**
+   * Go to login page
+   */
+  login() {
+    this.webAuth.authorize();
   }
 
 
