@@ -9,7 +9,7 @@ class ConferenceRouter extends AbstractRoute {
   $routePresentation = new Subject();
   $routeConference = new Subject();
 
-  getRouter(): IRouters {
+  getRouter(): IRouters<string> {
     const rootPath = '/conference';
     this.rootPath = rootPath;
 

@@ -1,4 +1,4 @@
-import { StorageService } from 'storage/storage.service';
+import { StorageService } from './storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 import auth0 from 'auth0-js';
 

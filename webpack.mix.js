@@ -55,9 +55,9 @@ module.exports = function (helper) {
   ]
 
   commonCFG.entry = {
-    'app': path.resolve(helper.PATHS.src, 'main.ts'),
+    'app': path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
     'vendor': path.resolve(helper.PATHS.src, 'vendor.ts'),
-    'note': path.resolve(helper.PATHS.src, 'modules/note/index.ts'),
+    'note': path.resolve(helper.PATHS.src, 'app/note/note.ts'),
   };
 
   commonCFG.output = {

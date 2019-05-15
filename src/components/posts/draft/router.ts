@@ -8,7 +8,7 @@ class DraftRouter extends AbstractRoute {
   $routeDraftsList = new Subject();
 
 
-  getRouter(): IRouters {
+  getRouter(): IRouters<string> {
     const rootPath = '/articles/draft';
 
     return {

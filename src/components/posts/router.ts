@@ -9,7 +9,7 @@ class PostRouter extends AbstractRoute {
   $routeDraft = new Subject();
 
 
-  getRouter(): IRouters {
+  getRouter(): IRouters<string> {
     const rootPath: string = '/articles';
 
     return {
