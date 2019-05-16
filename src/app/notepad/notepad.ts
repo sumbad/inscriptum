@@ -1,13 +1,15 @@
 import polyfills from '../../polyfills';
 import { AbstractElement, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
-import { html, TemplateResult } from 'lit-html';
+import { html } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { TRootPath, RootRoute } from './routes/$';
 
-
-
-polyfills.then(
-  async () => {
+/**
+ * Start app after load polyfills
+ */
+polyfills
+  .then(async () => {
     const rootRoute = new RootRoute();
     await import('components/um-preloader');
     await import('components/menu');
@@ -15,34 +17,41 @@ polyfills.then(
     const notepad = new NotepadModule(rootRoute);
 
     main && main.appendChild(notepad);
-  }
-).catch(e => {
-  console.warn(e);
-});
+  })
+  .catch(e => {
+    console.warn(e);
+  });
 
-
+/**
+ * NotepadModule - main element
+ */
 @Define('inscriptum-notepad')
 class NotepadModule extends AbstractElement {
   styles = html`
-    <style>${require('./skeleton.less')}</style>
+    <style>
+      ${require('./style.less')}
+    </style>
   `;
 
   @state()
-  routerOutletTemplate: TemplateResult;
+  path: TRootPath;
 
-
+  /**
+   * NotepadModule constructor
+   *
+   * @param _router - notepad router
+   */
   constructor(_router: RootRoute) {
     super(litRender, false);
     const rEvent = _router.runCallbackEvent.getValue();
-
     if (rEvent) {
-      this._setRouterOutlet(rEvent.path);
+      this.path = rEvent.path;
     }
 
     _router.runCallbackEvent.subscribe(
       rEvent => {
         if (rEvent) {
-          this._setRouterOutlet(rEvent.path);
+          this.path = rEvent.path;
         }
       },
       e => {
@@ -51,28 +60,33 @@ class NotepadModule extends AbstractElement {
     );
   }
 
-
+  /**
+   * Render template
+   */
   render() {
-    return html`
-      ${this.styles}
-      <div class="container">
-        <inscriptum-menu></inscriptum-menu>
-        ${this.routerOutletTemplate}
-      </div>
-    `;
+    console.log(this.path);
+
+    switch (this.path) {
+      case '/drafts':
+      case '/notes':
+        return html`
+          ${this.styles}
+          <div class="container">
+            <inscriptum-menu></inscriptum-menu>
+            ${this._renderList(this.path.slice(1))}
+          </div>
+        `;
+      default:
+        return html``;
+    }
   }
 
+  /**
+   * Render list drafts or notes
+   */
+  _renderList(type: string) {
+    import(`../notepad/modules/${type}`);
 
-  _setRouterOutlet(path: TRootPath) {
-    switch (path) {
-      case '/drafts':
-        import('../notepad/modules/drafts');
-        this.routerOutletTemplate = html`<inscriptum-drafts></inscriptum-drafts>`;
-        break;
-      case '/notes':
-        import('../notepad/modules/notes');
-        this.routerOutletTemplate = html`<inscriptum-notes></inscriptum-notes>`;
-        break;
-    }
+    return unsafeHTML(`<inscriptum-${type}></inscriptum-${type}>`);
   }
 }

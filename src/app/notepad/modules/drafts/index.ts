@@ -15,7 +15,6 @@ library.add(
 );
 
 import 'components/list';
-import 'components/menu';
 import { IListItem } from 'components/list';
 import { quillDelta2Preview } from 'utils/common';
 

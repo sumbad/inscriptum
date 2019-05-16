@@ -16,7 +16,7 @@ export class MenuComponent extends AbstractElement {
 
   constructor(
     private _storageService: StorageService = new StorageService(),
-    private _authService: AuthService = new AuthService(_storageService)
+    private _authService: AuthService = new AuthService(_storageService, document.location.origin)
   ) {
     super(litRender, false);
 

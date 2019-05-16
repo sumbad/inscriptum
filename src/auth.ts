@@ -58,12 +58,10 @@ export class AuthService {
         if (authResult && authResult.accessToken && authResult.idToken) {
           window.location.hash = '';
           this.localLogin(authResult);
-        } else if (err) {
-          console.warn(
-            'Error: ' + err.error + '. Check the console for further details.'
-          );
-          this.$authenticated.next(false);
         } else {
+          if (err) {
+            console.warn('Error: ' + err.error + '. Check the console for further details.');
+          }
           this.$authenticated.next(false);
         }
       }
@@ -79,9 +77,7 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.localLogin(authResult);
       } else if (err) {
-        console.warn(
-          'Could not get a new token ' + err.error + ':' + err.errorDescription + '.'
-        );
+        console.warn('Could not get a new token ' + err.error + ':' + err.errorDescription + '.');
         this.logout();
       }
     });

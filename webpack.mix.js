@@ -96,13 +96,13 @@ module.exports = function (helper) {
         'postcss-loader',
         'sass-loader',
       ],
-      include: [path.join(helper.PATHS.src, 'modules/note')]
+      include: [path.join(helper.PATHS.src, 'app/note')]
     }
   );
 
   commonCFG.module.rules[5] = {
     ...commonCFG.module.rules[5],
-    exclude: [path.join(helper.PATHS.src, 'modules/note')]
+    exclude: [path.join(helper.PATHS.src, 'app/note')]
   };
 
   commonCFG.module.rules.unshift(

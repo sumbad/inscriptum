@@ -1,14 +1,9 @@
 import { AbstractElement, Define, state } from 'abstract-element';
 import { TemplateResult, html } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-
-import { StorageService } from 'storage/storage.service';
-import { AuthService } from 'auth';
 import litRender from 'abstract-element/render/lit';
-import page from 'page';
-import { takeWhile } from 'rxjs/operators';
 
-import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
@@ -98,8 +93,7 @@ export class ListComponent extends AbstractElement {
     }
 
     const menuElemFunc = (id: string, actions: IListItemAction[] = []) => actions.length > 0
-      ?
-      html`
+      ? html`
       <div class="um-drafts__item-actions">
         <span @click=${this.openPopover.bind(this)} class="um-drafts__item-subcontent" data-popover=${id}>
           ${id} <i class="fas fa-angle-down" style="color:#999"></i>
@@ -114,9 +108,7 @@ export class ListComponent extends AbstractElement {
           </ul>
         </div>
       </div>
-    `
-      :
-      ``
+    ` : ``;
 
     const listElemets = repeat(
       this._list,
