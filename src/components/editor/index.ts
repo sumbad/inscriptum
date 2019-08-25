@@ -75,7 +75,7 @@ export class EditorComponent extends AbstractElement {
     loadStyleFile('/css/custom_editor_fonts.css');
 
     this._storageService = new StorageService();
-    const redirectUrl = this.isPosted ? `${document.location.origin}/notes` : `${document.location.origin}/notes/drafts`;
+    const redirectUrl = this.isPosted ? `${document.location.origin}/notes` : `${document.location.origin}/drafts`;
     this._authService = new AuthService(this._storageService, redirectUrl);
   }
 

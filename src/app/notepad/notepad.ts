@@ -1,7 +1,7 @@
 import polyfills from '../../polyfills';
 import { AbstractElement, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { TRootPath, RootRoute } from './routes/$';
 
@@ -26,7 +26,7 @@ polyfills
  * NotepadModule - main element
  */
 @Define('inscriptum-notepad')
-class NotepadModule extends AbstractElement {
+class NotepadModule extends AbstractElement<TemplateResult> {
   styles = html`
     <style>
       ${require('./style.less')}
