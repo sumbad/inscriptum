@@ -35,6 +35,7 @@ export class StorageService {
 
   /** url GraphQL api */
   private _graphQLClientEndpoind = 'https://api.graph.cool/simple/v1/cjd617qc7245901203dv54gy4';
+  // private _graphQLClientEndpoind = 'http://localhost:60000/simple/v1/ck034b9o700050165j2w3qygs';
 
   /** GraphQL client */
   private _graphQLClient: GraphQLClient;

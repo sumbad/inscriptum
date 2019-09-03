@@ -68,7 +68,6 @@ export class DraftComponent extends AbstractElement {
           if (hasAuth) {
             this._storageService.allDrafts().then(
               drafts => {
-                console.log(drafts);
                 const _drafts = drafts.allDrafts.map(
                   item => {
                     const { content, title } = quillDelta2Preview(item.contents);

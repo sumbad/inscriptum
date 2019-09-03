@@ -254,7 +254,6 @@ export class EditorComponent extends AbstractElement {
         'aside .publish_button',
         'aside .account_bottom',
         'aside .error_msg',
-        'figure img'
       ]
     );
 
