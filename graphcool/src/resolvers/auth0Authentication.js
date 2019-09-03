@@ -51,6 +51,8 @@ export default async event => {
       decodedToken.exp
     );
 
+    console.log(`token=${token}     `);
+
     return { data: { id: graphCoolUser.id, token } };
   } catch (err) {
     return { error: err };
