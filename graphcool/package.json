@@ -9,6 +9,7 @@
     "jwks-rsa": "^1.2.1"
   },
   "scripts": {
-    "deploy": ". env.sh && graphcool deploy"
+    "deploy": ". env.sh && graphcool deploy --interactive",
+    "deploy:prod": ". env.sh && graphcool deploy --target prod"
   }
 }
