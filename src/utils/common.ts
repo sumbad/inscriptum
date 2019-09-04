@@ -4,16 +4,13 @@ export function hasCustomElement(tag: string): boolean {
   return typeof customElements.get(tag) !== 'undefined';
 }
 
-
 export interface IWebComponent4Import {
   tag: string;
   import: Promise<any>;
 }
 
 export async function importWebComponent(components: IWebComponent4Import[]) {
-  await Promise.all(components.map(
-    c => c.import
-  ))
+  await Promise.all(components.map(c => c.import));
   // .then(
   //   (elements: object[]) => {
   //     components.forEach((component, index) => {
@@ -26,11 +23,8 @@ export async function importWebComponent(components: IWebComponent4Import[]) {
   // );
 
   // await all definitions
-  await Promise.all(components.map(
-    c => customElements.whenDefined(c.tag)
-  ));
+  await Promise.all(components.map(c => customElements.whenDefined(c.tag)));
 }
-
 
 /**
  * Load style from css file dynamically
@@ -51,17 +45,13 @@ export function loadStyleFile(path: string) {
 
 /**
  * Get from quill.js Delta object preview info
- * 
+ *
  * @param delta - quill.js Delta object
  */
 export function quillDelta2Preview(delta: Delta) {
   let previewTitle = '';
   let previewContent = '';
-  if (
-    delta !== undefined
-    && delta.ops !== undefined
-    && delta.ops.length > 0
-  ) {
+  if (delta !== undefined && delta.ops !== undefined && delta.ops.length > 0) {
     previewTitle = String(delta.ops[0].insert);
     for (const [index, value] of delta.ops.entries()) {
       if (index > 2) {
@@ -72,7 +62,15 @@ export function quillDelta2Preview(delta: Delta) {
       }
     }
   }
-  previewContent = previewContent.trim() + '...';
+  previewContent =
+    previewContent
+      .trim()
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/`/g, '&DiacriticalGrave;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;') + '...';
 
   return {
     title: previewTitle,
