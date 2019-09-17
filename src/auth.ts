@@ -19,21 +19,38 @@ export class AuthService {
   /** token expiration date */
   expiresAt: number;
 
-  constructor(
-    private _storageService: StorageService,
-    private _redirectUrl: string = document.URL
-  ) {
-    const newWebAuth = () => new auth0.WebAuth({
-      domain: 'inscriptum.auth0.com',
-      clientID: 'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
-      redirectUri: _redirectUrl,
-      responseType: 'token id_token',
-      scope: 'openid email',
-      audience: 'https://inscriptum.js.org'
+  /** get user info */
+  private _userInfo: auth0.Auth0UserProfile;
+  get userInfo(): Promise<auth0.Auth0UserProfile> {
+    return new Promise((resolve, reject) => {
+      if (this._userInfo !== undefined) {
+        resolve(this.userInfo);
+      } else {
+        this.webAuth.client.userInfo(this.accessToken, (err, user) => {
+          if (err) {
+            reject(err);
+          } else {
+            this._userInfo = user;
+            resolve(this._userInfo);
+          }
+        });
+      }
     });
+  }
+
+  constructor(private _storageService: StorageService, private _redirectUrl: string = document.URL) {
+    const newWebAuth = () =>
+      new auth0.WebAuth({
+        domain: 'inscriptum.auth0.com',
+        clientID: 'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
+        redirectUri: _redirectUrl,
+        responseType: 'token id_token',
+        scope: 'openid email',
+        audience: 'https://inscriptum.js.org'
+      });
 
     if (AuthService.instance) {
-      if(AuthService.instance._redirectUrl !== _redirectUrl) {
+      if (AuthService.instance._redirectUrl !== _redirectUrl) {
         AuthService.instance.webAuth = newWebAuth();
       }
       return AuthService.instance;
@@ -61,9 +78,7 @@ export class AuthService {
         this.localLogin(authResult);
       } else {
         if (err) {
-          console.warn(
-            'Error: ' + err.error + '. Check the console for further details.'
-          );
+          console.warn('Error: ' + err.error + '. Check the console for further details.');
         }
         this.$authenticated.next(false);
       }
@@ -78,13 +93,7 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.localLogin(authResult);
       } else if (err) {
-        console.warn(
-          'Could not get a new token ' +
-            err.error +
-            ':' +
-            err.errorDescription +
-            '.'
-        );
+        console.warn('Could not get a new token ' + err.error + ':' + err.errorDescription + '.');
         this.logout();
       }
     });
@@ -120,15 +129,11 @@ export class AuthService {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
     // Set the time that the access token will expire at
-    this.expiresAt = Number(
-      JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime())
-    );
+    this.expiresAt = Number(JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime()));
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
 
-    const authObj = await this._storageService.authenticateUser(
-      this.accessToken
-    );
+    const authObj = await this._storageService.authenticateUser(this.accessToken);
     if (authObj) {
       this.$authenticated.next(true);
     }
@@ -141,9 +146,6 @@ export class AuthService {
     // Check whether the current time is past the
     // Access Token's expiry time
     var expiration = this.expiresAt || 0;
-    return (
-      localStorage.getItem('isLoggedIn') === 'true' &&
-      new Date().getTime() < expiration
-    );
+    return localStorage.getItem('isLoggedIn') === 'true' && new Date().getTime() < expiration;
   }
 }
