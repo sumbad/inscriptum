@@ -70,10 +70,11 @@ export class DraftComponent extends AbstractElement {
               drafts => {
                 const _drafts = drafts.allDrafts.map(
                   item => {
-                    const { content, title } = quillDelta2Preview(item.contents);
+                    const { content, title, image } = quillDelta2Preview(item.contents);
                     return {
                       id: item.id,
                       title,
+                      image,
                       content,
                       linkUrl: '/editor/' + item.id,
                       actions: [

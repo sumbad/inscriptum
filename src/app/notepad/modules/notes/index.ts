@@ -63,11 +63,12 @@ export class DraftComponent extends AbstractElement {
               console.log(notes);
               const _notes = notes.allNotes.map(
                 item => {
-                  const { content, title } = quillDelta2Preview(item.content);
+                  const { content, title, image } = quillDelta2Preview(item.content);
                   return {
                     id: item.id,
                     title,
                     content,
+                    image,
                     linkUrl: '/note/' + item.name + (isDevMode ? '.html' : ''),
                     linkRel: 'external',
                     actions: this._authService.$authenticated.getValue()

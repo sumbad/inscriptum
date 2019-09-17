@@ -19,7 +19,7 @@ import { PullquoteBlot } from './PullquoteBlot';
 import { SingleLineBlot } from './SingleLineBlot';
 import { TitleBlot } from './TitleBlot';
 import { FigureBlot } from './FigureBlot';
-import { AuthorBlot } from './AuthorBlot';
+import { DescriptionBlot } from './DescriptionBlot';
 import BlockBlot from 'parchment/dist/src/blot/block';
 import Bold from 'quill/formats/bold';
 import Italic from 'quill/formats/italic';

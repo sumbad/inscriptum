@@ -20,7 +20,7 @@ import { PullquoteBlot } from './PullquoteBlot';
 import { SingleLineBlot } from './SingleLineBlot';
 import { TitleBlot } from './TitleBlot';
 import { FigureBlot } from './FigureBlot';
-import { AuthorBlot } from './AuthorBlot';
+import { DescriptionBlot } from './DescriptionBlot';
 import BlockBlot from 'parchment/dist/src/blot/block';
 import Bold from 'quill/formats/bold';
 import Italic from 'quill/formats/italic';
@@ -138,7 +138,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     // formats: [
     //   'bold', 'italic', 'underline', 'strike', 'code', 'link',
     //   'textBreak',
-    //   'blockTitle', 'blockAuthor',
+    //   'blockTitle', 'blockDescription',
     //   'blockHeader', 'blockSubheader',
     //   'blockBlockquote', 'blockPullquote',
     //   'blockDivider',
@@ -202,7 +202,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
             key: Keyboard.keys.ENTER,
             collapsed: true,
             shiftKey: null,
-            format: ['blockTitle', 'blockAuthor'],
+            format: ['blockTitle', 'blockDescription'],
             suffix: /^$/,
             handler: function (range, context) {
               console.log('keyboard.bindings.required_enter.handler');
@@ -631,7 +631,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     }
     // toolbarUpdate(range);
     let formats = quill.getFormat(range);
-    $tl_article && $tl_article.classList.toggle('title_focused', !!(formats['blockTitle'] || formats['blockAuthor']));
+    $tl_article && $tl_article.classList.toggle('title_focused', !!(formats['blockTitle'] || formats['blockDescription']));
     checkOncePlaceholder();
   });
 
@@ -746,7 +746,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
         } else {
           format = {};
         }
-        let [author] = quill.scroll.descendants(AuthorBlot);
+        let [author] = quill.scroll.descendants(DescriptionBlot);
         if (author) {
           quill.updateContents(new Delta()
             .retain(author.offset())
@@ -816,7 +816,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   function toolbarUpdate(range) {
     let formats = range == null ? {} : quill.getFormat(range);
 
-    let in_author = !!formats['blockAuthor'];
+    let in_author = !!formats['blockDescription'];
     let in_header = !!(formats['blockHeader'] || formats['blockSubheader']);
     let in_code = !!formats['code-block'];
 
@@ -904,7 +904,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     if (first instanceof BlockEmbed) {
       quill.updateContents(new Delta()
         .insert('\n', { blockTitle: true })
-        .insert('\n', { blockAuthor: true })
+        .insert('\n', { blockDescription: true })
         , Quill.sources.SILENT);
     } else {
       if (!(first instanceof TitleBlot)) {
@@ -914,17 +914,17 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
         let offset = quill.scroll.length();
         quill.updateContents(new Delta()
           .retain(offset)
-          .insert('\n', { blockAuthor: true })
+          .insert('\n', { blockDescription: true })
           , Quill.sources.SILENT);
       } else if (second instanceof BlockEmbed) {
         let offset = second.offset(quill.scroll);
         quill.updateContents(new Delta()
           .retain(offset)
-          .insert('\n', { blockAuthor: true })
+          .insert('\n', { blockDescription: true })
           , Quill.sources.SILENT);
-      } else if (!(second instanceof AuthorBlot)) {
+      } else if (!(second instanceof DescriptionBlot)) {
         let offset = second.offset(quill.scroll);
-        quill.formatLine(offset, 1, { blockAuthor: true }, Quill.sources.SILENT);
+        quill.formatLine(offset, 1, { blockDescription: true }, Quill.sources.SILENT);
       }
     }
     let [, , third] = quill.scroll.lines();

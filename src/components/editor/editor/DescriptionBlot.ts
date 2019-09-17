@@ -3,19 +3,19 @@ import { FieldBlot } from './FieldBlot';
 
 
 
-export class AuthorBlot extends FieldBlot {
+export class DescriptionBlot extends FieldBlot {
   static create(value) {
-    console.log('AuthorBlot create ', value);
+    console.log('DescriptionBlot create ', value);
     let domNode = super.create(value) as Element;
-    domNode.setAttribute('data-placeholder', 'Your name');
-    domNode.setAttribute('data-label', 'Author');
+    domNode.setAttribute('data-placeholder', 'Summary of the text');
+    domNode.setAttribute('data-label', 'Description');
     return domNode;
   }
 
 
   formatAt(index, length, name, value) {
-    console.log('AuthorBlot formatAt ', index, length, name, value);
-    if (name === AuthorBlot.blotName) {
+    console.log('DescriptionBlot formatAt ', index, length, name, value);
+    if (name === DescriptionBlot.blotName) {
       super.formatAt(index, length, name, value);
     } else if (name === 'link') {
       super.formatAt(0, this.length(), name, value);
@@ -24,7 +24,7 @@ export class AuthorBlot extends FieldBlot {
 
 
   format(name, value) {
-    console.log('AuthorBlot format ', name, value);
+    console.log('DescriptionBlot format ', name, value);
     
     // if (name === 'height' || name === 'width') {
     //   if (value) {
@@ -39,14 +39,14 @@ export class AuthorBlot extends FieldBlot {
 
 
   replace(target) {
-    console.log('AuthorBlot replace ', target);
+    console.log('DescriptionBlot replace ', target);
     super.replace(target);
   }
   insertAt(index, text, value) {
-    console.log('AuthorBlot insertAt ', index, text, value);
+    console.log('DescriptionBlot insertAt ', index, text, value);
     super.insertAt(index, text, value);
   }
 }
-AuthorBlot.blotName = 'blockAuthor';
-AuthorBlot.tagName = 'address';
-Quill.register(AuthorBlot);
+DescriptionBlot.blotName = 'blockDescription';
+DescriptionBlot.tagName = 'address';
+Quill.register(DescriptionBlot);

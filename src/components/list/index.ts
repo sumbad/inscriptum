@@ -4,25 +4,18 @@ import { repeat } from 'lit-html/directives/repeat';
 import litRender from 'abstract-element/render/lit';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faAngleDown,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faSave
-} from '@fortawesome/free-regular-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-library.add(
-  faAngleDown,
-  faSave
-);
-
-
+library.add(faAngleDown, faSave);
 
 export interface IListItem {
   id: string;
   title: string;
   content: string;
+  image: string;
   linkUrl: string;
   linkRel?: string;
   actions?: IListItemAction[];
@@ -36,15 +29,14 @@ export interface IListItemAction {
   label: string;
 }
 
-
 @Define('inscriptum-list')
 export class ListComponent extends AbstractElement {
   styles = html`
-  <style>
-    ${require('./styles/custom.less')}
-    ${require('./styles/$.less')}
-  </style>
-`;
+    <style>
+      ${require('./styles/custom.less')}
+      ${require('./styles/$.less')}
+    </style>
+  `;
 
   set value(list) {
     console.log(list);
@@ -56,13 +48,9 @@ export class ListComponent extends AbstractElement {
   @state()
   private _list: IListItem[] = [];
 
-
-
-
   constructor() {
     super(litRender, false);
   }
-
 
   /**
    * LIFECYCLE
@@ -74,7 +62,6 @@ export class ListComponent extends AbstractElement {
     document.addEventListener('click', this.closePopovers.bind(this));
   }
 
-
   /**
    * LIFECYCLE
    * Remove Custom element from page
@@ -82,7 +69,6 @@ export class ListComponent extends AbstractElement {
   disconnectedCallback() {
     document.removeEventListener('click', this.closePopovers.bind(this));
   }
-
 
   /**
    * RENDER
@@ -92,64 +78,77 @@ export class ListComponent extends AbstractElement {
       return html``;
     }
 
-    const menuElemFunc = (id: string, actions: IListItemAction[] = []) => actions.length > 0
-      ? html`
-      <div class="um-drafts__item-actions">
-        <span @click=${this.openPopover.bind(this)} class="um-drafts__item-subcontent" data-popover=${id}>
-          ${id} <i class="fas fa-angle-down" style="color:#999"></i>
-        </span>
-        <div id=${id} class="popover popover_right">
-          <ul class="popover-list">
-            ${ actions.map(action => html`
-            <li class="popover-item">
-              <a class="popover-link" @click=${this.dispatchAction.bind(this, { type: action.type, id })} href="#grid">${action.label}</a>
-            </li>
-            `)}
-          </ul>
-        </div>
-      </div>
-    ` : ``;
+    const menuElemFunc = (id: string, actions: IListItemAction[] = []) =>
+      actions.length > 0
+        ? html`
+            <div class="um-drafts__item-actions">
+              <span @click=${this.openPopover.bind(this)} class="um-drafts__item-subcontent" data-popover=${id}>
+                ${id} <i class="fas fa-angle-down" style="color:#999"></i>
+              </span>
+              <div id=${id} class="popover popover_right">
+                <ul class="popover-list">
+                  ${actions.map(
+                    action => html`
+                      <li class="popover-item">
+                        <a class="popover-link" @click=${this.dispatchAction.bind(this, { type: action.type, id })}>${action.label}</a>
+                      </li>
+                    `
+                  )}
+                </ul>
+              </div>
+            </div>
+          `
+        : ``;
 
-    const listElemets = repeat(
+    const listElements = repeat(
       this._list,
-      (i) => i.id,
+      i => i.id,
       (i, index) => html`
         <div class="um-drafts__item">
-          <a class="um-drafts__item-link" href=${i.linkUrl} rel=${ifDefined(i.linkRel)}>
-            <h6 class="docs-header">
-              ${i.title}
-            </h6>
-            <p class="docs-preview">${i.content}</p>
-          </a>
-          ${menuElemFunc(i.id, i.actions)}
+          <h6 class="docs-header">
+            ${i.title}
+          </h6>
+          <div class="row">
+            ${i.image.length > 0
+              ? html`
+                  <div class="two columns"><img style="width: 100%; transform: scale(3) translate(-30px, 20px);" src=${i.image} /></div>
+                `
+              : ''}
+            <div class=${i.image.length > 0 ? 'ten columns' : ''}>
+              <a class="um-drafts__item-link" href=${i.linkUrl} rel=${ifDefined(i.linkRel)}>
+                <p class="docs-preview">${unsafeHTML(i.content)}</p>
+              </a>
+              ${menuElemFunc(i.id, i.actions)}
+            </div>
+          </div>
         </div>
       `
     );
 
     return html`
-    ${this.styles}
-    ${listElemets}
+      ${this.styles}
+      <div class="container">
+        ${listElements}
+      </div>
     `;
   }
 
-
   /**
    * Dispatch a list item action
-   * 
+   *
    * @param detail - action id and type
    */
   dispatchAction(detail) {
     this.dispatchEvent(new CustomEvent('action', { detail }));
   }
 
-
   /**
    * Open a popover with actions on a draft
-   * 
+   *
    * @param event - click event
    */
   openPopover(event: MouseEvent) {
-    event.preventDefault()
+    event.preventDefault();
     this.closePopovers();
     const element = this.querySelector<Element>('#' + (event.target || { popover: {} })['dataset'].popover);
     if (element !== null) {
@@ -158,15 +157,12 @@ export class ListComponent extends AbstractElement {
     event.stopImmediatePropagation();
   }
 
-
   /**
    * Close all opened popovers
    */
   closePopovers() {
-    this.querySelectorAll('.popover.open').forEach(
-      el => {
-        el.classList.remove('open');
-      }
-    );
+    this.querySelectorAll('.popover.open').forEach(el => {
+      el.classList.remove('open');
+    });
   }
 }

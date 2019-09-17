@@ -205,7 +205,8 @@ export class EditorComponent extends AbstractElement {
     }
 
     let title = ($tl_content.querySelector('h1') as HTMLHeadElement).textContent || '';
-    let author = ($tl_content.querySelector('address') as HTMLElement).textContent || '';
+    let author = (await this._authService.userInfo);
+    let authorName = author.name || author.email || '';
     // let author_url = ($tl_content.querySelector('address a') as HTMLLinkElement).href || '';
 
     if (title.length < 2) {
@@ -215,8 +216,8 @@ export class EditorComponent extends AbstractElement {
         $tl_article.classList.remove('title_required');
       }, 3000);
       this.quill.focus();
-      let [title] = this.quill.scroll.descendants(TitleBlot, 0, this.quill.scroll.length());
-      this.quill.setSelection(title.offset(), title.length() - 1);
+      let [ titleBlot ] = this.quill.scroll.descendants(TitleBlot, 0, this.quill.scroll.length());
+      this.quill.setSelection(titleBlot.offset(), titleBlot.length() - 1);
       // quill.selection.scrollIntoView();
       return showError('Title is too small');
     }
@@ -237,7 +238,6 @@ export class EditorComponent extends AbstractElement {
 
     // const pageEl = document.querySelector('.tl_page_wrap');
     let pageHTML = '';
-    let firstImgSrc = '';
 
     /** @todo - add logic from getPageContent */
     const pageEl = this._removeElementsBySelectors(
@@ -264,20 +264,17 @@ export class EditorComponent extends AbstractElement {
       return showError('Content cannot be empty');
     }
 
-    const firstImg: HTMLImageElement | null = pageEl.querySelector('figure img');
-    firstImgSrc = firstImg ? firstImg.src : '';
-
     const quillDelta = this.quill.getContents();
 
-    const { content: previewContent } = quillDelta2Preview(quillDelta);
+    const { content: previewContent, image: firstImgSrc } = quillDelta2Preview(quillDelta);
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
     let noteInfo: { id: any; createdAt: any; updatedAt: any; };
     if (this.isPosted) {
-      noteInfo = (await this._storageService.updateNote(this.id, author, name, title, quillDelta)).updateNote;
+      noteInfo = (await this._storageService.updateNote(this.id, authorName, name, title, quillDelta)).updateNote;
     } else {
-      noteInfo = (await this._storageService.createNote(author, name, title, quillDelta)).createNote;
+      noteInfo = (await this._storageService.createNote(authorName, name, title, quillDelta)).createNote;
       // delete this draft
       this._storageService.deleteDraft(this.id);
       draftClear();
@@ -305,6 +302,7 @@ export class EditorComponent extends AbstractElement {
     <meta name="MobileOptimized" content="176">
     <meta name="HandheldFriendly" content="True">
     <meta name="robots" content="index, follow">
+    <meta name="description" content="${previewContent}">
     <meta property="og:site_name" content="inscriptum">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
@@ -312,7 +310,7 @@ export class EditorComponent extends AbstractElement {
     <meta property="og:image" content="${firstImgSrc}">
     <meta property="article:published_time" content="${noteInfo.createdAt}">
     <meta property="article:modified_time" content="${noteInfo.updatedAt}">
-    <meta property="article:author" content="${author}">
+    <meta property="article:author" content="${authorName}">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="${title}">
     <meta name="twitter:description" content="${previewContent}">
