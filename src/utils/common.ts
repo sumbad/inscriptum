@@ -51,15 +51,30 @@ export function loadStyleFile(path: string) {
 export function quillDelta2Preview(delta: Delta) {
   let previewTitle = '';
   let previewContent = '';
+  let previewImage = '';
   if (delta !== undefined && delta.ops !== undefined && delta.ops.length > 0) {
     previewTitle = String(delta.ops[0].insert);
-    for (const [index, value] of delta.ops.entries()) {
-      if (index > 2) {
-        if (previewContent.length > 100) {
-          break;
+    previewContent = String(delta.ops[2].insert);
+    const imageItem = delta.ops.find(item=> getNestedObject(item, ['insert', 'blockFigure', 'image']) !== undefined);
+    if (imageItem !== undefined) {
+      previewImage = getNestedObject(imageItem, ['insert', 'blockFigure', 'image']);
+    }
+    
+    if(previewContent.length < 3) {
+      for (const [index, value] of delta.ops.entries()) {
+        if (index > 2) {
+          if (previewContent.length > 100) {
+            break;
+          }
+  
+          if (getNestedObject(value, ['insert', 'blockFigure', 'image']) !== undefined) {
+            previewImage = getNestedObject(value, ['insert', 'blockFigure', 'image']);
+          } else {
+            previewContent += ' ' + value.insert;
+          }
         }
-        previewContent += ' ' + value.insert;
       }
+      previewContent += '...';
     }
   }
   previewContent =
@@ -70,10 +85,22 @@ export function quillDelta2Preview(delta: Delta) {
       .replace(/>/g, '&gt;')
       .replace(/`/g, '&DiacriticalGrave;')
       .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;') + '...';
+      .replace(/'/g, '&apos;');
 
   return {
     title: previewTitle,
-    content: previewContent
+    content: previewContent,
+    image: previewImage,
   };
+}
+
+/**
+ * Return nested object or undefined
+ *
+ * @param object - root object
+ * @param pathArr - path to nested object as string array
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getNestedObject(object: object, pathArr: string[]): any {
+  return pathArr.reduce((obj, key) => (obj && obj[key] !== 'undefined' ? obj[key] : undefined), object);
 }
