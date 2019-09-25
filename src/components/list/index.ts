@@ -111,7 +111,9 @@ export class ListComponent extends AbstractElement {
           <div class="row">
             ${i.image.length > 0
               ? html`
-                  <div class="two columns"><img style="width: 100%; transform: scale(3) translate(-30px, 20px);" src=${i.image} /></div>
+                  <div class="two columns draft-preview">
+                    <img class="draft-preview__img" src="${i.image}"/>
+                  </div>
                 `
               : ''}
             <div class=${i.image.length > 0 ? 'ten columns' : ''}>

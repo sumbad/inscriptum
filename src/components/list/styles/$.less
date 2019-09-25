@@ -1,4 +1,3 @@
-
 .um-drafts__item {
   border-bottom: 1px solid #eee;
   padding: 4rem 0;
@@ -22,16 +21,29 @@
 .um-drafts__item-subcontent {
   font-size: 1.1rem;
   color: #999;
-  letter-spacing: normal; 
+  letter-spacing: normal;
   font-weight: normal;
   display: block;
   cursor: pointer;
 }
-
 
 /* Larger than phone */
 @media (min-width: 550px) {
   .in-drafts__item {
     padding: 20px 0;
   }
+}
+
+.draft-preview {
+  position: relative;
+  min-height: 150px;
+}
+
+.draft-preview__img {
+  box-shadow: 6px 6px 8px -10px rgba(0, 0, 0, 0.7);
+  position: absolute;
+  right: 0;
+  max-height: 150px;
+  max-width: 300px;
+  object-fit: cover;
 }
