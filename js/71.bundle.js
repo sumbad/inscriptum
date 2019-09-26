@@ -1,13 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[71],{749:function(n,o,s){"use strict";s.r(o),o.default=((n,o)=>n`
-<div class="um-preloader">
-  <slot></slot>
-  ${function(n,o){return o.loading?n`
-      <div
-        class="${"um-preloader__loader "+o.loaderClass}"
-        style="${{opacity:o.showSpinner?1:0}}"
-      >
-        <um-spinner-round></um-spinner-round>
-      </div>
-    `:""}(n,o)}
-</div>
-`)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[71],{603:function(t,e,s){"use strict";s.r(e),s.d(e,"postRouter",function(){return c});s(535);var r=s(67),a=s(532);var c=new class extends a.AbstractRoute{constructor(){super(...arguments),this.$routePost=new r.Subject,this.$routePostsList=new r.Subject,this.$routeDraft=new r.Subject}getRouter(){return{rootPath:"/articles",routers:[{path:"/draft/*",callback:(t,e)=>this.$routeDraft.next({ctx:t,next:e})},{path:"/:id",callback:(t,e)=>this.$routePost.next({ctx:t,next:e})},{path:"",callback:(t,e)=>this.$routePostsList.next({ctx:t,next:e})},{path:"*",callback:(t,e)=>{t.handled?(t.handled=!1,e()):this.page.replace("/articles")}}]}}}}}]);

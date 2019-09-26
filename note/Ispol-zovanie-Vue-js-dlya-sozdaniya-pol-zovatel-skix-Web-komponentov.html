@@ -1,0 +1,168 @@
+  
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Использование Vue.js для создания пользовательских Web компонентов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="176">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Web компоненты позволяют определять новые HTML теги, которые принято называть пользовательскими элементами (custom elements). Эти теги могут быть в дальнейшем использованы непосредственно в HTML коде вашего приложения:
+&lt;div id=&quot;my-app&quot;&gt;...">
+    <meta property="og:site_name" content="inscriptum">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Использование Vue.js для создания пользовательских Web компонентов">
+    <meta property="og:description" content="Web компоненты позволяют определять новые HTML теги, которые принято называть пользовательскими элементами (custom elements). Эти теги могут быть в дальнейшем использованы непосредственно в HTML коде вашего приложения:
+&lt;div id=&quot;my-app&quot;&gt;...">
+    <meta property="og:image" content="">
+    <meta property="article:published_time" content="2019-09-03T12:52:26.000Z">
+    <meta property="article:modified_time" content="2019-09-17T01:38:34.000Z">
+    <meta property="article:author" content="test@test.test">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Использование Vue.js для создания пользовательских Web компонентов">
+    <meta name="twitter:description" content="Web компоненты позволяют определять новые HTML теги, которые принято называть пользовательскими элементами (custom elements). Эти теги могут быть в дальнейшем использованы непосредственно в HTML коде вашего приложения:
+&lt;div id=&quot;my-app&quot;&gt;...">
+    <meta name="twitter:image" content="">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link href="/css/note.css" rel="stylesheet">
+    <link href="/css/custom_editor_fonts.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="tl_page_wrap">
+
+    <div class="tl_page">
+      <section class="tl_article">
+        <header class="tl_article_header">
+          <h1 dir="auto">Использование Vue.js для создания пользовательских Web компонентов</h1>
+          <address dir="auto">
+            <a rel="author">Перевод статьи Simon Tarchichi&nbsp;"Use Vue.js to create custom web components". Автор делает краткий обзор Web components и показывает как их можно создавать с помощью Vue.js.</a>
+            <time datetime=""></time>
+          </address>
+        </header>
+        <article id="_tl_editor" class="tl_article_content ql-container ql-disabled"><div class="ql-editor" data-gramm="false" contenteditable="false" dir="auto"><p>Web компоненты позволяют определять новые HTML теги,&nbsp;которые принято называть пользовательскими элементами (custom elements). Эти теги могут быть в дальнейшем использованы непосредственно в HTML коде вашего приложения:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"my-app"</span>&gt;</span></span>
+<span class="l">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Introduction text<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
+<span class="l">  <span class="hljs-tag">&lt;<span class="hljs-name">share-buttons</span>/&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p>В этом примере,&nbsp;будет интерпретирован браузером и "заменен" HTML разметкой, которую вы для него определили. В результате получим:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"my-app"</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Introduction text<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">share-buttons</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons"</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Facebook<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Twitter<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">share-buttons</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l"></span></span></code></pre><p>Так же здесь можно было бы использовать JS логику, чтобы при событии click делиться страницей через Facebook или Twitter.</p><p><strong>Web компоненты подобны Vue.js компонентам.</strong>&nbsp;Они имеют жизненный цикл (lifecycle), свойства и могут быть вложенными. Их API менее мощный, но зато следует стандарту, определенному в&nbsp;<a href="https://www.w3.org/standards/techs/components#w3c_all" target="_blank">W3C спецификации</a>.</p><p><strong>Проблема в том, что Web компоненты не имеют полной поддержки в браузерах до настоящего момента.</strong>&nbsp;Посмотреть поддержку Web компонентов браузерами можно на сайте&nbsp;<a href="http://jonrimmer.github.io/are-we-componentized-yet/" target="_blank">are-we-componentized-yet</a> или <a href="http://caniuse.com/#search=web%20components" target="_blank">caniuse.com</a> (*).</p><p>Но, применив немного JS магии&nbsp;<strong>вы можете прямо сейчас перевести ваши Vue.js компоненты в Web компоненты</strong>,&nbsp;что позволит использовать их в любых web приложениях, даже вместе с React, Angular или&nbsp;.</p><h3 id="Как-получить-из-вашего-Vue.js-компонента-универсальные-Web-компоненты">Как получить из вашего Vue.js компонента универсальные Web компоненты</h3><p>Понадобится&nbsp;<a href="https://karol-f.github.io/vue-custom-element" target="_blank">vue-custom-element</a>&nbsp;библиотека написанная&nbsp;<a href="https://github.com/karol-f" target="_blank">@karol-f</a>. Она позволит вам&nbsp;<strong>использовать Vue.js компонент как пользовательский элемент</strong>.</p><h3 id="HTML-подход">HTML подход</h3><p>Один раз зарегистрировав пользовательский компонент вы можете&nbsp;вставлять его тег&nbsp;в обычный HTML, SPA, React, Angular или Vue.js проект.</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"my-app"</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Introduction text<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">share-buttons</span> <span class="hljs-attr">gplus</span>=<span class="hljs-string">"false"</span>/&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons-template"</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons"</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"share"</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"facebook"</span>&gt;</span>Facebook<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"share"</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"twitter"</span>&gt;</span>Twitter<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"share"</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"gplus"</span>&gt;</span>Google+<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"vue.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"vue-custom-element.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span>
+<span class="l">  Vue.customElement(<span class="hljs-string">'share-buttons'</span>, {</span>
+<span class="l">  &nbsp; <span class="hljs-attr">template</span>: <span class="hljs-string">'#share-buttons-template'</span>,</span>
+<span class="l">  &nbsp; <span class="hljs-attr">props</span>: {</span>
+<span class="l">  &nbsp; &nbsp; <span class="hljs-attr">facebook</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>, <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span> },</span>
+<span class="l">  &nbsp; &nbsp; <span class="hljs-attr">twitter</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>, <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span> },</span>
+<span class="l">  &nbsp; &nbsp; <span class="hljs-attr">gplus</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>, <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span> }</span>
+<span class="l">  &nbsp; },</span>
+<span class="l">  &nbsp; <span class="hljs-attr">methods</span>: {</span>
+<span class="l">  &nbsp; &nbsp; share ($event) {</span>
+<span class="l">  &nbsp; &nbsp; &nbsp; <span class="hljs-built_in">window</span>.alert(<span class="hljs-string">'Share on '</span> + $event.target.innerHTML);</span>
+<span class="l">  &nbsp; &nbsp; }</span>
+<span class="l">  &nbsp; }</span>
+<span class="l">  });</span>
+<span class="l"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p><strong>Данный подход требует включения в вашу страницу ядра Vue.js и библиотеки vue-custom-element.</strong></p><p>Props будут&nbsp;<a href="https://karol-f.github.io/vue-custom-element/#/demos/basic" target="_blank">автоматически интерпретированы к их нативным типам</a>&nbsp;(атрибут "false" интерпретируется как boolean значение false).</p><p>API пользовательского элемента доступно так же как любого другого HTML элемента: document.getElementsByTagName('share-buttons').</p><p>Пример выше использует HTML тег&nbsp;, но вы можете поместить строку шаблона непосредственно в template свойство вашего компонента.</p><h4 id="Плюсы-и-минусы">Плюсы и минусы</h4><p>Из вышеописанного подхода следует что:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>зависимый скрипт должен быть включен в итоговый HTML файл</li><li>поведение компонента можно прочитать непосредственно из исходного кода страницы</li></ul><p>Это может оказаться как плюсами, так и минусами в зависимости от ваших задач.Наиболее вероятный подход, который я могу представить - это распространение Vue.js компонентов в форме виджетов на множество вебсайтов. Итак, давайте соберем весь этот код в единый файл.</p><h3 id="Сборка-Vue.js-компонентов-в-единый-.js-файл">Сборка Vue.js компонентов в единый .js файл</h3><p>Посмотрите на&nbsp;<a href="https://github.com/kartsims/vue-customelement-bundler" target="_blank">vue-customelement-bundler</a>&nbsp;репозиторий, который содержит:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>настройки Webpack</li><li>код компонента (ES2015 во .vue файле)</li><li>NPM зависимости, чтобы можно было собрать и запустить собственный экземпляр</li></ul><p><strong>Он позволяет взять код Vue.js компонента (в форме .vue файла) и на выходе получить единый .js файл</strong>&nbsp;с вложенным кодом самого Vue, библиотеки vue-custom-element и вашего Vue.js компонента. Получившийся файл будет зарегистрирован, чтобы использоваться, как пользовательский элемент. Далее, можно использовать ваш компонент в любом HTML/JS приложении, подобно этому:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">&nbsp; &nbsp; ...</span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">my-vue-component</span>/&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-comment">&lt;!-- allows multiples instances of the same component --&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">my-vue-component</span> <span class="hljs-attr">my-prop</span>=<span class="hljs-string">"true"</span>/&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"my-vue-component.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+<span class="l"></span></span></code></pre><p>Замечание:&nbsp; Итоговый файл весит 266kB (предыдущий текст перечеркнут). Слишком большой размер файла. Мои навыки в работе с Webpack не позволили его уменьшить. Попытки ипользовать плагин UglifyJsPlugin привели к ошибке, которую не удалось устранить. Возможно, у вас получиться лучше, пожалуйста сообщите мне как можно оптимизировать мои настройки, уверен их можно улучшить.</p><p>Изменение 5/4: Спасибо&nbsp;<a href="https://github.com/anthonygore" target="_blank">@anthonygore</a>&nbsp;и UglifyJS,&nbsp;итоговый файл стал весить 113kB (предыдущий текст перечеркнут).</p><p>Изменение 6/4: Энтони удалось уменьшить сборку еще на 22kB.&nbsp;<strong>Итоговый файл теперь весит 91kB (32kB в gzip)!</strong></p><p>Изменение 11/4:&nbsp;<a href="https://github.com/chimon2000" target="_blank">@chimon2000</a>&nbsp;предложено в качестве альтернативы для сборки&nbsp;<strong>использовать rollup.js, таким образом, вес файла стал 76kB (24kB в gzip)</strong>, спасибо Раян! Эта сборка находится в&nbsp;<a href="https://github.com/kartsims/vue-customelement-bundler/tree/rollup" target="_blank">rollup&nbsp;ветке&nbsp;репозитория</a>.</p><h3 id="Немного-об-API-Web-компонентов-(Web-Components-API)">Немного об API Web компонентов (Web Components API)</h3><p>Это часть статьи не обязательна&nbsp;для использования Vue.js компонентов, как Web компонентов, но часто бывает полезно знать как это работает, чтобы писать код лучше.</p><p>Web компоненты включают следующие W3C спецификации:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>Custom Element</li><li>HTML Template</li><li>HTML Import</li></ul><p>Рассмотрим каждую из них подробнее.</p><h4 id="Custom-Element">Custom Element</h4><p>Custom Element является основным API, доступным разработчикам для определения новых HTML тегов, которые могут быть интерпретированы браузером.</p><p><strong>Функции обратных вызовов жизненного цикла (иначе говоря,&nbsp;</strong><a href="https://www.w3.org/TR/custom-elements/#custom-element-reactions" target="_blank"><strong>реакции</strong></a><strong>):</strong></p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>constructor (элемент обновлен, имеется ввиду вставлен в DOM с помощью JS или изначально там находился)</li><li>connectedCallback (вставка в DOM)</li><li>disconnectedCallback (удаление из DOM)</li><li>adoptedCallback (перемещение в новый документ)</li><li>attributeChangedCallback</li></ul><p>Звучит знакомо? Да, это выглядит как жизненный цикл компонентов Vue.js!Однако, написание пользовательских элементов намного более многословно. Одна из причин этого - вы не можете получить выгоду от магии реактивных свойств во Vue.js, или "сахара" в синтаксисе шаблонов типо v-if выражений.</p><p>Регистрация пользовательских элементов выполняется используя window.customElements.define, как в примере ниже:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HTMLElement</span> </span>{</span>
+<span class="l"> </span>
+<span class="l">&nbsp; <span class="hljs-keyword">constructor</span>() {</span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-keyword">super</span>();</span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-keyword">this</span>.msg = <span class="hljs-string">'Hello, World!'</span>;</span>
+<span class="l">&nbsp; }</span>
+<span class="l">  </span>
+<span class="l">&nbsp; connectedCallback() {</span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-keyword">this</span>.innerHTML = <span class="hljs-string">`&lt;p&gt;<span class="hljs-subst">${<span class="hljs-keyword">this</span>.msg}</span>&lt;/p&gt;`</span>;</span>
+<span class="l">&nbsp; }</span>
+<span class="l">}</span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-built_in">window</span>.customElements.define(<span class="hljs-string">'my-element'</span>, MyElement); </span>
+</code></pre><p>Обратите внимание, что connectedCallback вызывается, когда элемент уже вставлен.</p><p>Помимо этого, теги компонентов должны соответствовать нескольким требованиям:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>содержать дефис</li><li>не содержать заглавных символов</li><li>не использовать одно из запрещенных имен (annotation-xml, color-profile и т.д.)</li></ul><p><a href="https://www.w3.org/TR/custom-elements/#valid-custom-element-name" target="_blank">Подробнее в&nbsp;W3C спецификации.</a></p><h4 id="HTML-Template">HTML Template</h4><p>Разметка пользовательского элемента может содержаться в теге&nbsp;внутри DOM.</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons-template"</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons"</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Facebook<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Twitter<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l"></span></span></code></pre><p>Эта разметка может быть импортирована и клонирована в пользовательский элемент по реакции на createdCallback.</p><h4 id="HTML-Import">HTML Import</h4><p>Определяет разметку и JS логику в одном файле, который может быть импортирован в ваше приложение с помощью одного тега.</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"import"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"share-buttons.html"</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; ...</span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; ...</span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">share-buttons</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">share-buttons</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; ...</span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p>Содержимое файла share-buttons.html:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"share-buttons"</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Facebook<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Twitter<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span>
+<span class="l">&nbsp; &nbsp; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l">&nbsp; &nbsp; &nbsp; ...</span>
+<span class="l">&nbsp; &nbsp; &nbsp; document.registerElement(<span class="hljs-string">'share-buttons'</span>, { <span class="hljs-attr">prototype</span>: MyCustomElement });</span>
+<span class="l">&nbsp; &nbsp; });</span>
+<span class="l">&nbsp; </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p>Звучит все более и более знакомо, не так ли?</p><p>(**)</p><h3 id="Взаимодействие-компонентов">Взаимодействие компонентов</h3><p>Взаимодействие компонента с его родителем происходит посредством событий, точно так же как во Vue.js. События запускаются используя dispatchEvent метод HTML элементов.</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">this</span>.dispatchEvent(<span class="hljs-keyword">new</span> Event(<span class="hljs-string">'content-shared'</span>)); </span>
+</code></pre><p>Родительский компонент может взаимодействовать с дочерними двумя способами:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>используя атрибуты</li><li>используя методы компонента прототипа</li></ul><p>Первый способ точно такой же как во Vue.js. Вы можете установить атрибуты, только они не будут реактивными, так что вам будет нужно использовать attributeChangedCallback если захотите запускать логику, когда заначение атрибутов меняется.</p><p>Второй метод тоже работает во Vue.js, хотя там он и не рекомендуется.</p><h3 id="Поддержка-и-полифиллы-(polyfills)">Поддержка и полифиллы (polyfills)</h3><p>Состоянии поддержки браузерами пользовательских компонентов можно узнать на&nbsp;<a href="http://caniuse.com/#search=web%20components" target="_blank">caniuse.com</a>&nbsp;или&nbsp;<a href="http://jonrimmer.github.io/are-we-componentized-yet/" target="_blank">are-we-componentized-yet</a>.</p><p>Библиотека полифиллов позволяет вам использовать эти API в браузерах, еще не имеющих их поддержки. Ниже ссылки на некоторые из них:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li><a href="https://github.com/webcomponents/custom-elements" target="_blank">Custom Elements polyfill</a>&nbsp;(от команды Polymer)</li><li><a href="https://github.com/WebReflection/document-register-element" target="_blank">document-register-element</a>&nbsp;(от Andrea Giammarchi)</li></ul><p><em>Замечание: я не упоминал Shadow DOM в этой статье. Думаю это могло бы смутить разработчиков, которые фокусируются на переносе их Vue.js компонентов к пользовательским элементам. Посмотрите ссылки в конце, чтобы получить больше информации по данной теме.</em></p><h3 id="Ссылки">Ссылки</h3><ul start="null" style="counter-reset: list-0 0 null 0;"><li><a href="https://karol-f.github.io/vue-custom-element/" target="_blank">Vue Custom Element</a>: трансформация Vue.js компонентов в пользовательские элементы.</li><li><a href="https://github.com/kartsims/vue-customelement-bundler" target="_blank">Vue Custom Element Bundler</a>: сборка Vue.js компонентов в виде единого .js файла.</li><li><a href="https://www.webcomponents.org/" target="_blank">WebComponents.org</a>: каталог и ресурсы по пользовательским элементам (Custom Elements).</li><li>Статья "The case for Custom Elements" (<a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-1-65d807b4b439#.lj3f8evee" target="_blank">часть 1</a>&nbsp;и&nbsp;<a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133#.x0xz0nwph" target="_blank">часть 2</a>) автор Rob Dodson.</li><li><a href="http://www.backalleycoder.com/2016/08/26/demythstifying-web-components/" target="_blank">Demythstifying Web Components</a>&nbsp;автор Daniel Buchner.</li></ul><h3><br></h3><h3 id="Примечания-к-переводу">Примечания к переводу</h3><p>* На начало августа 2019 года все современные браузеры начали поддерживать актуальные спецификации Web Components. Исключением можно назвать MS Edge, но стоит учитывать, что Microsoft отказалась от дальнейшего развития собственной архитектуры и <a href="https://habr.com/en/company/microsoft/blog/447364/" target="_blank">уже планируется выход Edge на основе Chromium</a>.</p><p>** Со времени написания и перевода статьи спецификации претерпели ряд изменений. Актуальную информацию можно найти на сайте <a href="https://www.webcomponents.org/" target="_blank">webcomponents.org</a>.</p><p>*** К сожалению, ссылка на оригинал недоступна, раньше статься располагалась по <a href="http://vuetips.com/vue-web-components" target="_blank">этому адресу</a>.</p></div></article>
+        
+        <aside class="tl_article_buttons">
+          
+          <a id="_edit_button" class="button edit_button" href="/editor/ck03u1nlv0zbf0112fj4ynmsn/posted">Edit</a>
+          
+          
+          
+        </aside>
+      </section>
+    </div>
+  </div>
+  </body>
+  <script type="text/javascript" src="/js/vendor.js"></script>
+  <script type="text/javascript" src="/js/note.js"></script>
+</html>

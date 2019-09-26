@@ -1,9 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{1194:function(i,o,s){"use strict";s.r(o),o.default=((i,o)=>i`
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-<div id="editor">
-  <p>Hello World!</p>
-  <p>Some initial <strong>bold</strong> text</p>
-  <p><br></p>
-</div>
-`)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{630:function(t,e,r){"use strict";r.r(e),r.d(e,"draftRouter",function(){return c});r(535);var a=r(67),s=r(532);var c=new class extends s.AbstractRoute{constructor(){super(...arguments),this.$routeEdit=new a.Subject,this.$routeDraftsList=new a.Subject}getRouter(){return{rootPath:"/articles/draft",routers:[{path:"/list",callback:(t,e)=>this.$routeDraftsList.next({ctx:t,next:e})},{path:"/*",callback:(t,e)=>{t.handled?(t.handled=!1,e()):this.page.replace("/articles/draft/list")}}]}}}}}]);

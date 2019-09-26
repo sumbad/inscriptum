@@ -1,11 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[88],{1242:function(t,e){
-/**
-@license @nocompile
-Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
-!function(){"use strict";!function(){if(void 0===window.Reflect||void 0===window.customElements||window.customElements.hasOwnProperty("polyfillWrapFlushCallback"))return;const t=HTMLElement;window.HTMLElement=function(){return Reflect.construct(t,[],this.constructor)},HTMLElement.prototype=t.prototype,HTMLElement.prototype.constructor=HTMLElement,Object.setPrototypeOf(HTMLElement,t)}()}()}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[88],{669:function(e,n,t){"use strict";function r(){var e=function(e,n){n||(n=e.slice(0));return Object.freeze(Object.defineProperties(e,{raw:{value:Object.freeze(n)}}))}(['\n<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">\n\n<div id="editor">\n  <p>Hello World!</p>\n  <p>Some initial <strong>bold</strong> text</p>\n  <p><br></p>\n</div>\n']);return r=function(){return e},e}t.r(n),n.default=(e,n)=>e(r())}}]);
