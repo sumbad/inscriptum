@@ -1,0 +1,238 @@
+  
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Базовый JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="176">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Приведение типов. 
+ Оператор typeof. 
+ Тип объекта. 
+ Массивы. 
+ Равенство. 
+ Область видимости. 
+ Ключевое слово let....">
+    <meta property="og:site_name" content="inscriptum">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Базовый JavaScript">
+    <meta property="og:description" content="Приведение типов. 
+ Оператор typeof. 
+ Тип объекта. 
+ Массивы. 
+ Равенство. 
+ Область видимости. 
+ Ключевое слово let....">
+    <meta property="og:image" content="">
+    <meta property="article:published_time" content="2019-09-26T05:09:06.000Z">
+    <meta property="article:modified_time" content="2019-09-26T05:09:06.000Z">
+    <meta property="article:author" content="test@test.test">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Базовый JavaScript">
+    <meta name="twitter:description" content="Приведение типов. 
+ Оператор typeof. 
+ Тип объекта. 
+ Массивы. 
+ Равенство. 
+ Область видимости. 
+ Ключевое слово let....">
+    <meta name="twitter:image" content="">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link href="/css/note.css" rel="stylesheet">
+    <link href="/css/custom_editor_fonts.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="tl_page_wrap">
+
+    <div class="tl_page">
+      <section class="tl_article">
+        <header class="tl_article_header">
+          <h1 dir="auto">Базовый JavaScript</h1>
+          <address dir="auto">
+            <a rel="author"></a>
+            <time datetime=""></time>
+          </address>
+        </header>
+        <article id="_tl_editor" class="tl_article_content ql-container ql-disabled"><div class="ql-editor" data-gramm="false" contenteditable="false" dir="auto"><ul start="null" style="counter-reset: list-0 0 null 0;"><li><a href="#%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D1%82%D0%B8%D0%BF%D0%BE%D0%B2">Приведение типов.</a></li><li><a href="#%D0%9E%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%BE-%20typeof">Оператор typeof.</a></li><li><a href="#%D0%A2%D0%B8%D0%BF-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%B0">Тип объекта.</a></li><li><a href="http://xn--80aero0aa6e/" target="_blank">Массивы.</a></li><li><a href="#%D0%A0%D0%B0%D0%B2%D0%B5%D0%BD%D1%81%D1%82%D0%B2%D0%BE">Равенство.</a></li><li><a href="#%D0%9E%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C-%D0%B2%D0%B8%D0%B4%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8">Область видимости.</a></li><li><a href="#%D0%9A%D0%BB%D1%8E%D1%87%D0%B5%D0%B2%D0%BE%D0%B5-%D1%81%D0%BB%D0%BE%D0%B2%D0%BE-let">Ключевое слово let.</a></li><li><a href="#%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F-%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D1%8B%D0%B7%D0%BE%D0%B2%D0%B0">Функция обратного вызова.</a></li><li><a href="#%D0%A1%D1%82%D1%80%D0%BE%D0%B3%D0%B8%D0%B9-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC-use-strict">Строгий режим "use strict".</a></li></ul><p><br></p><h4 id="Приведение-типов">Приведение типов</h4><p>Преобразование между двумя встроенными типами. </p><p>Бывает двух типов:&nbsp;</p><p><em>явное</em>:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> a = <span class="hljs-string">"55"</span>;</span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-keyword">var</span> b = <span class="hljs-built_in">Number</span>( a );</span>
+<span class="l"> </span>
+<span class="l">a;				<span class="hljs-comment">// "55"</span></span>
+<span class="l">b;				<span class="hljs-comment">// 55 - число</span></span>
+</code></pre><p>&nbsp;<em>неявное</em>:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> a = <span class="hljs-string">"42"</span>;</span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-keyword">var</span> b = a * <span class="hljs-number">1</span>;</span>
+<span class="l"> </span>
+<span class="l">a;				<span class="hljs-comment">// "55"</span></span>
+<span class="l">b;				<span class="hljs-comment">// 55 - число!</span></span>
+</code></pre><p><br></p><h4 id="Оператор-typeof">Оператор typeof</h4><p>Оператор&nbsp;<code>typeof</code>&nbsp;может проверить значение и сказать, какой это тип:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> a;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "undefined"</span></span>
+<span class="l"> </span>
+<span class="l">a = <span class="hljs-string">"hello world"</span>;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "string"</span></span>
+<span class="l"> </span>
+<span class="l">a = <span class="hljs-number">42</span>;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "number"</span></span>
+<span class="l"> </span>
+<span class="l">a = <span class="hljs-literal">true</span>;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "boolean"</span></span>
+<span class="l"> </span>
+<span class="l">a = <span class="hljs-literal">null</span>;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "object" -- странно, ошибка</span></span>
+<span class="l"> </span>
+<span class="l">a = <span class="hljs-literal">undefined</span>;</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "undefined"</span></span>
+<span class="l"> </span>
+<span class="l">a = { <span class="hljs-attr">b</span>: <span class="hljs-string">"c"</span> };</span>
+<span class="l"><span class="hljs-keyword">typeof</span> a;				<span class="hljs-comment">// "object"</span></span>
+</code></pre><h3><br></h3><h4 id="Тип-объекта">Тип объекта</h4><p>Относится к составному значению, где можно установить свойства (именованные местоположения), каждое из которых содержит свои собственные значения любого типа.</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> obj = {</span>
+<span class="l">  <span class="hljs-attr">a</span>: <span class="hljs-string">"hello world"</span>, <span class="hljs-comment">// свойство</span></span>
+<span class="l">  b: <span class="hljs-number">42</span>,</span>
+<span class="l">  <span class="hljs-attr">c</span>: <span class="hljs-literal">true</span></span>
+<span class="l">};</span>
+<span class="l"> </span>
+<span class="l">obj.a;		<span class="hljs-comment">// "hello world", обращение через нотацию с точкой</span></span>
+<span class="l">obj.b;		<span class="hljs-comment">// 42</span></span>
+<span class="l">obj.c;		<span class="hljs-comment">// true</span></span>
+<span class="l"> </span>
+<span class="l">obj[<span class="hljs-string">"a"</span>];	<span class="hljs-comment">// "hello world", обращение через нотацию со скобками</span></span>
+<span class="l">obj[<span class="hljs-string">"b"</span>];	<span class="hljs-comment">// 42</span></span>
+<span class="l">obj[<span class="hljs-string">"c"</span>];	<span class="hljs-comment">// true</span></span>
+</code></pre><p>Обращение через нотацию со скобками, если нужно получить доступ к свойству/ключу, и имя хранится в переменной, например как:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> obj = {</span>
+<span class="l">	<span class="hljs-attr">a</span>: <span class="hljs-string">"hello world"</span>,</span>
+<span class="l">	<span class="hljs-attr">b</span>: <span class="hljs-number">42</span></span>
+<span class="l">};</span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-keyword">var</span> b = <span class="hljs-string">"a"</span>;</span>
+<span class="l"> </span>
+<span class="l">obj[b];			<span class="hljs-comment">// "hello world"</span></span>
+<span class="l">obj[<span class="hljs-string">"b"</span>];		<span class="hljs-comment">// 42</span></span>
+</code></pre><h3><br></h3><h4 id="Массивы">Массивы</h4><p><code>Массив</code>&nbsp;- это объект, который содержит значения (любого типа) не в именованных свойствах/ключах, а в числовых индексированных позициях:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> arr = [</span>
+<span class="l">  <span class="hljs-string">"hello world"</span>,</span>
+<span class="l">  <span class="hljs-number">42</span>,</span>
+<span class="l">  <span class="hljs-literal">true</span></span>
+<span class="l">];</span>
+<span class="l"> </span>
+<span class="l">arr[<span class="hljs-number">0</span>];			<span class="hljs-comment">// "hello world"</span></span>
+<span class="l">arr[<span class="hljs-number">1</span>];			<span class="hljs-comment">// 42</span></span>
+<span class="l">arr[<span class="hljs-number">2</span>];			<span class="hljs-comment">// true</span></span>
+<span class="l">arr.length;		<span class="hljs-comment">// 3</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-keyword">typeof</span> arr;		<span class="hljs-comment">// "object"</span></span>
+</code></pre><p><br></p><h4 id="Равенство">Равенство</h4><ul start="null" style="counter-reset: list-0 0 null 0;"><li><strong>Строгое сравнение</strong> (<code>===</code>)&nbsp;проверяет равенство значений, не применяя&nbsp;<em>принуждение</em></li><li><strong>Абстрактное сравнение</strong> (<code>==</code>)&nbsp;проверяет равенство значений применяя&nbsp;<em>принуждение</em></li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">var</span> a = <span class="hljs-string">"42"</span>;</span>
+<span class="l"><span class="hljs-keyword">var</span> b = <span class="hljs-number">42</span>;</span>
+<span class="l"> </span>
+<span class="l">a == b;			<span class="hljs-comment">// true</span></span>
+<span class="l">a === b;		<span class="hljs-comment">// false</span></span>
+</code></pre><p>Избегайте абстрактное сравнение&nbsp;<code>==</code> в случаях, если какое-либо значение в сравнении может иметь значение:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li><code>true</code>&nbsp;или&nbsp;<code>false</code>,</li><li><code>0</code>,&nbsp;</li><li><code>""</code> - пустая строка,</li><li><code>[]</code>&nbsp;- пустой массив.</li></ul><p><a href="https://felix-kling.de/js-loose-comparison/" target="_blank"><strong>Пошаговая визуализация алгоритма нестрого сравнения</strong> (==) с приведением типов в JavaScript</a>.</p><h4><br></h4><h4 id="Область-видимости">Область видимости</h4><p>Необходима для ограничения доступа. Если какая-либо переменная определена внутри функции, то область её видимости ограничивается этой функцией и функциями вложенными в неё.</p><p><br></p><h4 id="Ключевое-слово-let">Ключевое слово let</h4><p>Позволяет объявлять переменные, принадлежащие отдельным блокам (парам&nbsp;<code>{&nbsp;..&nbsp;}</code>), начиная с ES6.</p><p><br></p><p><em>Источник:</em></p><blockquote><a href="https://github.com/getify/You-Dont-Know-JS/blob/master/up%20%26%20going/ch2.md" target="_blank">https://github.com/getify/You-Dont-Know-JS/blob/master/up%20%26%20going/ch2.md</a></blockquote><p><br></p><h4 id="Функция-обратного-вызова">Функция обратного вызова</h4><p><code>callback</code>&nbsp;является функцией, которая передается другой функции в качестве аргумента и выполняется после завершения какой-либо операции.</p><p><br></p><h4 id="Строгий-режим-&quot;use-strict&quot;">Строгий режим "use strict"</h4><p>Помещает программу или функцию в «строгий» или «современный» рабочий контекст. ECMAScript 5 добавил новые возможности в язык и изменил некоторые из существующих. По умолчанию они отключены, включить их нужно явно с помощью специальной директивы:&nbsp;<code>"use strict"</code>. Некоторые функции языка, такие как «классы» и «модули», автоматически включают строгий режим. </p><p>Директива <code>"use strict"</code> может быть указана в начале всей программы или отдельной функции, перед её указанием могут быть только комментарии.</p><p>Помимо возможностей, этот контекст предотвращает выполнение определенных действий и вызывает больше исключений.</p><p><strong>Поведение в строгом и нестрогом режиме:</strong></p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>присваивание значений в неопределённую (спецификация&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.13.1" target="_blank">§11.13.1</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  x = <span class="hljs-number">5</span>; <span class="hljs-comment">// ReferenceError: x is not defined</span></span>
+<span class="l">})(); </span>
+<span class="l"> </span>
+<span class="l">x = <span class="hljs-number">5</span>; <span class="hljs-comment">// Создает глобальную переменную x</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>присваивание значение в свойство только для чтения:</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-built_in">window</span>.undefined = <span class="hljs-number">5</span>; <span class="hljs-comment">// TypeError: Cannot assign to read only</span></span>
+<span class="l">})();                   <span class="hljs-comment">// property 'undefined' of [object Object]</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-built_in">window</span>.undefined = <span class="hljs-number">5</span>; <span class="hljs-comment">// Ничего не делает</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>повторные свойства в литерале объекта&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.1.5" target="_blank">§11.1.5</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-keyword">var</span> x = {</span>
+<span class="l">    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>,</span>
+<span class="l">    <span class="hljs-attr">a</span>: <span class="hljs-number">2</span></span>
+<span class="l">  };  <span class="hljs-comment">// SyntaxError: Duplicate data property in object literal </span></span>
+<span class="l">})(); <span class="hljs-comment">// not allowed in strict mode</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-keyword">var</span> x = {</span>
+<span class="l">  <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>,</span>
+<span class="l">  <span class="hljs-attr">a</span>: <span class="hljs-number">2</span></span>
+<span class="l">}; <span class="hljs-comment">// x равно {a: 2} </span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>повторные формальные параметры функции&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x13.html#x13.1" target="_blank">§13.1</a>,&nbsp;<a href="http://es5.javascript.ru/x15.3.html#x15.3.2" target="_blank">§15.3.2</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">a, a</span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">} <span class="hljs-comment">// SyntaxError: Strict mode function may not have duplicate parameter names</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">a, a</span>) </span>{</span>
+<span class="l">  <span class="hljs-keyword">return</span> a;</span>
+<span class="l">}</span>
+<span class="l">f(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>); <span class="hljs-comment">// возвращает 2</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>изменения объекта <code>arguments</code>&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x10.html#x10.6" target="_blank">§10.6</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">x</span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] = <span class="hljs-number">5</span>;</span>
+<span class="l">  <span class="hljs-keyword">return</span> x;</span>
+<span class="l">}</span>
+<span class="l">f(<span class="hljs-number">10</span>); <span class="hljs-comment">// возвращает 10</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">x</span>) </span>{</span>
+<span class="l">  <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] = <span class="hljs-number">5</span>;</span>
+<span class="l">  <span class="hljs-keyword">return</span> x;</span>
+<span class="l">}</span>
+<span class="l">f(<span class="hljs-number">10</span>); <span class="hljs-comment">// возвращает 5</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li><code>delete</code>&nbsp;на неизменяемом свойство объекта&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.4.1" target="_blank">§11.4.1</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">x</span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-keyword">var</span> y = <span class="hljs-number">4</span>;</span>
+<span class="l">  <span class="hljs-keyword">delete</span> f; <span class="hljs-comment">// SyntaxError: Delete of an unqualified identifier in strict mode.</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> x; <span class="hljs-comment">// SyntaxError: Delete of an unqualified identifier in strict mode.</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> y; <span class="hljs-comment">// SyntaxError: Delete of an unqualified identifier in strict mode.</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> <span class="hljs-built_in">window</span>.undefined; <span class="hljs-comment">// TypeError: Cannot delete property </span></span>
+<span class="l">})();                      <span class="hljs-comment">// 'undefined' of [object Object]</span></span>
+<span class="l"> </span>
+<span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">x</span>) </span>{</span>
+<span class="l">  <span class="hljs-keyword">var</span> y = <span class="hljs-number">4</span>;</span>
+<span class="l">  <span class="hljs-keyword">delete</span> f; <span class="hljs-comment">// Возвращает false</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> x; <span class="hljs-comment">// Возвращает false</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> y; <span class="hljs-comment">// Возвращает false</span></span>
+<span class="l">  <span class="hljs-keyword">delete</span> <span class="hljs-built_in">window</span>.undefined; <span class="hljs-comment">// Возвращает false</span></span>
+<span class="l">})();</span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>определение переменной и функции в контексте вызова через <code>eval </code>(спецификация&nbsp;<a href="http://es5.javascript.ru/x10.html#x10.4.2" target="_blank">§10.4.2</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-built_in">eval</span>(<span class="hljs-string">"var x = 5"</span>);</span>
+<span class="l">  <span class="hljs-keyword">return</span> x; <span class="hljs-comment">// ReferenceError: x is not defined</span></span>
+<span class="l">})();</span>
+<span class="l"> </span>
+<span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</span>
+<span class="l">  <span class="hljs-built_in">eval</span>(<span class="hljs-string">"var x = 5"</span>);</span>
+<span class="l">  <span class="hljs-keyword">return</span> x;</span>
+<span class="l">})(); <span class="hljs-comment">// Возвращает 5</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li><code>this</code>&nbsp;не преобразуется в объект, а&nbsp;если значение&nbsp;<code>this</code>&nbsp;- <code>undefined </code>или&nbsp;<code>null</code>, то не преобразуется в глобальный объект&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x10.html#x10.4.3" target="_blank">§10.4.3</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;</span>
+<span class="l">};</span>
+<span class="l">f.call(<span class="hljs-number">4</span>); <span class="hljs-comment">// возвращает 4</span></span>
+<span class="l">f.call(<span class="hljs-literal">null</span>); <span class="hljs-comment">// возвращает null</span></span>
+<span class="l">f.call(<span class="hljs-literal">undefined</span>); <span class="hljs-comment">// возвращает undefined</span></span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>{</span>
+<span class="l">  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;</span>
+<span class="l">};</span>
+<span class="l">f.call(<span class="hljs-number">4</span>); <span class="hljs-comment">// возвращает [object Number]</span></span>
+<span class="l">f.call(<span class="hljs-literal">null</span>); <span class="hljs-comment">// возвращает [object global] </span></span>
+<span class="l">f.call(<span class="hljs-literal">undefined</span>); <span class="hljs-comment">// возвращает [object global]</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>литералы восьмеричной системы счисления&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/B.html#B.1.1" target="_blank">B.1.1</a>,&nbsp;<a href="http://es5.javascript.ru/B.html#B.1.2" target="_blank">B.1.2</a>):</li></ul><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</span>
+<span class="l"><span class="hljs-meta">  "use strict"</span>;</span>
+<span class="l">  <span class="hljs-keyword">return</span> <span class="hljs-number">010</span> + <span class="hljs-comment">// SyntaxError: Octal literals are not allowed in strict mode.</span></span>
+<span class="l">    <span class="hljs-string">"\077"</span>;    <span class="hljs-comment">// SyntaxError: Octal literals are not allowed in strict mode.</span></span>
+<span class="l">})();</span>
+<span class="l"> </span>
+<span class="l">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</span>
+<span class="l">  <span class="hljs-keyword">return</span> <span class="hljs-number">010</span> + <span class="hljs-string">"\077"</span>;</span>
+<span class="l">})(); <span class="hljs-comment">// возвращает "8?"</span></span>
+</code></pre><ul start="null" style="counter-reset: list-0 0 null 0;"><li>больше слов, зарезервированных для использования в будущем (спецификация <a href="http://es5.javascript.ru/x7.html#x7.6.1.2" target="_blank">§7.6.1.2</a>);</li><li><code>eval</code>&nbsp;и&nbsp;<code>arguments</code>&nbsp;- нельзя изменить или использовать в качестве имени&nbsp;(спецификация&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.4.4" target="_blank">§11.4.4</a>,&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.4.5" target="_blank">§11.4.5</a>,&nbsp;<a href="http://es5.javascript.ru/x11.html#x11.13" target="_blank">§11.13</a>,&nbsp;<a href="http://es5.javascript.ru/x12.html#x12.2.1" target="_blank">§12.2.1</a>,&nbsp;<a href="http://es5.javascript.ru/x12.html#x12.10" target="_blank">§12.10</a>,&nbsp;<a href="http://es5.javascript.ru/x12.html#x12.14.1" target="_blank">§12.14.1</a>,&nbsp;<a href="http://es5.javascript.ru/x13.html#x13.1" target="_blank">§13.1</a>);</li><li>нельзя использовать <code>argument.caller </code>и <code>arguments.callee </code>(спецификация&nbsp;<a href="http://es5.javascript.ru/x13.html#x13.2" target="_blank">§13.2</a>);</li><li>нельзя использовать устаревшую инструкцию&nbsp;<code>with</code> (спецификация&nbsp;<a href="http://es5.javascript.ru/x12.html#x12.10" target="_blank">§12.10</a>).</li></ul><p><br></p><p><em>Источники:</em></p><blockquote><a href="https://coderbyte.com/algorithm/10-common-javascript-interview-questions" target="_blank">https://coderbyte.com/algorithm/10-common-javascript-interview-questions</a></blockquote><blockquote><a href="https://learn.javascript.ru/strict-mode" target="_blank">https://learn.javascript.ru/strict-mode</a></blockquote><blockquote><a href="https://ru.stackoverflow.com/questions/435546/%D0%A7%D1%82%D0%BE-%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82-use-strict" target="_blank">https://ru.stackoverflow.com/questions/435546/%D0%A7%D1%82%D0%BE-%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82-use-strict</a></blockquote><p><br></p><p><br></p></div></article>
+        
+        <aside class="tl_article_buttons">
+          
+          <a id="_edit_button" class="button edit_button" href="/editor/ck108me890122014951h1wuhu/posted">Edit</a>
+          
+          
+          
+        </aside>
+      </section>
+    </div>
+  </div>
+  </body>
+  <script type="text/javascript" src="/js/vendor.js"></script>
+  <script type="text/javascript" src="/js/note.js"></script>
+</html>
