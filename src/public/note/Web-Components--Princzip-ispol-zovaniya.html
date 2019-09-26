@@ -1,0 +1,116 @@
+  
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Web Components. Принцип использования</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="176">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Рассмотрение вопросов использования Web Components в приложении, какие существуют подходы, их плюсы и минусы. Способы подключения компонентов через HTML Imports и JavaScript.">
+    <meta property="og:site_name" content="inscriptum">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Web Components. Принцип использования">
+    <meta property="og:description" content="Рассмотрение вопросов использования Web Components в приложении, какие существуют подходы, их плюсы и минусы. Способы подключения компонентов через HTML Imports и JavaScript.">
+    <meta property="og:image" content="">
+    <meta property="article:published_time" content="2019-09-26T04:43:16.000Z">
+    <meta property="article:modified_time" content="2019-09-26T04:43:16.000Z">
+    <meta property="article:author" content="test@test.test">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Web Components. Принцип использования">
+    <meta name="twitter:description" content="Рассмотрение вопросов использования Web Components в приложении, какие существуют подходы, их плюсы и минусы. Способы подключения компонентов через HTML Imports и JavaScript.">
+    <meta name="twitter:image" content="">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link href="/css/note.css" rel="stylesheet">
+    <link href="/css/custom_editor_fonts.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="tl_page_wrap">
+
+    <div class="tl_page">
+      <section class="tl_article">
+        <header class="tl_article_header">
+          <h1 dir="auto">Web Components. Принцип использования</h1>
+          <address dir="auto">
+            <a rel="author">Рассмотрение вопросов использования Web Components в приложении, какие существуют подходы, их плюсы и минусы. Способы подключения компонентов через HTML Imports и JavaScript.</a>
+            <time datetime=""></time>
+          </address>
+        </header>
+        <article id="_tl_editor" class="tl_article_content ql-container ql-disabled"><div class="ql-editor" data-gramm="false" contenteditable="false" dir="auto"><h3 id="Использование-Web-Components-посредством-спецификации-HTML-Imports">Использование Web Components посредством спецификации HTML Imports</h3><p>В предыдущей статье мы рассмотрели четыре спецификации Web Components, одна из них это HTML Imports. Напомню, что основное её назначение это механизм внедрения созданного компонента в приложение. Создадим компонент use.html следующим образом:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css"></span>
+<span class="l">&nbsp; &nbsp; <span class="hljs-selector-tag">h1</span> {</span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-attribute">background-color</span>: dimgray;</span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-attribute">color</span>: darkgray;</span>
+<span class="l">&nbsp; &nbsp; }</span>
+<span class="l">&nbsp; </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Use Web Components!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span>
+<span class="l">&nbsp; <span class="hljs-keyword">const</span> $ownerDocument = <span class="hljs-built_in">document</span>.currentScript.ownerDocument;</span>
+<span class="l">&nbsp; <span class="hljs-keyword">const</span> $template = $ownerDocument.querySelector(<span class="hljs-string">"template"</span>);</span>
+<span class="l">&nbsp; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UseWebComponents</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HTMLElement</span> </span>{</span>
+<span class="l">&nbsp; &nbsp; connectedCallback(){</span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-keyword">const</span> $content = <span class="hljs-built_in">document</span>.importNode($template.content, <span class="hljs-literal">true</span>);</span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-keyword">this</span>.appendChild($content);</span>
+<span class="l">&nbsp; &nbsp; }</span>
+<span class="l">&nbsp; }</span>
+<span class="l">&nbsp; <span class="hljs-built_in">window</span>.customElements.define(<span class="hljs-string">"use-web-components"</span>, UseWebComponents);</span>
+<span class="l"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p>Используем компонент use-web-components в файле index.html:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>HTML Imports<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"import﻿﻿﻿"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"use.html"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"use"</span> /&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">use-web-components</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">use-web-components</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>﻿</span>
+<span class="l"></span></span></code></pre><p>В примере выше весь код нашего компонента был сосредоточен в html файле. Далее, в соответствии с HTML Imports мы подключили компонент к основному приложению в index.html через строку</p><p><br></p><p>Подключение компонентов с помощью спецификации HTML Imports имеет ряд преимуществ:</p><ol start="null" style="counter-reset: list-0 0 null 0;"><li>Автоматически исключаются множественные импорты на уровне браузера.</li><li>Написание разметки HTML, CSS стилей и JS кода в одном html файле поддерживается всеми редакторами и средами разработки, а также не противоречит принципам Web.</li></ol><p>Но есть и весомые отрицательные стороны у данного подхода:</p><ol start="null" style="counter-reset: list-0 0 null 0;"><li>Спецификация HTML Imports не поддерживается во всех современных браузерах. Их производители до сих пор не пришли к общему мнению по данному вопросу.</li><li>Данные подход затруднительно использовать с современными системами сборки, такими как Webpack.</li><li>Если в приложении используется несколько компонентов, то все их придется подгружать через link с атрибутом rel="import" или хранить все компоненты в одном файле. И первое и второе нельзя назвать хорошим решением.</li><li>HTML Imports появилась до динамических импортов ES2015. Теперь же гораздо предпочтительнее использовать JavaScript для загрузки дополнительной функциональности, что в некотором роде нивелирует преимущества HTML Imports.</li></ol><h3 id="Использование-Web-Components-посредством-JavaScript">Использование Web Components посредством JavaScript</h3><p>Чтобы понять механизм создания и подключения компонента на JavaScript, и сравнить его с предыдущим подходом, создадим аналогичный пример. Компонент use.js:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml">class UseWebComponents extends HTMLElement {</span>
+<span class="l">&nbsp; connectedCallback(){</span>
+<span class="l">&nbsp; &nbsp; this.innerHTML = `</span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css"></span>
+<span class="l">&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-selector-tag">h1</span> {</span>
+<span class="l">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-attribute">background-color</span>: dimgray;</span>
+<span class="l">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-attribute">color</span>: darkgray;</span>
+<span class="l">&nbsp; &nbsp; &nbsp; &nbsp; }</span>
+<span class="l">&nbsp; &nbsp; &nbsp; </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; &nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Use Web Components!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+<span class="l">&nbsp; &nbsp; `;</span>
+<span class="l">&nbsp; }</span>
+<span class="l">}</span>
+<span class="l"> </span>
+<span class="l"> </span>
+<span class="l">window.customElements.define("use-web-components", UseWebComponents); </span>
+<span class="l"></span></span></code></pre><p>Используем компонент use-web-components в файле index.html:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>HTML Imports<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"use.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l">&nbsp; <span class="hljs-tag">&lt;<span class="hljs-name">use-web-components</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">use-web-components</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span>
+<span class="l"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span> </span>
+<span class="l"></span></span></code></pre><p>При подключении компонентов с помощью JavaScript гораздо больше преимуществ и меньше недостатков. Из плюсов:</p><ol start="null" style="counter-reset: list-0 0 null 0;"><li>Близость современным JavaScript разработчикам. Этот подход не нужно разбирать и заново осмысливать, он близок всем, кто создавал компоненты на ReactJS или Angular.</li><li>Подключение компонента подобно подключению любого другого js файла.</li><li>Не требует дополнительных полифилов для работы.</li><li>Просто использовать вместе с Webpack.</li></ol><p>Но есть и весомые отрицательные стороны у данного подхода:</p><ol start="null" style="counter-reset: list-0 0 null 0;"><li>Писать HTML и CSS внутри JS кода может показаться не лучшей идеей.</li><li>Писать разметку в виде шаблонных строк неудобно, тем более, что в этом случае почти все среды разработки будут воспринимать её как обычную строку.</li></ol><p>Хоть данный подход и не лишен своих минусов, использовать его гораздо удобнее.</p><h3 id="Итог">Итог</h3><p>При создании компонента необходимо заранее определить способ его дальнейшего использования. Существует два подхода:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>подключать компоненты с помощью HTML Imports;</li><li>загружать компоненты как обычные JavaScript файлы.</li></ul><p>Оба подхода имеют плюсы и минусы, но, пожалуй, решающим является современная экосистема JavaScript, которая делает второй фаворитом. Помимо возможности использовать сборки и лучшие практики компоновки приложений, он позволяет подключать компоненты в современных браузерах без загрузки дополнительных зависимостей в виде полифилов.</p><h3 id="Ссылки">Ссылки</h3><ul start="null" style="counter-reset: list-0 0 null 0;"><li><a href="https://github.com/webcomponents/webcomponentsjs" target="_blank"><strong>webcomponentsjs</strong></a>&nbsp;и&nbsp;<a href="https://www.webcomponents.org/polyfills" target="_blank"><strong>polyfills</strong></a>&nbsp;- полифиллы и как их использовать (для работы еще не реализованных спецификаций в браузерах).</li><li><a href="https://www.html5rocks.com/en/tutorials/webcomponents/imports/" target="_blank"><strong>HTML Imports</strong></a>.</li></ul></div></article>
+        
+        <aside class="tl_article_buttons">
+          
+          <a id="_edit_button" class="button edit_button" href="/editor/ck107p6ck0ex00127nmq5ena2/posted">Edit</a>
+          
+          
+          
+        </aside>
+      </section>
+    </div>
+  </div>
+  </body>
+  <script type="text/javascript" src="/js/vendor.js"></script>
+  <script type="text/javascript" src="/js/note.js"></script>
+</html>
