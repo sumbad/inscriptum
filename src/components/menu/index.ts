@@ -36,8 +36,8 @@ export class MenuComponent extends AbstractElement {
         <div class="container">
           <ul class="navbar-list">
             <li class="navbar-item"><a class="navbar-link" href="/notes">Конспекты</a></li>
+            <li class="navbar-item"><a class="navbar-link" href="/conference">Слайды</a></li>
             ${ this.hasAuth ? html`<li class="navbar-item"><a class="navbar-link" href="/drafts">Черновики</a></li>` : ''}
-            <!-- <li class="navbar-item"><a class="navbar-link" href="#">Слайды</a></li> -->
           </ul>
         </div>
       </nav>
