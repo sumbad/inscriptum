@@ -47,9 +47,6 @@ export function uploadFile(file): Promise<any> {
           // img.src = url;//tokens.join('/');
           // img.alt = response.public_id;
 
-
-          console.log(1111, response);
-
           resolve(response);
 
           // document.getElementById('gallery').appendChild(img);
@@ -62,40 +59,3 @@ export function uploadFile(file): Promise<any> {
       
     });
 }
-
-
-
-
-// var cl = cloudinary.Cloudinary.new( { cloud_name: 'inscriptum'});
-
-
-
-
-
-
-// export class EditorImage extends Image {
-//   static create(value) {
-//     // let node = super.create(value);
-//     // if (typeof value === 'string') {
-//     //   node.setAttribute('src', this.sanitize(value));
-//     // }
-
-//     // console.log(value);
-
-//     // const reader = new FileReader();
-//     // reader.readAsDataURL(value);
-//     // const img = new Image();
-//     // img.src = value; //event.target.result;
-
-
-//     return Image.create(value);
-//   }
-
-
-//   format(name, value) {
-//     console.log(name, value);
-
-
-
-//   }
-// }

@@ -60,7 +60,6 @@ export class DraftComponent extends AbstractElement {
         if (hasAuth!==null) {
           this._storageService.allNotes().then(
             notes => {
-              console.log(notes);
               const _notes = notes.allNotes.map(
                 item => {
                   const { content, title, image } = quillDelta2Preview(item.content);

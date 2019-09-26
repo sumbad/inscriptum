@@ -39,7 +39,6 @@ export class ListComponent extends AbstractElement {
   `;
 
   set value(list) {
-    console.log(list);
     if (list !== undefined) {
       this._list = list;
     }

@@ -64,8 +64,6 @@ class NotepadModule extends AbstractElement<TemplateResult> {
    * Render template
    */
   render() {
-    console.log(this.path);
-
     switch (this.path) {
       case '/drafts':
       case '/notes':
