@@ -1,6 +1,6 @@
 export default /* GraphQL */`
-  mutation {
-    createDraft {
+  mutation ($author: String!) {
+    createDraft (author: $author) {
       contents
       id
     }

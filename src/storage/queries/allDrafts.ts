@@ -1,6 +1,6 @@
 export default /* GraphQL */`
   {
-    allDrafts {
+    allDrafts (orderBy: updatedAt_DESC) {
       contents
       id
     }

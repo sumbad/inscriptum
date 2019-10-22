@@ -12,8 +12,6 @@ import getNote from './queries/getNote';
 import allNotes from './queries/allNotes';
 import Delta from 'quill-delta';
 
-
-
 /**
  * Singleton. Storage service with method to work with GraphQL data source
  */
@@ -29,7 +27,7 @@ export class StorageService {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Credentials': 'true'
     }
   };
 
@@ -39,7 +37,6 @@ export class StorageService {
 
   /** GraphQL client */
   private _graphQLClient: GraphQLClient;
-
 
   constructor() {
     if (StorageService.instance) {
@@ -51,22 +48,19 @@ export class StorageService {
     StorageService.instance = this;
   }
 
-
   /**
    * Get a draft by ID
    */
-  getDraft(id: string): Promise<{ Draft: { contents: any, id: string } }> {
+  getDraft(id: string): Promise<{ Draft: { contents: any; id: string } }> {
     return this._graphQLClient.request(getDraft, { id });
-  };
-
+  }
 
   /**
    * Get all drafts
    */
-  allDrafts(): Promise<{ allDrafts: { contents: any, id: string }[] }> {
+  allDrafts(): Promise<{ allDrafts: { contents: any; id: string }[] }> {
     return this._graphQLClient.request(allDrafts);
-  };
-
+  }
 
   /**
    * Update a draft by ID
@@ -78,92 +72,91 @@ export class StorageService {
       id,
       contents
     });
-  };
-
+  }
 
   /**
    * Delete a draft by ID
    * @param id - draft id
    */
-  deleteDraft(id: string): Promise<{ deleteDraft: { id: string, contents: string } }> {
+  deleteDraft(id: string): Promise<{ deleteDraft: { id: string; contents: string } }> {
     return this._graphQLClient.request(deleteDraft, {
       id
     });
-  };
-
+  }
 
   /**
    * Create new draft
    */
-  createDraft(): Promise<{ createDraft: { id: string, contents: any } }> {
-    return this._graphQLClient.request(createDraft);
-  };
-
+  createDraft(author: string): Promise<{ createDraft: { id: string; contents: any } }> {
+    return this._graphQLClient.request(createDraft, { author });
+  }
 
   /**
    * Get a note by ID
    */
   getNote(id: string): Promise<{ Note: { content: any } }> {
     return this._graphQLClient.request(getNote, { id });
-  };
-
+  }
 
   /**
    * Create new note
    */
-  createNote(author: string, name: string, title: string, content: object)
-    : Promise<{ createNote: { id: string, createdAt: number, updatedAt: number } }> {
+  createNote(
+    author: string,
+    name: string,
+    title: string,
+    content: object
+  ): Promise<{ createNote: { id: string; createdAt: number; updatedAt: number } }> {
     return this._graphQLClient.request(createNote, {
       author,
       name,
       title,
       content
     });
-  };
-
+  }
 
   /**
    * Create new note
    */
-  updateNote(id: string, author: string, name: string, title: string, content: object)
-    : Promise<{ updateNote: { id: string, createdAt: number, updatedAt: number } }> {
-    return this._graphQLClient.request(
-      updateNote,
-      {
-        id,
-        author,
-        name,
-        title,
-        content
-      }
-    );
-  };
-
+  updateNote(
+    id: string,
+    author: string,
+    name: string,
+    title: string,
+    content: object
+  ): Promise<{ updateNote: { id: string; createdAt: number; updatedAt: number } }> {
+    return this._graphQLClient.request(updateNote, {
+      id,
+      author,
+      name,
+      title,
+      content
+    });
+  }
 
   /**
    * Get all notes
    */
   allNotes(): Promise<{
     allNotes: {
-      author: string
-      content: Delta
-      createdAt: string
-      id: string
-      name: string
-      title: string
-      updatedAt: string
-    }[]
+      author: string;
+      content: Delta;
+      createdAt: string;
+      id: string;
+      name: string;
+      title: string;
+      updatedAt: string;
+    }[];
   }> {
     return this._graphQLClient.request(allNotes);
-  };
-
+  }
 
   /**
    * @todo
    * Experimental method. Not working. Need to fix or remove
    */
   sendBeacon4UpdateDraft(id: string, contents: string) {
-    const body = /* GraphQL */`
+    const body = /* GraphQL */ `
       mutation {
         updateDraft(id: ${id}, contents: ${contents}){
           id
@@ -171,23 +164,22 @@ export class StorageService {
       }
     `;
 
-
     const headers = {
       type: 'application/x-www-form-urlencoded',
-      'Authorization': (this._graphQLClientOptions.headers || {})['Authorization'],
+      Authorization: (this._graphQLClientOptions.headers || {})['Authorization'],
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Credentials': 'true'
     };
 
-
-    const url = Object.keys(JSON.stringify(body)).map(function (k) {
-      return encodeURIComponent(k) + '=' + encodeURIComponent(body)
-    }).join('&');
+    const url = Object.keys(JSON.stringify(body))
+      .map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(body);
+      })
+      .join('&');
 
     let blob = new Blob([encodeURIComponent('query') + '=' + encodeURIComponent(body)], headers);
     navigator.sendBeacon(this._graphQLClientEndpoind, blob);
-  };
-
+  }
 
   /**
    * Authenticate the user by token
@@ -196,11 +188,10 @@ export class StorageService {
   async authenticateUser(accessToken: string) {
     const authObj: { authenticateUser: any } = await this._graphQLClient.request(authenticateUser, { accessToken });
 
-    this._addAuthInfoToGraphQLClient(authObj.authenticateUser.token)
+    this._addAuthInfoToGraphQLClient(authObj.authenticateUser.token);
 
     return authObj;
-  };
-
+  }
 
   /**
    * Add authentication token to GraphQL client
@@ -211,7 +202,7 @@ export class StorageService {
       ...this._graphQLClientOptions,
       headers: {
         ...this._graphQLClientOptions.headers,
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     };
 
