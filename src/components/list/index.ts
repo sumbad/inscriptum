@@ -18,7 +18,7 @@ export interface IListItem {
   image: string;
   linkUrl: string;
   linkRel?: string;
-  actions?: IListItemAction[];
+  actions?: IListItemAction[] | (() => IListItemAction[]);
   author?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -111,7 +111,7 @@ export class ListComponent extends AbstractElement {
             ${i.image.length > 0
               ? html`
                   <div class="two columns draft-preview">
-                    <img class="draft-preview__img" src="${i.image}"/>
+                    <img class="draft-preview__img" src="${i.image}" />
                   </div>
                 `
               : ''}
@@ -119,7 +119,7 @@ export class ListComponent extends AbstractElement {
               <a class="um-drafts__item-link" href=${i.linkUrl} rel=${ifDefined(i.linkRel)}>
                 <p class="docs-preview">${unsafeHTML(i.content)}</p>
               </a>
-              ${menuElemFunc(i.id, i.actions)}
+              ${menuElemFunc(i.id, typeof i.actions === 'function' ? i.actions() : i.actions)}
             </div>
           </div>
         </div>
