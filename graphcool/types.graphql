@@ -24,6 +24,9 @@ type Note @model {
 type Draft @model {
   contents: Json! @defaultValue(value: "{}")
   id: ID! @isUnique
+  author: String! @migrationValue(value: "test@test.test")
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type File @model {

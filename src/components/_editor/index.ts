@@ -276,7 +276,7 @@ export class EditorComponent extends AbstractElement {
               reader.onload = event => {
                 const img = new Image();
                 // event = ((event): ProgressEvent => { return event })(event);
-                img.src = event && event.target && event.target['result'];
+                img.src = event && event.target && String(event.target['result']) || '';
                 img.onload = () => {
                   const elem = document.createElement('canvas');
                   // elem.width = width;

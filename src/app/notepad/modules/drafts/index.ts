@@ -130,7 +130,8 @@ export class DraftComponent extends AbstractElement {
    * Create new draft
    */
   async handleBtnCreateNewDraft() {
-    const newDraftId = (await this._storageService.createDraft()).createDraft.id;
+    const userInfo = await this._authService.userInfo;
+    const newDraftId = (await this._storageService.createDraft(userInfo.name || userInfo.email || '')).createDraft.id;
     page('/editor/' + newDraftId);
   }
 

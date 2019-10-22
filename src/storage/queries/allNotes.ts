@@ -1,6 +1,6 @@
 export default /* GraphQL */`
   {
-    allNotes {
+    allNotes (orderBy: createdAt_DESC) {
       author
       content
       createdAt
