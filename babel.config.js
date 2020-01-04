@@ -1,4 +1,4 @@
-const babelConfigFunc = require('@insum/config/babel.config.js');
+const babelConfigFunc = require('@insum/babel.config');
 
 
 
@@ -7,7 +7,7 @@ module.exports = function (api) {
   
   // babelConfig.presets[0][1].debug = true;
 
-  // babelConfig.presets = undefined
+  babelConfig.presets = undefined
 
   return babelConfig;
 };
