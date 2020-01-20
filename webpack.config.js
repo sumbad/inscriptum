@@ -18,33 +18,30 @@ let helper = {
   TARGET: process.env.npm_lifecycle_event
 };
 
-const { rules, plugins } = webpackConfigMix(helper);
+const mainConfig = {
+  entry: {
+    notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
+    note: path.resolve(helper.PATHS.src, 'app/note/note.ts')
+  },
+  output: {
+    path: helper.PATHS.dist,
+    publicPath: '/',
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[name].bundle.js'
+  },
+  ...webpackConfigMix(helper)
+};
 
 if (process.env.NODE_ENV === 'production') {
   module.exports = [
     merge(webpackConfigCommon(helper), webpackConfigProd(helper), {
-      entry: {
-        app: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
-        vendor: path.resolve(helper.PATHS.src, 'vendor.ts'),
-        note: path.resolve(helper.PATHS.src, 'app/note/note.ts')
-      },
-      output: {
-        path: helper.PATHS.dist,
-        publicPath: '/',
-        filename: 'js/[name].js',
-        chunkFilename: 'js/[name].bundle.js'
-      },
-      module: {
-        rules
-      },
-      plugins,
+      ...mainConfig,
       mode: 'production',
       stats: {
         // Examine all modules
         maxModules: Infinity,
         // Display bailout reasons
         // optimizationBailout: true,
-
         colors: false,
         hash: true,
         timings: true,
@@ -57,23 +54,5 @@ if (process.env.NODE_ENV === 'production') {
     })
   ];
 } else {
-  module.exports = [
-    merge(webpackConfigCommon(helper), webpackConfigDev(helper), {
-      entry: {
-        app: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
-        vendor: path.resolve(helper.PATHS.src, 'vendor.ts'),
-        note: path.resolve(helper.PATHS.src, 'app/note/note.ts')
-      },
-      output: {
-        path: helper.PATHS.dist,
-        publicPath: '/',
-        filename: 'js/[name].js',
-        chunkFilename: 'js/[name].bundle.js'
-      },
-      module: {
-        rules
-      },
-      plugins
-    })
-  ];
+  module.exports = [merge(webpackConfigCommon(helper), webpackConfigDev(helper), mainConfig)];
 }

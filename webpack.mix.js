@@ -6,24 +6,26 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const sassCssLoader = require('@insum/webpack.config/loaders/sass-css');
 
-module.exports = function (helper) { 
+module.exports = function(helper) {
   return {
-    rules: [
-      require('@insum/webpack.config/loaders/js'),
-      require('@insum/webpack.config/loaders/ts'),
-      require('@insum/webpack.config/loaders/file-img'),
-      require('@insum/webpack.config/loaders/css'),
-      require('@insum/webpack.config/loaders/less-raw'),
-      {
-        ...sassCssLoader,
-        use: [{ loader: MiniCssExtractPlugin.loader }, ...sassCssLoader.use],
-        include: [path.join(helper.PATHS.src, 'app/note')]
-      },
-      {
-        ...require('@insum/webpack.config/loaders/sass'),
-        exclude: [path.join(helper.PATHS.src, 'app/note')]
-      }
-    ],
+    module: {
+      rules: [
+        require('@insum/webpack.config/loaders/js'),
+        require('@insum/webpack.config/loaders/ts'),
+        require('@insum/webpack.config/loaders/file-img'),
+        require('@insum/webpack.config/loaders/css'),
+        require('@insum/webpack.config/loaders/less-raw'),
+        {
+          ...sassCssLoader,
+          use: [{ loader: MiniCssExtractPlugin.loader }, ...sassCssLoader.use],
+          include: [path.join(helper.PATHS.src, 'app/note')]
+        },
+        {
+          ...require('@insum/webpack.config/loaders/sass'),
+          exclude: [path.join(helper.PATHS.src, 'app/note')]
+        }
+      ]
+    },
     plugins: [
       // Copy directory contents to {output}/path/to/dist/directory/
       new CopyWebpackPlugin([
@@ -44,7 +46,7 @@ module.exports = function (helper) {
       ]),
       new HtmlWebpackPlugin({
         template: path.resolve(helper.PATHS.src, 'index.html'),
-        chunks: ['app', 'polyfills', 'vendors'],
+        chunks: ['notepad', 'polyfills'],
         hash: false,
         inject: true,
         favicon: false,
@@ -64,5 +66,5 @@ module.exports = function (helper) {
         filename: 'css/[name].css'
       })
     ]
-  }
-}
+  };
+};
