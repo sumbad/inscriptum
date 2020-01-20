@@ -1,6 +1,18 @@
 import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faBold, faCamera, faCode, faFileExport, faHeading, faItalic, faLink, faMinus, faPlay, faPlus, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBold,
+  faCamera,
+  faCode,
+  faFileExport,
+  faHeading,
+  faItalic,
+  faLink,
+  faMinus,
+  faPlay,
+  faPlus,
+  faQuoteRight
+} from '@fortawesome/free-solid-svg-icons';
 import { AbstractElement, attr, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
 import { html, TemplateResult } from 'lit-html';
@@ -16,31 +28,20 @@ import { loadStyleFile, quillDelta2Preview } from 'utils/common';
 import { MyQuill } from './editor/MyQuill';
 import { showError, getPageContent, transliterate, updateEditable, draftClear } from './editor/utils';
 import { TitleBlot } from './editor/TitleBlot';
+import { skip, debounceTime } from 'rxjs/operators';
 
-
-library.add(
-  faFileExport,
-  faBold,
-  faItalic,
-  faLink,
-  faQuoteRight,
-  faHeading,
-  faCamera,
-  faPlay,
-  faTwitter,
-  faMinus,
-  faPlus,
-  faCode
-);
-
-
+library.add(faFileExport, faBold, faItalic, faLink, faQuoteRight, faHeading, faCamera, faPlay, faTwitter, faMinus, faPlus, faCode);
 
 /**
  * The demo web component with lit-html render engine
  */
 @Define('inscriptum-editor')
 export class EditorComponent extends AbstractElement {
-  styles = html`<style>${require('./style.scss')}</style>`;
+  styles = html`
+    <style>
+      ${require('./style.scss')}
+    </style>
+  `;
   tooltip = new EditorTooltipComponent();
   $tl_article: HTMLDivElement;
 
@@ -69,7 +70,6 @@ export class EditorComponent extends AbstractElement {
   private _authService: AuthService;
   private _storageService: StorageService;
 
-
   constructor() {
     super(litRender, false);
     loadStyleFile('/css/custom_editor_fonts.css');
@@ -78,7 +78,6 @@ export class EditorComponent extends AbstractElement {
     const redirectUrl = this.isPosted ? `${document.location.origin}/notes` : `${document.location.origin}/drafts`;
     this._authService = new AuthService(this._storageService, redirectUrl);
   }
-
 
   /**
    * LIFECYCLE
@@ -96,19 +95,17 @@ export class EditorComponent extends AbstractElement {
     if (this._authService.$authenticated.getValue()) {
       this.loadContent(this.quill);
     } else {
-      this._authService.$authenticated.subscribe(
-        hasAuth => {
-          if (hasAuth !== null && this.quill) {
-            if (hasAuth) {
-              this.loadContent(this.quill);
-            } else if (this.isPosted) {
-              page('/notes');
-            } else {
-              page('/notes/drafts');
-            }
+      this._authService.$authenticated.subscribe(hasAuth => {
+        if (hasAuth !== null && this.quill) {
+          if (hasAuth) {
+            this.loadContent(this.quill);
+          } else if (this.isPosted) {
+            page('/notes');
+          } else {
+            page('/notes/drafts');
           }
         }
-      );
+      });
     }
 
     // @TODO: only develop mode
@@ -116,28 +113,19 @@ export class EditorComponent extends AbstractElement {
 
     // Store accumulated changes
     var change = new Delta();
-    this.quill.on('text-change', (delta) => {
+    this.quill.on('text-change', delta => {
       change = change.compose(delta);
       this.changedContent$.next((this.quill as MyQuill).getContents());
     });
 
     // Save periodically
-    this.changedContent$
-      .skip(2)
-      .debounceTime(10000)
-      .subscribe(
-        d => {
-          if (d !== null && !this.isPosted) {
-            this._storageService
-              .updateDraft(this.id, d)
-              .then(
-                () => {
-                  change = new Delta();
-                }
-              );
-          }
-        }
-      );
+    this.changedContent$.pipe(skip(2), debounceTime(10000)).subscribe(d => {
+      if (d !== null && !this.isPosted) {
+        this._storageService.updateDraft(this.id, d).then(() => {
+          change = new Delta();
+        });
+      }
+    });
 
     // // Check for unsaved data
     // window.onbeforeunload = function () {
@@ -147,7 +135,6 @@ export class EditorComponent extends AbstractElement {
     // }
   }
 
-
   /**
    * LIFECYCLE
    */
@@ -155,7 +142,6 @@ export class EditorComponent extends AbstractElement {
     window.onbeforeunload = null;
     this.quill = null;
   }
-
 
   render(): TemplateResult {
     return template(
@@ -169,7 +155,6 @@ export class EditorComponent extends AbstractElement {
       }
     );
   }
-
 
   /**
    * Load editor content
@@ -186,7 +171,6 @@ export class EditorComponent extends AbstractElement {
     quill.setContents(content);
     this.isPreloader = false;
   }
-
 
   /**
    * Publish this draft
@@ -205,7 +189,7 @@ export class EditorComponent extends AbstractElement {
     }
 
     let title = ($tl_content.querySelector('h1') as HTMLHeadElement).textContent || '';
-    let author = (await this._authService.userInfo);
+    let author = await this._authService.userInfo;
     let authorName = author.name || author.email || '';
     // let author_url = ($tl_content.querySelector('address a') as HTMLLinkElement).href || '';
 
@@ -216,7 +200,7 @@ export class EditorComponent extends AbstractElement {
         $tl_article.classList.remove('title_required');
       }, 3000);
       this.quill.focus();
-      let [ titleBlot ] = this.quill.scroll.descendants(TitleBlot, 0, this.quill.scroll.length());
+      let [titleBlot] = this.quill.scroll.descendants(TitleBlot, 0, this.quill.scroll.length());
       this.quill.setSelection(titleBlot.offset(), titleBlot.length() - 1);
       // quill.selection.scrollIntoView();
       return showError('Title is too small');
@@ -240,22 +224,19 @@ export class EditorComponent extends AbstractElement {
     let pageHTML = '';
 
     /** @todo - add logic from getPageContent */
-    const pageEl = this._removeElementsBySelectors(
-      document.querySelector('.tl_page_wrap'),
-      [
-        'article .ql-editor h1',
-        'article .ql-editor address',
-        'article .ql-clipboard',
-        '#_tl_link_tooltip',
-        '#_tl_tooltip',
-        '#_tl_blocks',
-        'inscriptum-editor-tooltip',
-        'aside .account_top',
-        'aside .publish_button',
-        'aside .account_bottom',
-        'aside .error_msg',
-      ]
-    );
+    const pageEl = this._removeElementsBySelectors(document.querySelector('.tl_page_wrap'), [
+      'article .ql-editor h1',
+      'article .ql-editor address',
+      'article .ql-clipboard',
+      '#_tl_link_tooltip',
+      '#_tl_tooltip',
+      '#_tl_blocks',
+      'inscriptum-editor-tooltip',
+      'aside .account_top',
+      'aside .publish_button',
+      'aside .account_bottom',
+      'aside .error_msg'
+    ]);
 
     $tl_article.classList.add('tl_article_saving');
 
@@ -270,7 +251,7 @@ export class EditorComponent extends AbstractElement {
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
-    let noteInfo: { id: any; createdAt: any; updatedAt: any; };
+    let noteInfo: { id: any; createdAt: any; updatedAt: any };
     if (this.isPosted) {
       noteInfo = (await this._storageService.updateNote(this.id, authorName, name, title, quillDelta)).updateNote;
     } else {
@@ -286,12 +267,12 @@ export class EditorComponent extends AbstractElement {
     $tl_article.classList.remove('tl_article_saving');
     updateEditable(true, this.quill, this.tooltip, $tl_article, $tl_content, $tl_header);
 
-    if(pageEl!==null) {
+    if (pageEl !== null) {
       (pageEl.querySelector('#_edit_button') as HTMLLinkElement).href = `/editor/${this.id}/posted`;
       pageHTML = pageEl.outerHTML;
     }
 
-    const note = /*html*/`  
+    const note = /*html*/ `  
 <html>
   <head>
     <meta charset="utf-8">
@@ -324,8 +305,7 @@ export class EditorComponent extends AbstractElement {
   </body>
   <script type="text/javascript" src="/js/vendor.js"></script>
   <script type="text/javascript" src="/js/note.js"></script>
-</html>`
-      ;
+</html>`;
 
     const a = document.createElement('a');
     const blob = new Blob([note], { type: 'application/octet-stream' });
@@ -336,10 +316,9 @@ export class EditorComponent extends AbstractElement {
     a.click();
   }
 
-
   /**
    * Delete elements from root by selectors
-   * 
+   *
    * @param rootElement - root element
    * @param selectors - array of selectors
    */
@@ -348,12 +327,10 @@ export class EditorComponent extends AbstractElement {
       return null;
     }
     const resultRootEl = rootElement.cloneNode(true) as Element;
-    selectors.forEach(
-      selector => {
-        const el = resultRootEl.querySelector(selector)
-        el && el.remove();
-      }
-    );
+    selectors.forEach(selector => {
+      const el = resultRootEl.querySelector(selector);
+      el && el.remove();
+    });
     return resultRootEl;
   }
 }

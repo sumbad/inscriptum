@@ -1,43 +1,28 @@
 import { Define, UmWebComponent } from 'components/um-web.component';
-import page from 'page';
-import { Router } from 'router';
-import Tools from 'utils/tools';
 
 import { PreloaderService } from '../um-preloader/service';
 import { postRouter } from './router';
 import template from './template';
-import { hasCustomElement, importWebComponent } from 'utils/common';
-
 
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
-import {
-  faChevronUp,
-  faBars
-} from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faBars } from '@fortawesome/free-solid-svg-icons';
 import { faGithubSquare } from '@fortawesome/free-brands-svg-icons';
+import { debounceTime } from 'rxjs/operators';
 
-library.add(
-  faGithubSquare,
-  faChevronUp,
-  faBars
-);
-
+library.add(faGithubSquare, faChevronUp, faBars);
 
 declare const $: any;
 declare const jQuery: any;
-
-
 
 @Define('inscriptum-posts')
 export class PostsComponent extends UmWebComponent {
   public routerView: any = '';
   public isPreloader = true;
 
-
   constructor(public saying?) {
     super(template, require('./styles/main.scss'));
 
-    PreloaderService.isAppLoading.debounceTime(500).subscribe((flag: boolean) => {
+    PreloaderService.isAppLoading.pipe(debounceTime(500)).subscribe((flag: boolean) => {
       if (this.isPreloader !== flag) {
         this.isPreloader = flag;
         this.render();
@@ -45,30 +30,35 @@ export class PostsComponent extends UmWebComponent {
     });
   }
 
-
   connectedCallback() {
     const html = this.wire(this, ':articles');
 
-    this.sub = postRouter.$routeDraft.subscribe(async (d: { ctx, next }) => {
+    this.sub = postRouter.$routeDraft.subscribe(async (d: { ctx; next }) => {
       await import('./draft');
-      this.routerView = html`<inscriptum-draft></inscriptum-draft>`;
+      this.routerView = html`
+        <inscriptum-draft></inscriptum-draft>
+      `;
       this.render();
 
       d.ctx.handled = true;
       d.next();
     });
 
-    this.sub = postRouter.$routePostsList.subscribe(async (d: { ctx, next }) => {
+    this.sub = postRouter.$routePostsList.subscribe(async (d: { ctx; next }) => {
       await import('./list');
-      this.routerView = html`<inscriptum-posts-list></inscriptum-posts-list>`;
+      this.routerView = html`
+        <inscriptum-posts-list></inscriptum-posts-list>
+      `;
       this.render();
 
       d.ctx.handled = true;
     });
 
-    this.sub = postRouter.$routePost.subscribe(async (d: { ctx, next }) => {
+    this.sub = postRouter.$routePost.subscribe(async (d: { ctx; next }) => {
       await import('./post');
-      this.routerView = html`<inscriptum-post article-name=${d.ctx.params.id}></inscriptum-post>`;
+      this.routerView = html`
+        <inscriptum-post article-name=${d.ctx.params.id}></inscriptum-post>
+      `;
       this.render();
 
       d.ctx.handled = true;
@@ -80,23 +70,19 @@ export class PostsComponent extends UmWebComponent {
 
     const info = { some: 'data' };
 
-
     this.render();
 
     // TODO: убрать jQuery
-    //#region 
+    //#region
     /* Mobile Menu ------------------------------------------------------ */
-    var toggle_button = $(
-      '<a>',
-      {
-        id: 'toggle-btn',
-        html: '<i class="fas fa-bars"></i>',
-        title: 'Menu',
-        href: '#',
-      }
-    );
+    var toggle_button = $('<a>', {
+      id: 'toggle-btn',
+      html: '<i class="fas fa-bars"></i>',
+      title: 'Menu',
+      href: '#'
+    });
 
-    var nav_wrap = $('nav#nav-wrap')
+    var nav_wrap = $('nav#nav-wrap');
     var nav = $('ul#nav');
 
     /* if JS is enabled, remove the two a.mobile-btns 
@@ -104,18 +90,18 @@ export class PostsComponent extends UmWebComponent {
     nav_wrap.find('a.mobile-btn').remove();
     nav_wrap.prepend(toggle_button);
 
-    toggle_button.on('click', function (e) {
+    toggle_button.on('click', function(e) {
       e.preventDefault();
       nav.slideToggle('fast');
     });
 
     if (toggle_button.is(':visible')) nav.addClass('mobile');
-    $(window).resize(function () {
+    $(window).resize(function() {
       if (toggle_button.is(':visible')) nav.addClass('mobile');
       else nav.removeClass('mobile');
     });
 
-    $('ul#nav li a').on('click', function () {
+    $('ul#nav li a').on('click', function() {
       if (nav.hasClass('mobile')) nav.fadeOut('fast');
     });
 
@@ -125,25 +111,28 @@ export class PostsComponent extends UmWebComponent {
     /*
     ----------------------------------------------------------------------------------- */
 
-    (function ($) {
-
+    (function($) {
       /* Smooth Scrolling
       ------------------------------------------------------ */
-      $('.smoothscroll').on('click', function (e) {
-
+      $('.smoothscroll').on('click', function(e) {
         e.preventDefault();
 
         var target = this.hash,
           $target = $(target);
 
-        $('html, body').stop().animate({
-          'scrollTop': $target.offset().top
-        }, 800, 'swing', function () {
-          window.location.hash = target;
-        });
-
+        $('html, body')
+          .stop()
+          .animate(
+            {
+              scrollTop: $target.offset().top
+            },
+            800,
+            'swing',
+            function() {
+              window.location.hash = target;
+            }
+          );
       });
-
 
       /*	Back To Top Button
     ------------------------------------------------------- */
@@ -153,25 +142,20 @@ export class PostsComponent extends UmWebComponent {
       var scrollSpeed = 300; //how slow/fast you want the button to scroll to top. can be a value, 'slow', 'normal' or 'fast'
 
       // Show or hide the sticky footer button
-      $(window).scroll(function () {
-
+      $(window).scroll(function() {
         if ($(window).scrollTop() >= pxShow) {
           $('#go-top').fadeIn(fadeInTime);
         } else {
           $('#go-top').fadeOut(fadeOutTime);
         }
-
       });
-
-
     })(jQuery);
     //#endregion
 
     // Replace any existing <i> tags with <svg> and set up a MutationObserver to
     // continue doing this as the DOM changes.
-    dom.watch()
+    dom.watch();
   }
-
 
   render() {
     super.render({
@@ -181,10 +165,7 @@ export class PostsComponent extends UmWebComponent {
     });
   }
 
-
-
   handleClick(ev) {
     // this.isPreloader = !this.isPreloader;
   }
-
 }
