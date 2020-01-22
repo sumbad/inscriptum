@@ -1,3 +1,5 @@
+/** @typedef {import('@insum/webpack.config/types').Helper} Helper */
+
 const path = require('path');
 const merge = require('webpack-merge');
 
@@ -6,6 +8,9 @@ const webpackConfigDev = require('@insum/webpack.config/webpack.config.dev.js');
 const webpackConfigProd = require('@insum/webpack.config/webpack.config.prod.js');
 const webpackConfigMix = require('./webpack.mix.js');
 
+/**
+ * @type {Helper}
+ */
 let helper = {
   PATHS: {
     root: path.join(__dirname, './'),
@@ -15,7 +20,11 @@ let helper = {
     publicPath: '',
     outputPath: '' //process.env.NODE_ENV === 'production' ? 'public/' : ''
   },
-  TARGET: process.env.npm_lifecycle_event
+  ENV: {
+    target: process.env.npm_lifecycle_event,
+    devServerPort: 3333,
+    isDevMode: process.env.NODE_ENV === 'development'
+  }
 };
 
 const mainConfig = {
@@ -32,7 +41,9 @@ const mainConfig = {
   ...webpackConfigMix(helper)
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (helper.ENV.isDevMode) {
+  module.exports = [merge(webpackConfigCommon(helper), webpackConfigDev(helper), mainConfig)];
+} else {
   module.exports = [
     merge(webpackConfigCommon(helper), webpackConfigProd(helper), {
       ...mainConfig,
@@ -53,6 +64,4 @@ if (process.env.NODE_ENV === 'production') {
       }
     })
   ];
-} else {
-  module.exports = [merge(webpackConfigCommon(helper), webpackConfigDev(helper), mainConfig)];
 }
