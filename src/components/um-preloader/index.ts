@@ -1,50 +1,55 @@
-import { Define, UmWebComponent } from 'components/um-web.component';
 import './um-spinner-round';
 
-import template from './template';
+import { Define, AbstractElement, attr, state } from 'abstract-element';
+import litRender from 'abstract-element/render/lit';
+import { html } from 'lit-html';
 
-
+function boolAttr(val: string) {
+  return typeof val === 'string';
+}
 
 @Define('um-preloader')
-export class PreloaderComponent extends UmWebComponent {
-  showSpinner: boolean = true;
-  loaderClass: string = '';
-  static attributes = ['loading'];
-  static get observedAttributes() { return this.attributes; }
+export class PreloaderComponent extends AbstractElement {
+  @attr({ converter: boolAttr })
+  loading: boolean;
 
+  @state()
+  showSpinner: boolean = true;
+
+  loaderClass: string = 'um-preloader__loader_fixed';
+
+  styles = html`
+    <style>
+      ${require('./style.scss')}
+    </style>
+  `;
 
   constructor() {
-    super(
-      template,
-      require('./style.scss'),
-      true
-    );
+    super(litRender, true);
   }
-
 
   render() {
-    this.loaderClass = 'um-preloader__loader_fixed';
-    let loading = true;
-
-    const info = { some: 'data' };
-    const rendering = () => super.render({
-      loading,
-      loaderClass: this.loaderClass,
-      showSpinner: this.showSpinner,
-    });
-
-    if (this.props.loading === 'true') {
-      loading = true;
-      this.showSpinner = true;
-    } else {
-      this.showSpinner = false;
+    // remove spinner after an animation from DOM
+    if (!this.loading) {
       setTimeout(() => {
-        loading = false;
-        rendering();
+        this.showSpinner = false;
       }, 600);
+    } else {
+      this.showSpinner = true;
     }
 
-    rendering();
+    return html`
+      <div class="um-preloader">
+        ${this.styles}
+        ${this.showSpinner
+          ? html`
+              <div class=${'um-preloader__loader ' + this.loaderClass} style=${'opacity:' + (this.loading ? 1 : 0)}>
+                <um-spinner-round></um-spinner-round>
+              </div>
+            `
+          : ''}
+        <slot></slot>
+      </div>
+    `;
   }
-
 }

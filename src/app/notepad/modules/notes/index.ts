@@ -8,6 +8,7 @@ import page from 'page';
 import { dom } from '@fortawesome/fontawesome-svg-core';
 
 import 'components/list';
+import 'components/um-preloader';
 import { IListItem } from 'components/list';
 import { quillDelta2Preview } from 'utils/common';
 
