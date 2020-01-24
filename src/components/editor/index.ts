@@ -303,7 +303,6 @@ export class EditorComponent extends AbstractElement {
   <body>
     ${pageHTML}
   </body>
-  <script type="text/javascript" src="/js/vendor.js"></script>
   <script type="text/javascript" src="/js/note.js"></script>
 </html>`;
 
