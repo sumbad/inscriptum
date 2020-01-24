@@ -1,19 +1,22 @@
 import './um-spinner-round';
 
-import { Define, AbstractElement, attr, state } from 'abstract-element';
+import { Define, AbstractElement, prop } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
 import { html } from 'lit-html';
 
-function boolAttr(val: string) {
-  return typeof val === 'string';
+function boolAttr(state, key: string, value: any) {
+  value = typeof value === 'string' ? true : Boolean(value);
+
+  if (value !== state[key]) {
+    return { ...state, [key]: value };
+  }
 }
 
 @Define('um-preloader')
 export class PreloaderComponent extends AbstractElement {
-  @attr({ converter: boolAttr })
+  @prop({ mapper: boolAttr, attribute: 'loading' })
   loading: boolean;
-
-  @state()
+  @prop()
   showSpinner: boolean = true;
 
   loaderClass: string = 'um-preloader__loader_fixed';
