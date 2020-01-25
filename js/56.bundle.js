@@ -1,1 +1,35 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[56],{581:function(e,t,r){"use strict";r.r(t),r.d(t,"PreloaderComponent",function(){return i});var n=r(554),o=(r(569),r(601)),s=function(e,t,r,n){var o,s=arguments.length,i=s<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(o=e[a])&&(i=(s<3?o(i):s>3?o(t,r,i):o(t,r))||i);return s>3&&i&&Object.defineProperty(t,r,i),i},i=class extends n.UmWebComponent{constructor(){super(o.default,r(638),!0),this.showSpinner=!0,this.loaderClass=""}static get observedAttributes(){return this.attributes}render(){this.loaderClass="um-preloader__loader_fixed";var e=!0,t=()=>super.render({loading:e,loaderClass:this.loaderClass,showSpinner:this.showSpinner});"true"===this.props.loading?(e=!0,this.showSpinner=!0):(this.showSpinner=!1,setTimeout(()=>{e=!1,t()},600)),t()}};i.attributes=["loading"],i=s([Object(n.Define)("um-preloader")],i)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[56],{113:function(t,a,s){"use strict";s.r(a);var e=s(13);a.default=(t,a)=>e.e`
+${t.styles}
+
+<um-preloader loading=${t.isPreloader}>
+  <div class="tl_page_wrap">
+
+    <div class="tl_page">
+      <section class="tl_article">
+        <header class="tl_article_header">
+          <h1 dir="auto"></h1>
+          <address dir="auto">
+            <a rel="author"></a>
+            <time datetime=""></time>
+          </address>
+        </header>
+        <article id="_tl_editor" class="tl_article_content">
+          <h1><br></h1>
+          <address><br></address>
+          <p><br></p>
+        </article>
+        ${t.tooltip}
+        <aside class="tl_article_buttons">
+          <div class="account account_top"></div>
+          <a id="_edit_button" class="button edit_button">Edit</a>
+          <button @click=${a.publish} class="button publish_button">Publish</button>
+          <div class="account account_bottom"></div>
+          <div id="_error_msg" class="error_msg"></div>
+        </aside>
+      </section>
+    </div>
+  </div>
+</um-preloader>
+
+<div id="_tl_alerts" class="tl_alerts"></div>
+`}}]);

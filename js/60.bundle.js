@@ -1,1 +1,20 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{628:function(e,n,t){"use strict";function r(){var e=function(e,n){n||(n=e.slice(0));return Object.freeze(Object.defineProperties(e,{raw:{value:Object.freeze(n)}}))}(["\n  <div>","</div>\n"]);return r=function(){return e},e}t.r(n),n.default=(e,n)=>e(r(),{html:n.presentationContent})}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{86:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
+<article id="article" class="entry">
+
+    <header class="entry-header">
+        <h1 class="entry-title">
+            ${t.articleTitle}
+        </h1>
+        <div class="entry-meta">
+            <ul>
+                <li>${t.articleDate}</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="entry-content">
+        ${{html:t.articleContent}}
+    </div>
+
+</article>
+`}}]);

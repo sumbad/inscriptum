@@ -1,1 +1,22 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{582:function(n,t,o){"use strict";o(679);var a=o(29),c=o(539),i=o(23),e=/./.toString,r=function(n){o(45)(RegExp.prototype,"toString",n,!0)};o(44)(function(){return"/a/b"!=e.call({source:"a",flags:"b"})})?r(function(){var n=a(this);return"/".concat(n.source,"/","flags"in n?n.flags:!i&&n instanceof RegExp?c.call(n):void 0)}):"toString"!=e.name&&r(function(){return e.call(this)})},679:function(n,t,o){o(23)&&"g"!=/./g.flags&&o(24).f(RegExp.prototype,"flags",{configurable:!0,get:o(539)})}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{84:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
+<section class="entry">
+
+  <header class="entry-header">
+    <h2 class="entry-title">
+      <a href=${`/articles/${t.articleName}`}>
+        ${t.articleTitle}
+      </a>
+    </h2>
+    <div class="entry-meta">
+      <ul>
+        <li>${t.articleDate}</li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="entry-content">
+    <slot></slot>
+  </div>
+
+</section>
+`}}]);

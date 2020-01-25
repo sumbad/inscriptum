@@ -1,1 +1,38 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[67],{583:function(e,t,n){"use strict";n.r(t),n.d(t,"MenuComponent",function(){return f});var r=n(212),a=n(46),s=n(531),i=n(101),c=n(102);function o(){var e=h(['<li class="navbar-item"><a class="navbar-link" href="/drafts">Черновики</a></li>']);return o=function(){return e},e}function u(){var e=h(["\n      ",'\n      <div class="navbar-spacer"></div>\n      <nav class="navbar">\n        <div class="container">\n          <ul class="navbar-list">\n            <li class="navbar-item"><a class="navbar-link" href="/notes">Конспекты</a></li>\n            <li class="navbar-item"><a class="navbar-link" href="/conference">Слайды</a></li>\n            ',"\n          </ul>\n        </div>\n      </nav>\n    "]);return u=function(){return e},e}function l(){var e=h(["<style>","</style>"]);return l=function(){return e},e}function h(e,t){return t||(t=e.slice(0)),Object.freeze(Object.defineProperties(e,{raw:{value:Object.freeze(t)}}))}var v=function(e,t,n,r){var a,s=arguments.length,i=s<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,n):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,n,r);else for(var c=e.length-1;c>=0;c--)(a=e[c])&&(i=(s<3?a(i):s>3?a(t,n,i):a(t,n))||i);return s>3&&i&&Object.defineProperty(t,n,i),i},f=class extends r.a{constructor(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:new c.a,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:new i.a(e,document.location.origin);super(s.a,!1),this._storageService=e,this._authService=t,this.styles=Object(a.e)(l(),n(639)),this.hasAuth=!1,this._authService.$authenticated.subscribe(e=>{this.hasAuth=e||this.hasAuth})}render(){return Object(a.e)(u(),this.styles,this.hasAuth?Object(a.e)(o()):"")}};v([Object(r.d)()],f.prototype,"hasAuth",void 0),f=v([Object(r.b)("inscriptum-menu")],f)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[67],{73:function(s,i,e){"use strict";e.r(i),i.default=(s,i)=>s`
+<div class="um-spinner-round">
+  <svg
+    class="circular"
+    viewBox="25 25 50 50"
+  >
+    <defs>
+      <linearGradient
+        x1="100%"
+        y1="10%"
+        x2="35%"
+        y2="100%"
+        id="${i.uuid}"
+      >
+        <stop
+          class="um-spinner-round__linear-gradient-stop"
+          offset="0%"
+        ></stop>
+        <stop
+          class="um-spinner-round__linear-gradient-stop"
+          stop-opacity="0.001"
+          offset="100%"
+        ></stop>
+      </linearGradient>
+    </defs>
+    <circle
+      class="path"
+      cx="50"
+      cy="50"
+      r="20"
+      fill="none"
+      stroke-width="1"
+      stroke="${"url(#"+i.uuid+")"}"
+      stroke-miterlimit="10"
+    />
+  </svg>
+</div>
+`}}]);
