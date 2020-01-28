@@ -1,6 +1,5 @@
 import { AbstractElement, Define, state } from 'abstract-element';
 import { TemplateResult, html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
 import { StorageService } from 'storage/storage.service';
 import { AuthService } from 'auth';
 import litRender from 'abstract-element/render/lit';
@@ -110,7 +109,7 @@ export class DraftComponent extends AbstractElement {
   render(): TemplateResult {
     return html`
     ${this.styles}
-    <um-preloader loading=${this.$.isPreloader}>
+    <um-preloader ?loading=${this.$.isPreloader}>
       <div class="row">
         <div class="twelve columns um-drafts__submenu">
           <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
@@ -120,7 +119,7 @@ export class DraftComponent extends AbstractElement {
         </div>
       </div>
     
-      <inscriptum-list @action=${this.handleAction.bind(this)} .value=${ifDefined(this.$.drafts)}></inscriptum-list>
+      <inscriptum-list @action=${this.handleAction.bind(this)} .value=${this.$.drafts}></inscriptum-list>
     </um-preloader>
     `;
   }

@@ -13,7 +13,7 @@ interface IHandlers {
 export default (props: IProps, handlers: IHandlers) => html`
 ${props.styles}
 
-<um-preloader loading=${props.isPreloader}>
+<um-preloader ?loading=${props.isPreloader}>
   <div class="tl_page_wrap">
 
     <div class="tl_page">
