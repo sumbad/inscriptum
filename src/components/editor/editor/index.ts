@@ -33,6 +33,7 @@ import { PlainTextClipboard } from './PlainTextClipboard';
 import { EditorTooltipComponent } from './tooltip';
 import { draftSave, T, getPageContent, updateEditableText, sanitize, uploadDataToBlob, showError, isEdit, updateEditable } from './utils';
 import highlightjs from './highlightjs';
+import { DividerBlot } from './DividerBlot';
 
 
 
@@ -82,6 +83,8 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   FigureBlot.draftSave = () => draftSave(pageContent, quill);
   MyQuill.register(FigureBlot, true);
   // }
+  
+  MyQuill.register(DividerBlot);
 
   MyQuill.register({
     'modules/syntax': InsSyntaxModule,
