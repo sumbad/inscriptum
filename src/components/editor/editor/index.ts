@@ -8,6 +8,7 @@ import { ListItem } from 'quill/formats/list';
 import { ListContinuer } from './ListContinuer';
 import { IndentClass } from 'quill/formats/indent';
 import { Code } from 'quill/formats/code';
+import Strike from 'quill/formats/strike';
 import Keyboard from 'quill/modules/keyboard';
 import { Blot } from 'parchment/dist/src/blot/abstract/blot';
 
@@ -93,7 +94,8 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     'formats/indent': IndentClass,
     'formats/list': ListContinuer,
     'formats/list-item': ListItem,
-    'formats/code': Code
+    'formats/code': Code,
+    'formats/strike': Strike,
   }, true);
   // Quill.register('modules/clipboard', PlainTextClipboard, true);
 
@@ -113,6 +115,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   let $header_button = document.querySelector('#_header_button') as HTMLElement;
   let $subheader_button = document.querySelector('#_subheader_button') as HTMLElement;
   let $quote_button = document.querySelector('#_quote_button') as HTMLElement;
+  let $strikeButton = document.querySelector('#_strike_button') as HTMLElement;
 
   let $image_button = document.querySelector('#_image_button') as HTMLButtonElement;
   let $embed_button = document.querySelector('#_embed_button') as HTMLButtonElement;
@@ -834,6 +837,8 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     $quote_button.classList.toggle('active', !!(formats['blockBlockquote'] || formats['blockPullquote']));
     $quote_button.classList.toggle('pullquote', !!formats['blockPullquote']);
     $quote_button.classList.toggle('disabled', in_author);
+    $strikeButton.classList.toggle('active', !!formats['strike']);
+    $strikeButton.classList.toggle('disabled', in_author);
 
     if (range != null) {
       let links = quill.scroll.descendants(LinkBlot, range.index, range.length);
@@ -1220,6 +1225,15 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     quill.updateSelection(Quill.sources.API);
     // toolbarUpdate(range);
   };
+
+  $strikeButton.onclick = ((e) => {
+    let input = e.target as HTMLElement;
+    let active = input.classList.contains('active');
+    e.preventDefault();
+    quill.format('strike', !active);
+
+    quill.updateSelection(Quill.sources.API);
+  });
 
   $image_button.onclick = () => {
     let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]') as HTMLInputElement;

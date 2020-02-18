@@ -1,10 +1,13 @@
 import { TemplateResult } from 'lit-html';
-import { Define, AbstractElement, state, attr } from 'abstract-element';
+import { Define, AbstractElement } from 'abstract-element';
 import * as litHtml from 'lit-html';
 import litRender from 'abstract-element/render/lit';
 import Quill from 'quill/core';
 import { browser } from '.';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faStrikethrough } from '@fortawesome/free-solid-svg-icons';
 
+library.add(faStrikethrough);
 
 @Define('inscriptum-editor-tooltip')
 export class EditorTooltipComponent extends AbstractElement {
@@ -23,15 +26,12 @@ export class EditorTooltipComponent extends AbstractElement {
   formatTTOptions = {
     padding: 10,
     position: browser.mobile ? 'bottom' : 'top',
-    minDelta: 5,
+    minDelta: 5
   };
 
-
-  constructor(
-  ) {
+  constructor() {
     super(litRender, false);
   }
-
 
   connectedCallback() {
     super.connectedCallback();
@@ -40,7 +40,6 @@ export class EditorTooltipComponent extends AbstractElement {
     this.$tl_tooltip = this.querySelector('#_tl_tooltip') || document.createElement('div');
     this.$tl_blocks = this.querySelector('#_tl_blocks') || document.createElement('div');
   }
-
 
   render(): TemplateResult {
     return this.html`
@@ -58,6 +57,11 @@ export class EditorTooltipComponent extends AbstractElement {
             <button id="_subheader_button"></button>
             <button id="_quote_button"></button>
           </div>
+          <div class="button_group">
+            <button id="_strike_button" class="tt-icon-btn">
+              <i class="fas fa-strikethrough fa-lg"></i>
+            </button>
+          </div>
         </div>
         <div class="prompt">
           <span class="close"></span>
@@ -73,33 +77,27 @@ export class EditorTooltipComponent extends AbstractElement {
     `;
   }
 
-
-  handleMouseover(e: MouseEvent) {
-    let button = e.target as Element;
-    if (e
-      && button
-      && button.tagName == 'BUTTON'
-      && !button.classList.contains('disabled')
-    ) {
+  handleMouseover(event: MouseEvent) {
+    let button = event.target as Element;
+    if (event instanceof MouseEvent && button?.tagName == 'BUTTON' && !button.classList.contains('disabled')) {
       this.$tl_tooltip.setAttribute('data-hover', button.id);
       this.$tl_tooltip.classList.add('hover');
-      setTimeout(
-        () => {
-          this.$tl_tooltip.classList.add('hover_anim');
-        }, 1
-      );
+      setTimeout(() => {
+        this.$tl_tooltip.classList.add('hover_anim');
+      }, 1);
       clearTimeout(this.$tl_tooltip['to']);
     }
   }
 
-  handleMouseout(e: MouseEvent) {
-    let button = e.target as HTMLElement;
+  handleMouseout(event: MouseEvent) {
+    let button = event.target as HTMLElement;
     if (button.tagName == 'BUTTON') {
       this.$tl_tooltip.classList.remove('hover');
-      this.$tl_tooltip['to'] = setTimeout(() => { this.$tl_tooltip.classList.remove('hover_anim'); }, 70);
+      this.$tl_tooltip['to'] = setTimeout(() => {
+        this.$tl_tooltip.classList.remove('hover_anim');
+      }, 70);
     }
   }
-
 
   tooltipUpdatePosition($tooltip: HTMLElement, range, options, quill: Quill) {
     options = options || { padding: 10, position: 'top' };
@@ -114,20 +112,20 @@ export class EditorTooltipComponent extends AbstractElement {
       top?: number;
     } = {
       width: $tooltip.offsetWidth,
-      height: $tooltip.offsetHeight,
-    }
+      height: $tooltip.offsetHeight
+    };
     let win = {
       width: window.outerWidth,
       height: window.outerHeight,
       scrolltop: document.body.scrollTop
-    }
+    };
     let min = {
       left: 9,
-      top: win.scrolltop + 9,
+      top: win.scrolltop + 9
     };
     let max = {
       left: win.width - tt.width - 9,
-      top: win.scrolltop + win.height - tt.height - 9,
+      top: win.scrolltop + win.height - tt.height - 9
     };
     tt.left = rangeBounds.left + rangeBounds.width / 2 - tt.width / 2;
     // console.log('1_tt = ', tt);
@@ -147,23 +145,24 @@ export class EditorTooltipComponent extends AbstractElement {
         tt.top = rangeBounds.bottom + options.padding;
         bottom_class = true;
       }
-    }
-    else if (options.position == 'bottom') {
-      let dependOfBounds: boolean | {
-        top: number;
-        bottom: number;
-        left: number;
-        right: number;
-      } = false;
+    } else if (options.position == 'bottom') {
+      let dependOfBounds:
+        | boolean
+        | {
+            top: number;
+            bottom: number;
+            left: number;
+            right: number;
+          } = false;
       tt.top = rangeBounds.bottom + options.padding;
-      if (dependOfBounds = this.isOverElement(tt, options.depend, options.dependPadding)) {
+      if ((dependOfBounds = this.isOverElement(tt, options.depend, options.dependPadding))) {
         tt.top = dependOfBounds.bottom + options.dependPadding;
       }
       let ptop = quillOffset.top + (tt.top || 0);
       bottom_class = true;
       if (ptop > max.top) {
         tt.top = rangeBounds.top - tt.height - options.padding;
-        if (dependOfBounds = this.isOverElement(tt, options.depend, options.dependPadding)) {
+        if ((dependOfBounds = this.isOverElement(tt, options.depend, options.dependPadding))) {
           tt.top = dependOfBounds.top - tt.height - options.dependPadding;
         }
         bottom_class = false;
@@ -173,9 +172,9 @@ export class EditorTooltipComponent extends AbstractElement {
     tt.top = Math.round(tt.top || 0);
     $tooltip['_range'] = range;
     if (
-      options.minDelta
-      && Math.abs(tt.left - $tooltip['_left']) < options.minDelta
-      && Math.abs(tt.top - $tooltip['_top']) < options.minDelta
+      options.minDelta &&
+      Math.abs(tt.left - $tooltip['_left']) < options.minDelta &&
+      Math.abs(tt.top - $tooltip['_top']) < options.minDelta
     ) {
       return;
     }
@@ -190,34 +189,33 @@ export class EditorTooltipComponent extends AbstractElement {
     $tooltip.classList.toggle('bottom', bottom_class);
   }
 
-
   isOverElement(bounds1, $elem2: HTMLElement, padding) {
     if (!$elem2 || !$elem2.classList.contains('shown')) {
       return false;
     }
     bounds1.bottom = bounds1.top + bounds1.height;
     bounds1.right = bounds1.left + bounds1.width;
-    let pos2 = { _left: $elem2.offsetLeft, _top: $elem2.offsetTop };//.position();
+    let pos2 = { _left: $elem2.offsetLeft, _top: $elem2.offsetTop }; //.position();
     let bounds2 = {
       top: pos2._top,
       bottom: pos2._top + $elem2.offsetHeight,
       left: pos2._left,
-      right: pos2._left + $elem2.offsetWidth,
+      right: pos2._left + $elem2.offsetWidth
     };
-    if ((bounds1.left - bounds2.right >= padding ||
-      bounds2.left - bounds1.right >= padding) ||
-      (bounds1.top - bounds2.bottom >= padding ||
-        bounds2.top - bounds1.bottom >= padding)) {
+    if (
+      bounds1.left - bounds2.right >= padding ||
+      bounds2.left - bounds1.right >= padding ||
+      bounds1.top - bounds2.bottom >= padding ||
+      bounds2.top - bounds1.bottom >= padding
+    ) {
       return false;
     }
     return bounds2;
   }
 
-
   hideBlocksTooltip() {
     this.$tl_blocks.classList.remove('shown');
   }
-
 
   showFormatTooltip(range, quill: Quill, isEdit) {
     if (!isEdit) return;
@@ -238,12 +236,10 @@ export class EditorTooltipComponent extends AbstractElement {
     }
   }
 
-
   hideFormatTooltip(quill: Quill) {
     this.$tl_tooltip.classList.remove('move_anim', 'shown');
     this.tooltipUpdatePosition(this.$tl_link_tooltip, null, this.linkTTOptions, quill);
   }
-
 
   showBlocksTooltip(range, isEdit, quill) {
     if (!isEdit) return;
@@ -251,16 +247,14 @@ export class EditorTooltipComponent extends AbstractElement {
     this.blocksUpdatePosition(range, quill);
   }
 
-
   blocksUpdatePosition(range, quill: Quill) {
     if (typeof range === 'undefined') {
       range = quill.getSelection();
     }
     if (range == null || !quill) return;
     let lineBounds = quill.getBounds(range);
-    this.$tl_blocks.style.top = (lineBounds.top + lineBounds.height / 2) + 'px';
+    this.$tl_blocks.style.top = lineBounds.top + lineBounds.height / 2 + 'px';
   }
-
 
   showLinkTooltip(link, value, isEdit, quill) {
     if (!isEdit) return;
@@ -276,11 +270,13 @@ export class EditorTooltipComponent extends AbstractElement {
       }, 1);
     }
     if (!this.$tl_link_tooltip.classList.contains('shown')) {
-      setTimeout(() => { this.$tl_link_tooltip.classList.add('shown'); }, 10);
+      setTimeout(() => {
+        this.$tl_link_tooltip.classList.add('shown');
+      }, 10);
     }
   }
 
-  hideLinkTooltip(quill) {    
+  hideLinkTooltip(quill) {
     this.$tl_link_tooltip.classList.remove('move_anim', 'shown');
     // this.tooltipUpdatePosition(this.$tl_link_tooltip, null, this.linkTTOptions, quill);
   }
