@@ -503,6 +503,14 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
               return true;
             }
           },
+          'strikethrough': {
+            key: 'X',
+            shortKey: true,
+            shiftKey: true,
+            handler: function (range, context) {
+              quill.formatText(range, 'strike', !context.format['strike']);
+            }
+          },
         }
       }
     }
@@ -1016,7 +1024,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
 
 
   function migratePages(migrate_hash) {
-    console.log(migratePages);
+    console.log(migrate_hash);
 
     // $.ajax(T.apiUrl + '/migrate', {
     //   data: {
@@ -1109,7 +1117,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
   }
 
 
-  $bold_button.onclick = ((e) => {
+  $bold_button.onclick = (e) => {
     console.log('$bold_button.onclick');
 
     let input = e.target as HTMLElement;
@@ -1122,9 +1130,9 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     quill.updateSelection(Quill.sources.API);
     // let range = quill.getSelection(true);
     // toolbarUpdate(range); ///????????
-  });
+  };
 
-  $italic_button.onclick = ((e) => {
+  $italic_button.onclick = (e) => {
     let input = e.target as HTMLElement;
     let active = input.classList.contains('active');
     e.preventDefault();
@@ -1132,7 +1140,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     quill.updateSelection(Quill.sources.API);
     // let range = quill.getSelection(true);
     // toolbarUpdate(range);
-  });
+  };
 
   $link_button.onclick = (e) => {
     let input = e.target as HTMLElement;
@@ -1226,14 +1234,14 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     // toolbarUpdate(range);
   };
 
-  $strikeButton.onclick = ((e) => {
+  $strikeButton.onclick = (e) => {
     let input = e.target as HTMLElement;
     let active = input.classList.contains('active');
     e.preventDefault();
     quill.format('strike', !active);
 
     quill.updateSelection(Quill.sources.API);
-  });
+  };
 
   $image_button.onclick = () => {
     let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]') as HTMLInputElement;
@@ -1559,18 +1567,4 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
 //   //     return showError('Network error');
 //   //   }
 //   // });
-// }
-
-
-
-// //Если с английского на русский, то передаём вторым параметром true.
-// function transliterate(text: string, engToRus = false) {
-//   const rus = 'щ   ш  ч  ц  ю  я  ё  ж  ъ  ы  э  а б в г д е з и й к л м н о п р с т у ф х ь'.split(/ +/g);
-//   const eng = 'shh sh ch cz yu ya yo zh `` y\' e` a b v g d e z i j k l m n o p r s t u f x `'.split(/ +/g);
-
-//   for (let x = 0; x < rus.length; x++) {
-//     text = text.split(engToRus ? eng[x] : rus[x]).join(engToRus ? rus[x] : eng[x]);
-//     text = text.split(engToRus ? eng[x].toUpperCase() : rus[x].toUpperCase()).join(engToRus ? rus[x].toUpperCase() : eng[x].toUpperCase());
-//   }
-//   return text;
 // }
