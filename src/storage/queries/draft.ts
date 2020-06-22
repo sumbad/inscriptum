@@ -13,7 +13,7 @@ export interface Draft {
 }
 
 export const allDrafts = /* GraphQL */ `
-  {
+  query AllDrafts {
     drafts: draft(order_by: { updated_at: desc }) {
       id
       content
@@ -24,6 +24,15 @@ export const allDrafts = /* GraphQL */ `
         email
         name
       }
+    }
+  }
+`;
+
+export const draftById = /* GraphQL */ `
+  query DraftById($id: uuid!) {
+    draft: draft_by_pk(id: $id) {
+      content
+      id
     }
   }
 `;

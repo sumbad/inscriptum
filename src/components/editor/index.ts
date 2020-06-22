@@ -163,9 +163,9 @@ export class EditorComponent extends AbstractElement {
   async loadContent(quill: MyQuill) {
     let content: object;
     if (this.isPosted) {
-      content = (await this._storageService.getNote(this.id)).Note.content;
+      content = (await this._storageService.getNote(this.id)).content;
     } else {
-      content = (await this._storageService.getDraft(this.id)).Draft.contents;
+      content = (await this._storageService.getDraft(this.id)).content;
     }
 
     quill.setContents(content);

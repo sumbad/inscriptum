@@ -15,7 +15,7 @@ export interface Note {
 }
 
 export const allNotes = /* GraphQL */ `
-  {
+  query allNotes {
     notes: note(order_by: { created_at: desc }) {
       content
       updated_at
@@ -28,6 +28,14 @@ export const allNotes = /* GraphQL */ `
         name
         email
       }
+    }
+  }
+`;
+
+export const noteById = /* GraphQL */ `
+  query GetNoteById($id: uuid!) {
+    note: note_by_pk(id: $id) {
+      content
     }
   }
 `;

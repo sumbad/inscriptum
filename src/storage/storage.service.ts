@@ -1,14 +1,12 @@
 import { GraphQLClient } from 'graphql-request';
 import { Options } from 'graphql-request/dist/src/types';
-import { allDrafts, Draft } from './queries/draft';
+import { allDrafts, Draft, draftById } from './queries/draft';
 import updateDraft from './mutations/updateDraft';
-import getDraft from './queries/getDraft';
 import createDraft from './mutations/createDraft';
 import deleteDraft from './mutations/deleteDraft';
 import createNote from './mutations/createNote';
 import updateNote from './mutations/updateNote';
-import getNote from './queries/getNote';
-import { allNotes, Note } from './queries/note';
+import { allNotes, Note, noteById } from './queries/note';
 
 /**
  * Singleton. Storage service with method to work with GraphQL data source
@@ -50,8 +48,11 @@ export class StorageService {
   /**
    * Get a draft by ID
    */
-  getDraft(id: string): Promise<{ Draft: { contents: any; id: string } }> {
-    return this._graphQLClient.request(getDraft, { id });
+  async getDraft(id: string) {
+    const { draft } = await this._graphQLClient.request<{ draft: Draft }>(draftById, { id });
+    console.log(draft);
+
+    return draft;
   }
 
   /**
@@ -92,10 +93,19 @@ export class StorageService {
   }
 
   /**
+   * Get all notes
+   */
+  async allNotes() {
+    const { notes } = await this._graphQLClient.request<{ notes: Note[] }>(allNotes);
+    return notes;
+  }
+
+  /**
    * Get a note by ID
    */
-  getNote(id: string): Promise<{ Note: { content: any } }> {
-    return this._graphQLClient.request(getNote, { id });
+  async getNote(id: string) {
+    const { note } = await this._graphQLClient.request<{ note: Note }>(noteById, { id });
+    return note;
   }
 
   /**
@@ -132,14 +142,6 @@ export class StorageService {
       title,
       content,
     });
-  }
-
-  /**
-   * Get all notes
-   */
-  async allNotes() {
-    const { notes } = await this._graphQLClient.request<{ notes: Note[] }>(allNotes);
-    return notes;
   }
 
   /**
