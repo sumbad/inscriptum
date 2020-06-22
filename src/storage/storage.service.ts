@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { Options } from 'graphql-request/dist/src/types';
 import { allDrafts, Draft } from './queries/draft';
-import authenticateUser from './mutations/authenticateUser';
 import updateDraft from './mutations/updateDraft';
 import getDraft from './queries/getDraft';
 import createDraft from './mutations/createDraft';
@@ -10,7 +9,6 @@ import createNote from './mutations/createNote';
 import updateNote from './mutations/updateNote';
 import getNote from './queries/getNote';
 import { allNotes, Note } from './queries/note';
-import Delta from 'quill-delta';
 
 /**
  * Singleton. Storage service with method to work with GraphQL data source
@@ -179,11 +177,11 @@ export class StorageService {
    * @param accessToken
    */
   async authenticateUser(accessToken: string) {
-    const authObj: { authenticateUser: any } = await this._graphQLClient.request(authenticateUser, { accessToken });
+    // const authObj: { authenticateUser: any } = await this._graphQLClient.request(authenticateUser, { accessToken });
 
-    this._addAuthInfoToGraphQLClient(authObj.authenticateUser.token);
+    this._addAuthInfoToGraphQLClient(accessToken);
 
-    return authObj;
+    return accessToken;
   }
 
   /**
@@ -195,8 +193,8 @@ export class StorageService {
       ...this._graphQLClientOptions,
       headers: {
         ...this._graphQLClientOptions.headers,
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     };
 
     this._graphQLClient = new GraphQLClient(this._graphQLClientEndpoind, this._graphQLClientOptions);

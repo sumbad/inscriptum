@@ -133,7 +133,7 @@ export class AuthService {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
 
-    const authObj = await this._storageService.authenticateUser(this.accessToken);
+    const authObj = await this._storageService.authenticateUser(this.idToken);
     if (authObj) {
       this.$authenticated.next(true);
     }
