@@ -36,7 +36,7 @@ export class DraftComponent extends AbstractElement {
         if (hasAuth) {
           this._storageService.allDrafts().then(
             drafts => {
-              this.draftList = drafts.allDrafts;
+              this.draftList = drafts;
               PreloaderService.isAppLoading.next(false);
             }
           );

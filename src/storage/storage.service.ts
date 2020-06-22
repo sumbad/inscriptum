@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { Options } from 'graphql-request/dist/src/types';
-import allDrafts from './queries/allDrafts';
+import { allDrafts, Draft } from './queries/draft';
 import authenticateUser from './mutations/authenticateUser';
 import updateDraft from './mutations/updateDraft';
 import getDraft from './queries/getDraft';
@@ -9,7 +9,7 @@ import deleteDraft from './mutations/deleteDraft';
 import createNote from './mutations/createNote';
 import updateNote from './mutations/updateNote';
 import getNote from './queries/getNote';
-import allNotes from './queries/allNotes';
+import { allNotes, Note } from './queries/note';
 import Delta from 'quill-delta';
 
 /**
@@ -27,12 +27,13 @@ export class StorageService {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true'
-    }
+      'Access-Control-Allow-Credentials': 'true',
+    },
   };
 
   /** url GraphQL api */
-  private _graphQLClientEndpoind = 'https://api.graph.cool/simple/v1/cjd617qc7245901203dv54gy4';
+  private _graphQLClientEndpoind = 'http://localhost:8083/v1/graphql';
+  // private _graphQLClientEndpoind = 'https://api.graph.cool/simple/v1/cjd617qc7245901203dv54gy4';
   // private _graphQLClientEndpoind = 'http://localhost:60000/simple/v1/ck034b9o700050165j2w3qygs';
 
   /** GraphQL client */
@@ -58,8 +59,9 @@ export class StorageService {
   /**
    * Get all drafts
    */
-  allDrafts(): Promise<{ allDrafts: { contents: any; id: string }[] }> {
-    return this._graphQLClient.request(allDrafts);
+  async allDrafts() {
+    const { drafts } = await this._graphQLClient.request<{ drafts: Draft[] }>(allDrafts);
+    return drafts;
   }
 
   /**
@@ -70,7 +72,7 @@ export class StorageService {
   updateDraft(id: string, contents: string): Promise<{ updateDraft: { id: string } }> {
     return this._graphQLClient.request(updateDraft, {
       id,
-      contents
+      contents,
     });
   }
 
@@ -80,7 +82,7 @@ export class StorageService {
    */
   deleteDraft(id: string): Promise<{ deleteDraft: { id: string; contents: string } }> {
     return this._graphQLClient.request(deleteDraft, {
-      id
+      id,
     });
   }
 
@@ -111,7 +113,7 @@ export class StorageService {
       author,
       name,
       title,
-      content
+      content,
     });
   }
 
@@ -130,25 +132,16 @@ export class StorageService {
       author,
       name,
       title,
-      content
+      content,
     });
   }
 
   /**
    * Get all notes
    */
-  allNotes(): Promise<{
-    allNotes: {
-      author: string;
-      content: Delta;
-      createdAt: string;
-      id: string;
-      name: string;
-      title: string;
-      updatedAt: string;
-    }[];
-  }> {
-    return this._graphQLClient.request(allNotes);
+  async allNotes() {
+    const { notes } = await this._graphQLClient.request<{ notes: Note[] }>(allNotes);
+    return notes;
   }
 
   /**
@@ -168,11 +161,11 @@ export class StorageService {
       type: 'application/x-www-form-urlencoded',
       Authorization: (this._graphQLClientOptions.headers || {})['Authorization'],
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true'
+      'Access-Control-Allow-Credentials': 'true',
     };
 
     const url = Object.keys(JSON.stringify(body))
-      .map(function(k) {
+      .map(function (k) {
         return encodeURIComponent(k) + '=' + encodeURIComponent(body);
       })
       .join('&');

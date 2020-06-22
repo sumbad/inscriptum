@@ -52,7 +52,7 @@ export class DraftComponent extends AbstractElement {
     });
 
     this._storageService.allNotes().then(notes => {
-      const _notes = notes.allNotes.map(item => {
+      const _notes = notes.map(item => {
         const { content, title, image } = quillDelta2Preview(item.content);
         return {
           id: item.id,
