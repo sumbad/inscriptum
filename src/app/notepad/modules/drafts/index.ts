@@ -65,7 +65,7 @@ export class DraftComponent extends AbstractElement {
       .subscribe(
         (hasAuth) => {
           if (hasAuth) {
-            this._storageService.allDrafts().then(
+            this._storageService.api.draft.getAll().then(
               drafts => {
                 const _drafts = drafts.map(
                   item => {
@@ -129,9 +129,8 @@ export class DraftComponent extends AbstractElement {
    * Create new draft
    */
   async handleBtnCreateNewDraft() {
-    const userInfo = await this._authService.userInfo;
-    const newDraftId = (await this._storageService.createDraft(userInfo.name || userInfo.email || '')).createDraft.id;
-    page('/editor/' + newDraftId);
+    const newDraftId = await this._storageService.api.draft.create({author_id: this._storageService.author.id});
+    page('/editor/' + newDraftId.id);
   }
 
 
@@ -174,12 +173,12 @@ export class DraftComponent extends AbstractElement {
    * @param id - draft id
    */
   private _deleteDraft(id: string) {
-    this._storageService.deleteDraft(id)
+    this._storageService.api.draft.deleteById({id})
       .then(
-        (d) => {
+        (deletedDraft) => {
           this.$ = {
             ...this.$,
-            drafts: this.$.drafts && this.$.drafts.filter(draft => draft.id !== d.deleteDraft.id)
+            drafts: this.$.drafts && this.$.drafts.filter(d => d.id !== deletedDraft.id)
           }
         }
       );

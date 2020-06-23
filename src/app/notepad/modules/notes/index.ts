@@ -51,7 +51,7 @@ export class DraftComponent extends AbstractElement {
       }
     });
 
-    this._storageService.allNotes().then(notes => {
+    this._storageService.api.note.getAll().then(notes => {
       const _notes = notes.map(item => {
         const { content, title, image } = quillDelta2Preview(item.content);
         return {
