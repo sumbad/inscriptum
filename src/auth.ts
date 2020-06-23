@@ -2,6 +2,18 @@ import { StorageService } from './storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 import auth0 from 'auth0-js';
 
+
+export interface UserInfo extends auth0.Auth0UserProfile {
+  email: string;
+  email_verified: boolean;
+  'https://hasura.io/jwt/claims': {
+    'x-hasura-default-role': string;
+    'x-hasura-allowed-roles': string[];
+    'x-hasura-user-id': string;
+  };
+  sub: string;
+}
+
 /**
  * Singleton. Auth service
  */
@@ -20,23 +32,7 @@ export class AuthService {
   expiresAt: number;
 
   /** get user info */
-  private _userInfo: auth0.Auth0UserProfile;
-  get userInfo(): Promise<auth0.Auth0UserProfile> {
-    return new Promise((resolve, reject) => {
-      if (this._userInfo !== undefined) {
-        resolve(this.userInfo);
-      } else {
-        this.webAuth.client.userInfo(this.accessToken, (err, user) => {
-          if (err) {
-            reject(err);
-          } else {
-            this._userInfo = user;
-            resolve(this._userInfo);
-          }
-        });
-      }
-    });
-  }
+  public userInfo: UserInfo;
 
   constructor(private _storageService: StorageService, private _redirectUrl: string = document.URL) {
     const newWebAuth = () =>
@@ -46,7 +42,7 @@ export class AuthService {
         redirectUri: _redirectUrl,
         responseType: 'token id_token',
         scope: 'openid email',
-        audience: 'https://inscriptum.js.org'
+        audience: 'https://inscriptum.js.org',
       });
 
     if (AuthService.instance) {
@@ -133,8 +129,21 @@ export class AuthService {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
 
-    const authObj = await this._storageService.authenticateUser(this.idToken);
-    if (authObj) {
+    const userInfo: UserInfo = await new Promise((resolve, reject) => {
+      this.webAuth.client.userInfo(this.accessToken, (err, userInfo: UserInfo) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(userInfo);
+        }
+      });
+    });
+
+    this.userInfo = userInfo;
+
+    await this._storageService.authenticateAuthor(this.idToken, userInfo);
+
+    if (this.userInfo !== undefined) {
       this.$authenticated.next(true);
     }
   }
