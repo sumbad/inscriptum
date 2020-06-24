@@ -13,6 +13,7 @@ VALUES
 -- DAMP Notes
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -22,6 +23,7 @@ INSERT INTO
   )
 VALUES
   (
+    'e5c2c440-529a-4570-9620-c8d51c904db3',
     'Stencil--kompilyator-Web-Components-i-PWA',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Stencil: компилятор Web Components и PWA',
@@ -32,6 +34,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -41,6 +44,7 @@ INSERT INTO
   )
 VALUES
   (
+    '1d41de8e-9378-40e5-ac98-293ef81518e1',
     'Bazovy-j-JavaScript',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Базовый JavaScript',
@@ -51,6 +55,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -60,6 +65,7 @@ INSERT INTO
   )
 VALUES
   (
+    '93dcda1c-0387-4602-b874-7d59a75a043b',
     'Web-Components--Princzip-ispol-zovaniya',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Web Components. Принцип использования',
@@ -70,6 +76,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -79,6 +86,7 @@ INSERT INTO
   )
 VALUES
   (
+    '7cba79c0-1e16-46a4-acfb-7b38a0c62363',
     'Web-Components--Osnovy-',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Web Components. Основы',
@@ -89,6 +97,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -98,6 +107,7 @@ INSERT INTO
   )
 VALUES
   (
+    'f7ae56b4-fe5b-46db-b4f2-bb8ee9f6e2a4',
     'Web-Components--Vvedenie',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Web Components. Введение',
@@ -108,6 +118,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -117,6 +128,7 @@ INSERT INTO
   )
 VALUES
   (
+    'ca21c809-fff4-4a25-832c-a719731b0c52',
     'Ispol-zovanie-Vue-js-dlya-sozdaniya-pol-zovatel-skix-Web-komponentov',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Использование Vue.js для создания пользовательских Web компонентов',
@@ -127,6 +139,7 @@ VALUES
 
 INSERT INTO
   note (
+    "id",
     "name",
     "author_id",
     "title",
@@ -136,6 +149,7 @@ INSERT INTO
   )
 VALUES
   (
+    'ef45f77e-f973-47a5-ba41-a12450ccec3d',
     'Obzor-stat-i--He-who-thinks-change-detection-is-depth-first-and-he-who-thinks-it-s-breadth-first-are-both-usually-right-',
     '83f51013-2a43-4916-89da-6027f91f1190',
     'Обзор статьи "He who thinks change detection is depth-first and he who thinks it’s breadth-first are both usually right"',
