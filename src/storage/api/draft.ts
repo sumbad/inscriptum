@@ -104,7 +104,6 @@ export function draftApi(gqlClient: GraphQLClient) {
    */
   async function findById(variables: { id: string }) {
     const { draft } = await gqlClient.request<DraftApi['Query']['DRAFT_FIND_BY_ID']>(query.findById, variables);
-    console.log(draft);
 
     return draft;
   }

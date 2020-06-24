@@ -12,7 +12,7 @@ CREATE TABLE public.draft (
   author_id uuid NOT NULL,
   content jsonb NOT NULL,
   created_at timestamp with time zone DEFAULT now() NOT NULL,
-  updated_at timestamp with time zone
+  updated_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 CREATE TABLE public.note (
@@ -22,7 +22,7 @@ CREATE TABLE public.note (
   title text NOT NULL,
   content jsonb NOT NULL,
   created_at timestamp with time zone DEFAULT now() NOT NULL,
-  updated_at timestamp with time zone
+  updated_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 CREATE VIEW public.online_authors AS
