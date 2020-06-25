@@ -1,22 +1,9 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{84:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
-<section class="entry">
+(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{82:function(e,i,t){"use strict";t.r(i),i.default=(e,i)=>e`
+<template id="umArticlePreview">
+  <inscriptum-post-preview></inscriptum-post-preview>
+</template>
 
-  <header class="entry-header">
-    <h2 class="entry-title">
-      <a href=${`/articles/${t.articleName}`}>
-        ${t.articleTitle}
-      </a>
-    </h2>
-    <div class="entry-meta">
-      <ul>
-        <li>${t.articleDate}</li>
-      </ul>
-    </div>
-  </header>
-
-  <div class="entry-content">
-    <slot></slot>
-  </div>
-
-</section>
+<div id="umArticlePrevieList">
+  ${i.previews}
+</div>
 `}}]);
