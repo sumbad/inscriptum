@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const sassCssLoader = require('@insum/webpack.config/loaders/sass-css');
 
@@ -64,6 +65,10 @@ module.exports = function(helper) {
       }),
       new MiniCssExtractPlugin({
         filename: 'css/[name].css'
+      }),
+      new Dotenv({
+        path: helper.ENV.isDevMode ? './.env.dev' : './.env.prod',
+        safe: true,
       })
     ]
   };

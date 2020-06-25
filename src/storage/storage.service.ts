@@ -32,12 +32,7 @@ export class StorageService {
   private static instance: StorageService;
 
   /** url GraphQL api */
-  private _graphQLClientEndpoint = 'http://localhost:8083/v1/graphql';
-  // private _graphQLClientEndpoint = 'https://api.graph.cool/simple/v1/cjd617qc7245901203dv54gy4';
-  // private _graphQLClientEndpoint = 'http://localhost:60000/simple/v1/ck034b9o700050165j2w3qygs';
-
-  /** GraphQL client */
-  private _graphQLClient: GraphQLClient;
+  private _graphQLClientEndpoint = process.env.API_ENDPOINT || '';
 
   constructor() {
     if (StorageService.instance) {
@@ -115,6 +110,5 @@ export class StorageService {
     };
 
     this.prepareApi();
-    this._graphQLClient = new GraphQLClient(this._graphQLClientEndpoint, this._graphQLClientOptions);
   }
 }
