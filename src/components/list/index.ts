@@ -87,7 +87,7 @@ export class ListComponent extends AbstractElement {
               <div id=${id} class="popover popover_right">
                 <ul class="popover-list">
                   ${actions.map(
-                    action => html`
+                    (action) => html`
                       <li class="popover-item">
                         <a class="popover-link" @click=${this.dispatchAction.bind(this, { type: action.type, id })}>${action.label}</a>
                       </li>
@@ -101,7 +101,7 @@ export class ListComponent extends AbstractElement {
 
     const listElements = repeat(
       this._list,
-      i => i.id,
+      (i) => i.id,
       (i, index) => html`
         <div class="um-drafts__item">
           <h6 class="docs-header">
@@ -151,7 +151,8 @@ export class ListComponent extends AbstractElement {
   openPopover(event: MouseEvent) {
     event.preventDefault();
     this.closePopovers();
-    const element = this.querySelector<Element>('#' + (event.target || { popover: {} })['dataset'].popover);
+    const popoverDataset: string = event.target?.['dataset'].popover;
+    const element = this.querySelector<Element>(`[id="${popoverDataset}"]`);
     if (element !== null) {
       element.classList.add('open');
     }
@@ -162,7 +163,7 @@ export class ListComponent extends AbstractElement {
    * Close all opened popovers
    */
   closePopovers() {
-    this.querySelectorAll('.popover.open').forEach(el => {
+    this.querySelectorAll('.popover.open').forEach((el) => {
       el.classList.remove('open');
     });
   }

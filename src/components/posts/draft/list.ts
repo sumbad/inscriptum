@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { StorageService } from 'storage/storage.service';
 import { AuthService } from 'auth';
 import { PreloaderService } from 'components/um-preloader/service';
+import { DraftApi } from 'storage/api/draft';
 
 
 
@@ -16,7 +17,7 @@ export class DraftComponent extends AbstractElement {
   html = litHtml.html;
 
   @state()
-  public draftList: any[] = [];
+  public draftList: DraftApi['Query']['DRAFT_GET_ALL']['drafts'] = [];
 
 
   private _subscriptions: Subscription[] = [];
@@ -34,9 +35,9 @@ export class DraftComponent extends AbstractElement {
     this._authService.$authenticated.subscribe(
       (hasAuth) => {
         if (hasAuth) {
-          this._storageService.allDrafts().then(
+          this._storageService.api.draft.getAll().then(
             drafts => {
-              this.draftList = drafts.allDrafts;
+              this.draftList = drafts;
               PreloaderService.isAppLoading.next(false);
             }
           );
@@ -54,7 +55,7 @@ export class DraftComponent extends AbstractElement {
         
           <header class="entry-header">
             <h2 class="entry-title">
-              <a href=${'/editor/' + draft.id}> ${draft.contents.ops[0].insert} </a> </h2>
+              <a href=${'/editor/' + draft.id}> ${draft.content.ops[0].insert} </a> </h2>
             <div class="entry-meta">
               <ul>
                 <li>${draft.id}</li>

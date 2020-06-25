@@ -182,7 +182,7 @@ export class FigureBlot extends BlockEmbed {
     video.addEventListener('loadeddata', function () {
       if (!this['mozHasAudio'] &&
         !(this['webkitAudioDecodedByteCount']) &&
-        !(this.audioTracks && this.audioTracks.length)) {
+        !(this['audioTracks'] && this['audioTracks'].length)) {
         this.setAttribute('autoplay', 'autoplay');
         this.setAttribute('loop', 'loop');
         this.setAttribute('muted', 'muted');

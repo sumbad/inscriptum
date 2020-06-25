@@ -209,6 +209,9 @@ textarea {
 .tl_tooltip button#_quote_button {
   transition-delay: .1s;
 }
+.tl_tooltip button#_strike_button {
+  transition-delay: .12s;
+}
 .tl_tooltip button + button {
   margin-left: 7px;
 }
@@ -285,6 +288,25 @@ textarea {
 .tl_tooltip[data-hover=_quote_button] .button_hover {
   transform: translate3d(172px, 0, 0);
 }
+.tl_tooltip[data-hover=_strike_button] .button_hover {
+  transform: translate3d(212px, 0, 0);
+}
+
+.tl_tooltip .tt-icon-btn {
+  stroke: #292927;
+  stroke-width: 30px;
+  color: #ffffff;
+}
+.tl_tooltip .tt-icon-btn:hover {
+  stroke: #545452;
+  stroke-width: 30px;
+}
+.tl_tooltip .tt-icon-btn.active {
+  stroke: #ffffff;
+  stroke-width: 30px;
+  color: #292927;
+}
+
 body.mobile .button_hover {
   display: none;
 }

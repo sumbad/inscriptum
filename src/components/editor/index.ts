@@ -11,7 +11,7 @@ import {
   faMinus,
   faPlay,
   faPlus,
-  faQuoteRight
+  faQuoteRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { AbstractElement, attr, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
@@ -64,7 +64,7 @@ export class EditorComponent extends AbstractElement {
   }
 
   /** the event a content changed */
-  changedContent$ = new BehaviorSubject<string | null>(null);
+  changedContent$ = new BehaviorSubject<Delta | null>(null);
   quill: MyQuill | null;
 
   private _authService: AuthService;
@@ -95,7 +95,7 @@ export class EditorComponent extends AbstractElement {
     if (this._authService.$authenticated.getValue()) {
       this.loadContent(this.quill);
     } else {
-      this._authService.$authenticated.subscribe(hasAuth => {
+      this._authService.$authenticated.subscribe((hasAuth) => {
         if (hasAuth !== null && this.quill) {
           if (hasAuth) {
             this.loadContent(this.quill);
@@ -113,15 +113,15 @@ export class EditorComponent extends AbstractElement {
 
     // Store accumulated changes
     var change = new Delta();
-    this.quill.on('text-change', delta => {
+    this.quill.on('text-change', (delta) => {
       change = change.compose(delta);
       this.changedContent$.next((this.quill as MyQuill).getContents());
     });
 
     // Save periodically
-    this.changedContent$.pipe(skip(2), debounceTime(10000)).subscribe(d => {
+    this.changedContent$.pipe(skip(2), debounceTime(10000)).subscribe((d) => {
       if (d !== null && !this.isPosted) {
-        this._storageService.updateDraft(this.id, d).then(() => {
+        this._storageService.api.draft.updateById({ id: this.id, content: d, updated_at: new Date().toISOString() }).then(() => {
           change = new Delta();
         });
       }
@@ -148,10 +148,10 @@ export class EditorComponent extends AbstractElement {
       {
         isPreloader: this.isPreloader,
         styles: this.styles,
-        tooltip: this.tooltip
+        tooltip: this.tooltip,
       },
       {
-        publish: this.publish.bind(this)
+        publish: this.publish.bind(this),
       }
     );
   }
@@ -163,9 +163,9 @@ export class EditorComponent extends AbstractElement {
   async loadContent(quill: MyQuill) {
     let content: object;
     if (this.isPosted) {
-      content = (await this._storageService.getNote(this.id)).Note.content;
+      content = (await this._storageService.api.note.findById({ id: this.id })).content;
     } else {
-      content = (await this._storageService.getDraft(this.id)).Draft.contents;
+      content = (await this._storageService.api.draft.findById({ id: this.id })).content;
     }
 
     quill.setContents(content);
@@ -189,8 +189,6 @@ export class EditorComponent extends AbstractElement {
     }
 
     let title = ($tl_content.querySelector('h1') as HTMLHeadElement).textContent || '';
-    let author = await this._authService.userInfo;
-    let authorName = author.name || author.email || '';
     // let author_url = ($tl_content.querySelector('address a') as HTMLLinkElement).href || '';
 
     if (title.length < 2) {
@@ -235,7 +233,7 @@ export class EditorComponent extends AbstractElement {
       'aside .account_top',
       'aside .publish_button',
       'aside .account_bottom',
-      'aside .error_msg'
+      'aside .error_msg',
     ]);
 
     $tl_article.classList.add('tl_article_saving');
@@ -251,13 +249,18 @@ export class EditorComponent extends AbstractElement {
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
-    let noteInfo: { id: any; createdAt: any; updatedAt: any };
+    let noteInfo: { id: string; created_at: string; updated_at: string };
     if (this.isPosted) {
-      noteInfo = (await this._storageService.updateNote(this.id, authorName, name, title, quillDelta)).updateNote;
+      noteInfo = await this._storageService.api.note.updateById({ id: this.id, content: quillDelta, name, title, updated_at: new Date().toISOString() });
     } else {
-      noteInfo = (await this._storageService.createNote(authorName, name, title, quillDelta)).createNote;
+      noteInfo = await this._storageService.api.note.create({
+        author_id: this._storageService.author.id,
+        name,
+        title,
+        content: quillDelta,
+      });
       // delete this draft
-      this._storageService.deleteDraft(this.id);
+      this._storageService.api.draft.deleteById({ id: this.id });
       draftClear();
     }
 
@@ -289,9 +292,9 @@ export class EditorComponent extends AbstractElement {
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${previewContent}">
     <meta property="og:image" content="${firstImgSrc}">
-    <meta property="article:published_time" content="${noteInfo.createdAt}">
-    <meta property="article:modified_time" content="${noteInfo.updatedAt}">
-    <meta property="article:author" content="${authorName}">
+    <meta property="article:published_time" content="${noteInfo.created_at}">
+    <meta property="article:modified_time" content="${noteInfo.updated_at}">
+    <meta property="article:author" content="${this._storageService.author.name || this._storageService.author.email}">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="${title}">
     <meta name="twitter:description" content="${previewContent}">
@@ -326,7 +329,7 @@ export class EditorComponent extends AbstractElement {
       return null;
     }
     const resultRootEl = rootElement.cloneNode(true) as Element;
-    selectors.forEach(selector => {
+    selectors.forEach((selector) => {
       const el = resultRootEl.querySelector(selector);
       el && el.remove();
     });
