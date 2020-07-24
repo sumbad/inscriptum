@@ -5,7 +5,9 @@
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --progress",
+    "dev": "npm run dev:h && npm run dev:f",
+    "dev:f": "cross-env NODE_ENV=development webpack-dev-server --progress",
+    "dev:h": "docker-compose -f hasura/docker-compose.yml up -d",
     "dev:h-up": "docker-compose -f hasura/docker-compose.yml up --no-start",
     "dev:h-down": "docker-compose -f hasura/docker-compose.yml down -v",
     "dev:h-start": "docker-compose -f hasura/docker-compose.yml start",
