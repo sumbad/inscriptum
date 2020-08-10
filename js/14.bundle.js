@@ -2,7 +2,7 @@
   <style>
     ${i(39)}
   </style>
-`,this.$={isPreloader:!0},this._authService=new a.a(this._storageService)}connectedCallback(){var e,t;super.connectedCallback(),this._authService.$authenticated.pipe((e=()=>void 0===this.$.drafts,void 0===t&&(t=!1),function(i){return i.lift(new h(e,t))})).subscribe(e=>{e?this._storageService.api.draft.getAll().then(e=>{const t=e.map(e=>{const{content:t,title:i,image:o}=Object(v.b)(e.content);return{id:e.id,title:i,image:o,content:t,linkUrl:"/editor/"+e.id,actions:[{label:"удалить",type:m.delete}]}});this.$={isPreloader:!1,drafts:t}}):null!==e&&this._authService.login()}),u.a.watch()}render(){return r.e`
+`,this.$={isPreloader:!0},this._authService=new a.a(this._storageService)}connectedCallback(){var e,t;super.connectedCallback(),this._authService.$authenticated.pipe((e=()=>void 0===this.$.drafts,void 0===t&&(t=!1),function(i){return i.lift(new h(e,t))})).subscribe(e=>{e?this._storageService.api.draft.getAll().then(e=>{const t=e.map(e=>{const{content:t,title:i,image:o}=Object(v.b)(e.content);return{id:e.id,title:i,image:o,content:t,linkUrl:"/editor/"+e.id,actions:[{label:"удалить",type:m.delete}]}});this.$={isPreloader:!1,drafts:t}}):null!==e&&(console.log(2222222222,e),this._authService.login())}),u.a.watch()}render(){return r.e`
     ${this.styles}
     <um-preloader ?loading=${this.$.isPreloader}>
       <div class="row">
