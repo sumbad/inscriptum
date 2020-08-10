@@ -15,7 +15,8 @@
   <link rel="shortcut icon" href="favicon.png">
 
   <script>
-    sessionStorage.redirect = location.href;
+    sessionStorage.redirect = location.origin + location.pathname + location.search;
+    sessionStorage.windowHash = window.location.hash;
   </script>
   <meta http-equiv="refresh" content="0;URL='/'">
   
