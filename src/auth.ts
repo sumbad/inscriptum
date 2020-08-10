@@ -2,7 +2,6 @@ import { StorageService } from './storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 import auth0 from 'auth0-js';
 
-
 export interface UserInfo extends auth0.Auth0UserProfile {
   email: string;
   email_verified: boolean;
@@ -68,7 +67,9 @@ export class AuthService {
    * Handle token from url
    */
   handleAuthentication() {
-    this.webAuth.parseHash((err, authResult) => {
+    const hash = sessionStorage.windowLocationHash ?? window.location.hash;
+    
+    this.webAuth.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.localLogin(authResult);

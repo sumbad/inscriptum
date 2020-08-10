@@ -29,7 +29,7 @@
     "@webcomponents/template": "^1.4.2",
     "@webcomponents/webcomponentsjs": "^1.3.3",
     "abstract-element": "^4.8.0",
-    "auth0-js": "^9.13.2",
+    "auth0-js": "^9.13.4",
     "autosize": "^4.0.2",
     "blueimp-load-image": "^2.31.0",
     "bourbon": "^5.0.0",

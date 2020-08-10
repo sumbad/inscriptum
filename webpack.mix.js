@@ -7,7 +7,7 @@ const Dotenv = require('dotenv-webpack');
 
 const sassCssLoader = require('@insum/webpack.config/loaders/sass-css');
 
-module.exports = function(helper) {
+module.exports = function (helper) {
   return {
     module: {
       rules: [
@@ -19,31 +19,35 @@ module.exports = function(helper) {
         {
           ...sassCssLoader,
           use: [{ loader: MiniCssExtractPlugin.loader }, ...sassCssLoader.use],
-          include: [path.join(helper.PATHS.src, 'app/note')]
+          include: [path.join(helper.PATHS.src, 'app/note')],
         },
         {
           ...require('@insum/webpack.config/loaders/sass'),
-          exclude: [path.join(helper.PATHS.src, 'app/note')]
-        }
-      ]
+          exclude: [path.join(helper.PATHS.src, 'app/note')],
+        },
+      ],
     },
     plugins: [
       // Copy directory contents to {output}/path/to/dist/directory/
       new CopyWebpackPlugin([
         {
-          from: helper.PATHS.root + '/CNAME',
-          to: path.join(helper.PATHS.dist)
-        },
-        {
           from: helper.PATHS.src + '/public',
           to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
-          toType: 'dir'
+          toType: 'dir',
         },
         {
           from: helper.PATHS.src + '/data',
           to: path.join(helper.PATHS.dist, helper.PATHS.outputPath, '/data'),
-          toType: 'dir'
-        }
+          toType: 'dir',
+        },
+        {
+          from: helper.PATHS.root + '/CNAME',
+          to: path.join(helper.PATHS.dist),
+        },
+        {
+          from: path.resolve(helper.PATHS.src, '404.html'),
+          to: path.join(helper.PATHS.dist),
+        },
       ]),
       new HtmlWebpackPlugin({
         template: path.resolve(helper.PATHS.src, 'index.html'),
@@ -52,23 +56,14 @@ module.exports = function(helper) {
         inject: true,
         favicon: false,
         minify: false,
-        cache: true
-      }),
-      new HtmlWebpackPlugin({
-        filename: '404.html',
-        template: path.resolve(helper.PATHS.src, '404.html'),
-        hash: false,
-        inject: true,
-        favicon: false,
-        minify: false,
-        cache: true
+        cache: true,
       }),
       new MiniCssExtractPlugin({
-        filename: 'css/[name].css'
+        filename: 'css/[name].css',
       }),
       new Dotenv({
         safe: true,
-      })
-    ]
+      }),
+    ],
   };
 };

@@ -21,20 +21,21 @@
     <!-- <link rel="icon" type="image/png" href="/images/favicon.png?1" sizes="16x16"> -->
     <!-- <link rel="icon" type="image/png" href="/images/favicon_2x.png?1" sizes="32x32"> -->
 
+    <script>
+      (function(){
+        var redirect = sessionStorage.redirect;
+        if (redirect !== undefined && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+        delete sessionStorage.redirect;
+      })();
+    </script>
+
     <script src="/js/modernizr.js"></script>
     <link rel="shortcut icon" href="favicon.png">
   </head>
 
   <body>
-    <script>
-      (function(){
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect !== undefined && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
 
     <main></main>
 
@@ -44,6 +45,7 @@
       window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')
     </script>
     <script type="text/javascript" src="/js/jquery-migrate-1.2.1.min.js"></script>
+    
   </body>
 
 </html>
