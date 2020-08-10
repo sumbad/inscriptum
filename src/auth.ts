@@ -67,7 +67,7 @@ export class AuthService {
    * Handle token from url
    */
   handleAuthentication() {
-    const hash = sessionStorage.hash ?? window.location.hash;
+    const hash = sessionStorage.windowLocationHash ?? window.location.hash;
     this.webAuth.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
