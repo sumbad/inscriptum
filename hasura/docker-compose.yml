@@ -3,18 +3,20 @@ services:
   postgres:
     image: postgres:12
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - ${DB_PORT_PUBLISHED}:5432
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
   graphql-engine:
     image: hasura/graphql-engine:latest.cli-migrations-v2
     ports:
       - ${HASURA_GRAPHQL_SERVER_PORT}:${HASURA_GRAPHQL_SERVER_PORT}
     depends_on:
-      - 'postgres'
+      - "postgres"
     restart: always
     volumes:
       - ./repository/migrations:/hasura-migrations
@@ -27,5 +29,7 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: ${HASURA_GRAPHQL_DEV_MODE}
 volumes:
   db_data:

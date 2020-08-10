@@ -67,7 +67,6 @@ module.exports = function(helper) {
         filename: 'css/[name].css'
       }),
       new Dotenv({
-        path: helper.ENV.isDevMode ? './.env.dev' : './.env.prod',
         safe: true,
       })
     ]
