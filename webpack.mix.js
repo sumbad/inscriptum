@@ -63,6 +63,8 @@ module.exports = function (helper) {
       }),
       new Dotenv({
         safe: true,
+        allowEmptyValues: true,
+        path: helper.ENV.isDevMode ? './env' : './.env.production'
       }),
     ],
   };

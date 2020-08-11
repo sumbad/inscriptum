@@ -57,7 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 .env.dev
+.env.develop
 .env.prod
+.env.production
 
 # IDE
 .vscode/
