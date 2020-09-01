@@ -1,6 +1,8 @@
 (window.webpackJsonp=window.webpackJsonp||[]).push([[55],{115:function(t,a,s){"use strict";s.r(a);var e=s(13);a.default=(t,a)=>e.e`
 ${t.styles}
 
+<loading-progress-bar .config=${t.loaderConfig} .ref=${t.loadingRef}></loading-progress-bar>
+
 <um-preloader ?loading=${t.isPreloader}>
   <div class="tl_page_wrap">
 
