@@ -29,26 +29,28 @@ module.exports = function (helper) {
     },
     plugins: [
       // Copy directory contents to {output}/path/to/dist/directory/
-      new CopyWebpackPlugin([
-        {
-          from: helper.PATHS.src + '/public',
-          to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
-          toType: 'dir',
-        },
-        {
-          from: helper.PATHS.src + '/data',
-          to: path.join(helper.PATHS.dist, helper.PATHS.outputPath, '/data'),
-          toType: 'dir',
-        },
-        {
-          from: helper.PATHS.root + '/CNAME',
-          to: path.join(helper.PATHS.dist),
-        },
-        {
-          from: path.resolve(helper.PATHS.src, '404.html'),
-          to: path.join(helper.PATHS.dist),
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: helper.PATHS.src + '/public',
+            to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
+            toType: 'dir'
+          },
+          {
+            from: helper.PATHS.src + '/data',
+            to: path.join(helper.PATHS.dist, helper.PATHS.outputPath, '/data'),
+            toType: 'dir'
+          },
+          {
+            from: helper.PATHS.root + '/CNAME',
+            to: path.join(helper.PATHS.dist)
+          },
+          {
+            from: path.resolve(helper.PATHS.src, '404.html'),
+            to: path.join(helper.PATHS.dist)
+          },
+        ],
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(helper.PATHS.src, 'index.html'),
         chunks: ['notepad', 'polyfills'],
@@ -64,7 +66,7 @@ module.exports = function (helper) {
       new Dotenv({
         safe: true,
         allowEmptyValues: true,
-        path: helper.ENV.isDevMode ? './env' : './.env.production'
+        path: helper.ENV.isDevMode ? './.env' : './.env.production',
       }),
     ],
   };
