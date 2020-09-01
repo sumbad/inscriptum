@@ -29,6 +29,9 @@ import { MyQuill } from './editor/MyQuill';
 import { showError, getPageContent, transliterate, updateEditable, draftClear } from './editor/utils';
 import { TitleBlot } from './editor/TitleBlot';
 import { skip, debounceTime } from 'rxjs/operators';
+import { loadingProgressBarEl } from 'loading-progress-bar';
+
+loadingProgressBarEl('loading-progress-bar', { useShadowDOM: false });
 
 library.add(faFileExport, faBold, faItalic, faLink, faQuoteRight, faHeading, faCamera, faPlay, faTwitter, faMinus, faPlus, faCode);
 
@@ -54,6 +57,9 @@ export class EditorComponent extends AbstractElement {
   /** id */
   @attr('data-id')
   id: string;
+  loadingRef: {
+    current: { generateProgress?: Generator<unknown, any, unknown> | undefined; togglePause?: (isPause?: boolean) => void };
+  } = { current: {} };
 
   /** editor flag */
   @attr('data-flag')
@@ -120,10 +126,48 @@ export class EditorComponent extends AbstractElement {
 
     // Save periodically
     this.changedContent$.pipe(skip(2), debounceTime(10000)).subscribe((d) => {
+      // TODO: need to update posted content too
       if (d !== null && !this.isPosted) {
+        let loading = true;
+        let loadingTime = 2000;
+        const togglePause = this.loadingRef.current.togglePause ?? ((f: boolean) => console.log(`Toggle loading pause to ${f}`));
+
         this._storageService.api.draft.updateById({ id: this.id, content: d, updated_at: new Date().toISOString() }).then(() => {
           change = new Delta();
+          loading = false;
+          togglePause(false);
+          setTimeout(
+            () => {
+              this.loadingRef.current.generateProgress?.next();
+            },
+            loadingTime > 0 ? loadingTime : 0
+          );
         });
+
+        if (this.loadingRef.current.togglePause !== undefined && this.loadingRef.current.generateProgress !== undefined) {
+          let r = this.loadingRef.current.generateProgress?.next();
+
+          if (r !== undefined && r.value === 1) {
+            setTimeout(() => {
+              if (loading) {
+                togglePause(true);
+                loadingTime -= 300;
+              }
+            }, 300);
+            setTimeout(() => {
+              if (loading) {
+                togglePause(false);
+                loadingTime -= 1000;
+              }
+            }, 1000);
+            setTimeout(() => {
+              if (loading) {
+                togglePause(true);
+                loadingTime -= 2000;
+              }
+            }, 2000);
+          }
+        }
       }
     });
 
@@ -149,6 +193,8 @@ export class EditorComponent extends AbstractElement {
         isPreloader: this.isPreloader,
         styles: this.styles,
         tooltip: this.tooltip,
+        loaderConfig: { duration: 2000, stepsCount: 1 },
+        loadingRef: this.loadingRef,
       },
       {
         publish: this.publish.bind(this),
@@ -251,7 +297,13 @@ export class EditorComponent extends AbstractElement {
 
     let noteInfo: { id: string; created_at: string; updated_at: string };
     if (this.isPosted) {
-      noteInfo = await this._storageService.api.note.updateById({ id: this.id, content: quillDelta, name, title, updated_at: new Date().toISOString() });
+      noteInfo = await this._storageService.api.note.updateById({
+        id: this.id,
+        content: quillDelta,
+        name,
+        title,
+        updated_at: new Date().toISOString(),
+      });
     } else {
       noteInfo = await this._storageService.api.note.create({
         author_id: this._storageService.author.id,

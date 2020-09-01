@@ -1,17 +1,22 @@
 import { TemplateResult, html } from 'lit-html';
+import { LoadingProgressBarProps } from 'loading-progress-bar';
 
 interface IProps {
   styles: TemplateResult;
   isPreloader: boolean;
   tooltip: HTMLElement;
+  loaderConfig: LoadingProgressBarProps['config'];
+  loadingRef: {current: {generateProgress?: Generator, togglePause?: (isPause?: boolean) => void;}}
 }
 interface IHandlers {
-  publish: () => void
+  publish: () => void;
 }
 
 
 export default (props: IProps, handlers: IHandlers) => html`
 ${props.styles}
+
+<loading-progress-bar .config=${props.loaderConfig} .ref=${props.loadingRef}></loading-progress-bar>
 
 <um-preloader ?loading=${props.isPreloader}>
   <div class="tl_page_wrap">

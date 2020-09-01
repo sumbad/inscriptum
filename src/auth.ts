@@ -35,6 +35,7 @@ export class AuthService {
 
   constructor(private _storageService: StorageService, private _redirectUrl: string = document.URL) {
     const newWebAuth = () =>
+      // TODO: move to .env
       new auth0.WebAuth({
         domain: 'inscriptum.auth0.com',
         clientID: 'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
@@ -68,7 +69,7 @@ export class AuthService {
    */
   handleAuthentication() {
     const hash = sessionStorage.windowLocationHash ?? window.location.hash;
-    
+
     this.webAuth.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
