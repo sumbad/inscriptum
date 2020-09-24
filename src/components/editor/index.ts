@@ -29,9 +29,9 @@ import { MyQuill } from './editor/MyQuill';
 import { showError, getPageContent, transliterate, updateEditable, draftClear } from './editor/utils';
 import { TitleBlot } from './editor/TitleBlot';
 import { skip, debounceTime } from 'rxjs/operators';
-import { loadingProgressBarEl } from 'loading-progress-bar';
+import { loadingProgressBar } from 'loading-progress-bar';
 
-loadingProgressBarEl('loading-progress-bar', { useShadowDOM: false });
+loadingProgressBar.define('loading-progress-bar');
 
 library.add(faFileExport, faBold, faItalic, faLink, faQuoteRight, faHeading, faCamera, faPlay, faTwitter, faMinus, faPlus, faCode);
 
@@ -117,31 +117,46 @@ export class EditorComponent extends AbstractElement {
     // @TODO: only develop mode
     window['quill'] = this.quill;
 
+    const originDocumentTitle = document.title;
+    const unsavedDocumentTitle = `*${originDocumentTitle}`;
+
     // Store accumulated changes
     var change = new Delta();
     this.quill.on('text-change', (delta) => {
       change = change.compose(delta);
       this.changedContent$.next((this.quill as MyQuill).getContents());
+
+      if(document.title !== unsavedDocumentTitle) {
+        document.title = unsavedDocumentTitle;
+      }
     });
 
+    let isLoading = false;
     // Save periodically
     this.changedContent$.pipe(skip(2), debounceTime(10000)).subscribe((d) => {
       // TODO: need to update posted content too
       if (d !== null && !this.isPosted) {
-        let loading = true;
-        let loadingTime = 2000;
         const togglePause = this.loadingRef.current.togglePause ?? ((f: boolean) => console.log(`Toggle loading pause to ${f}`));
+        let loadingTime = 2000;
+
+        if (isLoading) {
+          this.loadingRef.current.generateProgress?.next();
+        }
+        isLoading = true;
 
         this._storageService.api.draft.updateById({ id: this.id, content: d, updated_at: new Date().toISOString() }).then(() => {
           change = new Delta();
-          loading = false;
+          isLoading = false;
           togglePause(false);
+
           setTimeout(
             () => {
               this.loadingRef.current.generateProgress?.next();
             },
             loadingTime > 0 ? loadingTime : 0
           );
+
+          document.title = originDocumentTitle;
         });
 
         if (this.loadingRef.current.togglePause !== undefined && this.loadingRef.current.generateProgress !== undefined) {
@@ -149,34 +164,38 @@ export class EditorComponent extends AbstractElement {
 
           if (r !== undefined && r.value === 1) {
             setTimeout(() => {
-              if (loading) {
+              if (isLoading) {
                 togglePause(true);
                 loadingTime -= 300;
               }
             }, 300);
             setTimeout(() => {
-              if (loading) {
+              if (isLoading) {
                 togglePause(false);
-                loadingTime -= 1000;
               }
             }, 1000);
             setTimeout(() => {
-              if (loading) {
+              if (isLoading) {
                 togglePause(true);
-                loadingTime -= 2000;
+                loadingTime -= 1000;
               }
             }, 2000);
+            setTimeout(() => {
+              if (isLoading) {
+                loadingTime -= 1000;
+              }
+            }, 3000);
           }
         }
       }
     });
 
-    // // Check for unsaved data
-    // window.onbeforeunload = function () {
-    //   if (change.length() > 0) {
-    //     return 'There are unsaved changes. Are you sure you want to leave?';
-    //   }
-    // }
+    // Check for unsaved data
+    window.onbeforeunload = function () {
+      if (change.length() > 0) {
+        return 'There are unsaved changes. Are you sure you want to leave?';
+      }
+    }
   }
 
   /**

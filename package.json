@@ -38,7 +38,7 @@
     "highlight.js": "^9.18.1",
     "hyperhtml": "^2.32.2",
     "lit-html": "^1.2.1",
-    "loading-progress-bar": "0.0.1-4",
+    "loading-progress-bar": "0.0.1-6",
     "page": "^1.11.6",
     "presentarium": "^0.0.5",
     "quill": "^1.3.7",
