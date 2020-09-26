@@ -48,7 +48,7 @@ export function noteApi(gqlClient: GraphQLClient) {
   const query = {
     getAll: /* GraphQL */ `
       query NOTE_GET_ALL {
-        notes: note(order_by: { created_at: desc }) {
+        notes: note(order_by: { created_at: desc }, where: { ended_at: { _is_null: true } }) {
           content
           updated_at
           title
@@ -116,7 +116,7 @@ export function noteApi(gqlClient: GraphQLClient) {
    * Update a note by ID
    * @param variables
    */
-  async function updateById(variables: { id: string; content: Delta; name: string; title: string, updated_at: string }) {
+  async function updateById(variables: { id: string; content: Delta; name: string; title: string; updated_at: string }) {
     const { update_note_by_pk } = await gqlClient.request<NoteApi['Mutation']['NOTE_UPDATE_BY_ID']>(mutation.updateById, variables);
     return update_note_by_pk;
   }
@@ -125,7 +125,7 @@ export function noteApi(gqlClient: GraphQLClient) {
    * Create a new note
    * @param variables
    */
-  async function create(variables: { author_id: string, content: string, name: string, title: string }) {
+  async function create(variables: { author_id: string; content: string; name: string; title: string }) {
     const { insert_note_one } = await gqlClient.request<NoteApi['Mutation']['NOTE_CREATE']>(mutation.create, variables);
 
     return insert_note_one;

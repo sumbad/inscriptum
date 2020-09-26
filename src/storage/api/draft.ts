@@ -35,8 +35,8 @@ export interface DraftApi {
         content: Delta;
       };
     };
-    DRAFT_DELETE: {
-      delete_draft_by_pk: {
+    DRAFT_DELETE_LOGICALLY: {
+      update_draft_by_pk: {
         id: string;
       };
     };
@@ -50,7 +50,7 @@ export function draftApi(gqlClient: GraphQLClient) {
   const query = {
     getAll: /* GraphQL */ `
       query DRAFT_GET_ALL {
-        drafts: draft(order_by: { updated_at: desc }) {
+        drafts: draft(order_by: { updated_at: desc }, where: { ended_at: { _is_null: true } }) {
           id
           content
           created_at
@@ -89,9 +89,9 @@ export function draftApi(gqlClient: GraphQLClient) {
         }
       }
     `,
-    deleteById: /* GraphQL */ `
-      mutation DRAFT_DELETE($id: uuid!) {
-        delete_draft_by_pk(id: $id) {
+    deleteLogicallyById: /* GraphQL */ `
+      mutation DRAFT_DELETE_LOGICALLY($id: uuid!, $ended_at: timestamptz) {
+        update_draft_by_pk(pk_columns: { id: $id }, _set: { ended_at: $ended_at }) {
           id
         }
       }
@@ -120,7 +120,7 @@ export function draftApi(gqlClient: GraphQLClient) {
    * Update a draft by ID
    * @param variables
    */
-  async function updateById(variables: { id: string; content: Delta, updated_at: string}) {
+  async function updateById(variables: { id: string; content: Delta; updated_at: string }) {
     const { update_draft_by_pk } = await gqlClient.request<DraftApi['Mutation']['DRAFT_UPDATE_BY_ID']>(mutation.updateById, variables);
     return update_draft_by_pk.id;
   }
@@ -140,9 +140,12 @@ export function draftApi(gqlClient: GraphQLClient) {
    * @param variables
    */
   async function deleteById(variables: { id: string }) {
-    const { delete_draft_by_pk } = await gqlClient.request<DraftApi['Mutation']['DRAFT_DELETE']>(mutation.deleteById, variables);
+    const { update_draft_by_pk } = await gqlClient.request<DraftApi['Mutation']['DRAFT_DELETE_LOGICALLY']>(mutation.deleteLogicallyById, {
+      ...variables,
+      ended_at: new Date().toISOString(),
+    });
 
-    return delete_draft_by_pk;
+    return update_draft_by_pk;
   }
 
   return {
