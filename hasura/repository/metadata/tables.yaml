@@ -129,13 +129,14 @@
   - role: anonymous
     permission:
       columns:
-      - id
-      - name
-      - author_id
-      - title
       - content
+      - name
+      - title
       - created_at
+      - ended_at
       - updated_at
+      - author_id
+      - id
       filter: {}
   - role: author
     permission:
