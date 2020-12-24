@@ -30,6 +30,7 @@ import { showError, getPageContent, transliterate, updateEditable, draftClear } 
 import { TitleBlot } from './editor/TitleBlot';
 import { skip, debounceTime } from 'rxjs/operators';
 import { loadingProgressBar } from 'loading-progress-bar';
+import { env } from 'process';
 
 loadingProgressBar.define('loading-progress-bar');
 
@@ -97,6 +98,7 @@ export class EditorComponent extends AbstractElement {
     // let $tl_article = this.getElementsByClassName('tl_article')[0];
     const editorContainerEl = this.querySelector('#_tl_editor') as HTMLDivElement;
     this.quill = QuillRegister.editor(this.tooltip, editorContainerEl);
+    this.quill.disable();
 
     if (this._authService.$authenticated.getValue()) {
       this.loadContent(this.quill);
@@ -114,8 +116,8 @@ export class EditorComponent extends AbstractElement {
       });
     }
 
-    // @TODO: only develop mode
-    window['quill'] = this.quill;
+    // TODO: only develop mode
+    // window['quill'] = this.quill;
 
     const originDocumentTitle = document.title;
     const unsavedDocumentTitle = `*${originDocumentTitle}`;
@@ -123,11 +125,13 @@ export class EditorComponent extends AbstractElement {
     // Store accumulated changes
     var change = new Delta();
     this.quill.on('text-change', (delta) => {
-      change = change.compose(delta);
-      this.changedContent$.next((this.quill as MyQuill).getContents());
-
-      if(document.title !== unsavedDocumentTitle) {
-        document.title = unsavedDocumentTitle;
+      if(!this.isPreloader) {
+        change = change.compose(delta);
+        this.changedContent$.next((this.quill as MyQuill).getContents());
+  
+        if(document.title !== unsavedDocumentTitle) {
+          document.title = unsavedDocumentTitle;
+        }
       }
     });
 
@@ -192,7 +196,7 @@ export class EditorComponent extends AbstractElement {
 
     // Check for unsaved data
     window.onbeforeunload = function () {
-      if (change.length() > 0) {
+      if (process.env.NODE_ENV === 'production' && change.length() > 0) {
         return 'There are unsaved changes. Are you sure you want to leave?';
       }
     }
@@ -234,6 +238,8 @@ export class EditorComponent extends AbstractElement {
     }
 
     quill.setContents(content);
+    quill.history.clear();
+    quill.enable();
     this.isPreloader = false;
   }
 

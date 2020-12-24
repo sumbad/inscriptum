@@ -33,7 +33,7 @@ import { CodeBlock } from 'quill/modules/syntax';
 import { PlainTextClipboard } from './PlainTextClipboard';
 import { EditorTooltipComponent } from './tooltip';
 import { draftSave, T, getPageContent, updateEditableText, sanitize, uploadDataToBlob, showError, isEdit, updateEditable } from './utils';
-import highlightjs from './highlightjs';
+import hljs from './hljs';
 import { DividerBlot } from './DividerBlot';
 
 
@@ -154,7 +154,7 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     // ],
     modules: {
       syntax: {
-        highlight: text => highlightjs.highlightAuto(text).value
+        highlight: text => hljs.highlightAuto(text).value
       },
       clipboard: {
         matchers: [

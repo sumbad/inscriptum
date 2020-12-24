@@ -6,6 +6,7 @@ declare module 'quill/core' {
   import { Blot } from 'parchment/dist/src/blot/abstract/blot';
   import { BlockEmbed } from 'quill/blots/block';
   import { Selection } from 'quill/core/selection';
+  import { History } from 'quill/modules/history';
 
   type events = {
     EDITOR_CHANGE        : 'editor-change',
@@ -34,6 +35,8 @@ declare module 'quill/core' {
     container: HTMLElement;
     scroll: ScrollBlotFix;
     selection: Selection;
+    history: History
+
     isEnabled: () => boolean;
     on(eventName: "text-change", handler: TextChangeHandler): EventEmitter;
     on(eventName: "selection-change", handler: SelectionChangeHandler): EventEmitter;
@@ -59,8 +62,6 @@ declare module 'quill-delta' {
 
   export default Delta;
 }
-
-
 
 declare module 'quill/blots/block' {
 

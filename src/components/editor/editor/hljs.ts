@@ -1,5 +1,5 @@
 // Core import
-import highlightjs from 'highlight.js/lib/highlight'
+import hljs from 'highlight.js'
 
 // Languages import
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -13,14 +13,14 @@ import yaml from 'highlight.js/lib/languages/yaml';
 
 
 // Register languages
-highlightjs.registerLanguage('javascript', javascript);
-highlightjs.registerLanguage('typescript', typescript);
-highlightjs.registerLanguage('sql', sql);
-highlightjs.registerLanguage('html', html);
-highlightjs.registerLanguage('xml', xml);
-highlightjs.registerLanguage('css', css);
-highlightjs.registerLanguage('bash', bash);
-highlightjs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('html', html);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('yaml', yaml);
 
 
-export default highlightjs;
+export default hljs;
