@@ -1,9 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{82:function(e,i,t){"use strict";t.r(i),i.default=(e,i)=>e`
-<template id="umArticlePreview">
-  <inscriptum-post-preview></inscriptum-post-preview>
-</template>
-
-<div id="umArticlePrevieList">
-  ${i.previews}
-</div>
-`}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{110:function(t,e,s){"use strict";s.r(e),s.d(e,"postRouter",(function(){return n}));var o=s(22),a=s(50);class r extends a.AbstractRoute{constructor(){super(...arguments),this.$routePost=new o.a,this.$routePostsList=new o.a}getRouter(){return{rootPath:"/articles",routers:[{path:"/:id",callback:(t,e)=>this.$routePost.next({ctx:t,next:e})},{path:"",callback:(t,e)=>this.$routePostsList.next({ctx:t,next:e})},{path:"*",callback:(t,e)=>{t.handled?(t.handled=!1,e()):this.page.replace("/articles")}}]}}}const n=new r}}]);

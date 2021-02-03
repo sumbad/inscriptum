@@ -1,1 +1,84 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[27,42],{130:function(t,e,s){"use strict";var i=s(93);class a extends i.a{}a.blotName="italic",a.tagName=["EM","I"],e.a=a},135:function(t,e,s){"use strict";s.r(e);var i=s(40),a=s(69),r=s(68),l=s(93),n=s(130),o=s(64);i.a.register({"modules/syntax":o.InsSyntaxModule,"formats/bold":l.a,"formats/italic":n.a,"formats/list":a.b,"formats/list-item":a.a,"formats/code":r.a}),e.default=i.a},64:function(t,e,s){"use strict";s.r(e),s.d(e,"CodeEndLineFlag",(function(){return l})),s.d(e,"InsSyntaxCodeBlock",(function(){return n})),s.d(e,"InsSyntaxModule",(function(){return o}));var i=s(40),a=s(50),r=s(78);class l extends a.a{static formats(){return{}}}l.blotName="code-end",l.className="l",l.tagName="SPAN",i.a.register(l);class n extends r.a{highlight(t){let e=this.domNode.textContent||"";if(this.cachedText!==e){if(e.trim().length>0||null==this.cachedText){let s="";const i=t(e).split("\n");for(let t=0;t<i.length-1;t++)s+=`<span class="l">${i[t]||" "}</span>\n`;s+=`<span class="l">${i[i.length-1]}</span>`,this.domNode.innerHTML=`<code class="hljs">${s}</code>`}this.cachedText=e}}}class o extends r.c{static register(){i.a.register(r.b,!0),i.a.register(n,!0)}highlight(){if(this.quill.selection.composing)return;this.quill.update(i.a.sources.USER);let t=this.quill.getSelection();this.quill.scroll.descendants(n).forEach(t=>{t.highlight(this.options.highlight)}),this.quill.update(i.a.sources.SILENT),null!=t&&document.activeElement===this.quill.container.querySelector("[contenteditable]")&&this.quill.setSelection(t,i.a.sources.SILENT)}}},69:function(t,e,s){"use strict";s.d(e,"a",(function(){return n})),s.d(e,"b",(function(){return o}));var i=s(42),a=s.n(i),r=s(41),l=s(120);class n extends r.c{static formats(t){return t.tagName===this.tagName?void 0:super.formats(t)}format(t,e){t!==o.blotName||e?super.format(t,e):this.replaceWith(a.a.create(this.statics.scope))}remove(){null==this.prev&&null==this.next?this.parent.remove():super.remove()}replaceWith(t,e){return this.parent.isolate(this.offset(this.parent),this.length()),t===this.parent.statics.blotName?(this.parent.replaceWith(t,e),this):(this.parent.unwrap(),super.replaceWith(t,e))}}n.blotName="list-item",n.tagName="LI";class o extends l.a{static create(t){let e="ordered"===t?"OL":"UL",s=super.create(e);return"checked"!==t&&"unchecked"!==t||s.setAttribute("data-checked","checked"===t),s}static formats(t){return"OL"===t.tagName?"ordered":"UL"===t.tagName?t.hasAttribute("data-checked")?"true"===t.getAttribute("data-checked")?"checked":"unchecked":"bullet":void 0}constructor(t){super(t);const e=e=>{if(e.target.parentNode!==t)return;let s=this.statics.formats(t),i=a.a.find(e.target);"checked"===s?i.format("list","unchecked"):"unchecked"===s&&i.format("list","checked")};t.addEventListener("touchstart",e),t.addEventListener("mousedown",e)}format(t,e){this.children.length>0&&this.children.tail.format(t,e)}formats(){return{[this.statics.blotName]:this.statics.formats(this.domNode)}}insertBefore(t,e){if(t instanceof n)super.insertBefore(t,e);else{let s=null==e?this.length():e.offset(this),i=this.split(s);i.parent.insertBefore(t,i)}}optimize(t){super.optimize(t);let e=this.next;null!=e&&e.prev===this&&e.statics.blotName===this.statics.blotName&&e.domNode.tagName===this.domNode.tagName&&e.domNode.getAttribute("data-checked")===this.domNode.getAttribute("data-checked")&&(e.moveChildren(this),e.remove())}replace(t){if(t.statics.blotName!==this.statics.blotName){let e=a.a.create(this.statics.defaultChild);t.moveChildren(e),this.appendChild(e)}super.replace(t)}}o.blotName="list",o.scope=a.a.Scope.BLOCK_BLOT,o.tagName=["OL","UL"],o.defaultChild="list-item",o.allowedChildren=[n]},78:function(t,e,s){"use strict";s.d(e,"a",(function(){return o})),s.d(e,"b",(function(){return h})),s.d(e,"c",(function(){return c}));var i=s(42),a=s.n(i),r=s(114),l=s(102),n=s(68);class o extends n.b{replaceWith(t){this.domNode.textContent=this.domNode.textContent,this.attach(),super.replaceWith(t)}highlight(t){let e=this.domNode.textContent;this.cachedText!==e&&((e.trim().length>0||null==this.cachedText)&&(this.domNode.innerHTML=t(e),this.domNode.normalize(),this.attach()),this.cachedText=e)}}o.className="ql-syntax";let h=new a.a.Attributor.Class("token","hljs",{scope:a.a.Scope.INLINE});class c extends l.a{static register(){r.a.register(h,!0),r.a.register(o,!0)}constructor(t,e){if(super(t,e),"function"!=typeof this.options.highlight)throw new Error("Syntax module requires highlight.js. Please include the library on the page before Quill.");let s=null;this.quill.on(r.a.events.SCROLL_OPTIMIZE,()=>{clearTimeout(s),s=setTimeout(()=>{this.highlight(),s=null},this.options.interval)}),this.highlight()}highlight(){if(this.quill.selection.composing)return;this.quill.update(r.a.sources.USER);let t=this.quill.getSelection();this.quill.scroll.descendants(o).forEach(t=>{t.highlight(this.options.highlight)}),this.quill.update(r.a.sources.SILENT),null!=t&&this.quill.setSelection(t,r.a.sources.SILENT)}}c.DEFAULTS={highlight:null==window.hljs?null:function(t){return window.hljs.highlightAuto(t).value},interval:1e3}},93:function(t,e,s){"use strict";var i=s(50);class a extends i.a{static create(){return super.create()}static formats(){return!0}optimize(t){super.optimize(t),this.domNode.tagName!==this.statics.tagName[0]&&this.replaceWith(this.statics.blotName)}}a.blotName="bold",a.tagName=["STRONG","B"],e.a=a}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[27,58,59,61,69],{110:function(e,t,i){"use strict";i.r(t),i.d(t,"postRouter",(function(){return a}));var s=i(22),n=i(50);class o extends n.AbstractRoute{constructor(){super(...arguments),this.$routePost=new s.a,this.$routePostsList=new s.a}getRouter(){return{rootPath:"/articles",routers:[{path:"/:id",callback:(e,t)=>this.$routePost.next({ctx:e,next:t})},{path:"",callback:(e,t)=>this.$routePostsList.next({ctx:e,next:t})},{path:"*",callback:(e,t)=>{e.handled?(e.handled=!1,t()):this.page.replace("/articles")}}]}}}const a=new o},111:function(e,t,i){"use strict";i.r(t),t.default=(e,t)=>e`
+
+<um-preloader loading=${t.isPreloader}>
+  <!-- <template> -->
+  <div id="app">
+    <!-- Header ================================================== -->
+    <header id="top">
+      <div class="row">
+        <div class="header-content twelve columns">
+          <h1 id="logo-text">
+            <a href="/" onclick=${t.handleClick} title="">inscriptum</a>
+          </h1>
+          <p id="intro" v-html="saying"></p>
+        </div>
+      </div>
+
+      <nav id="nav-wrap">
+        <a class="mobile-btn fas fa-bars" href="#nav-wrap" title="Show navigation">Show Menu</a>
+        <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
+
+        <!--<a class="mobile-btn" href="#nav-wrap" title="Показать меню">Показать меню</a>
+                        <a class="mobile-btn" href="#" title="Скрыть меню">Скрыть меню</a>-->
+        <div class="row">
+          <ul id="nav" class="nav">
+            <li class="current">
+              <a href="/articles">Статьи</a>
+            </li>
+            <li>
+              <a href="/conference">Слайды</a>
+            </li>
+          </ul>
+          <!-- end #nav -->
+        </div>
+      </nav>
+      <!-- end #nav-wrap -->
+    </header>
+    <!-- Header End -->
+
+    <!-- Content ================================================== -->
+    <div id="content-wrap">
+      <div class="row">
+        <div id="main" class="twelve columns">
+          ${t.routerView}
+        </div>
+      </div>
+    </div>
+    <!-- end content-wrap -->
+  </div>
+  <!-- </template> -->
+
+  <!-- Footer
+      ================================================== -->
+  <footer>
+
+    <div class="row">
+      <div class="twelve columns">
+        <ul class="social-links">
+          <li>
+            <a href="https://github.com/sumbad/">
+              <i class="fab fa-github-square"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p class="copyright">&copy; Copyright 2017 Денис Сумбаев
+      </p>
+    </div>
+    <!-- End row -->
+
+    <div id="go-top">
+      <a class="smoothscroll" title="Back to Top" href="#top">
+        <i class="fas fa-chevron-up"></i>
+      </a>
+    </div>
+
+  </footer>
+  <!-- End Footer-->
+
+</um-preloader>
+`},126:function(e,t,i){"use strict";i.r(t),i.d(t,"PostsComponent",(function(){return p}));var s=i(67),n=i(71),o=i(110),a=i(111),r=i(140),l=i(158),c=i(171),d=i(386),u=function(e,t,i,s){var n,o=arguments.length,a=o<3?t:null===s?s=Object.getOwnPropertyDescriptor(t,i):s;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,i,s);else for(var r=e.length-1;r>=0;r--)(n=e[r])&&(a=(o<3?n(a):o>3?n(t,i,a):n(t,i))||a);return o>3&&a&&Object.defineProperty(t,i,a),a},h=function(e,t,i,s){return new(i||(i=Promise))((function(n,o){function a(e){try{l(s.next(e))}catch(e){o(e)}}function r(e){try{l(s.throw(e))}catch(e){o(e)}}function l(e){var t;e.done?n(e.value):(t=e.value,t instanceof i?t:new i((function(e){e(t)}))).then(a,r)}l((s=s.apply(e,t||[])).next())}))};r.b.add(c.a,l.e,l.b);let p=class extends s.UmWebComponent{constructor(e){super(a.default,i(165)),this.saying=e,this.routerView="",this.isPreloader=!0,n.PreloaderService.isAppLoading.pipe(Object(d.a)(500)).subscribe(e=>{this.isPreloader!==e&&(this.isPreloader=e,this.render())})}connectedCallback(){const e=this.wire(this,":articles");this.sub=o.postRouter.$routePostsList.subscribe(t=>h(this,void 0,void 0,(function*(){yield i.e(66).then(i.bind(null,75)),this.routerView=e`
+        <inscriptum-posts-list></inscriptum-posts-list>
+      `,this.render(),t.ctx.handled=!0}))),this.sub=o.postRouter.$routePost.subscribe(t=>h(this,void 0,void 0,(function*(){yield i.e(67).then(i.bind(null,76)),this.routerView=e`
+        <inscriptum-post article-name=${t.ctx.params.id}></inscriptum-post>
+      `,this.render(),t.ctx.handled=!0})));const t=i(176),s=Math.floor(Math.random()*t.length);this.saying=t[s];this.render();var n=$("<a>",{id:"toggle-btn",html:'<i class="fas fa-bars"></i>',title:"Menu",href:"#"}),a=$("nav#nav-wrap"),l=$("ul#nav");a.find("a.mobile-btn").remove(),a.prepend(n),n.on("click",(function(e){e.preventDefault(),l.slideToggle("fast")})),n.is(":visible")&&l.addClass("mobile"),$(window).resize((function(){n.is(":visible")?l.addClass("mobile"):l.removeClass("mobile")})),$("ul#nav li a").on("click",(function(){l.hasClass("mobile")&&l.fadeOut("fast")})),function(e){e(".smoothscroll").on("click",(function(t){t.preventDefault();var i=this.hash,s=e(i);e("html, body").stop().animate({scrollTop:s.offset().top},800,"swing",(function(){window.location.hash=i}))}));e(window).scroll((function(){e(window).scrollTop()>=300?e("#go-top").fadeIn(400):e("#go-top").fadeOut(400)}))}(jQuery),r.a.watch()}render(){super.render({isPreloader:this.isPreloader,routerView:this.routerView,handleClick:this.handleClick.bind(this)})}handleClick(e){}};p=u([Object(s.Define)("inscriptum-posts")],p)},176:function(e){e.exports=JSON.parse('["Лучше износиться, чем заржаветь...<br> (Джордж Уойфилд, англ. проповедник-методист)","Best friends come in all sizes.","DO YOUR WORK. DON\'T BE STUPID"]')},71:function(e,t,i){"use strict";i.r(t),i.d(t,"PreloaderService",(function(){return n}));var s=i(22);class n{}n.isAppLoading=new s.a}}]);

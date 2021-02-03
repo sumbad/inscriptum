@@ -1,1 +1,22 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[54],{63:function(e,t,r){"use strict";r.r(t),r.d(t,"uploadFileService",(function(){return n}));function n(e,t){return new Promise((r,n)=>{var o=new XMLHttpRequest,a=new FormData;o.open("POST","https://api.cloudinary.com/v1_1/inscriptum/upload",!0),o.setRequestHeader("X-Requested-With","XMLHttpRequest"),o.upload.addEventListener("progress",(function(e){e.lengthComputable&&t&&t(e.loaded,e.total)})),t&&t(0,1),a.append("upload_preset","cz5pibn5"),a.append("tags","browser_upload"),a.append("file",e),o.send(a),o.onreadystatechange=e=>{if(4==o.readyState&&200==o.status){var t=JSON.parse(o.responseText);console.log(1111,t),t.src=t.secure_url,r(t)}},o.onerror=function(){n(new Error("Network Error"))}})}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[54],{106:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
+<section class="entry">
+
+  <header class="entry-header">
+    <h2 class="entry-title">
+      <a href=${"/articles/"+t.articleName}>
+        ${t.articleTitle}
+      </a>
+    </h2>
+    <div class="entry-meta">
+      <ul>
+        <li>${t.articleDate}</li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="entry-content">
+    <slot></slot>
+  </div>
+
+</section>
+`}}]);

@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[47],{71:function(o,e,t){"use strict";t.r(e),t.d(e,"BlockquoteBlot",(function(){return s}));var c=t(40),n=t(41);class s extends n.c{}s.blotName="blockBlockquote",s.tagName="blockquote",c.a.register(s)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[47],{96:function(e,n,i){"use strict";i.r(n),i.d(n,"DividerBlot",(function(){return t}));var o=i(60);class t extends o.a{}t.blotName="blockDivider",t.tagName="hr"}}]);
