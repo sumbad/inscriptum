@@ -14,6 +14,7 @@ export interface UserInfo extends auth0.Auth0UserProfile {
 }
 
 /**
+ * @deprecated
  * Singleton. Auth service
  */
 export class AuthService {

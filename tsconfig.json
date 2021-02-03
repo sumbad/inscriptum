@@ -8,10 +8,7 @@
     "moduleResolution": "node",
     // produce a source map
     "sourceMap": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "isolatedModules": false,
     "experimentalDecorators": true,
     "noImplicitAny": false,
@@ -22,19 +19,12 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "rootDir": "./",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+
+    "jsx": "preserve"
   },
-  "include": [
-    "src", "src/components/editor/register/.ts"
-  ],
-  "exclude": [
-    "postcss.config.js",
-    "src/public",
-    "webpack",
-    "webpack.config.js",
-    "webpack.mix.js",
-    "babel.config.js"
-  ],
+  "include": ["src", "src/components/editor/register/.ts"],
+  "exclude": ["postcss.config.js", "src/public", "webpack", "webpack.config.js", "webpack.mix.js", "babel.config.js"],
   "compileOnSave": false,
   "plugins": [
     {

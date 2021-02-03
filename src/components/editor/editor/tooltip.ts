@@ -4,10 +4,6 @@ import * as litHtml from 'lit-html';
 import litRender from 'abstract-element/render/lit';
 import Quill from 'quill/core';
 import { browser } from '.';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faStrikethrough } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faStrikethrough);
 
 @Define('inscriptum-editor-tooltip')
 export class EditorTooltipComponent extends AbstractElement {
@@ -16,17 +12,27 @@ export class EditorTooltipComponent extends AbstractElement {
   $tl_tooltip: HTMLDivElement;
   $tl_blocks: HTMLDivElement;
 
+  $bold_button: HTMLDivElement;
+  $italic_button: HTMLDivElement;
+  $link_button: HTMLDivElement;
+  $header_button: HTMLDivElement;
+  $subheader_button: HTMLDivElement;
+  $quote_button: HTMLDivElement;
+  $strikeButton: HTMLDivElement;
+  $image_button: HTMLDivElement;
+  $embed_button: HTMLDivElement;
+
   linkTTOptions = {
     padding: 7,
     position: 'bottom',
     depend: this.$tl_tooltip,
-    dependPadding: 10
+    dependPadding: 10,
   };
 
   formatTTOptions = {
     padding: 10,
     position: browser.mobile ? 'bottom' : 'top',
-    minDelta: 5
+    minDelta: 5,
   };
 
   constructor() {
@@ -39,6 +45,17 @@ export class EditorTooltipComponent extends AbstractElement {
     this.$tl_link_tooltip = this.querySelector('#_tl_link_tooltip') || document.createElement('div');
     this.$tl_tooltip = this.querySelector('#_tl_tooltip') || document.createElement('div');
     this.$tl_blocks = this.querySelector('#_tl_blocks') || document.createElement('div');
+
+    this.$bold_button = this.querySelector('#_bold_button') || document.createElement('div');
+    this.$italic_button = this.querySelector('#_italic_button') || document.createElement('div');
+    this.$link_button = this.querySelector('#_link_button') || document.createElement('div');
+    this.$header_button = this.querySelector('#_header_button') || document.createElement('div');
+    this.$subheader_button = this.querySelector('#_subheader_button') || document.createElement('div');
+    this.$quote_button = this.querySelector('#_quote_button') || document.createElement('div');
+    this.$strikeButton = this.querySelector('#_strike_button') || document.createElement('div');
+
+    this.$image_button = this.querySelector('#_image_button') || document.createElement('div');
+    this.$embed_button = this.querySelector('#_embed_button') || document.createElement('div');
   }
 
   render(): TemplateResult {
@@ -59,7 +76,14 @@ export class EditorTooltipComponent extends AbstractElement {
           </div>
           <div class="button_group">
             <button id="_strike_button" class="tt-icon-btn">
-              <i class="fas fa-strikethrough fa-lg"></i>
+            ${litHtml.svg`
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-strikethrough" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <path d="M16 6.5a4 2 0 0 0 -4 -1.5h-1a3.5 3.5 0 0 0 0 7" />
+              <path d="M16.5 16a3.5 3.5 0 0 1 -3.5 3h-1.5a4 2 0 0 1 -4 -1.5" />
+            </svg>
+              `}
             </button>
           </div>
         </div>
@@ -76,6 +100,8 @@ export class EditorTooltipComponent extends AbstractElement {
       </div>
     `;
   }
+
+  // <i class="fas fa-strikethrough fa-lg"></i>
 
   handleMouseover(event: MouseEvent) {
     let button = event.target as Element;
@@ -112,20 +138,20 @@ export class EditorTooltipComponent extends AbstractElement {
       top?: number;
     } = {
       width: $tooltip.offsetWidth,
-      height: $tooltip.offsetHeight
+      height: $tooltip.offsetHeight,
     };
     let win = {
       width: window.outerWidth,
       height: window.outerHeight,
-      scrolltop: document.body.scrollTop
+      scrolltop: document.body.scrollTop,
     };
     let min = {
       left: 9,
-      top: win.scrolltop + 9
+      top: win.scrolltop + 9,
     };
     let max = {
       left: win.width - tt.width - 9,
-      top: win.scrolltop + win.height - tt.height - 9
+      top: win.scrolltop + win.height - tt.height - 9,
     };
     tt.left = rangeBounds.left + rangeBounds.width / 2 - tt.width / 2;
     // console.log('1_tt = ', tt);
@@ -200,7 +226,7 @@ export class EditorTooltipComponent extends AbstractElement {
       top: pos2._top,
       bottom: pos2._top + $elem2.offsetHeight,
       left: pos2._left,
-      right: pos2._left + $elem2.offsetWidth
+      right: pos2._left + $elem2.offsetWidth,
     };
     if (
       bounds1.left - bounds2.right >= padding ||
@@ -260,7 +286,7 @@ export class EditorTooltipComponent extends AbstractElement {
     if (!isEdit) return;
     let range = {
       index: link.offset(quill.scroll),
-      length: link.length()
+      length: link.length(),
     };
     this.$tl_link_tooltip.textContent = value;
     this.tooltipUpdatePosition(this.$tl_link_tooltip, range, this.linkTTOptions, quill);

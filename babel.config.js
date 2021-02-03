@@ -1,13 +1,15 @@
-const babelConfigFunc = require('@insum/babel.config');
+// const babelConfigFunc = require('@insum/babel.config');
 
 
 
-module.exports = function (api) {
-  const babelConfig = babelConfigFunc(api)
+// module.exports = function (api) {
+//   const babelConfig = babelConfigFunc(api)
   
-  // babelConfig.presets[0][1].debug = true;
+//   // babelConfig.presets[0][1].debug = true;
 
-  babelConfig.presets = undefined
+//   babelConfig.presets = undefined
 
-  return babelConfig;
-};
+//   return babelConfig;
+// };
+
+module.exports = { presets: undefined, plugins: [] };

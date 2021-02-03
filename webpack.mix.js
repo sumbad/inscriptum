@@ -12,7 +12,22 @@ module.exports = function (helper) {
     module: {
       rules: [
         require('@insum/webpack.config/loaders/js'),
-        require('@insum/webpack.config/loaders/ts'),
+        {
+          test: /\.ts(x?)$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              // options: require('./babel.config')
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                configFile: path.join(__dirname, 'tsconfig.json'),
+              },
+            },
+          ],
+          exclude: /node_modules/,
+        },
         require('@insum/webpack.config/loaders/file-img'),
         require('@insum/webpack.config/loaders/css'),
         require('@insum/webpack.config/loaders/less-raw'),

@@ -4,10 +4,7 @@ import { AbstractRoute, IRouters } from 'components/abstract.router';
 import { AuthService } from 'auth';
 import { StorageService } from 'storage/storage.service';
 
-
-export type TRootPath = '/articles*' | '/conference*' | '/editor/:id/:flag?' | '/drafts' | '/notes' | '/login' | '*';
-
-
+export type TRootPath = '/articles*' | '/conference*' | '/editor/:id/:flag?' | '/draft/:id' | '/drafts' | '/notes' | '/login' | '*';
 
 export class RootRoute extends AbstractRoute<TRootPath> {
   getRouter(): IRouters<TRootPath> {
@@ -26,7 +23,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             }
             ctx.handled = true;
             next();
-          }
+          },
         },
         {
           path: '/conference*',
@@ -38,9 +35,12 @@ export class RootRoute extends AbstractRoute<TRootPath> {
 
             ctx.handled = true;
             next();
-          }
+          },
         },
         {
+          /**
+           * @deprecated
+           */
           path: '/editor/:id/:flag?',
           // path: '/editor*',
           callback: async (ctx: PageJS.Context, next) => {
@@ -56,7 +56,22 @@ export class RootRoute extends AbstractRoute<TRootPath> {
 
             ctx.handled = true;
             next();
-          }
+          },
+        },
+        {
+          path: '/draft/:id',
+          callback: async (ctx: PageJS.Context, next) => {
+            if (!this.routerOutlet.hasChildNodes()) {
+              const { draftElement } = await import('new-components/draft');
+              const draftHTMLElement = new (draftElement('inscriptum-draft').element)();
+              draftHTMLElement.dataset['id'] = ctx.params.id;
+
+              this.routerOutlet.appendChild(draftHTMLElement);
+            }
+
+            ctx.handled = true;
+            next();
+          },
         },
         {
           path: '/drafts',
@@ -106,10 +121,9 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             }
           },
         },
-      ]
-    }
+      ],
+    };
   }
-
 }
 
 // export const rootRoute = new RootRoute();

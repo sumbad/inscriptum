@@ -1,11 +1,11 @@
 import { TemplateResult, html } from 'lit-html';
-import { LoadingProgressBarProps } from 'loading-progress-bar';
+import { LoadingProgressBarConfig } from 'loading-progress-bar';
 
 interface IProps {
   styles: TemplateResult;
   isPreloader: boolean;
   tooltip: HTMLElement;
-  loaderConfig: LoadingProgressBarProps['config'];
+  loaderConfig: LoadingProgressBarConfig;
   loadingRef: {current: {generateProgress?: Generator, togglePause?: (isPause?: boolean) => void;}}
 }
 interface IHandlers {
@@ -31,8 +31,6 @@ ${props.styles}
           </address>
         </header>
         <article id="_tl_editor" class="tl_article_content">
-          <h1><br></h1>
-          <address><br></address>
           <p><br></p>
         </article>
         ${props.tooltip}

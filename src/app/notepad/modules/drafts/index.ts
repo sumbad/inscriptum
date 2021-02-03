@@ -69,12 +69,14 @@ export class DraftComponent extends AbstractElement {
               drafts => {
                 const _drafts = drafts.map(
                   item => {
-                    const { content, title, image } = quillDelta2Preview(item.content);
+                    const { content: description, title, image } = quillDelta2Preview(item.pages[0].content);
                     return {
                       id: item.id,
-                      title,
-                      image,
-                      content,
+                      preview: {
+                        title,
+                        description,
+                        image
+                      },
                       linkUrl: '/editor/' + item.id,
                       actions: [
                         {
@@ -129,7 +131,7 @@ export class DraftComponent extends AbstractElement {
    * Create new draft
    */
   async handleBtnCreateNewDraft() {
-    const newDraftId = await this._storageService.api.draft.create({author_id: this._storageService.author.id});
+    const newDraftId = await this._storageService.api.draft.create(this._storageService.author.id);
     page('/editor/' + newDraftId.id);
   }
 

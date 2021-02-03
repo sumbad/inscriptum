@@ -10,3 +10,7 @@
 # Publish
     # git remote -v
     # git push heroku master
+
+
+# Squash migrations and add checkpoints to version control
+    # hasura migrate squash --name "changes_to_use_page" --from 1609172197076 --log-level DEBUG --admin-secret myadminsecretkey

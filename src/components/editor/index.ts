@@ -30,9 +30,8 @@ import { showError, getPageContent, transliterate, updateEditable, draftClear } 
 import { TitleBlot } from './editor/TitleBlot';
 import { skip, debounceTime } from 'rxjs/operators';
 import { loadingProgressBar } from 'loading-progress-bar';
-import { env } from 'process';
 
-loadingProgressBar.define('loading-progress-bar');
+loadingProgressBar('loading-progress-bar');
 
 library.add(faFileExport, faBold, faItalic, faLink, faQuoteRight, faHeading, faCamera, faPlay, faTwitter, faMinus, faPlus, faCode);
 
@@ -55,9 +54,16 @@ export class EditorComponent extends AbstractElement {
   @state()
   isPosted = false;
 
+  @state()
+  noteId: string;
+
+  @state()
+  pageId: string;
+
   /** id */
   @attr('data-id')
   id: string;
+
   loadingRef: {
     current: { generateProgress?: Generator<unknown, any, unknown> | undefined; togglePause?: (isPause?: boolean) => void };
   } = { current: {} };
@@ -125,11 +131,11 @@ export class EditorComponent extends AbstractElement {
     // Store accumulated changes
     var change = new Delta();
     this.quill.on('text-change', (delta) => {
-      if(!this.isPreloader) {
+      if (!this.isPreloader) {
         change = change.compose(delta);
         this.changedContent$.next((this.quill as MyQuill).getContents());
-  
-        if(document.title !== unsavedDocumentTitle) {
+
+        if (document.title !== unsavedDocumentTitle) {
           document.title = unsavedDocumentTitle;
         }
       }
@@ -148,7 +154,7 @@ export class EditorComponent extends AbstractElement {
         }
         isLoading = true;
 
-        this._storageService.api.draft.updateById({ id: this.id, content: d, updated_at: new Date().toISOString() }).then(() => {
+        this._storageService.api.page.updateById(this.pageId, d).then(() => {
           change = new Delta();
           isLoading = false;
           togglePause(false);
@@ -199,7 +205,7 @@ export class EditorComponent extends AbstractElement {
       if (process.env.NODE_ENV === 'production' && change.length() > 0) {
         return 'There are unsaved changes. Are you sure you want to leave?';
       }
-    }
+    };
   }
 
   /**
@@ -230,14 +236,30 @@ export class EditorComponent extends AbstractElement {
    * @param quill - quill instance
    */
   async loadContent(quill: MyQuill) {
-    let content: object;
+    let page: {
+      id: string;
+      content: object;
+    };
+
     if (this.isPosted) {
-      content = (await this._storageService.api.note.findById({ id: this.id })).content;
+      const note = await this._storageService.api.note.findById(this.id);
+      if (note.draft?.pages[0] != null) {
+        page = note.draft?.pages[0];
+        this.id = note.draft.id;
+      } else {
+        throw new Error(`Can't find a draft for note with ID ${this.id}`);
+      }
     } else {
-      content = (await this._storageService.api.draft.findById({ id: this.id })).content;
+      const draft = await this._storageService.api.draft.findById(this.id);
+      page = draft.pages[0];
+      if (Array.isArray(draft.notes) && draft.notes[0] != null) {
+        this.noteId = draft.notes[0].id;
+        this.isPosted = true;
+      }
     }
 
-    quill.setContents(content);
+    this.pageId = page.id;
+    quill.setContents(page.content);
     quill.history.clear();
     quill.enable();
     this.isPreloader = false;
@@ -247,7 +269,7 @@ export class EditorComponent extends AbstractElement {
    * Publish this draft
    */
   async publish() {
-    if (this.quill === undefined || this.quill === null) {
+    if (this.quill == null) {
       return;
     }
 
@@ -274,6 +296,8 @@ export class EditorComponent extends AbstractElement {
       // quill.selection.scrollIntoView();
       return showError('Title is too small');
     }
+
+    title = title.trim();
 
     // let loading_images = $('img[src^="data:"],video[src^="data:"]');
     let loading_images = $tl_content.querySelectorAll('img[src^="data:"],video[src^="data:"]');
@@ -316,39 +340,49 @@ export class EditorComponent extends AbstractElement {
 
     const quillDelta = this.quill.getContents();
 
-    const { content: previewContent, image: firstImgSrc } = quillDelta2Preview(quillDelta);
+    const { content: description, image } = quillDelta2Preview(quillDelta);
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 
+    await this._storageService.api.page.updateById(this.pageId, quillDelta);
+
     let noteInfo: { id: string; created_at: string; updated_at: string };
     if (this.isPosted) {
-      noteInfo = await this._storageService.api.note.updateById({
-        id: this.id,
-        content: quillDelta,
+      noteInfo = await this._storageService.api.note.updateById(
+        this.noteId,
         name,
-        title,
-        updated_at: new Date().toISOString(),
-      });
+        {
+          title,
+          description,
+          image,
+        },
+        `note/${name}`
+      );
     } else {
-      noteInfo = await this._storageService.api.note.create({
-        author_id: this._storageService.author.id,
+      noteInfo = await this._storageService.api.note.create(
+        this._storageService.author.id,
         name,
-        title,
-        content: quillDelta,
-      });
+        this.id,
+        {
+          title,
+          description,
+          image,
+        },
+        `note/${name}`
+      );
       // delete this draft
-      this._storageService.api.draft.deleteById({ id: this.id });
+      // this._storageService.api.draft.deleteById({ id: this.id });
       draftClear();
     }
 
     this.isPosted = true;
-    this.id = noteInfo.id;
-    window.history.pushState(noteInfo, document.title, `${document.location.origin}/editor/${this.id}/posted`);
+    this.noteId = noteInfo.id;
+    // window.history.pushState(noteInfo, document.title, `${document.location.origin}/draft/${this.id}`);
     $tl_article.classList.remove('tl_article_saving');
     updateEditable(true, this.quill, this.tooltip, $tl_article, $tl_content, $tl_header);
 
     if (pageEl !== null) {
-      (pageEl.querySelector('#_edit_button') as HTMLLinkElement).href = `/editor/${this.id}/posted`;
+      (pageEl.querySelector('#_edit_button') as HTMLLinkElement).href = `/draft/${this.id}`;
       pageHTML = pageEl.outerHTML;
     }
 
@@ -363,19 +397,19 @@ export class EditorComponent extends AbstractElement {
     <meta name="MobileOptimized" content="176">
     <meta name="HandheldFriendly" content="True">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="${previewContent}">
+    <meta name="description" content="${description}">
     <meta property="og:site_name" content="inscriptum">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${previewContent}">
-    <meta property="og:image" content="${firstImgSrc}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:image" content="${image}">
     <meta property="article:published_time" content="${noteInfo.created_at}">
     <meta property="article:modified_time" content="${noteInfo.updated_at}">
     <meta property="article:author" content="${this._storageService.author.name || this._storageService.author.email}">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${previewContent}">
-    <meta name="twitter:image" content="${firstImgSrc}">
+    <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="${image}">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <link href="/css/note.css" rel="stylesheet">
     <link href="/css/custom_editor_fonts.css" rel="stylesheet">

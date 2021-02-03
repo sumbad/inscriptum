@@ -33,17 +33,6 @@ export class PostsComponent extends UmWebComponent {
   connectedCallback() {
     const html = this.wire(this, ':articles');
 
-    this.sub = postRouter.$routeDraft.subscribe(async (d: { ctx; next }) => {
-      await import('./draft');
-      this.routerView = html`
-        <inscriptum-draft></inscriptum-draft>
-      `;
-      this.render();
-
-      d.ctx.handled = true;
-      d.next();
-    });
-
     this.sub = postRouter.$routePostsList.subscribe(async (d: { ctx; next }) => {
       await import('./list');
       this.routerView = html`

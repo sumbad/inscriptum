@@ -10,7 +10,6 @@ import { dom } from '@fortawesome/fontawesome-svg-core';
 import 'components/list';
 import 'components/um-preloader';
 import { IListItem } from 'components/list';
-import { quillDelta2Preview } from 'utils/common';
 
 const isDevMode = process.env.NODE_ENV === 'development';
 
@@ -53,13 +52,10 @@ export class DraftComponent extends AbstractElement {
 
     this._storageService.api.note.getAll().then(notes => {
       const _notes = notes.map(item => {
-        const { content, title, image } = quillDelta2Preview(item.content);
         return {
           id: item.id,
-          title,
-          content,
-          image,
-          linkUrl: '/note/' + item.name + (isDevMode ? '.html' : ''),
+          preview: item.preview,
+          linkUrl: item.static_link + (isDevMode ? '.html' : ''),
           linkRel: 'external',
           actions: () =>
             this.$.hasAuth

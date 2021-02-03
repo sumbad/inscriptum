@@ -28,6 +28,10 @@ let helper = {
 };
 
 const mainConfig = {
+  resolve: {
+    modules: [helper.PATHS.src, helper.PATHS.node_modules],
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+  },
   entry: {
     notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
     note: path.resolve(helper.PATHS.src, 'app/note/note.ts')

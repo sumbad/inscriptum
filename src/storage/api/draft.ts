@@ -1,12 +1,20 @@
 import type { GraphQLClient } from 'graphql-request';
 import type Delta from 'quill-delta';
 
-export interface DraftApi {
-  Query: {
-    DRAFT_GET_ALL: {
+/**
+ * The module with Draft API
+ */
+export function draftApi(gqlClient: GraphQLClient) {
+  /**
+   * Get all drafts
+   */
+  async function getAll() {
+    type DRAFT_GET_ALL = {
       drafts: {
         id: string;
-        content: Delta;
+        pages: {
+          content: Delta;
+        }[];
         created_at: string;
         updated_at: string;
         author: {
@@ -16,43 +24,14 @@ export interface DraftApi {
         };
       }[];
     };
-    DRAFT_FIND_BY_ID: {
-      draft: {
-        id: string;
-        content: Delta;
-      };
-    };
-  };
-  Mutation: {
-    DRAFT_UPDATE_BY_ID: {
-      update_draft_by_pk: {
-        id: string;
-      };
-    };
-    DRAFT_CREATE: {
-      insert_draft_one: {
-        id: string;
-        content: Delta;
-      };
-    };
-    DRAFT_DELETE_LOGICALLY: {
-      update_draft_by_pk: {
-        id: string;
-      };
-    };
-  };
-}
 
-/**
- * The module with Draft API
- */
-export function draftApi(gqlClient: GraphQLClient) {
-  const query = {
-    getAll: /* GraphQL */ `
+    const query = /* GraphQL */ `
       query DRAFT_GET_ALL {
         drafts: draft(order_by: { updated_at: desc }, where: { ended_at: { _is_null: true } }) {
           id
-          content
+          pages(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+            content
+          }
           created_at
           updated_at
           author {
@@ -62,75 +41,96 @@ export function draftApi(gqlClient: GraphQLClient) {
           }
         }
       }
-    `,
-    findById: /* GraphQL */ `
-      query DRAFT_FIND_BY_ID($id: uuid!) {
-        draft: draft_by_pk(id: $id) {
-          content
-          id
-        }
-      }
-    `,
-  };
+    `;
 
-  const mutation = {
-    updateById: /* GraphQL */ `
-      mutation DRAFT_UPDATE_BY_ID($id: uuid!, $content: jsonb, $updated_at: timestamptz) {
-        update_draft_by_pk(pk_columns: { id: $id }, _set: { content: $content, updated_at: $updated_at }) {
-          id
-        }
-      }
-    `,
-    create: /* GraphQL */ `
-      mutation DRAFT_CREATE($author_id: uuid) {
-        insert_draft_one(object: { author_id: $author_id, content: "" }) {
-          id
-          content
-        }
-      }
-    `,
-    deleteLogicallyById: /* GraphQL */ `
-      mutation DRAFT_DELETE_LOGICALLY($id: uuid!, $ended_at: timestamptz) {
-        update_draft_by_pk(pk_columns: { id: $id }, _set: { ended_at: $ended_at }) {
-          id
-        }
-      }
-    `,
-  };
+    const { drafts } = await gqlClient.request<DRAFT_GET_ALL>(query);
+    return drafts;
+  }
 
   /**
    * Get a draft by ID
-   * @param variables
    */
-  async function findById(variables: { id: string }) {
-    const { draft } = await gqlClient.request<DraftApi['Query']['DRAFT_FIND_BY_ID']>(query.findById, variables);
+  async function findById(id: string) {
+    type DRAFT_FIND_BY_ID = {
+      draft: {
+        id: string;
+        created_at: string;
+        updated_at: string;
+        notes?: {
+          id: string;
+        }[];
+        pages: {
+          id: string;
+          content: Delta;
+        }[];
+      };
+    };
+
+    const variables = {
+      id,
+    };
+
+    const { draft } = await gqlClient.request<DRAFT_FIND_BY_ID>(
+      /* GraphQL */ `
+        query DRAFT_FIND_BY_ID($id: uuid!) {
+          draft: draft_by_pk(id: $id) {
+            id
+            created_at
+            updated_at
+            notes(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+              id
+            }
+            pages(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+              id
+              content
+            }
+          }
+        }
+      `,
+      variables
+    );
+
+    if (Array.isArray(draft.notes) && draft.notes.length > 1) {
+      throw new Error(`There are more then one active notes for ${draft.id} draft`);
+    }
 
     return draft;
   }
 
   /**
-   * Get all drafts
-   */
-  async function getAll() {
-    const { drafts } = await gqlClient.request<DraftApi['Query']['DRAFT_GET_ALL']>(query.getAll);
-    return drafts;
-  }
-
-  /**
-   * Update a draft by ID
-   * @param variables
-   */
-  async function updateById(variables: { id: string; content: Delta; updated_at: string }) {
-    const { update_draft_by_pk } = await gqlClient.request<DraftApi['Mutation']['DRAFT_UPDATE_BY_ID']>(mutation.updateById, variables);
-    return update_draft_by_pk.id;
-  }
-
-  /**
    * Create a new draft
-   * @param variables
+   * @param authorId - an author's ID
    */
-  async function create(variables: { author_id: string }) {
-    const { insert_draft_one } = await gqlClient.request<DraftApi['Mutation']['DRAFT_CREATE']>(mutation.create, variables);
+  async function create(authorId: string, content?: Delta) {
+    type DRAFT_CREATE = {
+      insert_draft_one: {
+        id: string;
+        pages: {
+          id: string;
+          content: Delta;
+        };
+      };
+    };
+
+    const variables = {
+      author_id: authorId,
+      content,
+    };
+
+    const { insert_draft_one } = await gqlClient.request<DRAFT_CREATE>(
+      /* GraphQL */ `
+        mutation DRAFT_CREATE($author_id: uuid, $content: jsonb) {
+          insert_draft_one(object: { author_id: $author_id, pages: { data: { content: $content } } }) {
+            id
+            pages {
+              id
+              content
+            }
+          }
+        }
+      `,
+      variables
+    );
 
     return insert_draft_one;
   }
@@ -140,10 +140,24 @@ export function draftApi(gqlClient: GraphQLClient) {
    * @param variables
    */
   async function deleteById(variables: { id: string }) {
-    const { update_draft_by_pk } = await gqlClient.request<DraftApi['Mutation']['DRAFT_DELETE_LOGICALLY']>(mutation.deleteLogicallyById, {
-      ...variables,
-      ended_at: new Date().toISOString(),
-    });
+    type DRAFT_DELETE_LOGICALLY = {
+      update_draft_by_pk: {
+        id: string;
+      };
+    };
+    const { update_draft_by_pk } = await gqlClient.request<DRAFT_DELETE_LOGICALLY>(
+      /* GraphQL */ `
+        mutation DRAFT_DELETE_LOGICALLY($id: uuid!, $ended_at: timestamptz) {
+          update_draft_by_pk(pk_columns: { id: $id }, _set: { ended_at: $ended_at }) {
+            id
+          }
+        }
+      `,
+      {
+        ...variables,
+        ended_at: new Date().toISOString(),
+      }
+    );
 
     return update_draft_by_pk;
   }
@@ -151,7 +165,6 @@ export function draftApi(gqlClient: GraphQLClient) {
   return {
     findById,
     getAll,
-    updateById,
     create,
     deleteById,
   };

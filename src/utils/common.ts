@@ -49,14 +49,14 @@ export function loadStyleFile(path: string) {
  * @param delta - quill.js Delta object
  */
 export function quillDelta2Preview(delta: Delta) {
-  let previewTitle = '';
-  let previewContent = '';
+  let previewTitle = '<noname>';
+  let previewContent = '...';
   let previewImage = '';
-  if (delta !== undefined && delta.ops !== undefined && delta.ops.length > 0) {
+  if (Array.isArray(delta?.ops) && delta.ops.length > 0) {
     previewTitle = String(delta.ops[0].insert);
     previewContent = String(delta.ops[2].insert);
     const imageItem = delta.ops.find(item=> getNestedObject(item, ['insert', 'blockFigure', 'image']) !== undefined);
-    if (imageItem !== undefined) {
+    if (imageItem != undefined) {
       previewImage = getNestedObject(imageItem, ['insert', 'blockFigure', 'image']);
     }
     
@@ -77,6 +77,7 @@ export function quillDelta2Preview(delta: Delta) {
       previewContent += '...';
     }
   }
+
   previewContent =
     previewContent
       .trim()

@@ -607,7 +607,6 @@ export function editor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLE
     return true;
   }
 
-
   quill.addContainer(tooltip.$tl_link_tooltip);
   quill.addContainer(tooltip.$tl_tooltip);
   quill.addContainer(tooltip.$tl_blocks);

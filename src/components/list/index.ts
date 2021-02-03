@@ -13,9 +13,11 @@ library.add(faAngleDown, faSave);
 
 export interface IListItem {
   id: string;
-  title: string;
-  content: string;
-  image: string;
+  preview: {
+    title: string
+    description: string
+    image: string;
+  };
   linkUrl: string;
   linkRel?: string;
   actions?: IListItemAction[] | (() => IListItemAction[]);
@@ -105,19 +107,19 @@ export class ListComponent extends AbstractElement {
       (i, index) => html`
         <div class="um-drafts__item">
           <h6 class="docs-header">
-            ${i.title}
+            ${i.preview.title}
           </h6>
           <div class="row">
-            ${i.image.length > 0
+            ${i.preview.image?.length > 0
               ? html`
                   <div class="two columns draft-preview">
-                    <img class="draft-preview__img" src="${i.image}" />
+                    <img class="draft-preview__img" src="${i.preview.image}" />
                   </div>
                 `
               : ''}
-            <div class=${i.image.length > 0 ? 'ten columns' : ''}>
+            <div class=${i.preview.image?.length > 0 ? 'ten columns' : ''}>
               <a class="um-drafts__item-link" href=${i.linkUrl} rel=${ifDefined(i.linkRel)}>
-                <p class="docs-preview">${unsafeHTML(i.content)}</p>
+                <p class="docs-preview">${unsafeHTML(i.preview.description)}</p>
               </a>
               ${menuElemFunc(i.id, typeof i.actions === 'function' ? i.actions() : i.actions)}
             </div>

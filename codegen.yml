@@ -1,0 +1,11 @@
+schema:
+  - http://localhost:8083/v1/graphql:
+      headers:
+        x-hasura-admin-secret: myadminsecretkey
+documents: 'src/api/**/*.graphql'
+generates:
+  ./src/api/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
