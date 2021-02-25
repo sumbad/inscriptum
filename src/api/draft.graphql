@@ -3,6 +3,7 @@ query getDraftById($id: uuid!) {
     id
     created_at
     updated_at
+    table_of_contents
     notes(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
       id
     }
@@ -11,5 +12,13 @@ query getDraftById($id: uuid!) {
       content
       order
     }
+  }
+}
+
+mutation updateDraftTOC($id: uuid!, $table_of_contents: jsonb!, $updated_at: timestamptz!) {
+  update_draft_by_pk(pk_columns: { id: $id }, _set: { table_of_contents: $table_of_contents, updated_at: $updated_at }) {
+    table_of_contents
+    updated_at
+    id
   }
 }

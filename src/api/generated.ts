@@ -318,6 +318,7 @@ export type Draft = {
   pages: Array<Page>;
   /** An aggregated array relationship */
   pages_aggregate: Page_Aggregate;
+  table_of_contents: Scalars['jsonb'];
   updated_at: Scalars['timestamptz'];
 };
 
@@ -361,6 +362,12 @@ export type DraftPages_AggregateArgs = {
   where?: Maybe<Page_Bool_Exp>;
 };
 
+
+/** columns and relationships of "draft" */
+export type DraftTable_Of_ContentsArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
 /** aggregated selection of "draft" */
 export type Draft_Aggregate = {
   __typename?: 'draft_aggregate';
@@ -390,6 +397,11 @@ export type Draft_Aggregate_Order_By = {
   min?: Maybe<Draft_Min_Order_By>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Draft_Append_Input = {
+  table_of_contents?: Maybe<Scalars['jsonb']>;
+};
+
 /** input type for inserting array relation for remote table "draft" */
 export type Draft_Arr_Rel_Insert_Input = {
   data: Array<Draft_Insert_Input>;
@@ -408,6 +420,7 @@ export type Draft_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   notes?: Maybe<Note_Bool_Exp>;
   pages?: Maybe<Page_Bool_Exp>;
+  table_of_contents?: Maybe<Jsonb_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -416,6 +429,21 @@ export enum Draft_Constraint {
   /** unique or primary key constraint */
   DraftPkey = 'draft_pkey'
 }
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Draft_Delete_At_Path_Input = {
+  table_of_contents?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Draft_Delete_Elem_Input = {
+  table_of_contents?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Draft_Delete_Key_Input = {
+  table_of_contents?: Maybe<Scalars['String']>;
+};
 
 /** input type for inserting data into table "draft" */
 export type Draft_Insert_Input = {
@@ -426,6 +454,7 @@ export type Draft_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   notes?: Maybe<Note_Arr_Rel_Insert_Input>;
   pages?: Maybe<Page_Arr_Rel_Insert_Input>;
+  table_of_contents?: Maybe<Scalars['jsonb']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -498,12 +527,18 @@ export type Draft_Order_By = {
   id?: Maybe<Order_By>;
   notes_aggregate?: Maybe<Note_Aggregate_Order_By>;
   pages_aggregate?: Maybe<Page_Aggregate_Order_By>;
+  table_of_contents?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "draft" */
 export type Draft_Pk_Columns_Input = {
   id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Draft_Prepend_Input = {
+  table_of_contents?: Maybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "draft" */
@@ -517,6 +552,8 @@ export enum Draft_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  TableOfContents = 'table_of_contents',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
@@ -526,6 +563,7 @@ export type Draft_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   ended_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  table_of_contents?: Maybe<Scalars['jsonb']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -539,6 +577,8 @@ export enum Draft_Update_Column {
   EndedAt = 'ended_at',
   /** column name */
   Id = 'id',
+  /** column name */
+  TableOfContents = 'table_of_contents',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -767,6 +807,11 @@ export type Mutation_RootUpdate_Author_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_DraftArgs = {
+  _append?: Maybe<Draft_Append_Input>;
+  _delete_at_path?: Maybe<Draft_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Draft_Delete_Elem_Input>;
+  _delete_key?: Maybe<Draft_Delete_Key_Input>;
+  _prepend?: Maybe<Draft_Prepend_Input>;
   _set?: Maybe<Draft_Set_Input>;
   where: Draft_Bool_Exp;
 };
@@ -774,6 +819,11 @@ export type Mutation_RootUpdate_DraftArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Draft_By_PkArgs = {
+  _append?: Maybe<Draft_Append_Input>;
+  _delete_at_path?: Maybe<Draft_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Draft_Delete_Elem_Input>;
+  _delete_key?: Maybe<Draft_Delete_Key_Input>;
+  _prepend?: Maybe<Draft_Prepend_Input>;
   _set?: Maybe<Draft_Set_Input>;
   pk_columns: Draft_Pk_Columns_Input;
 };
@@ -1942,7 +1992,7 @@ export type GetDraftByIdQuery = (
   { __typename?: 'query_root' }
   & { draft?: Maybe<(
     { __typename?: 'draft' }
-    & Pick<Draft, 'id' | 'created_at' | 'updated_at'>
+    & Pick<Draft, 'id' | 'created_at' | 'updated_at' | 'table_of_contents'>
     & { notes: Array<(
       { __typename?: 'note' }
       & Pick<Note, 'id'>
@@ -1950,6 +2000,21 @@ export type GetDraftByIdQuery = (
       { __typename?: 'page' }
       & Pick<Page, 'id' | 'content' | 'order'>
     )> }
+  )> }
+);
+
+export type UpdateDraftTocMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  table_of_contents: Scalars['jsonb'];
+  updated_at: Scalars['timestamptz'];
+}>;
+
+
+export type UpdateDraftTocMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_draft_by_pk?: Maybe<(
+    { __typename?: 'draft' }
+    & Pick<Draft, 'table_of_contents' | 'updated_at' | 'id'>
   )> }
 );
 
@@ -2018,6 +2083,7 @@ export const GetDraftByIdDocument = gql`
     id
     created_at
     updated_at
+    table_of_contents
     notes(order_by: {created_at: asc}, where: {ended_at: {_is_null: true}}) {
       id
     }
@@ -2026,6 +2092,18 @@ export const GetDraftByIdDocument = gql`
       content
       order
     }
+  }
+}
+    `;
+export const UpdateDraftTocDocument = gql`
+    mutation updateDraftTOC($id: uuid!, $table_of_contents: jsonb!, $updated_at: timestamptz!) {
+  update_draft_by_pk(
+    pk_columns: {id: $id}
+    _set: {table_of_contents: $table_of_contents, updated_at: $updated_at}
+  ) {
+    table_of_contents
+    updated_at
+    id
   }
 }
     `;
@@ -2084,6 +2162,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getDraftById(variables: GetDraftByIdQueryVariables, requestHeaders?: Headers): Promise<GetDraftByIdQuery> {
       return withWrapper(() => client.request<GetDraftByIdQuery>(print(GetDraftByIdDocument), variables, requestHeaders));
+    },
+    updateDraftTOC(variables: UpdateDraftTocMutationVariables, requestHeaders?: Headers): Promise<UpdateDraftTocMutation> {
+      return withWrapper(() => client.request<UpdateDraftTocMutation>(print(UpdateDraftTocDocument), variables, requestHeaders));
     },
     updatePageById(variables: UpdatePageByIdMutationVariables, requestHeaders?: Headers): Promise<UpdatePageByIdMutation> {
       return withWrapper(() => client.request<UpdatePageByIdMutation>(print(UpdatePageByIdDocument), variables, requestHeaders));

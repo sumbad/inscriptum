@@ -74,21 +74,23 @@
           auth0_id:
             _eq: X-Hasura-User-Id
       columns:
-      - id
       - author_id
       - created_at
-      - updated_at
       - ended_at
+      - id
+      - table_of_contents
+      - updated_at
       backend_only: false
   select_permissions:
   - role: author
     permission:
       columns:
+      - author_id
       - created_at
       - ended_at
-      - updated_at
-      - author_id
       - id
+      - table_of_contents
+      - updated_at
       filter:
         author:
           auth0_id:
@@ -97,8 +99,10 @@
   - role: author
     permission:
       columns:
+      - author_id
       - created_at
       - ended_at
+      - table_of_contents
       - updated_at
       filter:
         author:

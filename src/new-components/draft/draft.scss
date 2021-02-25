@@ -1,4 +1,6 @@
-@import '../scss/skeleton.scss';
+@import '../../scss/skeleton/base/normalize';
+@import '../../scss/skeleton/base/variables';
+@import '../../scss/skeleton/modules/grid';
 
 // Colors
 $light-grey: #e1e1e1;
@@ -130,5 +132,28 @@ $font-color: #222;
     -webkit-transition-delay: 100ms;
     transition-delay: 60ms;
     background-size: contain;
+  }
+}
+
+
+.draft-content {
+  // max-width: 64rem;
+  // width: calc(100% - 2 * 1.25rem);
+  // margin-left: 5rem;
+  // margin-right: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 400px) {
+  .draft-content {
+    // max-width: 64rem;
+    // width: calc(100% - 2 * 1.25rem);
+    // margin-left: 5rem;
+    // margin-right: auto;
+  
+    // display: flex;
+    flex-direction: row;
   }
 }

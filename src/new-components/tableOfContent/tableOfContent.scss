@@ -1,0 +1,107 @@
+@import '../../scss/skeleton/base/normalize';
+@import '../../scss/skeleton/base/variables';
+@import '../../scss/skeleton/base/typography';
+
+@media (min-width: 400px) {
+  .toc-stub {
+    margin-bottom: 3rem;
+  }
+}
+
+.toc-panel {
+  --toc-border-width: 1px;
+  --color-contrast-low: hsl(240, 1%, 83%);
+  --color-contrast-medium: hsl(240, 1%, 48%);
+  --color-contrast-high: hsl(240, 4%, 20%);
+  --text-unit: 1em;
+  --text-scale-ratio: 1.2;
+  --text-xs: calc((var(--text-unit) / var(--text-scale-ratio)) / var(--text-scale-ratio));
+  --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
+
+  box-shadow: inset var(--toc-border-width) 0 0 var(--color-contrast-low);
+
+  font-family: $font-family;
+
+  position: sticky;
+  top: 1.25rem;
+  max-height: calc(100vh - 1.25rem);
+  // overflow: auto;
+  overflow: visible;
+
+  ol,
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  // }
+
+  .toc-panel__list {
+    position: relative;
+
+    .toc-panel__list .toc-panel__header {
+      padding-left: calc(1.25rem * 2);
+    }
+  }
+
+  .toc-panel__title {
+    padding: 0.25rem 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: var(--text-sm);
+  }
+
+  .toc-panel__header {
+    padding: 0.25rem 1.25rem;
+    position: relative;
+    display: inline-flex;
+    color: var(--color-contrast-medium);
+    text-decoration: none;
+    // white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &::before {
+      content: '';
+      width: var(--toc-border-width);
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &:hover {
+      color: var(--color-contrast-high);
+    }
+  }
+
+  .toc-panel__header_selected {
+    color: hsl(220, 90%, 56%);
+    &::before {
+      background-color: hsl(220, 90%, 56%);
+    }
+  }
+
+
+  .toc-panel__page-numb {
+    width: 2rem;
+    text-align: right;
+    padding-top: 0.25rem;
+    padding-right: 0.5rem;
+    flex-shrink: 0;
+
+    white-space: nowrap;
+  }
+
+  .toc-panel__item {
+    display: flex;
+    margin-left: -2.5rem;
+
+    color: var(--color-contrast-medium);
+
+    &:hover {
+      color: var(--color-contrast-high);
+    }
+  }
+}
