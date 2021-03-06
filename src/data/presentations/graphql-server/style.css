@@ -34,74 +34,31 @@
 }
 
 #slide1 .slide__object {
-  background-image: url(images/1.png);
+  background-image: url(images/Frame1.jpg);
   background-size: cover;
 }
 
-
-
-#slide21 .slide__object {
-  background-image: url(images/21.png);
-}
-
-#slide31 .slide__object {
-  background-image: url(images/31.png);
-}
-
-#slide41 .slide__object {
-  background-image: url(images/41.png);
-  background-size: 80%;
-}
-
-
-
 #slide2 .slide__object {
-  background-image: url(images/2.png);
+  background-image: url(images/Frame2.png);
+  background-size: cover;
 }
 
 #slide3 .slide__object {
-  background-image: url(images/3.png);
+  background-image: url(images/Frame3.jpg);
+  background-size: cover;
 }
 
 #slide4 .slide__object {
-  background-image: url(images/4.png);
-  background-size: 80%;
-}
-
-
-
-#slide92 .slide__object {
-  background-image: url(images/92.png);
-}
-
-#slide94 .slide__object {
-  background-image: url(images/94.jpg);
+  background-image: url(images/Frame4.jpg);
   background-size: cover;
 }
 
-#slide95 .slide__object {
-  background-size: initial;
-  background-image: url(images/95.png);
+#slide6 .slide__object {
+  background-image: url(images/Frame6.jpg);
 }
 
-#slide97 .slide__object {
-  background-image: url(images/97.jpg);
-  background-size: cover;
-}
-
-#slide98 .slide__object {
-  background-image: url(images/98.jpg);
-  background-size: cover;
-}
-
-#slide99 .slide__object {
-  background-image: url(images/99.jpg);
-}
-
-#slide100 .slide__object {
-  background-image: url(images/100.jpg);
-  background-size: cover;
-  background-position: center right;
+#slide7 .slide__object {
+  background-image: url(images/Frame7.jpg);
 }
 
 .text-note {
