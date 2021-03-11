@@ -1,9 +1,11 @@
+import { config } from 'settings';
 import { Page } from 'models/page.model';
 import Delta from 'quill-delta';
 import { concat, Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinct, filter, map, publishReplay, refCount, scan, startWith } from 'rxjs/operators';
 import { dispatch, dispatcher$ } from 'state';
 import { AbstractModelService } from './AbstractSubject.service';
+import { DRAFT_ACTION } from './DraftSubject.service';
 
 interface PageState {
   data: Page | undefined;
@@ -17,18 +19,20 @@ const defaultState: PageState = {
 };
 
 const p = 'PAGE_ACTION' as const;
+
 const SAVE: unique symbol = Symbol(`[${p}] SAVE`);
 const SAVING: unique symbol = Symbol(`[${p}] SAVING`);
 const SAVE_DONE: unique symbol = Symbol(`[${p}] SAVE_DONE`);
 const SAVE_FAIL: unique symbol = Symbol(`[${p}] SAVE_FAIL`);
+
 const FOLD: unique symbol = Symbol(`[${p}] FOLD`);
 
 export const PAGE_ACTION = {
-  SAVE, //`[${p}] SAVE`,
-  SAVING, //: `[${p}] SAVING`,
-  SAVE_DONE, //: `[${p}] SAVE_DONE`,
-  SAVE_FAIL, //: `[${p}] SAVE_FAIL`,
-  FOLD, //: f//`[${p}] FOLD`,
+  SAVE,
+  SAVING,
+  SAVE_DONE,
+  SAVE_FAIL,
+  FOLD,
 } as const;
 
 export type PageAction =
@@ -81,7 +85,7 @@ export class PageSubjectService extends AbstractModelService {
     this.state$ = dispatcher$.pipe(
       filter((action: PageAction) => action.payload.pageId === this.state.data?.id),
       startWith(initState),
-      scan(this.stateReducer),
+      scan<PageState>(this.stateReducer.bind(this)),
       distinct(),
       publishReplay(1),
       refCount()
@@ -97,7 +101,7 @@ export class PageSubjectService extends AbstractModelService {
       dispatcher$
         .pipe(
           filter((action) => action.type === PAGE_ACTION.SAVE && action.payload.pageId === this.state.data?.id),
-          debounceTime(10000)
+          debounceTime(config.isDevMode ? 3000 : 10000)
         )
         .subscribe(() => {
           concat(
@@ -207,6 +211,28 @@ export class PageSubjectService extends AbstractModelService {
           subscribe.error(error);
         }
       }, `${document.location.origin}/drafts`);
+    });
+  }
+
+  addNewPage(order: number) {
+    if (this.state.data?.draftId != null) {
+      dispatch({ type: DRAFT_ACTION.ADD_NEW, payload: { draftId: this.state.data.draftId, order } });
+    }
+  }
+
+  deletePage() {
+    if (this.state.data != null) {
+      dispatch({ type: DRAFT_ACTION.DELETE_PAGE, payload: { pageId: this.state.data.id, order: this.state.data.order } });
+    }
+  }
+
+  foldPage(pageId: string, flag: boolean): void {
+    dispatch({
+      type: PAGE_ACTION.FOLD,
+      payload: {
+        pageId,
+        flag,
+      },
     });
   }
 }
