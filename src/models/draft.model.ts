@@ -1,15 +1,17 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { SubjectModel } from './$.model';
-import { Page, PageSubject } from './page.model';
+import { Page } from './page.model';
 
-export type Draft = {
+export type DraftTocModel = {
+  header: string;
+  pageId: string;
+}
+
+export type DraftModel = {
   id: string;
   created_at: string;
   updated_at: string;
-  pagesSubjects?: PageSubject[];
+  table_of_contents: DraftTocModel[];
+  pages?: Page[];
   notes?: {
     id: string;
   }[];
 };
-
-export type DraftSubject = SubjectModel<Draft | null | undefined>;

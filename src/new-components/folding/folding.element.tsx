@@ -69,6 +69,7 @@ export const foldingElement = EG({
       c['adoptedStyleSheets'] = [sheet];
     }
   }, []);
+  
 
   return (
     <>

@@ -11,6 +11,10 @@ query getDraftById($id: uuid!) {
       id
       content
       order
+      margins(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+        id
+        name
+      }
     }
   }
 }

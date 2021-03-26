@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  bytea: any;
   jsonb: any;
   timestamptz: any;
   uuid: any;
@@ -301,6 +302,20 @@ export enum Author_Update_Column {
   /** column name */
   Name = 'name'
 }
+
+
+/** expression to compare columns of type bytea. All fields are combined with logical 'AND'. */
+export type Bytea_Comparison_Exp = {
+  _eq?: Maybe<Scalars['bytea']>;
+  _gt?: Maybe<Scalars['bytea']>;
+  _gte?: Maybe<Scalars['bytea']>;
+  _in?: Maybe<Array<Scalars['bytea']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['bytea']>;
+  _lte?: Maybe<Scalars['bytea']>;
+  _neq?: Maybe<Scalars['bytea']>;
+  _nin?: Maybe<Array<Scalars['bytea']>>;
+};
 
 /** columns and relationships of "draft" */
 export type Draft = {
@@ -608,6 +623,258 @@ export type Jsonb_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['jsonb']>>;
 };
 
+/** columns and relationships of "margin" */
+export type Margin = {
+  __typename?: 'margin';
+  created_at: Scalars['timestamptz'];
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  id: Scalars['uuid'];
+  img?: Maybe<Scalars['bytea']>;
+  /** A computed field, executes function "content_img_to_base64" */
+  imgBase64?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  options?: Maybe<Scalars['jsonb']>;
+  /** An object relationship */
+  page: Page;
+  page_id: Scalars['uuid'];
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+
+/** columns and relationships of "margin" */
+export type MarginOptionsArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "margin" */
+export type Margin_Aggregate = {
+  __typename?: 'margin_aggregate';
+  aggregate?: Maybe<Margin_Aggregate_Fields>;
+  nodes: Array<Margin>;
+};
+
+/** aggregate fields of "margin" */
+export type Margin_Aggregate_Fields = {
+  __typename?: 'margin_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Margin_Max_Fields>;
+  min?: Maybe<Margin_Min_Fields>;
+};
+
+
+/** aggregate fields of "margin" */
+export type Margin_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Margin_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "margin" */
+export type Margin_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Margin_Max_Order_By>;
+  min?: Maybe<Margin_Min_Order_By>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Margin_Append_Input = {
+  options?: Maybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "margin" */
+export type Margin_Arr_Rel_Insert_Input = {
+  data: Array<Margin_Insert_Input>;
+  on_conflict?: Maybe<Margin_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "margin". All fields are combined with a logical 'AND'. */
+export type Margin_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Margin_Bool_Exp>>>;
+  _not?: Maybe<Margin_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Margin_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  ended_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  img?: Maybe<Bytea_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  options?: Maybe<Jsonb_Comparison_Exp>;
+  page?: Maybe<Page_Bool_Exp>;
+  page_id?: Maybe<Uuid_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "margin" */
+export enum Margin_Constraint {
+  /** unique or primary key constraint */
+  MarginPkey = 'margin_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Margin_Delete_At_Path_Input = {
+  options?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Margin_Delete_Elem_Input = {
+  options?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Margin_Delete_Key_Input = {
+  options?: Maybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "margin" */
+export type Margin_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  img?: Maybe<Scalars['bytea']>;
+  name?: Maybe<Scalars['String']>;
+  options?: Maybe<Scalars['jsonb']>;
+  page?: Maybe<Page_Obj_Rel_Insert_Input>;
+  page_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Margin_Max_Fields = {
+  __typename?: 'margin_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  page_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "margin" */
+export type Margin_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  ended_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  page_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Margin_Min_Fields = {
+  __typename?: 'margin_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  page_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "margin" */
+export type Margin_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  ended_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  page_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "margin" */
+export type Margin_Mutation_Response = {
+  __typename?: 'margin_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Margin>;
+};
+
+/** input type for inserting object relation for remote table "margin" */
+export type Margin_Obj_Rel_Insert_Input = {
+  data: Margin_Insert_Input;
+  on_conflict?: Maybe<Margin_On_Conflict>;
+};
+
+/** on conflict condition type for table "margin" */
+export type Margin_On_Conflict = {
+  constraint: Margin_Constraint;
+  update_columns: Array<Margin_Update_Column>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "margin" */
+export type Margin_Order_By = {
+  created_at?: Maybe<Order_By>;
+  ended_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  img?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  options?: Maybe<Order_By>;
+  page?: Maybe<Page_Order_By>;
+  page_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "margin" */
+export type Margin_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Margin_Prepend_Input = {
+  options?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "margin" */
+export enum Margin_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EndedAt = 'ended_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Img = 'img',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Options = 'options',
+  /** column name */
+  PageId = 'page_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "margin" */
+export type Margin_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  img?: Maybe<Scalars['bytea']>;
+  name?: Maybe<Scalars['String']>;
+  options?: Maybe<Scalars['jsonb']>;
+  page_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "margin" */
+export enum Margin_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EndedAt = 'ended_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Img = 'img',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Options = 'options',
+  /** column name */
+  PageId = 'page_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -619,6 +886,10 @@ export type Mutation_Root = {
   delete_draft?: Maybe<Draft_Mutation_Response>;
   /** delete single row from the table: "draft" */
   delete_draft_by_pk?: Maybe<Draft>;
+  /** delete data from the table: "margin" */
+  delete_margin?: Maybe<Margin_Mutation_Response>;
+  /** delete single row from the table: "margin" */
+  delete_margin_by_pk?: Maybe<Margin>;
   /** delete data from the table: "note" */
   delete_note?: Maybe<Note_Mutation_Response>;
   /** delete single row from the table: "note" */
@@ -637,6 +908,10 @@ export type Mutation_Root = {
   insert_draft?: Maybe<Draft_Mutation_Response>;
   /** insert a single row into the table: "draft" */
   insert_draft_one?: Maybe<Draft>;
+  /** insert data into the table: "margin" */
+  insert_margin?: Maybe<Margin_Mutation_Response>;
+  /** insert a single row into the table: "margin" */
+  insert_margin_one?: Maybe<Margin>;
   /** insert data into the table: "note" */
   insert_note?: Maybe<Note_Mutation_Response>;
   /** insert a single row into the table: "note" */
@@ -657,6 +932,10 @@ export type Mutation_Root = {
   update_draft?: Maybe<Draft_Mutation_Response>;
   /** update single row of the table: "draft" */
   update_draft_by_pk?: Maybe<Draft>;
+  /** update data of the table: "margin" */
+  update_margin?: Maybe<Margin_Mutation_Response>;
+  /** update single row of the table: "margin" */
+  update_margin_by_pk?: Maybe<Margin>;
   /** update data of the table: "note" */
   update_note?: Maybe<Note_Mutation_Response>;
   /** update single row of the table: "note" */
@@ -690,6 +969,18 @@ export type Mutation_RootDelete_DraftArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Draft_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_MarginArgs = {
+  where: Margin_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Margin_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -749,6 +1040,20 @@ export type Mutation_RootInsert_DraftArgs = {
 export type Mutation_RootInsert_Draft_OneArgs = {
   object: Draft_Insert_Input;
   on_conflict?: Maybe<Draft_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_MarginArgs = {
+  objects: Array<Margin_Insert_Input>;
+  on_conflict?: Maybe<Margin_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Margin_OneArgs = {
+  object: Margin_Insert_Input;
+  on_conflict?: Maybe<Margin_On_Conflict>;
 };
 
 
@@ -827,6 +1132,30 @@ export type Mutation_RootUpdate_Draft_By_PkArgs = {
   _prepend?: Maybe<Draft_Prepend_Input>;
   _set?: Maybe<Draft_Set_Input>;
   pk_columns: Draft_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MarginArgs = {
+  _append?: Maybe<Margin_Append_Input>;
+  _delete_at_path?: Maybe<Margin_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Margin_Delete_Elem_Input>;
+  _delete_key?: Maybe<Margin_Delete_Key_Input>;
+  _prepend?: Maybe<Margin_Prepend_Input>;
+  _set?: Maybe<Margin_Set_Input>;
+  where: Margin_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Margin_By_PkArgs = {
+  _append?: Maybe<Margin_Append_Input>;
+  _delete_at_path?: Maybe<Margin_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Margin_Delete_Elem_Input>;
+  _delete_key?: Maybe<Margin_Delete_Key_Input>;
+  _prepend?: Maybe<Margin_Prepend_Input>;
+  _set?: Maybe<Margin_Set_Input>;
+  pk_columns: Margin_Pk_Columns_Input;
 };
 
 
@@ -1302,6 +1631,10 @@ export type Page = {
   draft_id: Scalars['uuid'];
   ended_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['uuid'];
+  /** An array relationship */
+  margins: Array<Margin>;
+  /** An aggregated array relationship */
+  margins_aggregate: Margin_Aggregate;
   order: Scalars['Int'];
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1310,6 +1643,26 @@ export type Page = {
 /** columns and relationships of "page" */
 export type PageContentArgs = {
   path?: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "page" */
+export type PageMarginsArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+
+/** columns and relationships of "page" */
+export type PageMargins_AggregateArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
 };
 
 /** aggregated selection of "page" */
@@ -1390,6 +1743,7 @@ export type Page_Bool_Exp = {
   draft_id?: Maybe<Uuid_Comparison_Exp>;
   ended_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  margins?: Maybe<Margin_Bool_Exp>;
   order?: Maybe<Int_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
@@ -1428,6 +1782,7 @@ export type Page_Insert_Input = {
   draft_id?: Maybe<Scalars['uuid']>;
   ended_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  margins?: Maybe<Margin_Arr_Rel_Insert_Input>;
   order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1504,6 +1859,7 @@ export type Page_Order_By = {
   draft_id?: Maybe<Order_By>;
   ended_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  margins_aggregate?: Maybe<Margin_Aggregate_Order_By>;
   order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1657,6 +2013,12 @@ export type Query_Root = {
   draft_aggregate: Draft_Aggregate;
   /** fetch data from the table: "draft" using primary key columns */
   draft_by_pk?: Maybe<Draft>;
+  /** fetch data from the table: "margin" */
+  margin: Array<Margin>;
+  /** fetch aggregated fields from the table: "margin" */
+  margin_aggregate: Margin_Aggregate;
+  /** fetch data from the table: "margin" using primary key columns */
+  margin_by_pk?: Maybe<Margin>;
   /** fetch data from the table: "note" */
   note: Array<Note>;
   /** fetch aggregated fields from the table: "note" */
@@ -1724,6 +2086,32 @@ export type Query_RootDraft_AggregateArgs = {
 
 /** query root */
 export type Query_RootDraft_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** query root */
+export type Query_RootMarginArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootMargin_AggregateArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootMargin_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1814,6 +2202,12 @@ export type Subscription_Root = {
   draft_aggregate: Draft_Aggregate;
   /** fetch data from the table: "draft" using primary key columns */
   draft_by_pk?: Maybe<Draft>;
+  /** fetch data from the table: "margin" */
+  margin: Array<Margin>;
+  /** fetch aggregated fields from the table: "margin" */
+  margin_aggregate: Margin_Aggregate;
+  /** fetch data from the table: "margin" using primary key columns */
+  margin_by_pk?: Maybe<Margin>;
   /** fetch data from the table: "note" */
   note: Array<Note>;
   /** fetch aggregated fields from the table: "note" */
@@ -1881,6 +2275,32 @@ export type Subscription_RootDraft_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootDraft_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** subscription root */
+export type Subscription_RootMarginArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootMargin_AggregateArgs = {
+  distinct_on?: Maybe<Array<Margin_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Margin_Order_By>>;
+  where?: Maybe<Margin_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootMargin_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -2000,6 +2420,10 @@ export type GetDraftByIdQuery = (
     )>, pages: Array<(
       { __typename?: 'page' }
       & Pick<Page, 'id' | 'content' | 'order'>
+      & { margins: Array<(
+        { __typename?: 'margin' }
+        & Pick<Margin, 'id' | 'name'>
+      )> }
     )> }
   )> }
 );
@@ -2016,6 +2440,51 @@ export type UpdateDraftTocMutation = (
   & { update_draft_by_pk?: Maybe<(
     { __typename?: 'draft' }
     & Pick<Draft, 'table_of_contents' | 'updated_at' | 'id'>
+  )> }
+);
+
+export type GetMarginByIdQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetMarginByIdQuery = (
+  { __typename?: 'query_root' }
+  & { margin?: Maybe<(
+    { __typename?: 'margin' }
+    & Pick<Margin, 'id' | 'img' | 'imgBase64' | 'options'>
+    & { pageId: Margin['page_id'] }
+  )> }
+);
+
+export type CreateMarginMutationVariables = Exact<{
+  page_id: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+}>;
+
+
+export type CreateMarginMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_margin_one?: Maybe<(
+    { __typename?: 'margin' }
+    & Pick<Margin, 'id'>
+  )> }
+);
+
+export type SaveMarginMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  updated_at: Scalars['timestamptz'];
+  options: Scalars['jsonb'];
+  img: Scalars['bytea'];
+  name?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SaveMarginMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_margin_by_pk?: Maybe<(
+    { __typename?: 'margin' }
+    & Pick<Margin, 'updated_at' | 'id'>
   )> }
 );
 
@@ -2052,6 +2521,10 @@ export type AddPageToDraftMutation = (
   )>, insert_page_one?: Maybe<(
     { __typename?: 'page' }
     & Pick<Page, 'id' | 'order' | 'content'>
+    & { margins: Array<(
+      { __typename?: 'margin' }
+      & Pick<Margin, 'id'>
+    )> }
   )> }
 );
 
@@ -2092,6 +2565,10 @@ export const GetDraftByIdDocument = gql`
       id
       content
       order
+      margins(order_by: {created_at: asc}, where: {ended_at: {_is_null: true}}) {
+        id
+        name
+      }
     }
   }
 }
@@ -2103,6 +2580,35 @@ export const UpdateDraftTocDocument = gql`
     _set: {table_of_contents: $table_of_contents, updated_at: $updated_at}
   ) {
     table_of_contents
+    updated_at
+    id
+  }
+}
+    `;
+export const GetMarginByIdDocument = gql`
+    query getMarginById($id: uuid!) {
+  margin: margin_by_pk(id: $id) {
+    id
+    pageId: page_id
+    img
+    imgBase64
+    options
+  }
+}
+    `;
+export const CreateMarginDocument = gql`
+    mutation createMargin($page_id: uuid!, $created_at: timestamptz!) {
+  insert_margin_one(object: {page_id: $page_id, created_at: $created_at}) {
+    id
+  }
+}
+    `;
+export const SaveMarginDocument = gql`
+    mutation saveMargin($id: uuid!, $updated_at: timestamptz!, $options: jsonb!, $img: bytea!, $name: String) {
+  update_margin_by_pk(
+    pk_columns: {id: $id}
+    _set: {updated_at: $updated_at, options: $options, img: $img, name: $name}
+  ) {
     updated_at
     id
   }
@@ -2135,6 +2641,9 @@ export const AddPageToDraftDocument = gql`
     id
     order
     content
+    margins {
+      id
+    }
   }
 }
     `;
@@ -2166,6 +2675,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     updateDraftTOC(variables: UpdateDraftTocMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDraftTocMutation> {
       return withWrapper(() => client.request<UpdateDraftTocMutation>(print(UpdateDraftTocDocument), variables, requestHeaders));
+    },
+    getMarginById(variables: GetMarginByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetMarginByIdQuery> {
+      return withWrapper(() => client.request<GetMarginByIdQuery>(print(GetMarginByIdDocument), variables, requestHeaders));
+    },
+    createMargin(variables: CreateMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateMarginMutation> {
+      return withWrapper(() => client.request<CreateMarginMutation>(print(CreateMarginDocument), variables, requestHeaders));
+    },
+    saveMargin(variables: SaveMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SaveMarginMutation> {
+      return withWrapper(() => client.request<SaveMarginMutation>(print(SaveMarginDocument), variables, requestHeaders));
     },
     updatePageById(variables: UpdatePageByIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdatePageByIdMutation> {
       return withWrapper(() => client.request<UpdatePageByIdMutation>(print(UpdatePageByIdDocument), variables, requestHeaders));

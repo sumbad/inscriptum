@@ -1,0 +1,22 @@
+query getMarginById($id: uuid!) {
+  margin: margin_by_pk(id: $id) {
+    id
+    pageId: page_id
+    img
+    imgBase64
+    options
+  }
+}
+
+mutation createMargin($page_id: uuid!, $created_at: timestamptz!) {
+  insert_margin_one(object: { page_id: $page_id, created_at: $created_at }) {
+    id
+  }
+}
+
+mutation saveMargin($id: uuid!, $updated_at: timestamptz!, $options: jsonb!, $img: bytea!, $name: String) {
+  update_margin_by_pk(pk_columns: { id: $id }, _set: { updated_at: $updated_at, options: $options, img: $img, name: $name }) {
+    updated_at
+    id
+  }
+}

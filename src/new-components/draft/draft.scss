@@ -46,6 +46,7 @@
 
 .page__controls {
   display: flex;
+  justify-content: space-between;
   align-items: start;
   opacity: 0.3;
   transition: 0.2s;

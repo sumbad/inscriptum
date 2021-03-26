@@ -8,22 +8,6 @@ export interface AuthState {
   isLoading?: boolean;
 }
 
-export type AuthAction =
-  | {
-      type: 'auth';
-      payload: {
-        redirectUri: string;
-      };
-    }
-  | {
-      type: 'auth done';
-      payload: Auth;
-    }
-  | {
-      type: 'auth failed';
-      payload: { error: any };
-    };
-
 export function auth(redirectUri: string): Observable<Auth> {
   const webAuth: auth0.WebAuth = new auth0.WebAuth({
     domain: 'inscriptum.auth0.com',

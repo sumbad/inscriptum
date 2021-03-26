@@ -5,28 +5,30 @@ mutation updatePageById($id: uuid!, $content: jsonb!, $updated_at: timestamptz!)
 }
 
 mutation addPageToDraft($created_at: timestamptz!, $draft_id: uuid!, $order: Int!) {
-  update_page(where: {draft_id: {_eq: $draft_id}, ended_at: {_is_null: true}, order: {_gte: $order}}, _inc: {order: 1}) {
+  update_page(where: { draft_id: { _eq: $draft_id }, ended_at: { _is_null: true }, order: { _gte: $order } }, _inc: { order: 1 }) {
     returning {
       id
       order
     }
   }
-  insert_page_one(object: {created_at: $created_at, draft_id: $draft_id, order: $order}) {
+  insert_page_one(object: { created_at: $created_at, draft_id: $draft_id, order: $order }) {
     id
     order
     content
+    margins {
+      id
+    }
   }
 }
 
 mutation deletePage($id: uuid!, $ended_at: timestamptz!, $draft_id: uuid!, $order: Int!) {
-  update_page_by_pk(pk_columns: {id: $id}, _set: {ended_at: $ended_at}) {
+  update_page_by_pk(pk_columns: { id: $id }, _set: { ended_at: $ended_at }) {
     id
   }
-  update_page(where: {draft_id: {_eq: $draft_id}, ended_at: {_is_null: true}, order: {_gte: $order}}, _inc: {order: -1}) {
+  update_page(where: { draft_id: { _eq: $draft_id }, ended_at: { _is_null: true }, order: { _gte: $order } }, _inc: { order: -1 }) {
     returning {
       id
       order
     }
   }
 }
-
