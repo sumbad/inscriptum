@@ -111,6 +111,77 @@
       check: null
 - table:
     schema: public
+    name: margin
+  object_relationships:
+  - name: page
+    using:
+      foreign_key_constraint_on: page_id
+  computed_fields:
+  - name: imgBase64
+    definition:
+      function:
+        schema: public
+        name: content_img_to_base64
+    comment: ""
+  insert_permissions:
+  - role: author
+    permission:
+      check:
+        page:
+          draft:
+            author:
+              auth0_id:
+                _eq: X-Hasura-User-Id
+      columns:
+      - id
+      - page_id
+      - name
+      - img
+      - options
+      - created_at
+      - updated_at
+      - ended_at
+      backend_only: false
+  select_permissions:
+  - role: author
+    permission:
+      columns:
+      - img
+      - options
+      - name
+      - created_at
+      - ended_at
+      - updated_at
+      - id
+      - page_id
+      computed_fields:
+      - imgBase64
+      filter:
+        page:
+          draft:
+            author:
+              auth0_id:
+                _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: author
+    permission:
+      columns:
+      - created_at
+      - img
+      - ended_at
+      - name
+      - options
+      - page_id
+      - updated_at
+      filter:
+        page:
+          draft:
+            author:
+              auth0_id:
+                _eq: X-Hasura-User-Id
+      check: null
+- table:
+    schema: public
     name: note
   object_relationships:
   - name: author
@@ -193,6 +264,14 @@
   - name: draft
     using:
       foreign_key_constraint_on: draft_id
+  array_relationships:
+  - name: margins
+    using:
+      foreign_key_constraint_on:
+        column: page_id
+        table:
+          schema: public
+          name: margin
   insert_permissions:
   - role: author
     permission:
@@ -202,13 +281,13 @@
             auth0_id:
               _eq: X-Hasura-User-Id
       columns:
+      - id
+      - draft_id
       - content
       - created_at
-      - draft_id
-      - ended_at
-      - id
-      - order
       - updated_at
+      - ended_at
+      - order
       backend_only: false
   select_permissions:
   - role: author
@@ -230,13 +309,12 @@
   - role: author
     permission:
       columns:
-      - order
       - content
       - created_at
-      - ended_at
-      - updated_at
       - draft_id
-      - id
+      - ended_at
+      - order
+      - updated_at
       filter:
         draft:
           author:

@@ -19,8 +19,8 @@ services:
       - "postgres"
     restart: always
     volumes:
-      - ./repository/migrations:/hasura-migrations
-      - ./repository/metadata:/hasura-metadata
+      - ./hasura/repository/migrations:/hasura-migrations
+      - ./hasura/repository/metadata:/hasura-metadata
     environment:
       HASURA_GRAPHQL_SERVER_PORT: ${HASURA_GRAPHQL_SERVER_PORT}
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}

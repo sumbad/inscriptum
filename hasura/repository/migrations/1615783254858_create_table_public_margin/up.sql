@@ -1,0 +1,2 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE "public"."margin"("id" uuid NOT NULL DEFAULT gen_random_uuid(), "page_id" uuid NOT NULL, "name" text, "img" bytea, "options" jsonb, "created_at" timestamp with time zone NOT NULL DEFAULT now(), "updated_at" timestamp with time zone, "ended_at" timestamp with time zone, PRIMARY KEY ("id") , FOREIGN KEY ("page_id") REFERENCES "public"."page"("id") ON UPDATE restrict ON DELETE restrict, UNIQUE ("id"));
