@@ -105,3 +105,6 @@ export function quillDelta2Preview(delta: Delta) {
 export function getNestedObject(object: object, pathArr: string[]): any {
   return pathArr.reduce((obj, key) => (obj && obj[key] !== 'undefined' ? obj[key] : undefined), object);
 }
+
+
+export const css = String.raw;
