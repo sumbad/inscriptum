@@ -1,0 +1,185 @@
+<link
+  rel="stylesheet"
+  href="/data/presentations/graphql-server/yt.css"
+/>
+<link
+  rel="stylesheet"
+  href="/data/presentations/graphql-server/style.css"
+/>
+
+<um-slides>
+
+  <um-slide
+    id="slide1"
+    visible
+  >
+    <div class="slide slide_50-50">
+      <div class="slide__text">
+        <span class="text-note">3 марта 2021 г.</span>
+        <h1 class="text-title">API Service</h1>
+        <h3 class="text-caption">GraphQL Server
+          <img src="/data/presentations/graphql-server/images/arrow-right.svg" />
+        </h3>
+      </div>
+      <div class="slide__object"></div>
+    </div>
+  </um-slide>
+
+  <um-slide id="slide2">
+    <div class="slide slide_50-50">
+      <div class="slide__text">
+        <span class="text-note"></span>
+        <h1 class="text-title">Back-end Frameworks</h1>
+        <h3 class="text-caption">Fastify
+          <img src="/data/presentations/graphql-server/images/arrow-right.svg" />
+        </h3>
+      </div>
+      <div class="slide__object"></div>
+    </div>
+  </um-slide>
+
+  <um-slide id="slide3">
+    <div class="slide slide_50-50">
+      <div class="slide__text">
+        <span class="text-note">advantages</span>
+        <h1 class="text-title">Fastify</h1>
+        <h3 class="text-caption">https://www.fastify.io/
+          <img src="/data/presentations/webcomponents-common/images/arrow-right.svg" />
+        </h3>
+        <div class="text-desc">
+          - Highly performant (https://www.fastify.io/benchmarks/)
+          <br /> - Maintainable
+          <br /> - TypeScript ready
+          <br /> - Extendible
+          <br /> - Low-scope framework
+          <br /> - Official compatibility layer for Express
+        </div>
+      </div>
+      <div class="slide__object"></div>
+    </div>
+  </um-slide>
+
+  <um-slide id="slide4">
+    <div class="slide slide_50-50">
+      <div class="slide__text">
+        <span class="text-note">advantages</span>
+        <h1 class="text-title">Mercurius</h1>
+        <h3 class="text-caption">https://mercurius.dev/
+          <img src="/data/presentations/webcomponents-common/images/arrow-right.svg" />
+        </h3>
+        <div class="text-desc">
+          - Automatic loader integration to avoid 1 + N queries.
+          <br /> - mercurius-codegen, which is designed to improve the TypeScript experience using GraphQL Code Generator (https://github.com/mercurius-js/mercurius-typescript)
+          <br /> - Fast (https://www.nearform.com/blog/implementing-a-graphql-gateway-with-fastify/)
+          <br /> - Lower cost of the infrastructure (GraphQL the Simple Way, or: Don't Use Apollo)
+          <br /> - Fastify + Mercurius = ❤️
+        </div>
+      </div>
+      <div class="slide__object"></div>
+    </div>
+  </um-slide>
+
+
+  <um-slide id="slide5">
+    <div class="slide slide_rows-30-70">
+      <div class="slide__text">
+        <span class="text-note">examples</span>
+        <h1 class="text-title">POC on Fastify & Mercurius</h1>
+        <h3 class="text-caption">write code</h3>
+      </div>
+      <div class="slide__object">
+        <!-- <table style="font-size: 24px;">
+          <thead>
+            <tr>
+              <th scope="col">Модуль</th>
+              <th scope="col">Главный вопрос</th>
+              <th scope="col">Рабочие объекты</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Хранилище</th>
+              <td>что?</td>
+              <td>данные сущностей</td>
+            </tr>
+            <tr>
+              <th scope="row">Метадата</th>
+              <td>как?</td>
+              <td>отдельное поле в форме, столбец в таблице</td>
+            </tr>
+            <tr>
+              <th scope="row">Запрос</th>
+              <td>где?</td>
+              <td>стуктура формы, таблицы</td>
+            </tr>
+          </tbody>
+        </table> -->
+        <div
+          style="max-width: 100%; margin: 100px 20px;"
+          class="text-desc"
+        >
+          First example (direct resolvers and loaders)
+          <br />Loaders by directives.
+          <br />Simple performance test.
+        </div>
+      </div>
+    </div>
+  </um-slide>
+
+  <um-slide id="slide6">
+    <div class="slide slide_rows-20-80">
+      <div class="slide__text">
+        <h1 class="text-title">Simple performance test</h1>
+      </div>
+      <div class="slide__object">
+      </div>
+    </div>
+  </um-slide>
+
+  <um-slide id="slide5">
+    <div class="slide slide_rows-30-70">
+      <div class="slide__text">
+        <span class="text-note">examples</span>
+        <h1 class="text-title">Lookup Service with POC DB</h1>
+        <h3 class="text-caption">write code</h3>
+      </div>
+      <div class="slide__object">
+        <div
+          style="max-width: 100%; margin: 100px 20px;"
+          class="text-desc"
+        >
+          - DX
+          <br /> --- Schema
+          <br /> --- Typescript
+          <br /> - Default Resolvers and Loaders by directives.
+          <br /> - Just For Fun: kill front
+        </div>
+      </div>
+    </div>
+  </um-slide>
+
+
+  <um-slide id="slide7">
+    <div class="slide slide_50-50">
+      <div class="slide__text">
+        <h1 class="text-title">Out of scope</h1>
+        <h3 class="text-caption">WIPs
+          <img src="/data/presentations/webcomponents-common/images/arrow-right.svg" />
+        </h3>
+        <div class="text-desc">
+          - Federation
+          <br /> --- https://mercurius.dev/#/docs/federation
+          <br /> --- https://www.nearform.com/blog/implementing-a-graphql-gateway-with-fastify/
+          <br /> - Authorization
+          <br /> --- https://mercurius.dev/#/docs/typescript?id=codegen
+          <br /> - Testing (WIP)
+          <br /> --- https://mercurius.dev/#/docs/integrations/mercurius-integration-testing?id=testing
+          <br /> - Load and performance benchmark (WIP)
+          <br /> --- https://github.com/yandex/yandex-tank
+        </div>
+      </div>
+      <div class="slide__object"></div>
+    </div>
+  </um-slide>
+
+</um-slides>
