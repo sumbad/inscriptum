@@ -1,4 +1,4 @@
-import { AUTH_ACTION, AuthAction } from 'hub/actions/auth.action';
+import { AUTH_ACTION, AuthAction } from 'hub/auth/auth.action';
 import hub from 'hub';
 import { Observable, of } from 'rxjs';
 import { filter, switchMap, map, catchError } from 'rxjs/operators';

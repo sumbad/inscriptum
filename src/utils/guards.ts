@@ -1,6 +1,6 @@
-import { AUTH_ACTION } from 'hub/actions/auth.action';
+import { AUTH_ACTION } from 'hub/auth/auth.action';
 import hub from 'hub';
-import { authState } from 'hub/state/auth.store';
+import { authState } from 'hub/auth/auth.state';
 import { first, take } from 'rxjs/operators';
 
 export async function authorized<T>(work: () => T, redirectUri: string = `${document.location.origin}/drafts`): Promise<T> {

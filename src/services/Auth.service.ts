@@ -2,12 +2,6 @@ import auth0, { Auth0DecodedHash, Auth0Error, Auth0ParseHashError } from 'auth0-
 import { Auth } from '../models/auth.model';
 import { Observable } from 'rxjs';
 
-export interface AuthState {
-  data?: Auth;
-  error?: any | null;
-  isLoading?: boolean;
-}
-
 export function auth(redirectUri: string): Observable<Auth> {
   const webAuth: auth0.WebAuth = new auth0.WebAuth({
     domain: 'inscriptum.auth0.com',

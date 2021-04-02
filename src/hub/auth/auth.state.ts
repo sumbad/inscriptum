@@ -1,10 +1,20 @@
-import { AuthAction, AUTH_ACTION } from 'hub/actions/auth.action';
-import { auth$ } from 'hub/effects/auth.effect';
+import { AuthAction, AUTH_ACTION } from 'hub/auth/auth.action';
+import { auth$ } from 'hub/auth/auth.effect';
 import hub from 'hub';
 import { Observable, merge } from 'rxjs';
 import { startWith, scan, distinct, publishReplay, refCount } from 'rxjs/operators';
-import { AuthState } from 'services/auth.service';
 import { filterByActions } from 'utils/operators';
+import { Auth } from 'models/auth.model';
+
+export interface AuthState {
+  data?: Auth;
+  error?: any | null;
+  isLoading?: boolean;
+}
+
+const initialState: AuthState = {
+  isLoading: false,
+};
 
 function reducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
@@ -32,20 +42,11 @@ function reducer(state: AuthState, action: AuthAction): AuthState {
   }
 }
 
-const defaultState: AuthState = {
-  isLoading: false,
-};
-
 export const authState: Observable<AuthState> = merge(hub.$, auth$).pipe(
   filterByActions(AUTH_ACTION),
-  startWith(defaultState),
+  startWith(initialState),
   scan(reducer),
   distinct(),
   publishReplay(1),
   refCount()
 );
-
-// authState.subscribe((state) => {
-//   if(state.)
-//   addAuthToken()
-// });

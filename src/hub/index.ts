@@ -1,11 +1,13 @@
 import { Subject } from 'rxjs';
-import { HubAction } from './actions/hub.action';
+import { globalErrorHandle } from 'services/error.service';
+import { HubAction } from './actions';
 
 const actions$ = new Subject<HubAction>();
 
-// function dispatch<T extends { type: any; payload: any } = HubAction>(action: T): void {
 function dispatch(action: HubAction): void {
   console.log(action);
+
+  globalErrorHandle(action);
 
   actions$.next(action);
 }

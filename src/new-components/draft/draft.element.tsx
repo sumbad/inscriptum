@@ -167,7 +167,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
     );
 
     subs.add(
-      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE_DONE)).subscribe((d) => {
+      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE_DONE)).subscribe(() => {
         isProgressing = false;
         togglePause(false);
 
@@ -179,6 +179,20 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
         );
 
         document.title = originDocumentTitle;
+      })
+    );
+
+    subs.add(
+      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE_FAIL)).subscribe(() => {
+        isProgressing = false;
+        togglePause(false);
+
+        setTimeout(
+          () => {
+            generateProgress.next();
+          },
+          savingTime > 0 ? savingTime : 0
+        );
       })
     );
   }

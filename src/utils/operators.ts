@@ -1,4 +1,4 @@
-import { HubAction } from 'hub/actions/hub.action';
+import { HubAction } from 'hub/actions';
 import type { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

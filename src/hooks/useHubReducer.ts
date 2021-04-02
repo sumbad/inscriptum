@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from '@web-companions/fc';
-import { HubAction } from 'hub/actions/hub.action';
+import { HubAction } from 'hub/actions';
 import { Observable } from 'rxjs';
 
 export function useHubReducer<T, A extends HubAction, R extends (state: T, action: A) => T = (state: T, action: A) => T>(

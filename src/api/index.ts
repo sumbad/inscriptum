@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { authState } from 'hub/state/auth.store';
+import { authState } from 'hub/auth/auth.state';
 import { first } from 'rxjs/operators';
 import { getSdk } from './generated';
 
