@@ -3,7 +3,7 @@ import { auth$ } from 'hub/auth/auth.effect';
 import hub from 'hub';
 import { Observable, merge } from 'rxjs';
 import { startWith, scan, distinct, publishReplay, refCount } from 'rxjs/operators';
-import { filterByActions } from 'utils/operators';
+import { filterByActionsGroup } from 'utils/operators';
 import { Auth } from 'models/auth.model';
 
 export interface AuthState {
@@ -43,7 +43,7 @@ function reducer(state: AuthState, action: AuthAction): AuthState {
 }
 
 export const authState: Observable<AuthState> = merge(hub.$, auth$).pipe(
-  filterByActions(AUTH_ACTION),
+  filterByActionsGroup(AUTH_ACTION),
   startWith(initialState),
   scan(reducer),
   distinct(),

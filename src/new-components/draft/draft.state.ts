@@ -1,11 +1,11 @@
 import hub from 'hub';
+import { HubAction, HUB_ACTION } from 'hub/actions';
 import { DraftModel } from 'models/draft.model';
-import { PageAction, PAGE_ACTION } from 'new-components/page/page.action';
 import Delta from 'quill-delta';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { updateToc } from 'services/draft.service';
-import { filterByActions } from 'utils/operators';
+import { filterByActionsGroup, filterByActions } from 'utils/operators';
 import { DraftAction, DRAFT_ACTION } from './draft.action';
 
 export interface DraftState {
@@ -18,19 +18,20 @@ export const initialState: DraftState = {
   isLoading: false,
 };
 
-export function draft$(draftId: string): Observable<DraftAction | PageAction> {
+export function draft$(draftId: string): Observable<DraftAction | HubAction> {
   const dispatcherDraft$ = hub.$.pipe(
-    filterByActions<DraftAction>(DRAFT_ACTION),
-    filter((action) => action.payload.id === draftId)
+    // filterByActions<DraftAction | HubAction>({ ...DRAFT_ACTION, [HUB_ACTION.PAGE_SAVE_DONE]: 1 }),
+    // filterByActions<DraftAction | HubAction>([HUB_ACTION.DRAFT_ADD_PAGE_DONE]),
+    // filter((action) => action.payload.draftId === draftId)
   );
   const dispatcherPageSaveDone$ = hub.$.pipe(
-    filter<PageAction>((action) => action.type === PAGE_ACTION.SAVE_DONE && action.payload.draftId === draftId)
+    filter((action) => action.type === HUB_ACTION.PAGE_SAVE_DONE && action.payload.draftId === draftId)
   );
 
   return merge(dispatcherDraft$, dispatcherPageSaveDone$);
 }
 
-export function reducer(state: DraftState, action: DraftAction | PageAction) {
+export function reducer(state: DraftState, action: DraftAction | HubAction) {
   switch (action.type) {
     case DRAFT_ACTION.LOAD:
       return { ...state, isLoading: true };
@@ -45,7 +46,7 @@ export function reducer(state: DraftState, action: DraftAction | PageAction) {
         isLoading: false,
       };
 
-    case DRAFT_ACTION.ADD_NEW_DONE:
+    case HUB_ACTION.DRAFT_ADD_PAGE_DONE:
       if (state.data != null && action.payload.newPage != null) {
         const pages = state.data.pages ?? [];
 
@@ -82,7 +83,7 @@ export function reducer(state: DraftState, action: DraftAction | PageAction) {
       }
       return state;
 
-    case DRAFT_ACTION.DELETE_PAGE_DONE:
+    case HUB_ACTION.DRAFT_DELETE_PAGE_DONE:
       if (state.data != null) {
         const pages = (state.data.pages ?? []).filter((ps) => ps.id !== action.payload.deletedPage.id);
 
@@ -123,11 +124,13 @@ export function reducer(state: DraftState, action: DraftAction | PageAction) {
       console.warn(action.payload.error);
       return state;
 
-    case PAGE_ACTION.SAVE_DONE:
+    case HUB_ACTION.PAGE_SAVE_DONE:
       if (state.data != null) {
         const order = state.data.pages?.find((p) => p.id === action.payload.pageId)?.order ?? -1;
         const toc = state.data.table_of_contents;
         const newHeader = action.payload.content.ops[0].insert ?? '...';
+
+        toc[order] = toc[order] ?? {};
 
         if (order > -1 && toc[order].header !== String(newHeader)) {
           toc[order] = {

@@ -1,4 +1,4 @@
-import { EG, useCallback, useEffect, useState, useReducer } from '@web-companions/fc';
+import { EG, useCallback, useEffect, useState, useReducer, useMemo } from '@web-companions/fc';
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { Page } from 'models/page.model';
@@ -8,13 +8,11 @@ import { marginElement } from '../margin/margin.element';
 import { foldingElement } from '../folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';
 import { deletePageNode } from './deletePage.node';
-import { createMargin } from '../../services/page.service';
-import { DraftAction } from 'new-components/draft/draft.action';
-import { PageAction, PAGE_ACTION } from './page.action';
-import hub from 'hub';
-import { addNewPage, deletePage } from 'services/draft.service';
-import { PageState, page$, reducer } from './page.state';
+import { addNewPageEffect, createMargin, deletePageEffect, savePageEffect } from './page.service';
+import { PageAction } from './page.action';
+import { page$, PageState, reducer } from './page.state';
 import { iconNewMarginNode } from './iconNewMargin.node';
+import { useSubjectEffect } from 'hooks/useSubjectEffect';
 
 const css = String.raw;
 
@@ -34,7 +32,7 @@ export const pageElement = EG({
   render,
 })(function (this: HTMLElement, props) {
   // TODO: fix types for useReducer
-  const [state, dispatch]: [PageState, (action: PageAction | DraftAction) => void] = useReducer(reducer, {
+  const [state, dispatch]: [PageState, (action: PageAction) => void] = useReducer(reducer, {
     data: props.page,
     isLoading: false,
   }) as any;
@@ -42,8 +40,24 @@ export const pageElement = EG({
   const [content, setContent] = useState(props.page.content);
   const [isFolded, setFolded] = useState(props.page.isFolded);
 
+  const [savePage$, savePage] = useSubjectEffect(savePageEffect);
+  const [addNewPage$, addNewPage] = useSubjectEffect(addNewPageEffect);
+  const [deletePage$, deletePage] = useSubjectEffect(deletePageEffect);
+
   useEffect(() => {
     const sub = page$(props.page.id).subscribe((action) => dispatch(action as any));
+
+    sub.add(
+      savePage$.subscribe((d) => {
+        if (state.data != null) {
+          state.data.content = d.content;
+        }
+      })
+    );
+
+    sub.add(addNewPage$.subscribe());
+    sub.add(deletePage$.subscribe());
+
     return () => {
       sub.unsubscribe();
     };
@@ -68,31 +82,28 @@ export const pageElement = EG({
   const textChangeCb = useCallback(
     (_changes: Delta, newContent: Delta) => {
       if (state.data != null) {
-        hub.dispatch({
-          type: PAGE_ACTION.SAVE,
-          payload: {
-            pageId: state.data.id,
-            draftId: state.data.draftId,
-            content: newContent,
-          },
+        savePage({
+          pageId: state.data.id,
+          draftId: state.data.draftId,
+          content: newContent,
         });
       }
     },
-    [state]
+    [state, savePage]
   );
 
   const onAddPageAfter = useCallback(
     (order: number) => () => {
       if (state.data?.draftId != null) {
-        addNewPage(state.data.draftId, order, hub.dispatch);
+        addNewPage({ draftId: state.data.draftId, order });
       }
     },
-    [state.data]
+    [state.data, savePage]
   );
 
   const onDeletePage = useCallback(() => {
     if (state.data != null) {
-      deletePage(state.data.draftId, state.data.id, state.data.order, hub.dispatch);
+      deletePage({ draftId: state.data.draftId, pageId: state.data.id, order: state.data.order });
     }
   }, [state.data]);
 

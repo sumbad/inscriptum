@@ -5,10 +5,10 @@ import { render } from 'lit-html';
 export const tableOfContent = EG({
   props: {
     items: {} as TypeConstructor<
-      {
+      ({
         header: string;
         pageId: string;
-      }[]
+      } | null)[]
     >,
   },
   render,
@@ -21,11 +21,11 @@ export const tableOfContent = EG({
       <div class="toc-stub"></div>
       <nav class="toc-panel">
         <ul class="toc-panel__list">
-          <li class="toc-panel__title">{props.items[0].header ?? `In this article`}</li>
+          <li class="toc-panel__title">{props.items[0]?.header ?? `In this article`}</li>
           {props.items.slice(1).map((it, idx) => (
             <li class="toc-panel__item">
               <span class="toc-panel__page-numb">{idx + 1}</span>
-              <a class={`toc-panel__header ${idx + 1 === selected ? 'toc-panel__header_selected' : ''}`}>{it.header}</a>
+              <a class={`toc-panel__header ${idx + 1 === selected ? 'toc-panel__header_selected' : ''}`}>{it?.header ?? '...'}</a>
             </li>
           ))}
 

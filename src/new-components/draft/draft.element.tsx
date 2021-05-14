@@ -1,5 +1,6 @@
 import { EG, useEffect, useReducer, useRef, useState } from '@web-companions/fc';
 import hub from 'hub';
+import { HUB_ACTION } from 'hub/actions';
 import { render } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { loadingProgressBar, LoadingProgressBarHTMLElement } from 'loading-progress-bar';
@@ -119,7 +120,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
 
     // new unsaved changes
     subs.add(
-      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE)).subscribe(() => {
+      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE)).subscribe(() => {
         if (document.title !== unsavedDocumentTitle) {
           document.title = unsavedDocumentTitle;
         }
@@ -128,7 +129,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
 
     subs.add(
       // is saving
-      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVING)).subscribe((d) => {
+      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVING)).subscribe(() => {
         // finish a previous process
         if (isProgressing) {
           generateProgress.next();
@@ -167,7 +168,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
     );
 
     subs.add(
-      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE_DONE)).subscribe(() => {
+      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE_DONE)).subscribe(() => {
         isProgressing = false;
         togglePause(false);
 
@@ -183,7 +184,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
     );
 
     subs.add(
-      hub.$.pipe(filter((a) => a.type === PAGE_ACTION.SAVE_FAIL)).subscribe(() => {
+      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE_FAIL)).subscribe(() => {
         isProgressing = false;
         togglePause(false);
 
