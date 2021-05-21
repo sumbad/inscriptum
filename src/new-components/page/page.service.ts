@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/core';
 import { sdk } from 'api';
 import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
@@ -39,7 +40,7 @@ export async function createMargin(pageId: string, dispatch: (action: PageAction
   });
 }
 
-async function saveChanges(pageId: string, draftId: string, content: Delta) {
+async function saveChanges(pageId: string, draftId: string, content: Delta | JSONContent) {
   return await authorized(async () => {
     try {
       await sdk().updatePageById({

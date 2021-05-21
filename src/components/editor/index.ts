@@ -340,7 +340,7 @@ export class EditorComponent extends AbstractElement {
 
     const quillDelta = this.quill.getContents();
 
-    const { content: description, image } = quillDelta2Preview(quillDelta);
+    const { description: description, image } = quillDelta2Preview(quillDelta);
 
     const name = transliterate(title).replace(/[^a-zA-Z0-9-_]/g, '-');
 

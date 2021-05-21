@@ -1,3 +1,7 @@
+import { JSONContent } from '@tiptap/core';
+import { FIGURE_NODE_NAME } from 'new-components/redactor/tools/extensions/figure';
+import { TOPIC_SUMMARY_NODE_NAME } from 'new-components/redactor/tools/extensions/topicSummary';
+import { TOPIC_TITLE_NODE_NAME } from 'new-components/redactor/tools/extensions/topicTitle';
 import Delta from 'quill-delta';
 
 export function hasCustomElement(tag: string): boolean {
@@ -10,7 +14,7 @@ export interface IWebComponent4Import {
 }
 
 export async function importWebComponent(components: IWebComponent4Import[]) {
-  await Promise.all(components.map(c => c.import));
+  await Promise.all(components.map((c) => c.import));
   // .then(
   //   (elements: object[]) => {
   //     components.forEach((component, index) => {
@@ -23,7 +27,7 @@ export async function importWebComponent(components: IWebComponent4Import[]) {
   // );
 
   // await all definitions
-  await Promise.all(components.map(c => customElements.whenDefined(c.tag)));
+  await Promise.all(components.map((c) => customElements.whenDefined(c.tag)));
 }
 
 /**
@@ -45,7 +49,8 @@ export function loadStyleFile(path: string) {
 
 /**
  * Get from quill.js Delta object preview info
- *
+ *  @deprecated
+ * 
  * @param delta - quill.js Delta object
  */
 export function quillDelta2Preview(delta: Delta) {
@@ -55,18 +60,18 @@ export function quillDelta2Preview(delta: Delta) {
   if (Array.isArray(delta?.ops) && delta.ops.length > 0) {
     previewTitle = String(delta.ops[0].insert);
     previewContent = String(delta.ops[2].insert);
-    const imageItem = delta.ops.find(item=> getNestedObject(item, ['insert', 'blockFigure', 'image']) !== undefined);
+    const imageItem = delta.ops.find((item) => getNestedObject(item, ['insert', 'blockFigure', 'image']) !== undefined);
     if (imageItem != undefined) {
       previewImage = getNestedObject(imageItem, ['insert', 'blockFigure', 'image']);
     }
-    
-    if(previewContent.length < 3) {
+
+    if (previewContent.length < 3) {
       for (const [index, value] of delta.ops.entries()) {
         if (index > 2) {
           if (previewContent.length > 100) {
             break;
           }
-  
+
           if (getNestedObject(value, ['insert', 'blockFigure', 'image']) !== undefined) {
             previewImage = getNestedObject(value, ['insert', 'blockFigure', 'image']);
           } else {
@@ -78,21 +83,84 @@ export function quillDelta2Preview(delta: Delta) {
     }
   }
 
-  previewContent =
-    previewContent
-      .trim()
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/`/g, '&DiacriticalGrave;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
+  previewContent = previewContent
+    .trim()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/`/g, '&DiacriticalGrave;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 
   return {
     title: previewTitle,
-    content: previewContent,
+    description: previewContent,
     image: previewImage,
   };
+}
+
+/**
+ * Create a preview object from the redactor Content
+ * 
+ * @param jsonContent 
+ * @returns 
+ */
+export function redactorContent2Preview(jsonContent: JSONContent) {
+  let previewTitle = '<noname>';
+  let previewContent = '...';
+  let previewImage = '';
+
+  const topicTitleContent = findFirstJsonContent(jsonContent, TOPIC_TITLE_NODE_NAME);
+  if (topicTitleContent?.content != null) {
+    previewTitle = topicTitleContent.content[0].text ?? previewTitle;
+  }
+
+  const topicSummaryContent = findFirstJsonContent(jsonContent, TOPIC_SUMMARY_NODE_NAME);
+  if (topicSummaryContent?.content != null) {
+    previewContent = topicSummaryContent.content[0].text ?? previewContent;
+  }
+
+  const figureContent = findFirstJsonContent(jsonContent, FIGURE_NODE_NAME);
+  if (figureContent?.attrs != null) {
+    previewImage = figureContent.attrs['src'] ?? previewImage;
+  }
+
+  previewContent = previewContent
+    .trim()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/`/g, '&DiacriticalGrave;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+
+  return {
+    title: previewTitle,
+    description: previewContent,
+    image: previewImage,
+  };
+}
+
+/**
+ * Find the firs JsonContent object from the parent one
+ * 
+ * @param jsonContent 
+ * @param nodeType 
+ * @returns 
+ */
+export function findFirstJsonContent(jsonContent: JSONContent, nodeType: string): JSONContent | null {
+  if (jsonContent.type === nodeType) {
+    return jsonContent;
+  } else if (Array.isArray(jsonContent.content)) {
+    for (const content of jsonContent.content) {
+      const _content = findFirstJsonContent(content, nodeType);
+      if (_content != null) {
+        return _content;
+      }
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -105,6 +173,5 @@ export function quillDelta2Preview(delta: Delta) {
 export function getNestedObject(object: object, pathArr: string[]): any {
   return pathArr.reduce((obj, key) => (obj && obj[key] !== 'undefined' ? obj[key] : undefined), object);
 }
-
 
 export const css = String.raw;

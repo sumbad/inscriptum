@@ -51,7 +51,7 @@ export let browser = {
   mac: /mac/i.test(ua),
 };
 
-export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainerEl: HTMLElement, isTitle: boolean = true) {
+export function initQuillEditor(tooltip: EditorTooltipComponent | null, editorContainerEl: HTMLElement, isTitle: boolean = true) {
   // console.log(MyQuill.length);
   // console.log(MyQuill['imports']['formats/']);
 
@@ -60,9 +60,9 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
   LinkBlot.tagName = 'a';
   LinkBlot.showLinkTooltip = (link) => {
     // console.log(link);
-    tooltip.showLinkTooltip(link, link.value, isEdit(), quill);
+    tooltip && tooltip.showLinkTooltip(link, link.value, isEdit(), quill);
   };
-  LinkBlot.hideLinkTooltip = () => tooltip.hideLinkTooltip(quill);
+  LinkBlot.hideLinkTooltip = () => tooltip && tooltip.hideLinkTooltip(quill);
   MyQuill.register(LinkBlot, true);
   // }
 
@@ -299,7 +299,7 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
                         new Delta().retain(offset).delete(prefix.length).insert({ blockFigure: figure_value }),
                         Quill.sources.USER
                       );
-                      tooltip.hideBlocksTooltip();
+                      tooltip && tooltip.hideBlocksTooltip();
                       return false;
                     }
                   }
@@ -588,7 +588,7 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
     return true;
   }
 
-  quill.addContainer(tooltip);
+  tooltip && quill.addContainer(tooltip);
 
   // quill.on(Quill.events.EDITOR_CHANGE, function (eventType, range) {
   //   if (eventType !== Quill.events.SELECTION_CHANGE) return;
@@ -679,8 +679,8 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
       }
       el = (el as Element).parentNode;
     }
-    tooltip.hideFormatTooltip(quill);
-    tooltip.hideBlocksTooltip();
+    tooltip && tooltip.hideFormatTooltip(quill);
+    tooltip && tooltip.hideBlocksTooltip();
   });
 
   checkRequiredBlots(quill);
@@ -778,7 +778,7 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
 
     // remove old placeholders
     const placeholderEls = editorContainerEl.querySelectorAll('[data-placeholder]');
-    placeholderEls.forEach(el=>el.removeAttribute('data-placeholder'))
+    placeholderEls.forEach((el) => el.removeAttribute('data-placeholder'));
 
     const isEmptyContent = isTitle ? lines.length === 3 : lines.length === 1;
     if (isEmptyContent) {
@@ -864,223 +864,233 @@ export function initQuillEditor(tooltip: EditorTooltipComponent, editorContainer
     callback(file);
   }
 
-  tooltip.$bold_button.onclick = (e) => {
-    console.log('$bold_button.onclick');
+  tooltip &&
+    (tooltip.$bold_button.onclick = (e) => {
+      console.log('$bold_button.onclick');
 
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-    console.log('$bold_button.onclick', !active);
-    quill.format('bold', !active);
-    console.log('$bold_button.onclick', quill.getSelection(true));
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+      console.log('$bold_button.onclick', !active);
+      quill.format('bold', !active);
+      console.log('$bold_button.onclick', quill.getSelection(true));
 
-    quill.updateSelection(Quill.sources.API);
-    // let range = quill.getSelection(true);
-    // toolbarUpdate(range); ///????????
-  };
-
-  tooltip.$italic_button.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-    quill.format('italic', !active);
-    quill.updateSelection(Quill.sources.API);
-    // let range = quill.getSelection(true);
-    // toolbarUpdate(range);
-  };
-
-  tooltip.$link_button.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-    var range = quill.getSelection(true);
-    if (active) {
-      let links = quill.scroll.descendants(LinkBlot, range.index, range.length);
-      links.forEach((link) => {
-        let index = link.offset(quill.scroll);
-        let length = link.length();
-        quill.formatText(index, length, 'link', false);
-      });
-      toolbarUpdate(range, quill, tooltip);
-    } else {
-      toolbarPrompt(tooltip.$tl_tooltip, 'Paste or type a link...', function (value) {
-        value = value.trim();
-        if (
-          value.substr(0, 1) != '#' &&
-          value.substr(0, 1) != '/' &&
-          value.substr(0, 7) != 'http://' &&
-          value.substr(0, 8) != 'https://' &&
-          value.substr(0, 5) != 'tg://' &&
-          value.substr(0, 7) != 'mailto:'
-        ) {
-          if (value.indexOf('@') > 0) {
-            value = 'mailto:' + value;
-          } else {
-            value = 'http://' + value;
-          }
-        }
-        quill.focus();
-        quill.format('link', value);
-        toolbarUpdate(range, quill, tooltip);
-      });
-    }
-  };
-
-  tooltip.$header_button.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-
-    let range = quill.getSelection(true);
-    quill.format('blockHeader', !active);
-    let blots = quill.scroll.descendants(HeaderBlot, range.index, range.length);
-
-    blots.forEach((blot) => {
-      let index = blot.offset(quill.scroll);
-      let length = blot.length();
-      quill.formatText(
-        index,
-        length,
-        {
-          bold: false,
-          italic: false,
-          code: false,
-        },
-        Quill.sources.SILENT
-      );
+      quill.updateSelection(Quill.sources.API);
+      // let range = quill.getSelection(true);
+      // toolbarUpdate(range); ///????????
     });
-    quill.updateSelection(Quill.sources.API);
-    // toolbarUpdate(range);
-  };
 
-  tooltip.$subheader_button.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-    let range = quill.getSelection(true);
-    quill.format('blockSubheader', !active);
-    let blots = quill.scroll.descendants(SubheaderBlot, range.index, range.length);
-    blots.forEach((blot) => {
-      let index = blot.offset(quill.scroll);
-      let length = blot.length();
-      quill.formatText(
-        index,
-        length,
-        {
-          bold: false,
-          italic: false,
-          code: false,
-        },
-        Quill.sources.SILENT
-      );
+  tooltip &&
+    (tooltip.$italic_button.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+      quill.format('italic', !active);
+      quill.updateSelection(Quill.sources.API);
+      // let range = quill.getSelection(true);
+      // toolbarUpdate(range);
     });
-    quill.updateSelection(Quill.sources.API);
-    // toolbarUpdate(range);
-  };
 
-  tooltip.$quote_button.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    let pullquote = input.classList.contains('pullquote');
-    e.preventDefault();
-    let range = quill.getSelection(true);
-    if (active) {
-      quill.format('blockPullquote', !pullquote);
-    } else {
-      quill.format('blockBlockquote', true);
-    }
-    quill.updateSelection(Quill.sources.API);
-    // toolbarUpdate(range);
-  };
-
-  tooltip.$strikeButton.onclick = (e) => {
-    let input = e.target as HTMLElement;
-    let active = input.classList.contains('active');
-    e.preventDefault();
-    quill.format('strike', !active);
-
-    quill.updateSelection(Quill.sources.API);
-  };
-
-  tooltip.$image_button.onclick = () => {
-    let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]') as HTMLInputElement;
-    if (fileInput == null) {
-      fileInput = document.createElement('input');
-      fileInput.setAttribute('type', 'file');
-      fileInput.setAttribute(
-        'accept',
-        browser.safari_mobile ? 'image/gif, image/jpeg, image/jpg, image/png' : 'image/gif, image/jpeg, image/jpg, image/png, video/mp4'
-      );
-      fileInput.classList.add('ql-image');
-      fileInput.addEventListener('change', () => {
-        if (fileInput && fileInput.files != null && fileInput.files[0] != null) {
-          var file = fileInput.files[0];
-
-          const fileSizeLimitCallback = function () {
-            showError('File too big (up to 5 MB allowed)');
-          };
-
-          const fileSizeLimit = 5 * 1024 * 1024;
-          updatePhoto(file, (file) => {
-            if (file.size > fileSizeLimit) {
-              return fileSizeLimitCallback && fileSizeLimitCallback();
-            }
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              if (e && e.target !== null) {
-                let figure_value = getFigureValueByUrl(e.target['result']);
-                if (figure_value) {
-                  let range = quill.getSelection(true);
-                  quill.updateContents(
-                    new Delta().retain(range.index).delete(range.length).insert({ blockFigure: figure_value }),
-                    Quill.sources.USER
-                  );
-                } else {
-                  showError('Invalid file format');
-                }
-                fileInput.value = '';
-                fileInput.setAttribute('data-status', 'ready');
+  tooltip &&
+    (tooltip.$link_button.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+      var range = quill.getSelection(true);
+      if (active) {
+        let links = quill.scroll.descendants(LinkBlot, range.index, range.length);
+        links.forEach((link) => {
+          let index = link.offset(quill.scroll);
+          let length = link.length();
+          quill.formatText(index, length, 'link', false);
+        });
+        tooltip && toolbarUpdate(range, quill, tooltip);
+      } else {
+        tooltip &&
+          toolbarPrompt(tooltip.$tl_tooltip, 'Paste or type a link...', function (value) {
+            value = value.trim();
+            if (
+              value.substr(0, 1) != '#' &&
+              value.substr(0, 1) != '/' &&
+              value.substr(0, 7) != 'http://' &&
+              value.substr(0, 8) != 'https://' &&
+              value.substr(0, 5) != 'tg://' &&
+              value.substr(0, 7) != 'mailto:'
+            ) {
+              if (value.indexOf('@') > 0) {
+                value = 'mailto:' + value;
+              } else {
+                value = 'http://' + value;
               }
-            };
-            reader.readAsDataURL(file);
+            }
+            quill.focus();
+            quill.format('link', value);
+            toolbarUpdate(range, quill, tooltip);
           });
-        }
-      });
-      quill.container.appendChild(fileInput);
-    }
-    fileInput.setAttribute('data-status', 'busy');
-    fileInput.click();
-  };
-
-  tooltip.$embed_button.onclick = (e) => {
-    // toolbarPrompt($tl_blocks, 'Paste a YouTube, Vimeo or Twitter link, and press Enter', function(value) {
-    //   let figure_value = getFigureValueByUrl(value);
-    //   let insert = figure_value ? {blockFigure: figure_value} : value + '\n';
-    //   let range = quill.getSelection(true);
-    //   quill.updateContents(new Delta()
-    //     .retain(range.index)
-    //     .delete(range.length)
-    //     .insert(insert)
-    //   , Quill.sources.USER);
-    //   quill.focus();
-    //   blocksUpdatePosition(quill.getSelection());
-    // });
-    let range = quill.getSelection(true);
-    let [line] = quill.scroll.line(range.index);
-    const node = line.domNode as HTMLElement;
-    if (line) {
-      let value = node.textContent;
-      if (!value) {
-        node.setAttribute('data-placeholder', 'Paste a YouTube, Vimeo or Twitter link, and press Enter');
-        node.classList.add('placeholder_once', 'empty');
-        tooltip.hideBlocksTooltip();
       }
-    }
-  };
+    });
+
+  tooltip &&
+    (tooltip.$header_button.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+
+      let range = quill.getSelection(true);
+      quill.format('blockHeader', !active);
+      let blots = quill.scroll.descendants(HeaderBlot, range.index, range.length);
+
+      blots.forEach((blot) => {
+        let index = blot.offset(quill.scroll);
+        let length = blot.length();
+        quill.formatText(
+          index,
+          length,
+          {
+            bold: false,
+            italic: false,
+            code: false,
+          },
+          Quill.sources.SILENT
+        );
+      });
+      quill.updateSelection(Quill.sources.API);
+      // toolbarUpdate(range);
+    });
+
+  tooltip &&
+    (tooltip.$subheader_button.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+      let range = quill.getSelection(true);
+      quill.format('blockSubheader', !active);
+      let blots = quill.scroll.descendants(SubheaderBlot, range.index, range.length);
+      blots.forEach((blot) => {
+        let index = blot.offset(quill.scroll);
+        let length = blot.length();
+        quill.formatText(
+          index,
+          length,
+          {
+            bold: false,
+            italic: false,
+            code: false,
+          },
+          Quill.sources.SILENT
+        );
+      });
+      quill.updateSelection(Quill.sources.API);
+      // toolbarUpdate(range);
+    });
+
+  tooltip &&
+    (tooltip.$quote_button.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      let pullquote = input.classList.contains('pullquote');
+      e.preventDefault();
+      let range = quill.getSelection(true);
+      if (active) {
+        quill.format('blockPullquote', !pullquote);
+      } else {
+        quill.format('blockBlockquote', true);
+      }
+      quill.updateSelection(Quill.sources.API);
+      // toolbarUpdate(range);
+    });
+
+  tooltip &&
+    (tooltip.$strikeButton.onclick = (e) => {
+      let input = e.target as HTMLElement;
+      let active = input.classList.contains('active');
+      e.preventDefault();
+      quill.format('strike', !active);
+
+      quill.updateSelection(Quill.sources.API);
+    });
+
+  tooltip &&
+    (tooltip.$image_button.onclick = () => {
+      let fileInput = quill.container.querySelector('input.ql-image[type=file][data-status=ready]') as HTMLInputElement;
+      if (fileInput == null) {
+        fileInput = document.createElement('input');
+        fileInput.setAttribute('type', 'file');
+        fileInput.setAttribute(
+          'accept',
+          browser.safari_mobile ? 'image/gif, image/jpeg, image/jpg, image/png' : 'image/gif, image/jpeg, image/jpg, image/png, video/mp4'
+        );
+        fileInput.classList.add('ql-image');
+        fileInput.addEventListener('change', () => {
+          if (fileInput && fileInput.files != null && fileInput.files[0] != null) {
+            var file = fileInput.files[0];
+
+            const fileSizeLimitCallback = function () {
+              showError('File too big (up to 5 MB allowed)');
+            };
+
+            const fileSizeLimit = 5 * 1024 * 1024;
+            updatePhoto(file, (file) => {
+              if (file.size > fileSizeLimit) {
+                return fileSizeLimitCallback && fileSizeLimitCallback();
+              }
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                if (e && e.target !== null) {
+                  let figure_value = getFigureValueByUrl(e.target['result']);
+                  if (figure_value) {
+                    let range = quill.getSelection(true);
+                    quill.updateContents(
+                      new Delta().retain(range.index).delete(range.length).insert({ blockFigure: figure_value }),
+                      Quill.sources.USER
+                    );
+                  } else {
+                    showError('Invalid file format');
+                  }
+                  fileInput.value = '';
+                  fileInput.setAttribute('data-status', 'ready');
+                }
+              };
+              reader.readAsDataURL(file);
+            });
+          }
+        });
+        quill.container.appendChild(fileInput);
+      }
+      fileInput.setAttribute('data-status', 'busy');
+      fileInput.click();
+    });
+
+  tooltip &&
+    (tooltip.$embed_button.onclick = (e) => {
+      // toolbarPrompt($tl_blocks, 'Paste a YouTube, Vimeo or Twitter link, and press Enter', function(value) {
+      //   let figure_value = getFigureValueByUrl(value);
+      //   let insert = figure_value ? {blockFigure: figure_value} : value + '\n';
+      //   let range = quill.getSelection(true);
+      //   quill.updateContents(new Delta()
+      //     .retain(range.index)
+      //     .delete(range.length)
+      //     .insert(insert)
+      //   , Quill.sources.USER);
+      //   quill.focus();
+      //   blocksUpdatePosition(quill.getSelection());
+      // });
+      let range = quill.getSelection(true);
+      let [line] = quill.scroll.line(range.index);
+      const node = line.domNode as HTMLElement;
+      if (line) {
+        let value = node.textContent;
+        if (!value) {
+          node.setAttribute('data-placeholder', 'Paste a YouTube, Vimeo or Twitter link, and press Enter');
+          node.classList.add('placeholder_once', 'empty');
+          tooltip.hideBlocksTooltip();
+        }
+      }
+    });
 
   window.addEventListener('scroll resize', () => {
-    tooltip.tooltipUpdatePosition(tooltip.$tl_tooltip, null, tooltip.formatTTOptions, quill);
-    tooltip.tooltipUpdatePosition(tooltip.$tl_link_tooltip, null, tooltip.linkTTOptions, quill);
+    tooltip && tooltip.tooltipUpdatePosition(tooltip.$tl_tooltip, null, tooltip.formatTTOptions, quill);
+    tooltip && tooltip.tooltipUpdatePosition(tooltip.$tl_link_tooltip, null, tooltip.linkTTOptions, quill);
   });
 
   return quill;

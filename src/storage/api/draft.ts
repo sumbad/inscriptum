@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/core';
 import type { GraphQLClient } from 'graphql-request';
 import type Delta from 'quill-delta';
 
@@ -13,7 +14,7 @@ export function draftApi(gqlClient: GraphQLClient) {
       drafts: {
         id: string;
         pages: {
-          content: Delta;
+          content: Delta | JSONContent;
         }[];
         created_at: string;
         updated_at: string;

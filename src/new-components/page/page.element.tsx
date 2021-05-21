@@ -13,10 +13,13 @@ import { PageAction } from './page.action';
 import { page$, PageState, reducer } from './page.state';
 import { iconNewMarginNode } from './iconNewMargin.node';
 import { useSubjectEffect } from 'hooks/useSubjectEffect';
+import { redactorElement } from 'new-components/redactor/redactor.element';
+import { JSONContent } from '@tiptap/core';
 
 const css = String.raw;
 
-const EditorElement = editorElement('inscriptum-editor');
+const RedactorElement = redactorElement('inscriptum-redactor');
+// const EditorElement = editorElement('inscriptum-editor');
 const MarginElement = marginElement('inscriptum-margin');
 const FoldingElement = foldingElement('inscriptum-folding');
 const AddNewAfterNode = addNewAfterNode();
@@ -79,13 +82,26 @@ export const pageElement = EG({
     }
   }, [state, content, isFolded, setContent, setFolded]);
 
-  const textChangeCb = useCallback(
-    (_changes: Delta, newContent: Delta) => {
+  // const textChangeCb = useCallback(
+  //   (_changes: Delta, newContent: Delta) => {
+  //     if (state.data != null) {
+  //       savePage({
+  //         pageId: state.data.id,
+  //         draftId: state.data.draftId,
+  //         content: newContent,
+  //       });
+  //     }
+  //   },
+  //   [state, savePage]
+  // );
+
+  const cbOnUpdateContent = useCallback(
+    (content: JSONContent) => {
       if (state.data != null) {
         savePage({
           pageId: state.data.id,
           draftId: state.data.draftId,
-          content: newContent,
+          content,
         });
       }
     },
@@ -174,7 +190,8 @@ export const pageElement = EG({
                 justify-content: space-between;
               `}
             >
-              <EditorElement content={content} textChangeCb={textChangeCb} isTitle={state.data.order === 0}></EditorElement>
+              {/* <EditorElement content={content} textChangeCb={textChangeCb} isTitle={state.data.order === 0}></EditorElement> */}
+              <RedactorElement content={content} cbOnUpdateContent={cbOnUpdateContent} isTitle={state.data.order === 0}></RedactorElement>
               {pageControls}
             </div>
             {state.data.margins.length > 0 ? (

@@ -19,11 +19,12 @@ export const initialState: DraftState = {
 };
 
 export function draft$(draftId: string): Observable<DraftAction | HubAction> {
-  const dispatcherDraft$ = hub.$.pipe(
+  const dispatcherDraft$ = hub.$
+    .pipe
     // filterByActions<DraftAction | HubAction>({ ...DRAFT_ACTION, [HUB_ACTION.PAGE_SAVE_DONE]: 1 }),
     // filterByActions<DraftAction | HubAction>([HUB_ACTION.DRAFT_ADD_PAGE_DONE]),
     // filter((action) => action.payload.draftId === draftId)
-  );
+    ();
   const dispatcherPageSaveDone$ = hub.$.pipe(
     filter((action) => action.type === HUB_ACTION.PAGE_SAVE_DONE && action.payload.draftId === draftId)
   );
@@ -128,7 +129,20 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
       if (state.data != null) {
         const order = state.data.pages?.find((p) => p.id === action.payload.pageId)?.order ?? -1;
         const toc = state.data.table_of_contents;
-        const newHeader = action.payload.content.ops[0].insert ?? '...';
+        let newHeader = '...';
+
+        if ('ops' in action.payload.content) {
+          newHeader = action.payload.content.ops[0].insert;
+        }
+
+        if (
+          'type' in action.payload.content &&
+          Array.isArray(action.payload.content.content) &&
+          Array.isArray(action.payload.content.content[0].content) &&
+          action.payload.content.content[0].content[0].type === 'text'
+        ) {
+          newHeader = action.payload.content.content[0].content[0].text ?? newHeader;
+        }
 
         toc[order] = toc[order] ?? {};
 

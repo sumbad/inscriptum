@@ -15,7 +15,8 @@ library.add(
 
 import 'components/list';
 import { IListItem } from 'components/list';
-import { quillDelta2Preview } from 'utils/common';
+import { quillDelta2Preview, redactorContent2Preview } from 'utils/common';
+import Delta from 'quill-delta';
 
 
 enum DraftAction {
@@ -69,7 +70,9 @@ export class DraftComponent extends AbstractElement {
               drafts => {
                 const _drafts = drafts.map(
                   item => {
-                    const { content: description, title, image } = quillDelta2Preview(item.pages[0].content);
+                    const content = item.pages[0].content;
+                    const { description, title, image } = 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
+                    
                     return {
                       id: item.id,
                       preview: {
@@ -77,7 +80,7 @@ export class DraftComponent extends AbstractElement {
                         description,
                         image
                       },
-                      linkUrl: '/editor/' + item.id,
+                      linkUrl: '/draft/' + item.id,
                       actions: [
                         {
                           label: 'удалить',
@@ -87,6 +90,7 @@ export class DraftComponent extends AbstractElement {
                     }
                   }
                 );
+
                 this.$ = {
                   isPreloader: false,
                   drafts: _drafts
@@ -132,7 +136,7 @@ export class DraftComponent extends AbstractElement {
    */
   async handleBtnCreateNewDraft() {
     const newDraftId = await this._storageService.api.draft.create(this._storageService.author.id);
-    page('/editor/' + newDraftId.id);
+    page('/draft/' + newDraftId.id);
   }
 
 

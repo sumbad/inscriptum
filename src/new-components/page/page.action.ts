@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/core';
 import { Margin } from 'models/margin.model';
 import Delta from 'quill-delta';
 
@@ -15,7 +16,7 @@ export const PAGE_ACTION = {
 export type PageActionSave = {
   draftId: string;
   pageId: string;
-  content: Delta;
+  content: Delta | JSONContent;
 };
 
 

@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/core';
 import type Delta from 'quill-delta';
 
 export type Page = {
@@ -7,6 +8,6 @@ export type Page = {
   margins: {
     id: string;
   }[];
-  content?: Delta;
+  content?: Delta | JSONContent;
   isFolded?: boolean;
 };
