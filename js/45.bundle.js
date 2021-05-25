@@ -1,1 +1,5 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[45],{88:function(o,e,t){"use strict";t.r(e),t.d(e,"BlockquoteBlot",(function(){return s}));var c=t(59),n=t(60);class s extends n.c{}s.blotName="blockBlockquote",s.tagName="blockquote",c.a.register(s)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[45],{118:function(e,s,t){"use strict";t.r(s),s.default=(e,s)=>e`
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+  <div>${s.routerView}</div>
+`}}]);

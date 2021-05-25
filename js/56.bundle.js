@@ -1,20 +1,9 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[56],{109:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
-<article id="article" class="entry">
+(window.webpackJsonp=window.webpackJsonp||[]).push([[56],{108:function(e,i,t){"use strict";t.r(i),i.default=(e,i)=>e`
+<template id="umArticlePreview">
+  <inscriptum-post-preview></inscriptum-post-preview>
+</template>
 
-    <header class="entry-header">
-        <h1 class="entry-title">
-            ${t.articleTitle}
-        </h1>
-        <div class="entry-meta">
-            <ul>
-                <li>${t.articleDate}</li>
-            </ul>
-        </div>
-    </header>
-
-    <div class="entry-content">
-        ${{html:t.articleContent}}
-    </div>
-
-</article>
+<div id="umArticlePrevieList">
+  ${i.previews}
+</div>
 `}}]);

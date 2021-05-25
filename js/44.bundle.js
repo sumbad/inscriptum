@@ -1,5 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[44],{113:function(e,s,t){"use strict";t.r(s),s.default=(e,s)=>e`
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
-  <div>${s.routerView}</div>
-`}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[44],{119:function(e,t,n){"use strict";n.r(t),n.d(t,"conferenceRouter",(function(){return a}));var c=n(22),o=n(51);class r extends o.AbstractRoute{constructor(){super(...arguments),this.$routePresentation=new c.a,this.$routeConference=new c.a}getRouter(){return this.rootPath="/conference",{rootPath:"/conference",routers:[{path:"/presentation/:id",callback:(e,t)=>this.$routePresentation.next({ctx:e,next:t})},{path:"/:id",callback:(e,t)=>this.$routeConference.next({ctx:e,next:t})},{path:"",callback:(e,t)=>{this.page.replace("/conference/presentation/webcomponents-common"),e.handled=!0}},{path:"*",callback:(e,t)=>{e.handled?(e.handled=!1,t()):this.page.replace("/conference")}}]}}}const a=new r}}]);

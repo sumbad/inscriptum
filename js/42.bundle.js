@@ -1,3 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[42],{124:function(n,t,e){"use strict";e.r(t),t.default=(n,t)=>n`
-  <div>${{html:t.presentationContent}}</div>
-`}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[42,47],{65:function(e,t,r){"use strict";r.r(t),r.d(t,"SingleLineBlot",(function(){return c}));var n=r(61),a=r(67),s=r(62),i=r.n(s);class c extends n.c{replace(e){e.children.forEach(e=>{e instanceof a.BreakBlot&&e.replaceWith(i.a.create("text"," "))}),super.replace(e)}insertAt(e,t,r){void 0!==r&&"textBreak"==t?super.insertAt(e,"\n"):super.insertAt(e,t,r)}}},67:function(e,t,r){"use strict";r.r(t),r.d(t,"BreakBlot",(function(){return s}));var n=r(60),a=r(61);class s extends a.a{}s.blotName="textBreak",s.tagName="br",s.className="inline",n.a.register(s)}}]);

@@ -1,45 +1,217 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[16,79,80],{135:function(e,o){e.exports='.header{margin-top:6rem;text-align:center}.value-prop{margin-top:1rem}.value-props{margin-top:4rem;margin-bottom:4rem}.docs-header{text-transform:uppercase;font-size:1.4rem;letter-spacing:.2rem;font-weight:600}.docs-section{border-top:1px solid #eee;padding:4rem 0;margin-bottom:0}.value-img{display:block;text-align:center;margin:2.5rem auto 0}.example-grid .column,.example-grid .columns{background:#EEE;text-align:center;border-radius:4px;font-size:1rem;text-transform:uppercase;height:30px;line-height:30px;margin-bottom:.75rem;font-weight:600;letter-spacing:.1rem}.docs-preview{white-space:pre-line}.docs-example .row,.docs-example.row,.docs-example form{margin-bottom:0}.docs-example h1,.docs-example h2,.docs-example h3,.docs-example h4,.docs-example h5,.docs-example h6{margin-bottom:1rem}.heading-font-size{font-size:1.2rem;color:#999;letter-spacing:normal}.code-example{margin-top:1.5rem;margin-bottom:0}.code-example-body{white-space:pre;word-wrap:break-word}.example{position:relative;margin-top:4rem}.example-header{font-weight:600;margin-top:1.5rem;margin-bottom:.5rem}.example-description{margin-bottom:1.5rem}.example-screenshot-wrapper{display:block;position:relative;overflow:hidden;border-radius:6px;border:1px solid #eee;height:250px}.example-screenshot{width:100%;height:auto}.example-screenshot.coming-soon{width:auto;position:absolute;background:#eee;top:5px;right:5px;bottom:5px;left:5px}@media (min-width:550px){.header{margin-top:18rem}.value-props{margin-top:9rem;margin-bottom:7rem}.value-img{margin-bottom:1rem}.example-grid .column,.example-grid .columns{margin-bottom:1.5rem}.docs-section{padding:6rem 0}.example-send-yourself-copy{float:right;margin-top:12px}.example-screenshot-wrapper{position:absolute;width:48%;height:100%;left:0;max-height:none}}@media (min-width:750px){.popover.open{display:block}.popover{display:none;position:absolute;top:0;left:0;background:#fff;border:1px solid #eee;border-radius:4px;top:92%;left:-50%;-webkit-filter:drop-shadow(0 0 6px rgba(0,0,0,0.1));-moz-filter:drop-shadow(0 0 6px rgba(0,0,0,0.1));filter:drop-shadow(0 0 6px rgba(0,0,0,0.1))}.popover_right{left:auto;right:0;top:calc(100% + 11px)}.popover-item:first-child .popover-link:after,.popover-item:first-child .popover-link:before{bottom:100%;left:50%;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none}.popover-item:first-child .popover-link:after{border-color:rgba(255,255,255,0);border-bottom-color:#fff;border-width:10px;margin-left:-10px}.popover-item:first-child .popover-link:before{border-color:rgba(238,238,238,0);border-bottom-color:#eee;border-width:11px;margin-left:-11px}.popover-list{padding:0;margin:0;list-style:none}.popover-item{padding:0;margin:0}.popover-link{position:relative;color:#222;display:block;padding:8px 20px;border-bottom:1px solid #eee;text-decoration:none;text-transform:uppercase;font-size:1rem;font-weight:600;text-align:center;letter-spacing:.1rem}.popover-item:first-child .popover-link{border-radius:4px 4px 0 0}.popover-item:last-child .popover-link{border-radius:0 0 4px 4px;border-bottom-width:0}.popover-link:hover{color:#fff;background:#33C3F0}.popover-link:hover,.popover-item:first-child .popover-link:hover:after{border-bottom-color:#33C3F0}}'},136:function(e,o){e.exports=".um-drafts__item{border-bottom:1px solid #eee;padding:4rem 0;margin-bottom:0}.um-drafts__item-link{color:inherit;text-decoration:none}.um-drafts__item-link:hover{color:inherit}.um-drafts__item-actions{position:relative;float:right}.um-drafts__item-subcontent{font-size:1.1rem;color:#999;letter-spacing:normal;font-weight:normal;display:block;cursor:pointer}@media (min-width:550px){.in-drafts__item{padding:20px 0}}.draft-preview{position:relative;min-height:150px}.draft-preview__img{box-shadow:6px 6px 8px -10px rgba(0,0,0,0.7);position:absolute;right:0;max-height:150px;max-width:300px;object-fit:cover}"},72:function(e,o,t){"use strict";t.r(o),t.d(o,"ListComponent",(function(){return h}));var r=t(32),i=t(13),p=t(170),a=t(51),n=t(141),s=t(158),l=t(174),d=t(367),c=t(52),m=function(e,o,t,r){var i,p=arguments.length,a=p<3?o:null===r?r=Object.getOwnPropertyDescriptor(o,t):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,o,t,r);else for(var n=e.length-1;n>=0;n--)(i=e[n])&&(a=(p<3?i(a):p>3?i(o,t,a):i(o,t))||a);return p>3&&a&&Object.defineProperty(o,t,a),a};n.b.add(s.a,l.a);let h=class extends r.a{constructor(){super(a.a,!1),this.styles=i.e`
-    <style>
-      ${t(135)}
-      ${t(136)}
-    </style>
-  `,this._list=[]}set value(e){void 0!==e&&(this._list=e)}connectedCallback(){super.connectedCallback(),document.addEventListener("click",this.closePopovers.bind(this))}disconnectedCallback(){document.removeEventListener("click",this.closePopovers.bind(this))}render(){if(this._list.length<1)return i.e``;const e=(e,o=[])=>o.length>0?i.e`
-            <div class="um-drafts__item-actions">
-              <span @click=${this.openPopover.bind(this)} class="um-drafts__item-subcontent" data-popover=${e}>
-                ${e} <i class="fas fa-angle-down" style="color:#999"></i>
-              </span>
-              <div id=${e} class="popover popover_right">
-                <ul class="popover-list">
-                  ${o.map(o=>i.e`
-                      <li class="popover-item">
-                        <a class="popover-link" @click=${this.dispatchAction.bind(this,{type:o.type,id:e})}>${o.label}</a>
-                      </li>
-                    `)}
-                </ul>
-              </div>
-            </div>
-          `:"",o=Object(p.a)(this._list,e=>e.id,(o,t)=>{var r,p;return i.e`
-        <div class="um-drafts__item">
-          <h6 class="docs-header">
-            ${o.preview.title}
-          </h6>
-          <div class="row">
-            ${(null===(r=o.preview.image)||void 0===r?void 0:r.length)>0?i.e`
-                  <div class="two columns draft-preview">
-                    <img class="draft-preview__img" src="${o.preview.image}" />
-                  </div>
-                `:""}
-            <div class=${(null===(p=o.preview.image)||void 0===p?void 0:p.length)>0?"ten columns":""}>
-              <a class="um-drafts__item-link" href=${o.linkUrl} rel=${Object(d.a)(o.linkRel)}>
-                <p class="docs-preview">${Object(c.a)(o.preview.description)}</p>
-              </a>
-              ${e(o.id,"function"==typeof o.actions?o.actions():o.actions)}
-            </div>
-          </div>
-        </div>
-      `});return i.e`
-      ${this.styles}
-      <div class="container">
-        ${o}
-      </div>
-    `}dispatchAction(e){this.dispatchEvent(new CustomEvent("action",{detail:e}))}openPopover(e){var o;e.preventDefault(),this.closePopovers();const t=null===(o=e.target)||void 0===o?void 0:o.dataset.popover,r=this.querySelector(`[id="${t}"]`);null!==r&&r.classList.add("open"),e.stopImmediatePropagation()}closePopovers(){this.querySelectorAll(".popover.open").forEach(e=>{e.classList.remove("open")})}};m([Object(r.e)()],h.prototype,"_list",void 0),h=m([Object(r.b)("inscriptum-list")],h)}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[16,61,62,91],{132:function(t,o,e){"use strict";e.r(o),o.default=(t,o)=>t`
+${o.$style}
+
+<!-- <div class="the-editor"> -->
+<div class="the-editor-toolbar">
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"bold")}">
+    <i class="fa fa-bold"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"italic")}">
+    <i class="fa fa-italic"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"underline")}">
+    <i class="fa fa-underline"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"strikethrough")}">
+    <i class="fa fa-strikethrough"></i>
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"createLink")}">
+    <i class="fa fa-link"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"unlink")}">
+    <i class="fa fa-unlink"></i>
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"insertUnorderedList")}">
+    <i class="fa fa-list-ul"></i>
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"insertOrderedList")}">
+    <i class="fa fa-list-ol"></i> 
+  </button>
+
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"indent")}">
+    <i class="fa fa-indent"></i>
+  </button>
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"outdent")}">
+    <i class="fa fa-outdent"></i>
+  </button>
+
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"justifyLeft")}">
+    <i class="fa fa-align-left"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"justifyCenter")}">
+    <i class="fa fa-align-center"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"justifyRight")}">
+    <i class="fa fa-align-right"></i> 
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"justifyFull")}">
+    <i class="fa fa-align-justify"></i> 
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <div href="#"
+       class="the-editor-toolbar-has-dropdown">
+    <i class="fa fa-header"></i>
+    <div class="the-editor-toolbar-dropdown">
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h1")}">
+        <h1>Heading 1</h1>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h2")}">
+        <h2>Heading 2</h2>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h3")}">
+        <h3>Heading 3</h3>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h4")}">
+        <h4>Heading 4</h4>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h5")}">
+        <h5>Heading 5</h5>
+      </button>
+      <button class="the-editor-toolbar-button"
+              onclick="${t=>o.doRichEditCommand(t,"formatBlock","h6")}">
+        <h6>Heading 6</h6>
+      </button>
+    </div>
+  </div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"formatBlock","p")}">
+     <i class="fa fa-paragraph"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"subscript")}">
+    <i class="fa fa-subscript"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"superscript")}">
+    <i class="fa fa-superscript"></i>
+  </button>
+
+  <div class="the-editor-toolbar-separator">|</div>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"undo")}">
+    <i class="fa fa-undo"></i>
+  </button>
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.doRichEditCommand(t,"styleWithCSS")}">
+    <i class="fa fa-undo"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          onclick="${t=>o.switchMode()}">
+    <i class="fa fa-code" aria-hidden="true"></i>
+  </button>
+
+  <button class="the-editor-toolbar-button"
+          class="the-editor-toolbar-save">
+    <i class="fa fa-save"></i>
+  </button>
+
+</div>
+
+
+
+<div class="the-editor-content"
+     id="editorContent">
+  <article class="entry"
+           contenteditable>
+
+    <!-- Sample data -->
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c"><br></font>
+      </font>
+    </h1>
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c"><br></font>
+      </font>
+    </h1>
+    <h1 style="text-align: center;">
+      <font face="Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif">
+        <font color="#1abc9c">S</font>
+        <font color="#f39c12">W</font>
+        <font color="#e74c3c">E</font>
+        <font color="#95a5a6">ditor</font>
+      </font>
+      <font size="3"
+            face="Consolas, monaco, monospace"
+            color="#bdc3c7">v0.2.0</font><br></h1>
+    <p style="text-align: center;">
+      <font color="#d35400"
+            face="Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif">Added more fonts and added flat colors</font>
+    </p>
+    <p style="text-align: center;">
+      <a href="https://twitter.com/nakome">
+        <font color="#c0392b">@</font>
+        <font color="#3498db">nakome</font>
+      </a>
+    </p>
+    <p style="text-align: center;"><br></p>
+    <p></p>
+    <div style="text-align: center;"><b>Note:</b></div>
+    <div style="text-align: center;"><i><font color="#95a5a6">Text editor is responsive but for scope demo the class main have 800px&nbsp;</font></i></div>
+    <div style="text-align: center;"><i><font color="#95a5a6">remove if you like.</font></i></div>
+    <div style="text-align: center;"><i><font color="#1abc9c">Thanks</font><font color="#95a5a6">.</font></i></div>
+
+  </article>
+
+</div>
+<!-- </div> -->
+
+
+
+<!-- <div id="pell">
+  
+    </div>
+    <div>
+      Text output:
+      <div id="text-output"></div>
+      HTML output:
+      <pre id="html-output"></pre>
+    </div> -->
+
+`},182:function(t,o){t.exports=".the-editor-toolbar{background:#fff;border-bottom:1px solid #f1f1f1;padding:0 9px;box-sizing:border-box}.the-editor-toolbar-button{position:relative;color:#444;padding:0 4px;text-decoration:none;height:40px;line-height:40px;background-color:transparent;margin:0;letter-spacing:0;text-transform:none;text-align:left}.the-editor-toolbar-button:hover{color:#444;background-color:transparent}.the-editor-toolbar-save{float:right}.the-editor-toolbar-has-dropdown{cursor:pointer;position:relative;display:inline-block;padding:0 4px;height:40px;line-height:40px}.the-editor-toolbar-has-dropdown:hover>.the-editor-toolbar-dropdown{display:block}.the-editor-toolbar-dropdown{display:none;position:absolute;left:0;padding:9px;width:220px;background:white;border:1px solid #e5e5e5;box-shadow:0px 1px 1px rgba(0,0,0,0.04);border-top:none}.the-editor-toolbar-dropdown a{display:block}.the-editor-toolbar-dropdown h1,.the-editor-toolbar-dropdown h2,.the-editor-toolbar-dropdown h3,.the-editor-toolbar-dropdown h4,.the-editor-toolbar-dropdown h5,.the-editor-toolbar-dropdown h6{margin:0;padding:5px 0;width:200px}.the-editor-toolbar-separator{display:inline;margin:0 6px;color:#fff}.the-editor-content{width:100%;min-height:400px;background:white;padding:1em}.the-editor-content:focus{outline:none}\n"},73:function(t,o,e){"use strict";e.r(o),e.d(o,"PreloaderService",(function(){return n}));var i=e(22);class n{}n.isAppLoading=new i.a},86:function(t,o,e){"use strict";e.r(o),e.d(o,"EditorComponent",(function(){return r}));var i=e(68),n=e(132),a=e(73),d=function(t,o,e,i){var n,a=arguments.length,d=a<3?o:null===i?i=Object.getOwnPropertyDescriptor(o,e):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)d=Reflect.decorate(t,o,e,i);else for(var r=t.length-1;r>=0;r--)(n=t[r])&&(d=(a<3?n(d):a>3?n(o,e,d):n(o,e))||d);return a>3&&d&&Object.defineProperty(o,e,d),d};let r=class extends i.UmWebComponent{constructor(){super(n.default,e(182)),this._isCodeMode=!1,a.PreloaderService.isAppLoading.next(!1)}connectedCallback(){super.connectedCallback(),this.$editorContent=this.querySelector("#editorContent"),this.$editorContent.addEventListener("paste",(function(t){if(t.preventDefault(),null!==t.clipboardData){const o=t.clipboardData&&t.clipboardData.getData("text/plain");document.execCommand("insertHTML",!1,o)}}))}doRichEditCommand(t,o,e){t.preventDefault(),document.execCommand(o,!1,e);const i=window.getSelection();if(i&&i.focusNode){const t=i.focusNode.parentElement;if(t)switch(o){case"formatBlock":this._formatBlockClasses(e,t)}}}switchMode(){this._isCodeMode=!this._isCodeMode,this._setDocMode(this._isCodeMode,this.$editorContent.firstElementChild)}_formatBlockClasses(t,o){switch(t){case"h2":o.classList.add("entry-title")}}_setDocMode(t,o){let e,i=o.innerHTML;if(t){e=document.createTextNode(i),o.innerHTML="";let t=document.createElement("pre");o.contentEditable="false",t.id="sourceText",t.contentEditable="true",t.appendChild(e),o.appendChild(t)}else e=document.createRange(),e.selectNodeContents(o.firstChild),o.innerHTML=e.toString(),o.contentEditable="true"}};r=d([Object(i.Define)("um-editor")],r)}}]);
