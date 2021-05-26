@@ -40,7 +40,7 @@ export const pageElement = EG({
     isLoading: false,
   }) as any;
 
-  const [content, setContent] = useState(props.page.content);
+  let [content, setContent] = useState(props.page.content);
   const [isFolded, setFolded] = useState(props.page.isFolded);
 
   const [savePage$, savePage] = useSubjectEffect(savePageEffect);
@@ -82,30 +82,23 @@ export const pageElement = EG({
     }
   }, [state, content, isFolded, setContent, setFolded]);
 
-  // const textChangeCb = useCallback(
-  //   (_changes: Delta, newContent: Delta) => {
-  //     if (state.data != null) {
-  //       savePage({
-  //         pageId: state.data.id,
-  //         draftId: state.data.draftId,
-  //         content: newContent,
-  //       });
-  //     }
-  //   },
-  //   [state, savePage]
-  // );
-
   const cbOnUpdateContent = useCallback(
-    (content: JSONContent) => {
+    (newContent: JSONContent) => {
       if (state.data != null) {
         savePage({
           pageId: state.data.id,
           draftId: state.data.draftId,
-          content,
+          content: newContent,
         });
+
+        if (content != null) {
+          content['content'] = newContent.content;
+        } else {
+          content = newContent;
+        }
       }
     },
-    [state, savePage]
+    [state, savePage, content]
   );
 
   const onAddPageAfter = useCallback(

@@ -28,7 +28,7 @@ export async function getById(draftId: string) {
             .sort((a, b) => a.order - b.order)
             .map((p, idx) => ({
               ...p,
-              content: p.content ?? {},
+              content: p.content,
               draftId,
               isFolded: idx !== 0,
               margins: p.margins ?? [],

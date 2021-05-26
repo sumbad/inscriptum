@@ -58,8 +58,6 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
           }
         }
 
-        action.payload.newPage.content = action.payload.newPage.content ?? ({} as Delta);
-
         pages.push(action.payload.newPage);
 
         const sourceToc = state.data.table_of_contents;

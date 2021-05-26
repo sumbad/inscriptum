@@ -129,6 +129,9 @@ function prepareMenuContent(editor: Editor) {
       <button onclick={() => editor.chain().focus().toggleBlockquote().run()} class={editor.isActive('blockquote') ? 'is-active' : ''}>
         blockquote
       </button>
+      <button onclick={() => editor.chain().focus().toggleAside().run()} class={editor.isActive('aside') ? 'is-active' : ''}>
+        aside
+      </button>
 
       <button
         onclick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}

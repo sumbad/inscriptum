@@ -38,6 +38,7 @@ import { TopicFirstLine } from './extensions/topicFirstLine';
 import { LinkWithTooltip } from './extensions/linkWithTooltip';
 
 import tippy from 'tippy.js';
+import { Aside } from './extensions/aside';
 
 /**
  * Create a new TipTap Editor
@@ -69,7 +70,7 @@ import tippy from 'tippy.js';
  * @param isTitle
  * @returns
  */
-export function createEditor(editorEl: Element, content: Content, isTitle: boolean, options?: Pick<EditorOptions, 'onUpdate'>) {
+export function createEditor(editorEl: Element, content?: Content, isTitle: boolean = false, options?: Pick<EditorOptions, 'onUpdate'>) {
   const doc = isTitle ? [TopicDoc, TopicTitle, TopicSummary, TopicFirstLine] : [Document];
 
   const editor = new Editor({
@@ -107,6 +108,7 @@ export function createEditor(editorEl: Element, content: Content, isTitle: boole
       Highlight,
       /////////
       Figure,
+      Aside,
       LinkWithTooltip.configure({
         onRenderHTML: () => {
           // TODO: it's a temporary solution

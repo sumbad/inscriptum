@@ -134,7 +134,7 @@ export function addNewPageEffect(subject: Subject<{ draftId: string; order: numb
           draftId: draftId,
           newPage: {
             ...newPage,
-            content: newPage?.content ?? {},
+            content: newPage?.content,
             draftId,
           },
           updatedPages,
