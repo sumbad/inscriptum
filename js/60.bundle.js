@@ -1,4 +1,4 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{117:function(a,i,e){"use strict";e.r(i),i.default=(a,i)=>a`
+(window.webpackJsonp=window.webpackJsonp||[]).push([[60],{118:function(a,i,e){"use strict";e.r(i),i.default=(a,i)=>a`
 
 <um-preloader loading=${i.isPreloader}>
   <!-- <template> -->
