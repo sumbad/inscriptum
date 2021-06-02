@@ -1,4 +1,4 @@
-import { EG, useEffect, useRef, useState } from '@web-companions/fc';
+import { EG, useEffect, useState } from '@web-companions/fc';
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { BubbleMenuPlugin, BubbleMenuPluginKey, BubbleMenuPluginProps } from '@tiptap/extension-bubble-menu';
@@ -6,8 +6,9 @@ import { useLitRef } from 'hooks/useLitRef';
 import { css } from 'utils/common';
 import { Editor } from '@tiptap/core';
 import { Props as TippyProps } from 'tippy.js';
-import { PluginKey, Transaction, NodeSelection, TextSelection } from 'prosemirror-state';
-import { DOMOutputSpec, NodeSpec, Node as ProsemirrorNode, NodeType } from 'prosemirror-model';
+import { Transaction, NodeSelection, TextSelection } from 'prosemirror-state';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
   className?: string;
@@ -55,14 +56,27 @@ export const bubbleMenuElement = EG<BubbleMenuProps>({
       })
     );
 
-    const updateEditorState = ({ editor, transaction }: { editor: Editor; transaction: Transaction }) => {
-      setMenuContent(prepareMenuContent(editor));
+    const transaction$ = new Subject();
+
+    const updateEditorState = ({ transaction }: { editor: Editor; transaction: Transaction }) => {
+      if (transaction.steps.length > 0) {
+        setMenuContent(prepareMenuContent(editor));
+      } else if (transaction.selection.empty) {
+        setMenuContent(null);
+      } else {
+        transaction$.next();
+      }
     };
 
     editor.on('transaction', updateEditorState);
 
+    transaction$.pipe(debounceTime(700)).subscribe((d) => {
+      setMenuContent(prepareMenuContent(editor));
+    });
+
     return () => {
       console.log('DESTROY bubbleMenuElement');
+      transaction$.unsubscribe();
       editor.off('transaction', updateEditorState);
       cancelAnimationFrame(rafId);
       editor.unregisterPlugin(BubbleMenuPluginKey);
@@ -85,6 +99,12 @@ export const bubbleMenuElement = EG<BubbleMenuProps>({
 const NODE_WITHOUT_MENU = ['figure'];
 const NODE_PARENT_WITHOUT_MENU = ['codeBlock', 'topicTitle'];
 
+/**
+ * Prepare Menu Content based on rules
+ *
+ * @param editor
+ * @returns
+ */
 function prepareMenuContent(editor: Editor) {
   const selection = editor.state.selection;
 

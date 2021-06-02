@@ -23,8 +23,6 @@ declare module '@tiptap/core' {
   }
 }
 
-export const inputRegex = /^\s*>\s$/gm;
-
 export const Aside = Node.create<AsideOptions>({
   name: 'aside',
 
