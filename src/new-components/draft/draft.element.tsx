@@ -4,7 +4,7 @@ import { HUB_ACTION } from 'hub/actions';
 import { render } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { loadingProgressBar, LoadingProgressBarHTMLElement } from 'loading-progress-bar';
-import { PageAction, PAGE_ACTION } from 'new-components/page/page.action';
+import { PageAction } from 'new-components/page/page.action';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { getById } from 'services/draft.service';
@@ -65,6 +65,8 @@ export const draftElement = EG({
     };
   }, [loadingRef.current]);
 
+  console.log(2222, state.data?.table_of_contents);
+  
   return (
     <>
       <style>{require('./draft.scss')}</style>

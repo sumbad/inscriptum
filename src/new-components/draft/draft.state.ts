@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/core';
 import hub from 'hub';
 import { HubAction, HUB_ACTION } from 'hub/actions';
 import { DraftModel } from 'models/draft.model';
@@ -5,7 +6,6 @@ import Delta from 'quill-delta';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { updateToc } from 'services/draft.service';
-import { filterByActionsGroup, filterByActions } from 'utils/operators';
 import { DraftAction, DRAFT_ACTION } from './draft.action';
 
 export interface DraftState {
@@ -41,6 +41,19 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
       return { ...state, isLoading: true };
 
     case DRAFT_ACTION.LOAD_DONE:
+      // validate TOC
+      if (action.payload.pages?.length !== action.payload.table_of_contents.length) {
+        action.payload.table_of_contents = [];
+        for (const page of action.payload.pages ?? []) {
+          action.payload.table_of_contents.push({
+            header: getPageHeader(page.content),
+            pageId: page.id,
+          });
+        }
+
+        updateToc(action.payload.table_of_contents, action.payload.id);
+      }
+
       return {
         ...state,
         data: action.payload,
@@ -127,20 +140,7 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
       if (state.data != null) {
         const order = state.data.pages?.find((p) => p.id === action.payload.pageId)?.order ?? -1;
         const toc = state.data.table_of_contents;
-        let newHeader = '...';
-
-        if ('ops' in action.payload.content) {
-          newHeader = action.payload.content.ops[0].insert;
-        }
-
-        if (
-          'type' in action.payload.content &&
-          Array.isArray(action.payload.content.content) &&
-          Array.isArray(action.payload.content.content[0].content) &&
-          action.payload.content.content[0].content[0].type === 'text'
-        ) {
-          newHeader = action.payload.content.content[0].content[0].text ?? newHeader;
-        }
+        let newHeader = getPageHeader(action.payload.content);
 
         toc[order] = toc[order] ?? {};
 
@@ -158,4 +158,33 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
     default:
       return state;
   }
+}
+
+/**
+ * Get a page's header by content
+ * 
+ * @param content : the page content;
+ * @returns 
+ */
+function getPageHeader(content?: Delta | JSONContent) {
+  let header = '...';
+
+  if (content == null) {
+    return header;
+  }
+
+  if ('ops' in content) {
+    header = content.ops[0].insert;
+  }
+
+  if (
+    'type' in content &&
+    Array.isArray(content.content) &&
+    Array.isArray(content.content[0].content) &&
+    content.content[0].content[0].type === 'text'
+  ) {
+    header = content.content[0].content[0].text ?? header;
+  }
+
+  return header;
 }
