@@ -65,8 +65,13 @@ export const draftElement = EG({
     };
   }, [loadingRef.current]);
 
-  console.log(2222, state.data?.table_of_contents);
-  
+  useEffect(() => {
+    const title = state.data?.table_of_contents[0];
+    if (title != null) {
+      document.title = title.header;
+    }
+  }, [state]);
+
   return (
     <>
       <style>{require('./draft.scss')}</style>
@@ -110,8 +115,7 @@ export const draftElement = EG({
 
 function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement | null }): Subscription {
   const subs: Subscription = new Subscription();
-  const originDocumentTitle = document.title;
-  const unsavedDocumentTitle = `*${originDocumentTitle}`;
+  let originDocumentTitle = document.title;
 
   const togglePause = loadingRef.current?.togglePause;
   const generateProgress = loadingRef.current?.generateProgress;
@@ -119,12 +123,15 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
   if (togglePause != null && generateProgress != null) {
     let savingTime = 2000;
     let isProgressing = false;
+    let needToSave = false;
 
     // new unsaved changes
     subs.add(
       hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE)).subscribe(() => {
-        if (document.title !== unsavedDocumentTitle) {
-          document.title = unsavedDocumentTitle;
+        if (!needToSave) {
+          originDocumentTitle = document.title;
+          document.title = `*${originDocumentTitle}`;
+          needToSave = true;
         }
       })
     );
@@ -170,7 +177,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
     );
 
     subs.add(
-      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE_DONE)).subscribe(() => {
+      hub.$.pipe(filter((a) => a.type === HUB_ACTION.PAGE_SAVE_DONE)).subscribe((d) => {
         isProgressing = false;
         togglePause(false);
 
@@ -182,6 +189,7 @@ function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement 
         );
 
         document.title = originDocumentTitle;
+        needToSave = false;
       })
     );
 

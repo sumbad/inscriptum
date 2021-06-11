@@ -1,18 +1,10 @@
-import { EG } from '@web-companions/gfc';
-import { TypeConstructor } from '@web-companions/fc/common.model';
+import { EG, prop } from '@web-companions/gfc';
 import { render } from 'lit-html';
+import { DraftTocModel } from 'models/draft.model';
 
 export const tableOfContent = EG({
   props: {
-    items: {
-      type: {} as TypeConstructor<
-        ({
-          header: string;
-          pageId: string;
-        } | null)[]
-      >,
-      default: [],
-    },
+    items: prop.req<DraftTocModel[]>(),
   },
 })(function* (props) {
   const selected: number = 0;
