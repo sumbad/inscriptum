@@ -15,16 +15,16 @@ let helper = {
   PATHS: {
     root: path.join(__dirname, './'),
     src: path.join(__dirname, 'src'),
-    node_modules: path.join(__dirname, 'node_modules'),
+    node_modules: 'node_modules', //path.join(__dirname, 'node_modules'),
     dist: path.join(__dirname, 'build'),
     publicPath: '',
-    outputPath: '' //process.env.NODE_ENV === 'production' ? 'public/' : ''
+    outputPath: '', //process.env.NODE_ENV === 'production' ? 'public/' : ''
   },
   ENV: {
     target: process.env.npm_lifecycle_event,
     devServerPort: 3333,
-    isDevMode: process.env.NODE_ENV === 'development'
-  }
+    isDevMode: process.env.NODE_ENV === 'development',
+  },
 };
 
 const mainConfig = {
@@ -34,15 +34,15 @@ const mainConfig = {
   },
   entry: {
     notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
-    note: path.resolve(helper.PATHS.src, 'app/note/note.ts')
+    note: path.resolve(helper.PATHS.src, 'app/note/note.ts'),
   },
   output: {
     path: helper.PATHS.dist,
     publicPath: '/',
     filename: 'js/[name].js',
-    chunkFilename: 'js/[name].bundle.js'
+    chunkFilename: 'js/[name].bundle.js',
   },
-  ...webpackConfigMix(helper)
+  ...webpackConfigMix(helper),
 };
 
 if (helper.ENV.isDevMode) {
@@ -64,8 +64,8 @@ if (helper.ENV.isDevMode) {
         chunks: true,
         chunkModules: true,
         modules: true,
-        children: true
-      }
-    })
+        children: true,
+      },
+    }),
   ];
 }

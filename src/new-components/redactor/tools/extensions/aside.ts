@@ -5,21 +5,21 @@ export interface AsideOptions {
 }
 
 declare module '@tiptap/core' {
-  interface Commands {
+  interface Commands<ReturnType> {
     aside: {
-      /**
+     /**
        * Set a aside node
        */
-      setAside: () => Command;
+      setAside: () => ReturnType,
       /**
        * Toggle a aside node
        */
-      toggleAside: () => Command;
+       toggleAside: () => ReturnType,
       /**
        * Unset a aside node
        */
-      unsetAside: () => Command;
-    };
+       unsetAside: () => ReturnType,
+    }
   }
 }
 

@@ -1,6 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
 import * as Dom from 'graphql-request/dist/types.dom';
-import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -2664,35 +2663,36 @@ export const DeletePageDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
 
-const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
+
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getDraftById(variables: GetDraftByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDraftByIdQuery> {
-      return withWrapper(() => client.request<GetDraftByIdQuery>(print(GetDraftByIdDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDraftByIdQuery>(GetDraftByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDraftById');
     },
     updateDraftTOC(variables: UpdateDraftTocMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDraftTocMutation> {
-      return withWrapper(() => client.request<UpdateDraftTocMutation>(print(UpdateDraftTocDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDraftTocMutation>(UpdateDraftTocDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDraftTOC');
     },
     getMarginById(variables: GetMarginByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetMarginByIdQuery> {
-      return withWrapper(() => client.request<GetMarginByIdQuery>(print(GetMarginByIdDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<GetMarginByIdQuery>(GetMarginByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMarginById');
     },
     createMargin(variables: CreateMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateMarginMutation> {
-      return withWrapper(() => client.request<CreateMarginMutation>(print(CreateMarginDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateMarginMutation>(CreateMarginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createMargin');
     },
     saveMargin(variables: SaveMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SaveMarginMutation> {
-      return withWrapper(() => client.request<SaveMarginMutation>(print(SaveMarginDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<SaveMarginMutation>(SaveMarginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'saveMargin');
     },
     updatePageById(variables: UpdatePageByIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdatePageByIdMutation> {
-      return withWrapper(() => client.request<UpdatePageByIdMutation>(print(UpdatePageByIdDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdatePageByIdMutation>(UpdatePageByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePageById');
     },
     addPageToDraft(variables: AddPageToDraftMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AddPageToDraftMutation> {
-      return withWrapper(() => client.request<AddPageToDraftMutation>(print(AddPageToDraftDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<AddPageToDraftMutation>(AddPageToDraftDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addPageToDraft');
     },
     deletePage(variables: DeletePageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeletePageMutation> {
-      return withWrapper(() => client.request<DeletePageMutation>(print(DeletePageDocument), variables, requestHeaders));
+      return withWrapper((wrappedRequestHeaders) => client.request<DeletePageMutation>(DeletePageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deletePage');
     }
   };
 }
