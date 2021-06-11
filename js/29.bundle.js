@@ -1,9 +1,84 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[29,56,62],{104:function(t,e){!function(t){"use strict";if(!t.fetch){var e="URLSearchParams"in t,r="Symbol"in t&&"iterator"in Symbol,i="FileReader"in t&&"Blob"in t&&function(){try{return new Blob,!0}catch(t){return!1}}(),n="FormData"in t,o="ArrayBuffer"in t;if(o)var s=["[object Int8Array]","[object Uint8Array]","[object Uint8ClampedArray]","[object Int16Array]","[object Uint16Array]","[object Int32Array]","[object Uint32Array]","[object Float32Array]","[object Float64Array]"],a=function(t){return t&&DataView.prototype.isPrototypeOf(t)},u=ArrayBuffer.isView||function(t){return t&&s.indexOf(Object.prototype.toString.call(t))>-1};p.prototype.append=function(t,e){t=d(t),e=l(e);var r=this.map[t];this.map[t]=r?r+","+e:e},p.prototype.delete=function(t){delete this.map[d(t)]},p.prototype.get=function(t){return t=d(t),this.has(t)?this.map[t]:null},p.prototype.has=function(t){return this.map.hasOwnProperty(d(t))},p.prototype.set=function(t,e){this.map[d(t)]=l(e)},p.prototype.forEach=function(t,e){for(var r in this.map)this.map.hasOwnProperty(r)&&t.call(e,this.map[r],r,this)},p.prototype.keys=function(){var t=[];return this.forEach((function(e,r){t.push(r)})),f(t)},p.prototype.values=function(){var t=[];return this.forEach((function(e){t.push(e)})),f(t)},p.prototype.entries=function(){var t=[];return this.forEach((function(e,r){t.push([r,e])})),f(t)},r&&(p.prototype[Symbol.iterator]=p.prototype.entries);var h=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];P.prototype.clone=function(){return new P(this,{body:this._bodyInit})},v.call(P.prototype),v.call(_.prototype),_.prototype.clone=function(){return new _(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new p(this.headers),url:this.url})},_.error=function(){var t=new _(null,{status:0,statusText:""});return t.type="error",t};var c=[301,302,303,307,308];_.redirect=function(t,e){if(-1===c.indexOf(e))throw new RangeError("Invalid status code");return new _(null,{status:e,headers:{location:t}})},t.Headers=p,t.Request=P,t.Response=_,t.fetch=function(t,e){return new Promise((function(r,n){var o=new P(t,e),s=new XMLHttpRequest;s.onload=function(){var t,e,i={status:s.status,statusText:s.statusText,headers:(t=s.getAllResponseHeaders()||"",e=new p,t.replace(/\r?\n[\t ]+/g," ").split(/\r?\n/).forEach((function(t){var r=t.split(":"),i=r.shift().trim();if(i){var n=r.join(":").trim();e.append(i,n)}})),e)};i.url="responseURL"in s?s.responseURL:i.headers.get("X-Request-URL");var n="response"in s?s.response:s.responseText;r(new _(n,i))},s.onerror=function(){n(new TypeError("Network request failed"))},s.ontimeout=function(){n(new TypeError("Network request failed"))},s.open(o.method,o.url,!0),"include"===o.credentials?s.withCredentials=!0:"omit"===o.credentials&&(s.withCredentials=!1),"responseType"in s&&i&&(s.responseType="blob"),o.headers.forEach((function(t,e){s.setRequestHeader(e,t)})),s.send(void 0===o._bodyInit?null:o._bodyInit)}))},t.fetch.polyfill=!0}function d(t){if("string"!=typeof t&&(t=String(t)),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(t))throw new TypeError("Invalid character in header field name");return t.toLowerCase()}function l(t){return"string"!=typeof t&&(t=String(t)),t}function f(t){var e={next:function(){var e=t.shift();return{done:void 0===e,value:e}}};return r&&(e[Symbol.iterator]=function(){return e}),e}function p(t){this.map={},t instanceof p?t.forEach((function(t,e){this.append(e,t)}),this):Array.isArray(t)?t.forEach((function(t){this.append(t[0],t[1])}),this):t&&Object.getOwnPropertyNames(t).forEach((function(e){this.append(e,t[e])}),this)}function y(t){if(t.bodyUsed)return Promise.reject(new TypeError("Already read"));t.bodyUsed=!0}function b(t){return new Promise((function(e,r){t.onload=function(){e(t.result)},t.onerror=function(){r(t.error)}}))}function m(t){var e=new FileReader,r=b(e);return e.readAsArrayBuffer(t),r}function w(t){if(t.slice)return t.slice(0);var e=new Uint8Array(t.byteLength);return e.set(new Uint8Array(t)),e.buffer}function v(){return this.bodyUsed=!1,this._initBody=function(t){if(this._bodyInit=t,t)if("string"==typeof t)this._bodyText=t;else if(i&&Blob.prototype.isPrototypeOf(t))this._bodyBlob=t;else if(n&&FormData.prototype.isPrototypeOf(t))this._bodyFormData=t;else if(e&&URLSearchParams.prototype.isPrototypeOf(t))this._bodyText=t.toString();else if(o&&i&&a(t))this._bodyArrayBuffer=w(t.buffer),this._bodyInit=new Blob([this._bodyArrayBuffer]);else{if(!o||!ArrayBuffer.prototype.isPrototypeOf(t)&&!u(t))throw new Error("unsupported BodyInit type");this._bodyArrayBuffer=w(t)}else this._bodyText="";this.headers.get("content-type")||("string"==typeof t?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):e&&URLSearchParams.prototype.isPrototypeOf(t)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"))},i&&(this.blob=function(){var t=y(this);if(t)return t;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(new Blob([this._bodyArrayBuffer]));if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this._bodyArrayBuffer?y(this)||Promise.resolve(this._bodyArrayBuffer):this.blob().then(m)}),this.text=function(){var t,e,r,i=y(this);if(i)return i;if(this._bodyBlob)return t=this._bodyBlob,e=new FileReader,r=b(e),e.readAsText(t),r;if(this._bodyArrayBuffer)return Promise.resolve(function(t){for(var e=new Uint8Array(t),r=new Array(e.length),i=0;i<e.length;i++)r[i]=String.fromCharCode(e[i]);return r.join("")}(this._bodyArrayBuffer));if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)},n&&(this.formData=function(){return this.text().then(A)}),this.json=function(){return this.text().then(JSON.parse)},this}function P(t,e){var r,i,n=(e=e||{}).body;if(t instanceof P){if(t.bodyUsed)throw new TypeError("Already read");this.url=t.url,this.credentials=t.credentials,e.headers||(this.headers=new p(t.headers)),this.method=t.method,this.mode=t.mode,n||null==t._bodyInit||(n=t._bodyInit,t.bodyUsed=!0)}else this.url=String(t);if(this.credentials=e.credentials||this.credentials||"omit",!e.headers&&this.headers||(this.headers=new p(e.headers)),this.method=(r=e.method||this.method||"GET",i=r.toUpperCase(),h.indexOf(i)>-1?i:r),this.mode=e.mode||this.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&n)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(n)}function A(t){var e=new FormData;return t.trim().split("&").forEach((function(t){if(t){var r=t.split("="),i=r.shift().replace(/\+/g," "),n=r.join("=").replace(/\+/g," ");e.append(decodeURIComponent(i),decodeURIComponent(n))}})),e}function _(t,e){e||(e={}),this.type="default",this.status=void 0===e.status?200:e.status,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in e?e.statusText:"OK",this.headers=new p(e.headers),this.url=e.url||"",this._initBody(t)}}("undefined"!=typeof self?self:this)},107:function(t,e,r){"use strict";r.r(e),r.d(e,"PostsListComponent",(function(){return h}));var i=r(68),n=(r(104),r(130)),o=r(73),s=r(108),a=function(t,e,r,i){var n,o=arguments.length,s=o<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,r):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(t,e,r,i);else for(var a=t.length-1;a>=0;a--)(n=t[a])&&(s=(o<3?n(s):o>3?n(e,r,s):n(e,r))||s);return o>3&&s&&Object.defineProperty(e,r,s),s},u=function(t,e,r,i){return new(r||(r=Promise))((function(n,o){function s(t){try{u(i.next(t))}catch(t){o(t)}}function a(t){try{u(i.throw(t))}catch(t){o(t)}}function u(t){var e;t.done?n(t.value):(e=t.value,e instanceof r?e:new r((function(t){t(e)}))).then(s,a)}u((i=i.apply(t,e||[])).next())}))};let h=class extends i.UmWebComponent{constructor(t){super(s.default),this.saying=t,this.articlesList=[],this.previews=[],this.articlesList=n.a.sort((t,e)=>e.datePublished.getTime()-t.datePublished.getTime())}connectedCallback(){super.connectedCallback();const t=this.querySelector("#umArticlePreview");this._loadPreviews(this.articlesList.map(t=>t.name)).then(e=>{this.previews=e.map((e,r)=>{const i=document.importNode(t.content,!0).querySelector("inscriptum-post-preview");return i.setAttribute("article-title",this.articlesList[r].title),i.setAttribute("article-name",this.articlesList[r].name),i.setAttribute("article-date",this.articlesList[r].datePublished.toDateString()),i.innerHTML=e,i}),this.render(),o.PreloaderService.isAppLoading.next(!1)})}_loadPreviews(t){return u(this,void 0,void 0,(function*(){let e=yield Promise.all(t.map(t=>fetch(`/data/articles/${t}/preview.html`)));return yield Promise.all(e.map(t=>t.text()))}))}};h=a([Object(i.Define)("inscriptum-posts-list")],h)},108:function(t,e,r){"use strict";r.r(e),e.default=(t,e)=>t`
-<template id="umArticlePreview">
-  <inscriptum-post-preview></inscriptum-post-preview>
-</template>
+(window.webpackJsonp=window.webpackJsonp||[]).push([[29,60,61,63,71],{121:function(e,t,i){"use strict";i.r(t),i.d(t,"postRouter",(function(){return a}));var s=i(22),n=i(51);class o extends n.AbstractRoute{constructor(){super(...arguments),this.$routePost=new s.a,this.$routePostsList=new s.a}getRouter(){return{rootPath:"/articles",routers:[{path:"/:id",callback:(e,t)=>this.$routePost.next({ctx:e,next:t})},{path:"",callback:(e,t)=>this.$routePostsList.next({ctx:e,next:t})},{path:"*",callback:(e,t)=>{e.handled?(e.handled=!1,t()):this.page.replace("/articles")}}]}}}const a=new o},122:function(e,t,i){"use strict";i.r(t),t.default=(e,t)=>e`
 
-<div id="umArticlePrevieList">
-  ${e.previews}
-</div>
-`},130:function(t,e,r){"use strict";e.a=[{name:"vue-web-components",title:"Использование Vue.js для создания пользовательских Web компонентов",datePublished:new Date("2017-04-15")},{name:"webcomponents-introduction",title:"Web Components. Введение",datePublished:new Date("2017-06-18")},{name:"webcomponents-base",title:"Web Components. Основы",datePublished:new Date("2017-07-03")},{name:"webcomponents-principles",title:"Web Components. Принцип использования",datePublished:new Date("2017-08-03")},{name:"review-he-who-thinks",title:'Обзор статьи "He who thinks change detection is depth-first and he who thinks it’s breadth-first are both usually right"',datePublished:new Date("2018-01-30")}]},73:function(t,e,r){"use strict";r.r(e),r.d(e,"PreloaderService",(function(){return n}));var i=r(22);class n{}n.isAppLoading=new i.a}}]);
+<um-preloader loading=${t.isPreloader}>
+  <!-- <template> -->
+  <div id="app">
+    <!-- Header ================================================== -->
+    <header id="top">
+      <div class="row">
+        <div class="header-content twelve columns">
+          <h1 id="logo-text">
+            <a href="/" onclick=${t.handleClick} title="">inscriptum</a>
+          </h1>
+          <p id="intro" v-html="saying"></p>
+        </div>
+      </div>
+
+      <nav id="nav-wrap">
+        <a class="mobile-btn fas fa-bars" href="#nav-wrap" title="Show navigation">Show Menu</a>
+        <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
+
+        <!--<a class="mobile-btn" href="#nav-wrap" title="Показать меню">Показать меню</a>
+                        <a class="mobile-btn" href="#" title="Скрыть меню">Скрыть меню</a>-->
+        <div class="row">
+          <ul id="nav" class="nav">
+            <li class="current">
+              <a href="/articles">Статьи</a>
+            </li>
+            <li>
+              <a href="/conference">Слайды</a>
+            </li>
+          </ul>
+          <!-- end #nav -->
+        </div>
+      </nav>
+      <!-- end #nav-wrap -->
+    </header>
+    <!-- Header End -->
+
+    <!-- Content ================================================== -->
+    <div id="content-wrap">
+      <div class="row">
+        <div id="main" class="twelve columns">
+          ${t.routerView}
+        </div>
+      </div>
+    </div>
+    <!-- end content-wrap -->
+  </div>
+  <!-- </template> -->
+
+  <!-- Footer
+      ================================================== -->
+  <footer>
+
+    <div class="row">
+      <div class="twelve columns">
+        <ul class="social-links">
+          <li>
+            <a href="https://github.com/sumbad/">
+              <i class="fab fa-github-square"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p class="copyright">&copy; Copyright 2017 Денис Сумбаев
+      </p>
+    </div>
+    <!-- End row -->
+
+    <div id="go-top">
+      <a class="smoothscroll" title="Back to Top" href="#top">
+        <i class="fas fa-chevron-up"></i>
+      </a>
+    </div>
+
+  </footer>
+  <!-- End Footer-->
+
+</um-preloader>
+`},136:function(e,t,i){"use strict";i.r(t),i.d(t,"PostsComponent",(function(){return p}));var s=i(68),n=i(73),o=i(121),a=i(122),r=i(154),l=i(172),c=i(192),d=i(408),u=function(e,t,i,s){var n,o=arguments.length,a=o<3?t:null===s?s=Object.getOwnPropertyDescriptor(t,i):s;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,i,s);else for(var r=e.length-1;r>=0;r--)(n=e[r])&&(a=(o<3?n(a):o>3?n(t,i,a):n(t,i))||a);return o>3&&a&&Object.defineProperty(t,i,a),a},h=function(e,t,i,s){return new(i||(i=Promise))((function(n,o){function a(e){try{l(s.next(e))}catch(e){o(e)}}function r(e){try{l(s.throw(e))}catch(e){o(e)}}function l(e){var t;e.done?n(e.value):(t=e.value,t instanceof i?t:new i((function(e){e(t)}))).then(a,r)}l((s=s.apply(e,t||[])).next())}))};r.b.add(c.a,l.e,l.b);let p=class extends s.UmWebComponent{constructor(e){super(a.default,i(185)),this.saying=e,this.routerView="",this.isPreloader=!0,n.PreloaderService.isAppLoading.pipe(Object(d.a)(500)).subscribe(e=>{this.isPreloader!==e&&(this.isPreloader=e,this.render())})}connectedCallback(){const e=this.wire(this,":articles");this.sub=o.postRouter.$routePostsList.subscribe(t=>h(this,void 0,void 0,(function*(){yield i.e(68).then(i.bind(null,77)),this.routerView=e`
+        <inscriptum-posts-list></inscriptum-posts-list>
+      `,this.render(),t.ctx.handled=!0}))),this.sub=o.postRouter.$routePost.subscribe(t=>h(this,void 0,void 0,(function*(){yield i.e(69).then(i.bind(null,78)),this.routerView=e`
+        <inscriptum-post article-name=${t.ctx.params.id}></inscriptum-post>
+      `,this.render(),t.ctx.handled=!0})));const t=i(197),s=Math.floor(Math.random()*t.length);this.saying=t[s];this.render();var n=$("<a>",{id:"toggle-btn",html:'<i class="fas fa-bars"></i>',title:"Menu",href:"#"}),a=$("nav#nav-wrap"),l=$("ul#nav");a.find("a.mobile-btn").remove(),a.prepend(n),n.on("click",(function(e){e.preventDefault(),l.slideToggle("fast")})),n.is(":visible")&&l.addClass("mobile"),$(window).resize((function(){n.is(":visible")?l.addClass("mobile"):l.removeClass("mobile")})),$("ul#nav li a").on("click",(function(){l.hasClass("mobile")&&l.fadeOut("fast")})),function(e){e(".smoothscroll").on("click",(function(t){t.preventDefault();var i=this.hash,s=e(i);e("html, body").stop().animate({scrollTop:s.offset().top},800,"swing",(function(){window.location.hash=i}))}));e(window).scroll((function(){e(window).scrollTop()>=300?e("#go-top").fadeIn(400):e("#go-top").fadeOut(400)}))}(jQuery),r.a.watch()}render(){super.render({isPreloader:this.isPreloader,routerView:this.routerView,handleClick:this.handleClick.bind(this)})}handleClick(e){}};p=u([Object(s.Define)("inscriptum-posts")],p)},197:function(e){e.exports=JSON.parse('["Лучше износиться, чем заржаветь...<br> (Джордж Уойфилд, англ. проповедник-методист)","Best friends come in all sizes.","DO YOUR WORK. DON\'T BE STUPID"]')},73:function(e,t,i){"use strict";i.r(t),i.d(t,"PreloaderService",(function(){return n}));var s=i(22);class n{}n.isAppLoading=new s.a}}]);

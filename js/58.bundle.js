@@ -1,3 +1,20 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{113:function(i,e,n){"use strict";n.r(e),e.default=(i,e)=>i`
-<iframe id="iframeid" scrolling="no" style="width:100%; height:0"></iframe>
+(window.webpackJsonp=window.webpackJsonp||[]).push([[58],{112:function(e,t,a){"use strict";a.r(t),t.default=(e,t)=>e`
+<article id="article" class="entry">
+
+    <header class="entry-header">
+        <h1 class="entry-title">
+            ${t.articleTitle}
+        </h1>
+        <div class="entry-meta">
+            <ul>
+                <li>${t.articleDate}</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="entry-content">
+        ${{html:t.articleContent}}
+    </div>
+
+</article>
 `}}]);
