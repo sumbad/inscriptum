@@ -1,9 +1,12 @@
+import './style.scss';
+
 import polyfills from '../../polyfills';
 import { AbstractElement, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { TRootPath, RootRoute } from './routes/$';
+
 
 /**
  * Start app after load polyfills
@@ -29,7 +32,7 @@ polyfills
 class NotepadModule extends AbstractElement<TemplateResult> {
   styles = html`
     <style>
-      ${require('./style.less')}
+      ${require('../../scss/skeleton/skeleton.scss')}
     </style>
   `;
 

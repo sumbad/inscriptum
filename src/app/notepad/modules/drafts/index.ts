@@ -121,7 +121,7 @@ export class DraftComponent extends AbstractElement {
           <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
             <i class="far fa-save fa-2x"></i>
           </span>
-          <button @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
+          <button class="button" @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
         </div>
       </div>
     

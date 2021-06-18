@@ -8,7 +8,7 @@
 /* Article styles */
 
 .redactor__article {
-  font-family: CustomSerif, Georgia, Cambria, 'Times New Roman', serif;
+  font-family: Georgia, Times, Times New Roman, serif;
   font-weight: 400;
   font-style: normal;
   font-size: 18px;
@@ -42,36 +42,31 @@
       }
     }
 
-    h1 {
-      font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-      font-weight: 700;
+    h1, h2, h3, h4 {
+      font-family: Inter, sans-serif;
+      font-weight: 600;
       font-style: normal;
+      letter-spacing: initial;
+    }
+
+    h1 {
       font-size: 32px;
       margin: 21px 21px 12px;
       line-height: 34px;
     }
 
     h2 {
-      font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-      font-weight: 700;
-      font-style: normal;
       font-size: 30px;
       margin: 21px 21px 12px;
       line-height: 34px;
     }
 
     h3 {
-      font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-      font-weight: 700;
-      font-style: normal;
       font-size: 28px;
       margin: 18px 21px 9px;
     }
 
     h4 {
-      font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-      font-weight: 700;
-      font-style: normal;
       font-size: 24px;
       margin: 18px 21px 7px;
     }
@@ -82,7 +77,6 @@
     }
 
     blockquote {
-      font-family: CustomSerif, Georgia, Cambria, 'Times New Roman', serif;
       margin: 18px 21px 16px 0;
       padding-left: 15px;
       position: relative;
@@ -92,7 +86,6 @@
     }
 
     aside {
-      font-family: CustomSerif, Georgia, Cambria, 'Times New Roman', serif;
       font-size: 21px;
       color: rgba(0, 0, 0, 0.6);
       margin: 18px 21px 16px;
@@ -262,7 +255,7 @@
       }
 
       &[role='definition'] {
-        font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+        font-family: Inter, sans-serif;
         font-size: 15px;
         line-height: 18px;
         color: #79828b;
@@ -335,7 +328,7 @@
     }
 
     figcaption {
-      font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+      font-family: Inter, sans-serif;
       font-size: 15px;
       color: #79828b;
       padding: 12px 21px 0;
@@ -343,19 +336,19 @@
       vertical-align: top;
       text-align: center;
 
-      .editable_input {
-        font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-        font-size: 15px;
-        color: #79828b;
-        padding: 12px 21px 0;
-        line-height: 18px;
-        vertical-align: top;
-        text-align: center;
-        width: 100%;
-        border: none;
-        padding: 0;
-        margin: 0;
-      }
+      // .editable_input {
+      //   font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+      //   font-size: 15px;
+      //   color: #79828b;
+      //   padding: 12px 21px 0;
+      //   line-height: 18px;
+      //   vertical-align: top;
+      //   text-align: center;
+      //   width: 100%;
+      //   border: none;
+      //   padding: 0;
+      //   margin: 0;
+      // }
     }
 
     .figure_wrapper {
@@ -432,9 +425,13 @@
       counter-reset: step;
       counter-increment: step 0;
       position: relative;
-      font-family: Menlo, Monaco, 'Courier New', monospace;
+      font-family: JetBrainsMono, monospace;
       font-size: 0.9rem;
       padding: 0.75rem 1rem;
+
+      code {
+        font-family: JetBrainsMono, monospace;
+      }
 
       ::selection {
         background: #dbdbdb2d;

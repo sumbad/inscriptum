@@ -160,7 +160,9 @@ export const pageElement = EG({
                 display: flex;
                 justify-content: center;
                 font-size: 1.6rem;
+                cursor: pointer;
               `}
+              onclick={() => setFolded(false)}
             >
               ...
             </span>

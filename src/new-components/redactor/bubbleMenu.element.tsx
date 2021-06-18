@@ -97,7 +97,7 @@ export const bubbleMenuElement = EG<BubbleMenuProps>({
 });
 
 const NODE_WITHOUT_MENU = ['figure'];
-const NODE_PARENT_WITHOUT_MENU = ['codeBlock', 'topicTitle'];
+const NODE_PARENT_WITHOUT_MENU = ['topicTitle'];
 
 /**
  * Prepare Menu Content based on rules
@@ -170,6 +170,9 @@ function prepareMenuContent(editor: Editor) {
         class={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
       >
         h4
+      </button>
+      <button onclick={() => editor.chain().focus().toggleCodeBlock().run()} class={editor.isActive('codeBlock') ? 'is-active' : ''}>
+        {'<>'}
       </button>
     </>
   );

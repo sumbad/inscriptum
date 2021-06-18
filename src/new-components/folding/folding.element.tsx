@@ -22,6 +22,10 @@ export const foldingElement = EG({
 })(function (this: HTMLElement, props) {
   const [isFolded, setIsFolded] = useState(props.isFolded);
 
+  useEffect(()=>{
+    setIsFolded(props.isFolded);
+  }, [props.isFolded]);
+
   const onClick = useCallback(() => {
     setIsFolded((_) => !_);
 

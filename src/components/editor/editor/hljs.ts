@@ -4,7 +4,7 @@ import hljs from 'highlight.js'
 // Languages import
 import javascript from 'highlight.js/lib/languages/javascript';
 import typescript from 'highlight.js/lib/languages/typescript';
-import html from 'highlight.js/lib/languages/htmlbars';
+// import html from 'highlight.js/lib/languages/htmlbars';
 import sql from 'highlight.js/lib/languages/sql';
 import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
@@ -16,7 +16,7 @@ import yaml from 'highlight.js/lib/languages/yaml';
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('sql', sql);
-hljs.registerLanguage('html', html);
+// hljs.registerLanguage('html', html);
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('bash', bash);

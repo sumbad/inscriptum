@@ -1,0 +1,15 @@
+@import '../../scss/fonts.scss';
+
+html {
+  font-family: sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+
+.container {
+  max-width: 800px;
+}
