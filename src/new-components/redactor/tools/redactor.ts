@@ -39,6 +39,8 @@ import { LinkWithTooltip } from './extensions/linkWithTooltip';
 
 import tippy from 'tippy.js';
 import { Aside } from './extensions/aside';
+import { HljsCodeBlock } from './extensions/hljsCodeBlock/hljsCodeBlock';
+import { CodeBlockNode, HljsMark, RowNumber } from './extensions/hljsCodeBlock/codeBlockNode';
 
 /**
  * Create a new TipTap Editor
@@ -92,7 +94,7 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
       OrderedList,
       ListItem,
       HorizontalRule,
-      CodeBlock,
+      // CodeBlock,
       History,
       Dropcursor,
       Gapcursor,
@@ -107,6 +109,10 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
       // }),
       Highlight,
       /////////
+      HljsCodeBlock,
+      HljsMark,
+      RowNumber,
+      CodeBlockNode,
       Figure,
       Aside,
       LinkWithTooltip.configure({

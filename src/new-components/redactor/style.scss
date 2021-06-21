@@ -42,7 +42,10 @@
       }
     }
 
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       font-family: Inter, sans-serif;
       font-weight: 600;
       font-style: normal;
@@ -431,13 +434,17 @@
 
       code {
         font-family: JetBrainsMono, monospace;
+        white-space: pre-wrap;
+        margin-left: 2.5rem;
+        display: block;
+        // line-height: 1;
       }
 
       ::selection {
         background: #dbdbdb2d;
       }
 
-      span.l:before {
+      div.l:before {
         color: #516363;
         position: absolute;
         left: 15px;
