@@ -1,4 +1,4 @@
-import { Command, Node, mergeAttributes } from '@tiptap/core'
+import { Node, mergeAttributes } from '@tiptap/core'
 
 export interface TopicSummaryOptions {
   HTMLAttributes: Record<string, any>,
@@ -12,12 +12,6 @@ export const TopicSummary = Node.create<TopicSummaryOptions>({
   group: 'topicDoc',
 
   content: 'inline*',
-
-  // priority: 1000,
-
-  // defaultOptions: {
-  //   HTMLAttributes: {},
-  // },
 
   addAttributes() {
     return {

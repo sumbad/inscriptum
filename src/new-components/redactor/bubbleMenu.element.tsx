@@ -171,7 +171,7 @@ function prepareMenuContent(editor: Editor) {
       >
         h4
       </button>
-      <button onclick={() => editor.chain().focus().toggleCodeBlock().run()} class={editor.isActive('codeBlock') ? 'is-active' : ''}>
+      <button onclick={() => editor.chain().focus().toggleHljsCodeBlock().run()} class={editor.isActive('hljsCodeBlock') ? 'is-active' : ''}>
         {'<>'}
       </button>
     </>

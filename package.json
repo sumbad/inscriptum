@@ -31,7 +31,6 @@
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.23",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.14",
     "@tiptap/extension-code": "^2.0.0-beta.14",
-    "@tiptap/extension-code-block": "^2.0.0-beta.16",
     "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.23",
     "@tiptap/extension-document": "^2.0.0-beta.12",
     "@tiptap/extension-dropcursor": "^2.0.0-beta.16",

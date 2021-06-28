@@ -1,9 +1,3 @@
-// load all highlight.js languages
-import lowlight from 'lowlight';
-// import lowlight from 'lowlight/lib/core'
-// import javascript from 'highlight.js/lib/languages/javascript'
-// lowlight.registerLanguage('javascript', javascript)
-
 import { Content, Editor, EditorOptions } from '@tiptap/core';
 
 import Document from '@tiptap/extension-document';
@@ -11,7 +5,6 @@ import Blockquote from '@tiptap/extension-blockquote';
 import Bold from '@tiptap/extension-bold';
 import BulletList from '@tiptap/extension-bullet-list';
 import Code from '@tiptap/extension-code';
-import CodeBlock from '@tiptap/extension-code-block';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Gapcursor from '@tiptap/extension-gapcursor';
 import HardBreak from '@tiptap/extension-hard-break';
@@ -27,7 +20,6 @@ import Text from '@tiptap/extension-text';
 
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Highlight from '@tiptap/extension-highlight';
 
 import { Figure } from './extensions/figure';
@@ -39,6 +31,10 @@ import { LinkWithTooltip } from './extensions/linkWithTooltip';
 
 import tippy from 'tippy.js';
 import { Aside } from './extensions/aside';
+import { HljsCodeBlock } from './extensions/hljsCodeBlock/hljsCodeBlock';
+import { CodeBlock2HljsCodeBlock } from './extensions/hljsCodeBlock/codeBlock2HljsCodeBlock';
+import { HljsMark } from './extensions/hljsCodeBlock/hljsMark';
+import { HljsCodeBlockRow } from './extensions/hljsCodeBlock/hljsCodeBlockRow';
 
 /**
  * Create a new TipTap Editor
@@ -92,7 +88,7 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
       OrderedList,
       ListItem,
       HorizontalRule,
-      CodeBlock,
+      // CodeBlock,
       History,
       Dropcursor,
       Gapcursor,
@@ -106,6 +102,11 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
       //   },
       // }),
       Highlight,
+      /////////
+      HljsCodeBlock,
+      HljsMark,
+      HljsCodeBlockRow,
+      CodeBlock2HljsCodeBlock,
       /////////
       Figure,
       Aside,

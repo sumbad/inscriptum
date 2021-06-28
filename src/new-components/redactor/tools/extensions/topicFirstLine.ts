@@ -1,7 +1,7 @@
-import { Command, Node, mergeAttributes } from '@tiptap/core'
+import { Node, mergeAttributes } from '@tiptap/core';
 
 export interface TopicFirstLineOptions {
-  HTMLAttributes: Record<string, any>,
+  HTMLAttributes: Record<string, any>;
 }
 
 export const TopicFirstLine = Node.create<TopicFirstLineOptions>({
@@ -11,12 +11,6 @@ export const TopicFirstLine = Node.create<TopicFirstLineOptions>({
 
   content: 'inline*',
 
-  priority: 1000,
-
-  // defaultOptions: {
-  //   HTMLAttributes: {},
-  // },
-
   addAttributes() {
     return {
       'data-placeholder': {
@@ -25,16 +19,11 @@ export const TopicFirstLine = Node.create<TopicFirstLineOptions>({
     };
   },
 
-
-
   parseHTML() {
-    return [
-      { tag: 'p' },
-    ]
+    return [{ tag: 'p' }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+    return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
   },
-
-})
+});
