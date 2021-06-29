@@ -41,25 +41,33 @@ export const CodeBlock2HljsCodeBlock = Node.create<CodeBlockNodeOptions>({
   },
 
   addNodeView() {
-    return ({ editor, node, getPos, HTMLAttributes, decorations, extension }) => {
-      const container = document.createElement('pre');
-      const domCodeEl = document.createElement('code');
-
+    return ({ editor, node, getPos }) => {
       const firstChild = node.content.firstChild;
 
       if (node.content.childCount === 1 && firstChild != null && typeof getPos === 'function') {
         const codeNodeJson = generateHljsNodeJson(firstChild.text || '');
         const newNode = editor.schema.nodeFromJSON(codeNodeJson);
 
-        editor.view.dispatch(editor.view.state.tr.replaceWith(getPos(), getPos() + firstChild.nodeSize + 1, newNode));
+        editor.view.dispatch(
+          editor.view.state.tr //
+            .deleteRange(getPos(), getPos() + node.nodeSize + 1)
+            .insert(getPos(), newNode)
+        );
+
+        return {
+          ignoreMutation: true,
+          update: false,
+        };
+      } else {
+        const container = document.createElement('pre');
+        const domCodeEl = document.createElement('code');
+        container.appendChild(domCodeEl);
+
+        return {
+          dom: container,
+          contentDOM: domCodeEl,
+        };
       }
-
-      container.appendChild(domCodeEl);
-
-      return {
-        dom: container,
-        contentDOM: domCodeEl,
-      };
     };
   },
 });
