@@ -1,4 +1,4 @@
-import { Node, mergeAttributes } from '@tiptap/core'
+import { Node, mergeAttributes } from '@tiptap/core';
 
 export interface HljsCodeBlockRowOptions {
   HTMLAttributes: Record<string, any>,
@@ -28,7 +28,7 @@ export const HljsCodeBlockRow = Node.create<HljsCodeBlockRowOptions>({
   parseHTML() {
     return [
       {
-        tag: 'div',
+        tag: 'div.l',
         preserveWhitespace: 'full',
         attrs: {
           'class': 'l'

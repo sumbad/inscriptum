@@ -28,7 +28,7 @@ const tildeInputRegex = /^~~~(?<language>[a-z]*)? $/;
 
 export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   name: 'hljsCodeBlock',
-  content: 'hljsCodeBlockRow+',
+  content: '(hljsCodeBlockRow|paragraph?)+',
   isolating: true,
 
   defaultOptions: {
@@ -87,14 +87,39 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   parseHTML() {
     return [
       {
+        preserveWhitespace: 'full',
+        tag: 'pre',
         getContent(pre: HTMLPreElement, schema) {
-          const codeNodeJson = generateHljsNodeJson(pre.textContent || '');
+          let textContent = '';
+
+          pre.childNodes.forEach((cn) => {
+            textContent += cn.textContent;
+            if (cn.nodeName === 'BR') {
+              textContent += '\n';
+            }
+          });
+
+          const codeNodeJson = generateHljsNodeJson(textContent);
           const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
           return hljsNode.content;
         },
-        preserveWhitespace: 'full',
-        tag: 'pre',
       },
+      {
+        tag: 'div',
+        preserveWhitespace: 'full',
+        getAttrs: (node: HTMLDivElement) => node.style.whiteSpace === 'pre' && null,
+        getContent(div: HTMLDivElement, schema) {
+          let textContent = '';
+
+          div.childNodes.forEach((cn) => {
+            textContent += cn.textContent + '\n';
+          });
+
+          const codeNodeJson = generateHljsNodeJson(textContent);
+          const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
+          return hljsNode.content;
+        },
+      }
     ];
   },
 
@@ -176,6 +201,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
     return {
       'Mod-Alt-c': () => this.editor.commands.toggleHljsCodeBlock(),
 
+      // cmd + Enter
       'Mod-Enter': () => {
         const { $anchor } = this.editor.state.selection;
 
@@ -187,7 +213,9 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
 
         this.editor.view.dispatch(
           tr
-            .insert($anchor.pos, this.editor.schema.node('paragraph', {}, this.editor.schema.text(' ')))
+            .insert($anchor.pos, this.editor.schema.node('paragraph', {}))
+            .split($anchor.pos + 1, 1)
+            .replaceWith($anchor.pos + 2, $anchor.pos + 4, this.editor.schema.node('paragraph', {}))
             .setSelection(TextSelection.create(tr.doc, $anchor.pos + 2))
         );
 
@@ -224,7 +252,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   },
 
   addNodeView() {
-    return ({ editor, node, getPos, HTMLAttributes, decorations, extension }) => {
+    return ({ editor, node, getPos }) => {
       const container = document.createElement('pre');
       const domCodeEl = document.createElement('code');
 
