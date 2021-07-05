@@ -45,14 +45,16 @@ export const CodeBlock2HljsCodeBlock = Node.create<CodeBlockNodeOptions>({
       const firstChild = node.content.firstChild;
 
       if (node.content.childCount === 1 && firstChild != null && typeof getPos === 'function') {
-        const codeNodeJson = generateHljsNodeJson(firstChild.text || '');
-        const newNode = editor.schema.nodeFromJSON(codeNodeJson);
+        requestAnimationFrame(()=>{
+          const codeNodeJson = generateHljsNodeJson(firstChild.text || '');
+          const newNode = editor.schema.nodeFromJSON(codeNodeJson);
 
-        editor.view.dispatch(
-          editor.view.state.tr //
-            .deleteRange(getPos(), getPos() + node.nodeSize + 1)
-            .insert(getPos(), newNode)
-        );
+          editor.view.dispatch(
+            editor.view.state.tr //
+              .deleteRange(getPos(), getPos() + node.nodeSize - 1)
+              .insert(getPos(), newNode)
+          );
+        });
 
         return {
           ignoreMutation: true,

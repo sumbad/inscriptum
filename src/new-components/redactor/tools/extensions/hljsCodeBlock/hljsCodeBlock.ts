@@ -119,7 +119,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
           return hljsNode.content;
         },
-      }
+      },
     ];
   },
 
@@ -234,7 +234,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
               to: $anchor.pos - 2 + node.nodeSize,
             },
             {
-              type: 'paragraph'
+              type: 'paragraph',
             }
           );
         }
@@ -261,7 +261,9 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
       }
 
       if (node.content.size === 0 && typeof getPos === 'function') {
-        editor.view.dispatch(editor.view.state.tr.insert(getPos() + 1, editor.schema.node('hljsCodeBlockRow')));
+        requestAnimationFrame(() => {
+          editor.view.dispatch(editor.view.state.tr.insert(getPos() + 1, editor.schema.node('hljsCodeBlockRow')));
+        });
       }
 
       container.appendChild(domCodeEl);
