@@ -15,7 +15,7 @@
     "dev:h-start": "docker-compose --project-directory . -f hasura/docker-compose.yml start",
     "dev:h-stop": "docker-compose --project-directory . -f hasura/docker-compose.yml stop",
     "build": "NODE_ENV=production webpack --progress --verbose --hide-modules",
-    "deploy": "npm run build && node .ghpages",
+    "deploy": "npm run build && node ./scripts/.ghpages",
     "start": "npm run build && node browser-sync.js",
     "report": "rm -rf build && mkdir build && NODE_ENV=production webpack --progress --profile --json > build/stats.json && webpack-bundle-analyzer build/stats.json"
   },
@@ -100,7 +100,7 @@
     "dotenv-webpack": "^1.8.0",
     "es6-templates": "^0.2.3",
     "file-loader": "^2.0.0",
-    "gh-pages": "^1.2.0",
+    "gh-pages": "3.2.3",
     "graphql": "^15.5.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^4.5.2",

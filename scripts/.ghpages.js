@@ -1,7 +1,7 @@
-var ghpages = require('gh-pages');
-var path = require('path');
+const ghpages = require('gh-pages');
+const path = require('path');
 
-ghpages.publish(path.join(__dirname, 'build'), {
+ghpages.publish(path.join(__dirname, '../build'), {
     repo: 'https://github.com/sumbad/inscriptum.git',
     branch: 'gh-pages',
     user: {
