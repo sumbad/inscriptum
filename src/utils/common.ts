@@ -105,24 +105,26 @@ export function quillDelta2Preview(delta: Delta) {
  * @param jsonContent 
  * @returns 
  */
-export function redactorContent2Preview(jsonContent: JSONContent) {
+export function redactorContent2Preview(jsonContent: JSONContent | null) {
   let previewTitle = '<noname>';
   let previewContent = '...';
   let previewImage = '';
 
-  const topicTitleContent = findFirstJsonContent(jsonContent, TOPIC_TITLE_NODE_NAME);
-  if (topicTitleContent?.content != null) {
-    previewTitle = topicTitleContent.content[0].text ?? previewTitle;
-  }
-
-  const topicSummaryContent = findFirstJsonContent(jsonContent, TOPIC_SUMMARY_NODE_NAME);
-  if (topicSummaryContent?.content != null) {
-    previewContent = topicSummaryContent.content[0].text ?? previewContent;
-  }
-
-  const figureContent = findFirstJsonContent(jsonContent, FIGURE_NODE_NAME);
-  if (figureContent?.attrs != null) {
-    previewImage = figureContent.attrs['src'] ?? previewImage;
+  if(jsonContent != null) {
+    const topicTitleContent = findFirstJsonContent(jsonContent, TOPIC_TITLE_NODE_NAME);
+    if (topicTitleContent?.content != null) {
+      previewTitle = topicTitleContent.content[0].text ?? previewTitle;
+    }
+  
+    const topicSummaryContent = findFirstJsonContent(jsonContent, TOPIC_SUMMARY_NODE_NAME);
+    if (topicSummaryContent?.content != null) {
+      previewContent = topicSummaryContent.content[0].text ?? previewContent;
+    }
+  
+    const figureContent = findFirstJsonContent(jsonContent, FIGURE_NODE_NAME);
+    if (figureContent?.attrs != null) {
+      previewImage = figureContent.attrs['src'] ?? previewImage;
+    }
   }
 
   previewContent = previewContent

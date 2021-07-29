@@ -71,7 +71,7 @@ export class DraftComponent extends AbstractElement {
                 const _drafts = drafts.map(
                   item => {
                     const content = item.pages[0].content;
-                    const { description, title, image } = 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
+                    const { description, title, image } = content != null && 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
                     
                     return {
                       id: item.id,
