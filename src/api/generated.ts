@@ -18,7 +18,8 @@ export type Scalars = {
   uuid: any;
 };
 
-/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>;
   _gt?: Maybe<Scalars['Int']>;
@@ -31,22 +32,36 @@ export type Int_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
   _gt?: Maybe<Scalars['String']>;
   _gte?: Maybe<Scalars['String']>;
+  /** does the column match the given case-insensitive pattern */
   _ilike?: Maybe<Scalars['String']>;
   _in?: Maybe<Array<Scalars['String']>>;
+  /** does the column match the given POSIX regular expression, case insensitive */
+  _iregex?: Maybe<Scalars['String']>;
   _is_null?: Maybe<Scalars['Boolean']>;
+  /** does the column match the given pattern */
   _like?: Maybe<Scalars['String']>;
   _lt?: Maybe<Scalars['String']>;
   _lte?: Maybe<Scalars['String']>;
   _neq?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given case-insensitive pattern */
   _nilike?: Maybe<Scalars['String']>;
   _nin?: Maybe<Array<Scalars['String']>>;
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  _niregex?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given pattern */
   _nlike?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  _nregex?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given SQL regular expression */
   _nsimilar?: Maybe<Scalars['String']>;
+  /** does the column match the given POSIX regular expression, case sensitive */
+  _regex?: Maybe<Scalars['String']>;
+  /** does the column match the given SQL regular expression */
   _similar?: Maybe<Scalars['String']>;
 };
 
@@ -57,7 +72,7 @@ export type Author = {
   created_at: Scalars['timestamptz'];
   /** An array relationship */
   drafts: Array<Draft>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   drafts_aggregate: Draft_Aggregate;
   email: Scalars['String'];
   id: Scalars['uuid'];
@@ -65,7 +80,7 @@ export type Author = {
   name?: Maybe<Scalars['String']>;
   /** An array relationship */
   notes: Array<Note>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   notes_aggregate: Note_Aggregate;
 };
 
@@ -119,7 +134,7 @@ export type Author_Aggregate = {
 /** aggregate fields of "author" */
 export type Author_Aggregate_Fields = {
   __typename?: 'author_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Author_Max_Fields>;
   min?: Maybe<Author_Min_Fields>;
 };
@@ -131,24 +146,11 @@ export type Author_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "author" */
-export type Author_Aggregate_Order_By = {
-  count?: Maybe<Order_By>;
-  max?: Maybe<Author_Max_Order_By>;
-  min?: Maybe<Author_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "author" */
-export type Author_Arr_Rel_Insert_Input = {
-  data: Array<Author_Insert_Input>;
-  on_conflict?: Maybe<Author_On_Conflict>;
-};
-
 /** Boolean expression to filter rows from the table "author". All fields are combined with a logical 'AND'. */
 export type Author_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Author_Bool_Exp>>>;
+  _and?: Maybe<Array<Author_Bool_Exp>>;
   _not?: Maybe<Author_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Author_Bool_Exp>>>;
+  _or?: Maybe<Array<Author_Bool_Exp>>;
   auth0_id?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   drafts?: Maybe<Draft_Bool_Exp>;
@@ -190,16 +192,6 @@ export type Author_Max_Fields = {
   name?: Maybe<Scalars['String']>;
 };
 
-/** order by max() on columns of table "author" */
-export type Author_Max_Order_By = {
-  auth0_id?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  email?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  last_seen?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-};
-
 /** aggregate min on columns */
 export type Author_Min_Fields = {
   __typename?: 'author_min_fields';
@@ -211,39 +203,30 @@ export type Author_Min_Fields = {
   name?: Maybe<Scalars['String']>;
 };
 
-/** order by min() on columns of table "author" */
-export type Author_Min_Order_By = {
-  auth0_id?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  email?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  last_seen?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-};
-
 /** response of any mutation on the table "author" */
 export type Author_Mutation_Response = {
   __typename?: 'author_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Author>;
 };
 
 /** input type for inserting object relation for remote table "author" */
 export type Author_Obj_Rel_Insert_Input = {
   data: Author_Insert_Input;
+  /** on conflict condition */
   on_conflict?: Maybe<Author_On_Conflict>;
 };
 
 /** on conflict condition type for table "author" */
 export type Author_On_Conflict = {
   constraint: Author_Constraint;
-  update_columns: Array<Author_Update_Column>;
+  update_columns?: Array<Author_Update_Column>;
   where?: Maybe<Author_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "author" */
+/** Ordering options when selecting data from "author". */
 export type Author_Order_By = {
   auth0_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
@@ -255,7 +238,7 @@ export type Author_Order_By = {
   notes_aggregate?: Maybe<Note_Aggregate_Order_By>;
 };
 
-/** primary key columns input for table: "author" */
+/** primary key columns input for table: author */
 export type Author_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -303,7 +286,7 @@ export enum Author_Update_Column {
 }
 
 
-/** expression to compare columns of type bytea. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
 export type Bytea_Comparison_Exp = {
   _eq?: Maybe<Scalars['bytea']>;
   _gt?: Maybe<Scalars['bytea']>;
@@ -327,11 +310,11 @@ export type Draft = {
   id: Scalars['uuid'];
   /** An array relationship */
   notes: Array<Note>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   notes_aggregate: Note_Aggregate;
   /** An array relationship */
   pages: Array<Page>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   pages_aggregate: Page_Aggregate;
   table_of_contents: Scalars['jsonb'];
   updated_at: Scalars['timestamptz'];
@@ -393,7 +376,7 @@ export type Draft_Aggregate = {
 /** aggregate fields of "draft" */
 export type Draft_Aggregate_Fields = {
   __typename?: 'draft_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Draft_Max_Fields>;
   min?: Maybe<Draft_Min_Fields>;
 };
@@ -420,14 +403,15 @@ export type Draft_Append_Input = {
 /** input type for inserting array relation for remote table "draft" */
 export type Draft_Arr_Rel_Insert_Input = {
   data: Array<Draft_Insert_Input>;
+  /** on conflict condition */
   on_conflict?: Maybe<Draft_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "draft". All fields are combined with a logical 'AND'. */
 export type Draft_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Draft_Bool_Exp>>>;
+  _and?: Maybe<Array<Draft_Bool_Exp>>;
   _not?: Maybe<Draft_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Draft_Bool_Exp>>>;
+  _or?: Maybe<Array<Draft_Bool_Exp>>;
   author?: Maybe<Author_Bool_Exp>;
   author_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -447,7 +431,7 @@ export enum Draft_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Draft_Delete_At_Path_Input = {
-  table_of_contents?: Maybe<Array<Maybe<Scalars['String']>>>;
+  table_of_contents?: Maybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
@@ -514,26 +498,27 @@ export type Draft_Min_Order_By = {
 /** response of any mutation on the table "draft" */
 export type Draft_Mutation_Response = {
   __typename?: 'draft_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Draft>;
 };
 
 /** input type for inserting object relation for remote table "draft" */
 export type Draft_Obj_Rel_Insert_Input = {
   data: Draft_Insert_Input;
+  /** on conflict condition */
   on_conflict?: Maybe<Draft_On_Conflict>;
 };
 
 /** on conflict condition type for table "draft" */
 export type Draft_On_Conflict = {
   constraint: Draft_Constraint;
-  update_columns: Array<Draft_Update_Column>;
+  update_columns?: Array<Draft_Update_Column>;
   where?: Maybe<Draft_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "draft" */
+/** Ordering options when selecting data from "draft". */
 export type Draft_Order_By = {
   author?: Maybe<Author_Order_By>;
   author_id?: Maybe<Order_By>;
@@ -546,7 +531,7 @@ export type Draft_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "draft" */
+/** primary key columns input for table: draft */
 export type Draft_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -599,7 +584,7 @@ export enum Draft_Update_Column {
 }
 
 
-/** expression to compare columns of type jsonb. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
 export type Jsonb_Comparison_Exp = {
   /** is the column contained in the given json value */
   _contained_in?: Maybe<Scalars['jsonb']>;
@@ -655,7 +640,7 @@ export type Margin_Aggregate = {
 /** aggregate fields of "margin" */
 export type Margin_Aggregate_Fields = {
   __typename?: 'margin_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Margin_Max_Fields>;
   min?: Maybe<Margin_Min_Fields>;
 };
@@ -682,18 +667,20 @@ export type Margin_Append_Input = {
 /** input type for inserting array relation for remote table "margin" */
 export type Margin_Arr_Rel_Insert_Input = {
   data: Array<Margin_Insert_Input>;
+  /** on conflict condition */
   on_conflict?: Maybe<Margin_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "margin". All fields are combined with a logical 'AND'. */
 export type Margin_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Margin_Bool_Exp>>>;
+  _and?: Maybe<Array<Margin_Bool_Exp>>;
   _not?: Maybe<Margin_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Margin_Bool_Exp>>>;
+  _or?: Maybe<Array<Margin_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   ended_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   img?: Maybe<Bytea_Comparison_Exp>;
+  imgBase64?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   options?: Maybe<Jsonb_Comparison_Exp>;
   page?: Maybe<Page_Bool_Exp>;
@@ -709,7 +696,7 @@ export enum Margin_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Margin_Delete_At_Path_Input = {
-  options?: Maybe<Array<Maybe<Scalars['String']>>>;
+  options?: Maybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
@@ -780,26 +767,20 @@ export type Margin_Min_Order_By = {
 /** response of any mutation on the table "margin" */
 export type Margin_Mutation_Response = {
   __typename?: 'margin_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Margin>;
-};
-
-/** input type for inserting object relation for remote table "margin" */
-export type Margin_Obj_Rel_Insert_Input = {
-  data: Margin_Insert_Input;
-  on_conflict?: Maybe<Margin_On_Conflict>;
 };
 
 /** on conflict condition type for table "margin" */
 export type Margin_On_Conflict = {
   constraint: Margin_Constraint;
-  update_columns: Array<Margin_Update_Column>;
+  update_columns?: Array<Margin_Update_Column>;
   where?: Maybe<Margin_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "margin" */
+/** Ordering options when selecting data from "margin". */
 export type Margin_Order_By = {
   created_at?: Maybe<Order_By>;
   ended_at?: Maybe<Order_By>;
@@ -812,7 +793,7 @@ export type Margin_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "margin" */
+/** primary key columns input for table: margin */
 export type Margin_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -1248,7 +1229,7 @@ export type Note_Aggregate = {
 /** aggregate fields of "note" */
 export type Note_Aggregate_Fields = {
   __typename?: 'note_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Note_Max_Fields>;
   min?: Maybe<Note_Min_Fields>;
 };
@@ -1275,14 +1256,15 @@ export type Note_Append_Input = {
 /** input type for inserting array relation for remote table "note" */
 export type Note_Arr_Rel_Insert_Input = {
   data: Array<Note_Insert_Input>;
+  /** on conflict condition */
   on_conflict?: Maybe<Note_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "note". All fields are combined with a logical 'AND'. */
 export type Note_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Note_Bool_Exp>>>;
+  _and?: Maybe<Array<Note_Bool_Exp>>;
   _not?: Maybe<Note_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Note_Bool_Exp>>>;
+  _or?: Maybe<Array<Note_Bool_Exp>>;
   author?: Maybe<Author_Bool_Exp>;
   author_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -1306,7 +1288,7 @@ export enum Note_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Note_Delete_At_Path_Input = {
-  preview?: Maybe<Array<Maybe<Scalars['String']>>>;
+  preview?: Maybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
@@ -1387,26 +1369,20 @@ export type Note_Min_Order_By = {
 /** response of any mutation on the table "note" */
 export type Note_Mutation_Response = {
   __typename?: 'note_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Note>;
-};
-
-/** input type for inserting object relation for remote table "note" */
-export type Note_Obj_Rel_Insert_Input = {
-  data: Note_Insert_Input;
-  on_conflict?: Maybe<Note_On_Conflict>;
 };
 
 /** on conflict condition type for table "note" */
 export type Note_On_Conflict = {
   constraint: Note_Constraint;
-  update_columns: Array<Note_Update_Column>;
+  update_columns?: Array<Note_Update_Column>;
   where?: Maybe<Note_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "note" */
+/** Ordering options when selecting data from "note". */
 export type Note_Order_By = {
   author?: Maybe<Author_Order_By>;
   author_id?: Maybe<Order_By>;
@@ -1421,7 +1397,7 @@ export type Note_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "note" */
+/** primary key columns input for table: note */
 export type Note_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -1505,7 +1481,7 @@ export type Online_Authors_Aggregate = {
 /** aggregate fields of "online_authors" */
 export type Online_Authors_Aggregate_Fields = {
   __typename?: 'online_authors_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Online_Authors_Max_Fields>;
   min?: Maybe<Online_Authors_Min_Fields>;
 };
@@ -1517,23 +1493,11 @@ export type Online_Authors_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "online_authors" */
-export type Online_Authors_Aggregate_Order_By = {
-  count?: Maybe<Order_By>;
-  max?: Maybe<Online_Authors_Max_Order_By>;
-  min?: Maybe<Online_Authors_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "online_authors" */
-export type Online_Authors_Arr_Rel_Insert_Input = {
-  data: Array<Online_Authors_Insert_Input>;
-};
-
 /** Boolean expression to filter rows from the table "online_authors". All fields are combined with a logical 'AND'. */
 export type Online_Authors_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Online_Authors_Bool_Exp>>>;
+  _and?: Maybe<Array<Online_Authors_Bool_Exp>>;
   _not?: Maybe<Online_Authors_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Online_Authors_Bool_Exp>>>;
+  _or?: Maybe<Array<Online_Authors_Bool_Exp>>;
   last_seen?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
 };
@@ -1551,12 +1515,6 @@ export type Online_Authors_Max_Fields = {
   name?: Maybe<Scalars['String']>;
 };
 
-/** order by max() on columns of table "online_authors" */
-export type Online_Authors_Max_Order_By = {
-  last_seen?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-};
-
 /** aggregate min on columns */
 export type Online_Authors_Min_Fields = {
   __typename?: 'online_authors_min_fields';
@@ -1564,27 +1522,16 @@ export type Online_Authors_Min_Fields = {
   name?: Maybe<Scalars['String']>;
 };
 
-/** order by min() on columns of table "online_authors" */
-export type Online_Authors_Min_Order_By = {
-  last_seen?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-};
-
 /** response of any mutation on the table "online_authors" */
 export type Online_Authors_Mutation_Response = {
   __typename?: 'online_authors_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Online_Authors>;
 };
 
-/** input type for inserting object relation for remote table "online_authors" */
-export type Online_Authors_Obj_Rel_Insert_Input = {
-  data: Online_Authors_Insert_Input;
-};
-
-/** ordering options when selecting data from "online_authors" */
+/** Ordering options when selecting data from "online_authors". */
 export type Online_Authors_Order_By = {
   last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -1606,17 +1553,17 @@ export type Online_Authors_Set_Input = {
 
 /** column ordering options */
 export enum Order_By {
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   Asc = 'asc',
-  /** in the ascending order, nulls first */
+  /** in ascending order, nulls first */
   AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   Desc = 'desc',
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
+  /** in descending order, nulls last */
   DescNullsLast = 'desc_nulls_last'
 }
 
@@ -1632,7 +1579,7 @@ export type Page = {
   id: Scalars['uuid'];
   /** An array relationship */
   margins: Array<Margin>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   margins_aggregate: Margin_Aggregate;
   order: Scalars['Int'];
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1675,7 +1622,7 @@ export type Page_Aggregate = {
 export type Page_Aggregate_Fields = {
   __typename?: 'page_aggregate_fields';
   avg?: Maybe<Page_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Page_Max_Fields>;
   min?: Maybe<Page_Min_Fields>;
   stddev?: Maybe<Page_Stddev_Fields>;
@@ -1717,6 +1664,7 @@ export type Page_Append_Input = {
 /** input type for inserting array relation for remote table "page" */
 export type Page_Arr_Rel_Insert_Input = {
   data: Array<Page_Insert_Input>;
+  /** on conflict condition */
   on_conflict?: Maybe<Page_On_Conflict>;
 };
 
@@ -1733,9 +1681,9 @@ export type Page_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "page". All fields are combined with a logical 'AND'. */
 export type Page_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Page_Bool_Exp>>>;
+  _and?: Maybe<Array<Page_Bool_Exp>>;
   _not?: Maybe<Page_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Page_Bool_Exp>>>;
+  _or?: Maybe<Array<Page_Bool_Exp>>;
   content?: Maybe<Jsonb_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   draft?: Maybe<Draft_Bool_Exp>;
@@ -1755,7 +1703,7 @@ export enum Page_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Page_Delete_At_Path_Input = {
-  content?: Maybe<Array<Maybe<Scalars['String']>>>;
+  content?: Maybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
@@ -1768,7 +1716,7 @@ export type Page_Delete_Key_Input = {
   content?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer column in table "page" */
+/** input type for incrementing numeric columns in table "page" */
 export type Page_Inc_Input = {
   order?: Maybe<Scalars['Int']>;
 };
@@ -1831,26 +1779,27 @@ export type Page_Min_Order_By = {
 /** response of any mutation on the table "page" */
 export type Page_Mutation_Response = {
   __typename?: 'page_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Page>;
 };
 
 /** input type for inserting object relation for remote table "page" */
 export type Page_Obj_Rel_Insert_Input = {
   data: Page_Insert_Input;
+  /** on conflict condition */
   on_conflict?: Maybe<Page_On_Conflict>;
 };
 
 /** on conflict condition type for table "page" */
 export type Page_On_Conflict = {
   constraint: Page_Constraint;
-  update_columns: Array<Page_Update_Column>;
+  update_columns?: Array<Page_Update_Column>;
   where?: Maybe<Page_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "page" */
+/** Ordering options when selecting data from "page". */
 export type Page_Order_By = {
   content?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
@@ -1863,7 +1812,7 @@ export type Page_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "page" */
+/** primary key columns input for table: page */
 export type Page_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -1997,7 +1946,6 @@ export type Page_Variance_Order_By = {
   order?: Maybe<Order_By>;
 };
 
-/** query root */
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "author" */
@@ -2037,7 +1985,6 @@ export type Query_Root = {
 };
 
 
-/** query root */
 export type Query_RootAuthorArgs = {
   distinct_on?: Maybe<Array<Author_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2047,7 +1994,6 @@ export type Query_RootAuthorArgs = {
 };
 
 
-/** query root */
 export type Query_RootAuthor_AggregateArgs = {
   distinct_on?: Maybe<Array<Author_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2057,13 +2003,11 @@ export type Query_RootAuthor_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootAuthor_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** query root */
 export type Query_RootDraftArgs = {
   distinct_on?: Maybe<Array<Draft_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2073,7 +2017,6 @@ export type Query_RootDraftArgs = {
 };
 
 
-/** query root */
 export type Query_RootDraft_AggregateArgs = {
   distinct_on?: Maybe<Array<Draft_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2083,13 +2026,11 @@ export type Query_RootDraft_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootDraft_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** query root */
 export type Query_RootMarginArgs = {
   distinct_on?: Maybe<Array<Margin_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2099,7 +2040,6 @@ export type Query_RootMarginArgs = {
 };
 
 
-/** query root */
 export type Query_RootMargin_AggregateArgs = {
   distinct_on?: Maybe<Array<Margin_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2109,13 +2049,11 @@ export type Query_RootMargin_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootMargin_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** query root */
 export type Query_RootNoteArgs = {
   distinct_on?: Maybe<Array<Note_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2125,7 +2063,6 @@ export type Query_RootNoteArgs = {
 };
 
 
-/** query root */
 export type Query_RootNote_AggregateArgs = {
   distinct_on?: Maybe<Array<Note_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2135,13 +2072,11 @@ export type Query_RootNote_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootNote_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** query root */
 export type Query_RootOnline_AuthorsArgs = {
   distinct_on?: Maybe<Array<Online_Authors_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2151,7 +2086,6 @@ export type Query_RootOnline_AuthorsArgs = {
 };
 
 
-/** query root */
 export type Query_RootOnline_Authors_AggregateArgs = {
   distinct_on?: Maybe<Array<Online_Authors_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2161,7 +2095,6 @@ export type Query_RootOnline_Authors_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootPageArgs = {
   distinct_on?: Maybe<Array<Page_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2171,7 +2104,6 @@ export type Query_RootPageArgs = {
 };
 
 
-/** query root */
 export type Query_RootPage_AggregateArgs = {
   distinct_on?: Maybe<Array<Page_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2181,12 +2113,10 @@ export type Query_RootPage_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootPage_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-/** subscription root */
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "author" */
@@ -2226,7 +2156,6 @@ export type Subscription_Root = {
 };
 
 
-/** subscription root */
 export type Subscription_RootAuthorArgs = {
   distinct_on?: Maybe<Array<Author_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2236,7 +2165,6 @@ export type Subscription_RootAuthorArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootAuthor_AggregateArgs = {
   distinct_on?: Maybe<Array<Author_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2246,13 +2174,11 @@ export type Subscription_RootAuthor_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootAuthor_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** subscription root */
 export type Subscription_RootDraftArgs = {
   distinct_on?: Maybe<Array<Draft_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2262,7 +2188,6 @@ export type Subscription_RootDraftArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootDraft_AggregateArgs = {
   distinct_on?: Maybe<Array<Draft_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2272,13 +2197,11 @@ export type Subscription_RootDraft_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootDraft_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** subscription root */
 export type Subscription_RootMarginArgs = {
   distinct_on?: Maybe<Array<Margin_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2288,7 +2211,6 @@ export type Subscription_RootMarginArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootMargin_AggregateArgs = {
   distinct_on?: Maybe<Array<Margin_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2298,13 +2220,11 @@ export type Subscription_RootMargin_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootMargin_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** subscription root */
 export type Subscription_RootNoteArgs = {
   distinct_on?: Maybe<Array<Note_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2314,7 +2234,6 @@ export type Subscription_RootNoteArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootNote_AggregateArgs = {
   distinct_on?: Maybe<Array<Note_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2324,13 +2243,11 @@ export type Subscription_RootNote_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootNote_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** subscription root */
 export type Subscription_RootOnline_AuthorsArgs = {
   distinct_on?: Maybe<Array<Online_Authors_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2340,7 +2257,6 @@ export type Subscription_RootOnline_AuthorsArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootOnline_Authors_AggregateArgs = {
   distinct_on?: Maybe<Array<Online_Authors_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2350,7 +2266,6 @@ export type Subscription_RootOnline_Authors_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootPageArgs = {
   distinct_on?: Maybe<Array<Page_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2360,7 +2275,6 @@ export type Subscription_RootPageArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootPage_AggregateArgs = {
   distinct_on?: Maybe<Array<Page_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2370,13 +2284,12 @@ export type Subscription_RootPage_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootPage_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: Maybe<Scalars['timestamptz']>;
   _gt?: Maybe<Scalars['timestamptz']>;
@@ -2390,7 +2303,7 @@ export type Timestamptz_Comparison_Exp = {
 };
 
 
-/** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type Uuid_Comparison_Exp = {
   _eq?: Maybe<Scalars['uuid']>;
   _gt?: Maybe<Scalars['uuid']>;

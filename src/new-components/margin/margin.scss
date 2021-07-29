@@ -9,10 +9,41 @@
   border-left: solid 1px $light-grey;
 }
 
+.signature-pad {
+  position: absolute;
+}
+
 .fab {
   &-container {
     display: inline-flex;
     align-items: flex-end;
+    justify-content: flex-end;
+
+    &_main {
+      position: sticky;
+      top: calc(100vh - 20px);
+      display: flex;
+      margin: 1em;
+      flex-direction: row;
+      height: 0;
+
+      & > *:not(:last-child) {
+        opacity: 0;
+        margin-left: 0;
+        transform: translateX(10px);
+      }
+
+      &:hover {
+        height: 50px;
+        top: calc(100vh - 70px);
+        & > * {
+          display: flex;
+          opacity: 1;
+          transform: none;
+          margin-left: 10px;
+        }
+      }
+    }
 
     /* Show tooltip content on hover */
     [tooltip]:before {
