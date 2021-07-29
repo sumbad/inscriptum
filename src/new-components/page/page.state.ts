@@ -21,21 +21,16 @@ export function page$(pageId: string): Observable<PageAction | Partial<PageState
 export function reducer(state: PageState, action: PageAction) {
   switch (action.type) {
     case PAGE_ACTION.CREATE_MARGIN_DONE:
-      return {
-        ...state,
-        data:
-          state.data != null
-            ? {
-                ...state.data,
-                margins: [
-                  {
-                    id: action.payload.marginId,
-                  },
-                  ...state.data.margins,
-                ],
-              }
-            : undefined,
-      };
+      if(state.data != null) {
+        state.data.margins = [
+          {
+            id: action.payload.marginId,
+          },
+          ...state.data.margins,
+        ];
+      }
+
+      return state;
     default:
       return state;
   }

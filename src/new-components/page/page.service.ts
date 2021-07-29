@@ -15,6 +15,7 @@ export async function createMargin(pageId: string, dispatch: (action: PageAction
       page_id: pageId,
       created_at: new Date().toISOString(),
     });
+    
     if (insert_margin_one?.id != null) {
       dispatch({
         type: PAGE_ACTION.CREATE_MARGIN_DONE,

@@ -58,6 +58,7 @@ export const redactorElement = EG({
 
     return () => {
       console.log('DESTROY redactorElement');
+      editorContainerEl.current?.firstChild?.remove();
       cancelAnimationFrame(rafId);
       if (editor != null) {
         editor.destroy();
