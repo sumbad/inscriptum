@@ -1,10 +1,10 @@
-import { EG, prop } from '@web-companions/gfc';
+import { EG, p } from '@web-companions/gfc';
 import { render } from 'lit-html';
 import { DraftTocModel } from 'models/draft.model';
 
 export const tableOfContent = EG({
   props: {
-    items: prop.req<DraftTocModel[]>(),
+    items: p.req<DraftTocModel[]>(),
   },
 })(function* (props) {
   const selected: number = 0;

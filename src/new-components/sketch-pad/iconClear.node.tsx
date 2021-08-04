@@ -2,7 +2,7 @@ import { NG } from '@web-companions/gfc';
 import { svg } from 'lit-html2';
 import { renderNode } from 'utils/nodeRender';
 
-export const iconClearNode = NG()(function* (props) {
+export const iconClearNode = NG(function* () {
   while (true) {
     yield renderNode(
       svg/*html*/ `

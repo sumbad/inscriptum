@@ -2,9 +2,9 @@ import { NG } from '@web-companions/gfc';
 import { svg } from 'lit-html2';
 import { renderNode } from 'utils/nodeRender';
 
-export const iconWightNode = NG()(function* (props: { strokeWidth?: string } = { strokeWidth: '1' }) {
+export const iconWightNode = NG(function* (props: { strokeWidth?: string } = { strokeWidth: '1' }) {
   while (true) {
-    const nextProps = yield renderNode(
+    props = yield renderNode(
       svg/*html*/ `
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
@@ -24,7 +24,5 @@ export const iconWightNode = NG()(function* (props: { strokeWidth?: string } = {
     `,
       this
     );
-
-    props = nextProps ?? props;
   }
 });

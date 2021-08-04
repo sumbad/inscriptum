@@ -1,16 +1,7 @@
-import { render, svg } from 'lit-html2';
+import type { NodeRef } from '@web-companions/gfc/@types';
+import { render } from 'lit-html2';
 import { AsyncDirective } from 'lit-html2/async-directive';
 import { directive } from 'lit-html2/directive';
-
-// TODO: change to -> import { NodeRef } from '@web-companions/gfc/sdk/node';
-export interface NodeRef<P = unknown, C = Node | null, V = any> {
-  current: C;
-  generator: Generator<any, void, P | undefined>;
-  next: (...args: [] | [P]) => Promise<void>;
-  isScheduledNext: boolean;
-  props: P;
-  value?: V;
-}
 
 class RenderNode extends AsyncDirective {
   render(tpl: any, ref: NodeRef<unknown, Node | null | RenderNode>) {

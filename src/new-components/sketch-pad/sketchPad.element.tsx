@@ -2,7 +2,7 @@ import { render } from 'lit-html2';
 import { ref, createRef, Ref } from 'lit-html2/directives/ref';
 import SignaturePad from 'signature_pad';
 
-import { EG, prop } from '@web-companions/gfc';
+import { EG, p } from '@web-companions/gfc';
 import { css } from 'utils/common';
 import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
@@ -20,7 +20,7 @@ const IconWightNode = iconWightNode();
 
 export const sketchPadElement = EG({
   props: {
-    data: prop.req<Margin>(),
+    data: p.req<Margin>(),
   },
 })(function* (this: HTMLElement & { next(): Promise<void> }, props) {
   const canvasRef: Ref<HTMLCanvasElement> = createRef();

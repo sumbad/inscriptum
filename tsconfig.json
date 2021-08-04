@@ -14,14 +14,18 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": true,
+    // "strictFunctionTypes": true,
     "removeComments": true,
-    "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "rootDir": "./",
     "baseUrl": "./src",
 
-    "jsx": "preserve"
+    "jsx": "preserve",
+
+    // Advanced
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
   },
   "include": ["src", "src/components/editor/register/.ts"],
   "exclude": ["postcss.config.js", "src/public", "webpack", "webpack.config.js", "webpack.mix.js", "babel.config.js"],
