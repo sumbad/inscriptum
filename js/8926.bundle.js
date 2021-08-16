@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[8926],{18926:(e,s,a)=>{a.r(s),a.d(s,{BreakBlot:()=>i});var t=a(25039),r=a(53691);class i extends r.i2{}i.blotName="textBreak",i.tagName="br",i.className="inline",t.Z.register(i)}}]);

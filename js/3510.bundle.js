@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[3510],{53510:r=>{r.exports=".um-drafts__submenu{display:flex;flex-direction:row-reverse;padding-top:10px;border-bottom:1px solid #eee}.um-drafts__export-all{margin:0 0 10px 10px;stroke:#fff;stroke-width:30px;color:#bbb}.um-drafts__export-all:hover{color:#888;cursor:pointer}"}}]);

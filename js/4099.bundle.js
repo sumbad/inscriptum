@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[4099],{64099:(e,i,s)=>{s.r(i),s.d(i,{DividerBlot:()=>t});var r=s(53691);class t extends r.i2{}t.blotName="blockDivider",t.tagName="hr"}}]);

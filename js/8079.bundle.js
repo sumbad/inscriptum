@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[8079],{78079:(e,t,s)=>{s.r(t),s.d(t,{BlockquoteBlot:()=>o});var c=s(25039),l=s(53691);class o extends l.ZP{}o.blotName="blockBlockquote",o.tagName="blockquote",c.Z.register(o)}}]);
