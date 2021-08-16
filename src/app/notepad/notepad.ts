@@ -1,4 +1,4 @@
-import './style.scss';
+import './style.inject.scss';
 
 import { AbstractElement, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';

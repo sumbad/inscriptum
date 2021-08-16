@@ -77,7 +77,27 @@ module.exports = function (helper) {
               loader: 'sass-loader',
             },
           ],
-          exclude: /app\/note\/.*/,
+          exclude: [/app\/note\/.*/, /\.inject\.(sa|sc|c)ss$/],
+        },
+        {
+          test: /\.inject\.(sa|sc|c)ss$/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                url: false,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
         },
       ],
     },
