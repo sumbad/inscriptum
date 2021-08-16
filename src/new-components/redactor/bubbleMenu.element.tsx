@@ -1,7 +1,7 @@
 import { EG, useEffect, useState } from '@web-companions/fc';
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
-import { BubbleMenuPlugin, BubbleMenuPluginKey, BubbleMenuPluginProps } from '@tiptap/extension-bubble-menu';
+import { BubbleMenuPlugin, BubbleMenuPluginProps, BubbleMenu } from '@tiptap/extension-bubble-menu';
 import { useLitRef } from 'hooks/useLitRef';
 import { css } from 'utils/common';
 import { Editor } from '@tiptap/core';
@@ -18,11 +18,19 @@ export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
  * NOTE: Shadow Dom:
  * https://github.com/atomiks/tippyjs/pull/915
  */
-export const bubbleMenuElement = EG<BubbleMenuProps>({
+export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & {editor: BubbleMenuProps["editor"]}>({
   props: {
     editor: {} as TypeConstructor<Editor>,
     className: String,
     tippyOptions: {} as TypeConstructor<Partial<TippyProps> | undefined> | undefined,
+    pluginKey: {
+      type: String,
+      default: BubbleMenu.options.pluginKey
+    },
+    shouldShow: {
+      type: {} as TypeConstructor<BubbleMenuProps["shouldShow"]>,
+      default: null
+    } 
   },
   render,
   // shadow: {
@@ -46,6 +54,8 @@ export const bubbleMenuElement = EG<BubbleMenuProps>({
             BubbleMenuPlugin({
               editor,
               element: element.current,
+              pluginKey: props.pluginKey!,
+              shouldShow: props.shouldShow!
               // tippyOptions,
               // tippyOptions: {
               //   onShow
@@ -79,7 +89,7 @@ export const bubbleMenuElement = EG<BubbleMenuProps>({
       transaction$.unsubscribe();
       editor.off('transaction', updateEditorState);
       cancelAnimationFrame(rafId);
-      editor.unregisterPlugin(BubbleMenuPluginKey);
+      editor.unregisterPlugin(BubbleMenu.options.pluginKey);
     };
   }, [element.current]);
 

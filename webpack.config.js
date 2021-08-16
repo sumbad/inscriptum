@@ -4,7 +4,7 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 
 const webpackConfigCommon = require('@insum/webpack.config/webpack.config.common.js');
-const webpackConfigDev = require('@insum/webpack.config/webpack.config.dev.js');
+const webpackConfigDev = require('./webpack.config.dev.js');
 const webpackConfigProd = require('./webpack.config.prod.js');
 const webpackConfigMix = require('./webpack.mix.js');
 

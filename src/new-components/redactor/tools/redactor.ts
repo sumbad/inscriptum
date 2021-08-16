@@ -95,12 +95,6 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
       /////////
       TaskList,
       TaskItem,
-      // CodeBlockLowlight.configure({
-      //   lowlight,
-      //   HTMLAttributes: {
-      //     spellcheck: 'false',
-      //   },
-      // }),
       Highlight,
       /////////
       HljsCodeBlock,
