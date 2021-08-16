@@ -5,13 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
-const sassCssLoader = require('@insum/webpack.config/loaders/sass-css');
-
 module.exports = function (helper) {
   return {
     module: {
       rules: [
-        require('@insum/webpack.config/loaders/js'),
+        {
+          test: /\.m?js(x?)$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
+        },
         {
           test: /\.ts(x?)$/,
           use: [
@@ -28,17 +30,54 @@ module.exports = function (helper) {
           ],
           exclude: /node_modules/,
         },
-        require('@insum/webpack.config/loaders/file-img'),
-        require('@insum/webpack.config/loaders/css'),
-        require('@insum/webpack.config/loaders/less-raw'),
         {
-          ...sassCssLoader,
-          use: [{ loader: MiniCssExtractPlugin.loader }, ...sassCssLoader.use],
-          include: [path.join(helper.PATHS.src, 'app/note')],
+          test: /\.(png|jpg|jpeg|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
+          type: 'asset/resource',
+          generator: {
+            filename: '[folder]/[name].[ext]?[hash]',
+          },
+        },
+        // {
+        //   test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+        //   type: 'asset/resource',
+        // },
+        {
+          test: /\.css$/,
+          type: 'asset/source',
         },
         {
-          ...require('@insum/webpack.config/loaders/sass'),
-          exclude: [path.join(helper.PATHS.src, 'app/note')],
+          test: /\.(sa|sc|c)ss$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                url: false,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+          include: /app\/note\/.*/,
+        },
+        {
+          test: /\.(sa|sc|c)ss$/,
+          type: 'asset/source',
+          use: [
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+          exclude: /app\/note\/.*/,
         },
       ],
     },
@@ -49,20 +88,20 @@ module.exports = function (helper) {
           {
             from: helper.PATHS.src + '/public',
             to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
-            toType: 'dir'
+            toType: 'dir',
           },
           {
             from: helper.PATHS.src + '/data',
             to: path.join(helper.PATHS.dist, helper.PATHS.outputPath, '/data'),
-            toType: 'dir'
+            toType: 'dir',
           },
           {
             from: helper.PATHS.root + '/CNAME',
-            to: path.join(helper.PATHS.dist)
+            to: path.join(helper.PATHS.dist),
           },
           {
             from: path.resolve(helper.PATHS.src, '404.html'),
-            to: path.join(helper.PATHS.dist)
+            to: path.join(helper.PATHS.dist),
           },
         ],
       }),

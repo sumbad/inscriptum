@@ -29,7 +29,7 @@ enum DraftAction {
 export class DraftComponent extends AbstractElement {
   styles = html`
   <style>
-    ${require('./style.less')}
+    ${require('./style.scss')}
   </style>
 `;
 

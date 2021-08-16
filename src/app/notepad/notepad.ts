@@ -1,29 +1,10 @@
 import './style.scss';
 
-import polyfills from '../../polyfills';
 import { AbstractElement, Define, state } from 'abstract-element';
 import litRender from 'abstract-element/render/lit';
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { TRootPath, RootRoute } from './routes/$';
-
-
-/**
- * Start app after load polyfills
- */
-polyfills
-  .then(async () => {
-    const rootRoute = new RootRoute();
-    await import('components/um-preloader');
-    await import('components/menu');
-    const main = document.querySelector('main');
-    const notepad = new NotepadModule(rootRoute);
-
-    main && main.appendChild(notepad);
-  })
-  .catch(e => {
-    console.warn(e);
-  });
 
 /**
  * NotepadModule - main element
@@ -52,12 +33,12 @@ class NotepadModule extends AbstractElement<TemplateResult> {
     }
 
     _router.runCallbackEvent.subscribe(
-      rEvent => {
+      (rEvent) => {
         if (rEvent) {
           this.path = rEvent.path;
         }
       },
-      e => {
+      (e) => {
         console.warn(e);
       }
     );
@@ -91,3 +72,14 @@ class NotepadModule extends AbstractElement<TemplateResult> {
     return unsafeHTML(`<inscriptum-${type}></inscriptum-${type}>`);
   }
 }
+
+/**
+ * Start app after load polyfills
+ */
+const rootRoute = new RootRoute();
+Promise.all([import('components/um-preloader'), import('components/menu')]).then(() => {
+  const main = document.querySelector('main');
+  const notepad = new NotepadModule(rootRoute);
+
+  main && main.appendChild(notepad);
+});

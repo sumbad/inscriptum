@@ -1,11 +1,11 @@
 /** @typedef {import('@insum/webpack.config/types').Helper} Helper */
 
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const webpackConfigCommon = require('@insum/webpack.config/webpack.config.common.js');
 const webpackConfigDev = require('@insum/webpack.config/webpack.config.dev.js');
-const webpackConfigProd = require('@insum/webpack.config/webpack.config.prod.js');
+const webpackConfigProd = require('./webpack.config.prod.js');
 const webpackConfigMix = require('./webpack.mix.js');
 
 /**
@@ -30,7 +30,7 @@ let helper = {
 const mainConfig = {
   resolve: {
     modules: [helper.PATHS.src, helper.PATHS.node_modules],
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
   },
   entry: {
     notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
@@ -54,7 +54,7 @@ if (helper.ENV.isDevMode) {
       mode: 'production',
       stats: {
         // Examine all modules
-        maxModules: Infinity,
+        // maxModules: Infinity,
         // Display bailout reasons
         // optimizationBailout: true,
         colors: false,

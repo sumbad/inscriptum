@@ -35,8 +35,8 @@ export interface IListItemAction {
 export class ListComponent extends AbstractElement {
   styles = html`
     <style>
-      ${require('./styles/custom.less')}
-      ${require('./styles/$.less')}
+      ${require('./styles/custom.scss')}
+      ${require('./styles/$.scss')}
     </style>
   `;
 

@@ -8,7 +8,7 @@ import { StorageService } from 'storage/storage.service';
 
 @Define('inscriptum-menu')
 export class MenuComponent extends AbstractElement {
-  styles = html`<style>${require('./style.less')}</style>`;
+  styles = html`<style>${require('./style.scss')}</style>`;
 
   @state()
   hasAuth = false;
