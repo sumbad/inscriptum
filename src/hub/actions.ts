@@ -14,6 +14,9 @@ const PAGE_SAVE_FAIL: unique symbol = Symbol(`[${namespace}] PAGE_SAVE_FAIL`);
 ///
 const DRAFT_ADD_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_ADD_PAGE_DONE`);
 const DRAFT_DELETE_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_DELETE_PAGE_DONE`);
+///
+const DRAFT_PUBLISH: unique symbol = Symbol(`[${namespace}] DRAFT_PUBLISH`);
+
 
 export const HUB_ACTION = {
   PAGE_SAVE,
@@ -22,6 +25,7 @@ export const HUB_ACTION = {
   PAGE_SAVE_FAIL,
   DRAFT_ADD_PAGE_DONE,
   DRAFT_DELETE_PAGE_DONE,
+  DRAFT_PUBLISH,
 } as const;
 
 export type HubAction =
@@ -72,5 +76,11 @@ export type HubAction =
         draftId: string;
         deletedPage: { id: string; order: number };
         updatedPages: { id: string; order: number }[];
+      };
+    }
+  | {
+      type: typeof HUB_ACTION.DRAFT_PUBLISH;
+      payload: {
+        draftId: string;
       };
     };

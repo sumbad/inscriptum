@@ -5,7 +5,7 @@ import { DraftModel } from 'models/draft.model';
 import Delta from 'quill-delta';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { updateToc } from 'services/draft.service';
+import { publishDraft, updateToc } from 'new-components/draft/draft.service';
 import { DraftAction, DRAFT_ACTION } from './draft.action';
 
 export interface DraftState {
@@ -155,6 +155,14 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
       }
       return state;
 
+    case HUB_ACTION.DRAFT_PUBLISH:
+      if(state.data != null) {
+        publishDraft(state.data)
+      } else {
+        alert('Error: the draft cannot be published. The draft state is null.')
+      }
+      return state;
+
     default:
       return state;
   }
@@ -162,9 +170,9 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
 
 /**
  * Get a page's header by content
- * 
+ *
  * @param content : the page content;
- * @returns 
+ * @returns
  */
 function getPageHeader(content?: Delta | JSONContent) {
   let header = '...';

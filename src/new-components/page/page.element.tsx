@@ -2,8 +2,6 @@ import { EG, useCallback, useEffect, useState, useReducer, useMemo } from '@web-
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { Page } from 'models/page.model';
-import type Delta from 'quill-delta';
-import { editorElement } from '../editor/editor.element';
 import { marginElement } from '../margin/margin.element';
 import { foldingElement } from '../folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';

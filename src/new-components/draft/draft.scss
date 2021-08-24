@@ -65,10 +65,11 @@
 
     .icon-tabler {
       transition: 0.2s;
-      stroke: $border-color;
+      stroke: var(--border-color);
+      color: var(--border-color);
 
       &:hover {
-        stroke: $dark-grey;
+        stroke: var(--dark-grey);
       }
     }
   }

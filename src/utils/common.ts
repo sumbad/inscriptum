@@ -50,7 +50,7 @@ export function loadStyleFile(path: string) {
 /**
  * Get from quill.js Delta object preview info
  *  @deprecated
- * 
+ *
  * @param delta - quill.js Delta object
  */
 export function quillDelta2Preview(delta: Delta) {
@@ -101,26 +101,26 @@ export function quillDelta2Preview(delta: Delta) {
 
 /**
  * Create a preview object from the redactor Content
- * 
- * @param jsonContent 
- * @returns 
+ *
+ * @param jsonContent
+ * @returns
  */
 export function redactorContent2Preview(jsonContent: JSONContent | null) {
   let previewTitle = '<noname>';
   let previewContent = '...';
   let previewImage = '';
 
-  if(jsonContent != null) {
+  if (jsonContent != null) {
     const topicTitleContent = findFirstJsonContent(jsonContent, TOPIC_TITLE_NODE_NAME);
     if (topicTitleContent?.content != null) {
       previewTitle = topicTitleContent.content[0].text ?? previewTitle;
     }
-  
+
     const topicSummaryContent = findFirstJsonContent(jsonContent, TOPIC_SUMMARY_NODE_NAME);
     if (topicSummaryContent?.content != null) {
       previewContent = topicSummaryContent.content[0].text ?? previewContent;
     }
-  
+
     const figureContent = findFirstJsonContent(jsonContent, FIGURE_NODE_NAME);
     if (figureContent?.attrs != null) {
       previewImage = figureContent.attrs['src'] ?? previewImage;
@@ -145,10 +145,10 @@ export function redactorContent2Preview(jsonContent: JSONContent | null) {
 
 /**
  * Find the firs JsonContent object from the parent one
- * 
- * @param jsonContent 
- * @param nodeType 
- * @returns 
+ *
+ * @param jsonContent
+ * @param nodeType
+ * @returns
  */
 export function findFirstJsonContent(jsonContent: JSONContent, nodeType: string): JSONContent | null {
   if (jsonContent.type === nodeType) {
@@ -177,3 +177,21 @@ export function getNestedObject(object: object, pathArr: string[]): any {
 }
 
 export const css = String.raw;
+
+/**
+ * Transliterate from Russian to English or vice versa
+ *
+ * @param text - a source text
+ * @param engToRus - direction
+ * @returns
+ */
+export function transliterate(text: string, engToRus = false) {
+  const rus = 'щ   ш  ч  ц  ю  я  ё  ж  ъ  ы  э  а б в г д е з и й к л м н о п р с т у ф х ь'.split(/ +/g);
+  const eng = "shh sh ch cz yu ya yo zh `` y' e` a b v g d e z i j k l m n o p r s t u f x `".split(/ +/g);
+
+  for (let x = 0; x < rus.length; x++) {
+    text = text.split(engToRus ? eng[x] : rus[x]).join(engToRus ? rus[x] : eng[x]);
+    text = text.split(engToRus ? eng[x].toUpperCase() : rus[x].toUpperCase()).join(engToRus ? rus[x].toUpperCase() : eng[x].toUpperCase());
+  }
+  return text;
+}

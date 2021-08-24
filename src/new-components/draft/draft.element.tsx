@@ -4,10 +4,11 @@ import { HUB_ACTION } from 'hub/actions';
 import { render } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { loadingProgressBar, LoadingProgressBarHTMLElement } from 'loading-progress-bar';
+import { controlsPanelElement } from 'new-components/controls-panel/controlsPanel.element';
 import { PageAction } from 'new-components/page/page.action';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { getById } from 'services/draft.service';
+import { getById } from 'new-components/draft/draft.service';
 import { pageElement } from '../page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { DraftAction } from './draft.action';
@@ -18,6 +19,7 @@ const css = String.raw;
 const PageElement = pageElement('inscriptum-page');
 const LoadingProgressBarElement = loadingProgressBar('loading-progress-bar');
 const TableOfContentElement = tableOfContent('inscriptum-table-of-content');
+const ControlsPanelElement = controlsPanelElement('inscriptum-controls-panel');
 
 export const draftElement = EG({
   props: {
@@ -79,14 +81,19 @@ export const draftElement = EG({
 
       <um-preloader loading={state.isLoading}>
         <div class="draft-content">
-          <TableOfContentElement
-            items={state.data?.table_of_contents ?? []}
+          <div
             style={css`
+              display: flex;
+              flex-direction: column;
               margin-right: 7rem;
               margin-left: 3rem;
               min-width: 15rem;
             `}
-          ></TableOfContentElement>
+          >
+            <ControlsPanelElement draftId={props.id}></ControlsPanelElement>
+            <TableOfContentElement items={state.data?.table_of_contents ?? []}></TableOfContentElement>
+          </div>
+
           <div
             style={css`
               width: 100%;

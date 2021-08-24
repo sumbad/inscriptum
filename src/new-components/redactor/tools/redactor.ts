@@ -1,4 +1,4 @@
-import { Content, Editor, EditorOptions } from '@tiptap/core';
+import { Content, Editor, EditorOptions, Extensions, generateHTML, JSONContent } from '@tiptap/core';
 
 import Document from '@tiptap/extension-document';
 import Blockquote from '@tiptap/extension-blockquote';
@@ -67,68 +67,83 @@ import { HljsCodeBlockRow } from './extensions/hljsCodeBlock/hljsCodeBlockRow';
  * @returns
  */
 export function createEditor(editorEl: Element, content?: Content, isTitle: boolean = false, options?: Pick<EditorOptions, 'onUpdate'>) {
-  const doc = isTitle ? [TopicDoc, TopicTitle, TopicSummary, TopicFirstLine] : [Document];
-
   const editor = new Editor({
     element: editorEl,
     content,
     onUpdate: options?.onUpdate,
-    extensions: [
-      ...doc,
-      Paragraph,
-      Text,
-      Bold,
-      Italic,
-      Code,
-      Strike,
-      HardBreak,
-      Heading,
-      Blockquote,
-      BulletList,
-      OrderedList,
-      ListItem,
-      HorizontalRule,
-      // CodeBlock,
-      History,
-      Dropcursor,
-      Gapcursor,
-      /////////
-      TaskList,
-      TaskItem,
-      Highlight,
-      /////////
-      HljsCodeBlock,
-      HljsMark,
-      HljsCodeBlockRow,
-      CodeBlock2HljsCodeBlock,
-      /////////
-      Figure,
-      Aside,
-      LinkWithTooltip.configure({
-        onRenderHTML: () => {
-          // TODO: it's a temporary solution
-          // Some problems with this:
-          // - add a new tippy instance for each link
-          // - if a link was removed the tippy instance will be abandoned
-          //
-          // I think it will be better to use a single tippy instance for all links (https://atomiks.github.io/tippyjs/v6/addons/#singleton)
-          setTimeout(() => {
-            const linkElements = document.querySelectorAll('a[href]');
-
-            linkElements.forEach((el) => {
-              if (el['_tippy'] == null) {
-                tippy(el, {
-                  delay: [300, 200],
-                  placement: 'bottom',
-                  content: (reference: HTMLAnchorElement) => reference.href,
-                });
-              }
-            });
-          }, 1);
-        },
-      }),
-    ],
+    extensions: redactorExtensions(isTitle),
   });
 
   return editor;
+}
+
+/**
+ * Return HTML base on a redactor's content
+ *
+ * @param content : a page content;
+ * @param isTitle : is the page a title or not;
+ * @returns
+ */
+export function createHTMLbyContent(content: JSONContent, isTitle: boolean = false) {
+  return generateHTML(content, redactorExtensions(isTitle));
+}
+
+function redactorExtensions(isTitle: boolean = false): Extensions {
+  const doc = isTitle ? [TopicDoc, TopicTitle, TopicSummary, TopicFirstLine] : [Document];
+
+  return [
+    ...doc,
+    Paragraph,
+    Text,
+    Bold,
+    Italic,
+    Code,
+    Strike,
+    HardBreak,
+    Heading,
+    Blockquote,
+    BulletList,
+    OrderedList,
+    ListItem,
+    HorizontalRule,
+    // CodeBlock,
+    History,
+    Dropcursor,
+    Gapcursor,
+    /////////
+    TaskList,
+    TaskItem,
+    Highlight,
+    /////////
+    HljsCodeBlock,
+    HljsMark,
+    HljsCodeBlockRow,
+    CodeBlock2HljsCodeBlock,
+    /////////
+    Figure,
+    Aside,
+    LinkWithTooltip.configure({
+      onRenderHTML: () => {
+        // TODO: it's a temporary solution
+        // Some problems with this:
+        // - add a new tippy instance for each link
+        // - if a link was removed the tippy instance will be abandoned
+        //
+        // I think it will be better to use a single tippy instance for all links (https://atomiks.github.io/tippyjs/v6/addons/#singleton)
+        setTimeout(() => {
+          const linkElements = document.querySelectorAll('a[href]');
+
+          linkElements.forEach((el) => {
+            if (el['_tippy'] == null) {
+              tippy(el, {
+                delay: [300, 200],
+                placement: 'bottom',
+                content: (reference: HTMLAnchorElement) => reference.href,
+              });
+            }
+          });
+        }, 1);
+      },
+    }),
+  ];
 }

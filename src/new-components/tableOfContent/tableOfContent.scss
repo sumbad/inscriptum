@@ -2,12 +2,6 @@
 @import '../../scss/skeleton/base/variables';
 @import '../../scss/skeleton/base/typography';
 
-@media (min-width: 400px) {
-  .toc-stub {
-    margin-bottom: 3rem;
-  }
-}
-
 .toc-panel {
   --toc-border-width: 1px;
   --color-contrast-low: hsl(240, 1%, 83%);
@@ -82,7 +76,6 @@
       background-color: hsl(220, 90%, 56%);
     }
   }
-
 
   .toc-panel__page-numb {
     width: 2rem;

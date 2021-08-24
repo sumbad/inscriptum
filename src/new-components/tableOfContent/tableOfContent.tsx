@@ -13,7 +13,6 @@ export const tableOfContent = EG({
     props = yield render(
       <>
         <style>{require('./tableOfContent.scss')}</style>
-        <div class="toc-stub"></div>
         <nav class="toc-panel">
           <ul class="toc-panel__list">
             <li class="toc-panel__title">{props.items[0]?.header ?? `In this article`}</li>
