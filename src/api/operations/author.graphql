@@ -1,0 +1,9 @@
+query findAuthorByAuth0($auth0_id: String!) {
+  author(where: { auth0_id: { _eq: $auth0_id } }) {
+    id
+    email
+    name
+    last_seen
+    created_at
+  }
+}

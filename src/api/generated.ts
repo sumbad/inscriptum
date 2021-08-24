@@ -2316,6 +2316,19 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type FindAuthorByAuth0QueryVariables = Exact<{
+  auth0_id: Scalars['String'];
+}>;
+
+
+export type FindAuthorByAuth0Query = (
+  { __typename?: 'query_root' }
+  & { author: Array<(
+    { __typename?: 'author' }
+    & Pick<Author, 'id' | 'email' | 'name' | 'last_seen' | 'created_at'>
+  )> }
+);
+
 export type GetDraftByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -2463,6 +2476,17 @@ export type DeletePageMutation = (
 );
 
 
+export const FindAuthorByAuth0Document = gql`
+    query findAuthorByAuth0($auth0_id: String!) {
+  author(where: {auth0_id: {_eq: $auth0_id}}) {
+    id
+    email
+    name
+    last_seen
+    created_at
+  }
+}
+    `;
 export const GetDraftByIdDocument = gql`
     query getDraftById($id: uuid!) {
   draft: draft_by_pk(id: $id) {
@@ -2583,6 +2607,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    findAuthorByAuth0(variables: FindAuthorByAuth0QueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindAuthorByAuth0Query> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindAuthorByAuth0Query>(FindAuthorByAuth0Document, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findAuthorByAuth0');
+    },
     getDraftById(variables: GetDraftByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDraftByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDraftByIdQuery>(GetDraftByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDraftById');
     },

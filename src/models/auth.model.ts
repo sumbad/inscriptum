@@ -1,5 +1,9 @@
-import { UserInfo } from 'auth';
 import { SubjectModel } from './$.model';
+
+interface UserInfo {
+  auth0Id: string;
+  email?: string;
+}
 
 export type Auth = {
   /** access token */
@@ -9,7 +13,7 @@ export type Auth = {
   /** token expiration date */
   expiresAt: number;
   /** get user info */
-  // userInfo: UserInfo;
+  userInfo: UserInfo;
 };
 
 export type AuthSubject = SubjectModel<Auth | undefined>;

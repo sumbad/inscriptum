@@ -68,10 +68,20 @@ function localLogin(err: Auth0Error | Auth0ParseHashError | null, authResult: Au
     const accessToken = authResult.accessToken;
     const idToken = authResult.idToken;
 
+    if (authResult.idTokenPayload == null) {
+      alert('idTokenPayload is undefined');
+    }
+
+    const userInfo = {
+      auth0Id: authResult.idTokenPayload['https://hasura.io/jwt/claims']['x-hasura-user-id'],
+      email: authResult.idTokenPayload.email,
+    };
+
     return {
       accessToken,
       expiresAt,
       idToken,
+      userInfo,
     };
   } else {
     let errorMsg = '';
