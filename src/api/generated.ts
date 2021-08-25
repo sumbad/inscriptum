@@ -2413,6 +2413,43 @@ export type SaveMarginMutation = (
   )> }
 );
 
+export type CreateNodeMutationVariables = Exact<{
+  author_id: Scalars['uuid'];
+  created_at?: Maybe<Scalars['timestamptz']>;
+  draft_id: Scalars['uuid'];
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  name: Scalars['String'];
+  preview?: Maybe<Scalars['jsonb']>;
+  static_link?: Maybe<Scalars['String']>;
+}>;
+
+
+export type CreateNodeMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_note_one?: Maybe<(
+    { __typename?: 'note' }
+    & Pick<Note, 'id' | 'updated_at' | 'created_at'>
+  )> }
+);
+
+export type UpdateNodeMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  ended_at?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  preview?: Maybe<Scalars['jsonb']>;
+  static_link?: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+}>;
+
+
+export type UpdateNodeMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_note_by_pk?: Maybe<(
+    { __typename?: 'note' }
+    & Pick<Note, 'id' | 'updated_at' | 'created_at'>
+  )> }
+);
+
 export type UpdatePageByIdMutationVariables = Exact<{
   id: Scalars['uuid'];
   content: Scalars['jsonb'];
@@ -2550,6 +2587,29 @@ export const SaveMarginDocument = gql`
   }
 }
     `;
+export const CreateNodeDocument = gql`
+    mutation createNode($author_id: uuid!, $created_at: timestamptz, $draft_id: uuid!, $ended_at: timestamptz, $name: String!, $preview: jsonb, $static_link: String) {
+  insert_note_one(
+    object: {author_id: $author_id, created_at: $created_at, draft_id: $draft_id, ended_at: $ended_at, name: $name, preview: $preview, static_link: $static_link}
+  ) {
+    id
+    updated_at
+    created_at
+  }
+}
+    `;
+export const UpdateNodeDocument = gql`
+    mutation updateNode($id: uuid!, $ended_at: timestamptz, $name: String, $preview: jsonb, $static_link: String, $updated_at: timestamptz!) {
+  update_note_by_pk(
+    pk_columns: {id: $id}
+    _set: {ended_at: $ended_at, name: $name, preview: $preview, static_link: $static_link, updated_at: $updated_at}
+  ) {
+    id
+    updated_at
+    created_at
+  }
+}
+    `;
 export const UpdatePageByIdDocument = gql`
     mutation updatePageById($id: uuid!, $content: jsonb!, $updated_at: timestamptz!) {
   update_page_by_pk(
@@ -2624,6 +2684,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     saveMargin(variables: SaveMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SaveMarginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<SaveMarginMutation>(SaveMarginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'saveMargin');
+    },
+    createNode(variables: CreateNodeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNodeMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateNodeMutation>(CreateNodeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNode');
+    },
+    updateNode(variables: UpdateNodeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateNodeMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateNodeMutation>(UpdateNodeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateNode');
     },
     updatePageById(variables: UpdatePageByIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdatePageByIdMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdatePageByIdMutation>(UpdatePageByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePageById');

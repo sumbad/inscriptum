@@ -85,10 +85,10 @@ export function createEditor(editorEl: Element, content?: Content, isTitle: bool
  * @returns
  */
 export function createHTMLbyContent(content: JSONContent, isTitle: boolean = false) {
-  return generateHTML(content, redactorExtensions(isTitle));
+  return generateHTML(content, redactorExtensions(isTitle, true));
 }
 
-function redactorExtensions(isTitle: boolean = false): Extensions {
+function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolean = false): Extensions {
   const doc = isTitle ? [TopicDoc, TopicTitle, TopicSummary, TopicFirstLine] : [Document];
 
   return [
@@ -115,7 +115,9 @@ function redactorExtensions(isTitle: boolean = false): Extensions {
     TaskItem,
     Highlight,
     /////////
-    HljsCodeBlock,
+    HljsCodeBlock.configure({
+      printContentAsHTML,
+    }),
     HljsMark,
     HljsCodeBlockRow,
     CodeBlock2HljsCodeBlock,

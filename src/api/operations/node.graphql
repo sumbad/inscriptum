@@ -1,0 +1,36 @@
+mutation createNode(
+  $author_id: uuid!
+  $created_at: timestamptz
+  $draft_id: uuid!
+  $ended_at: timestamptz
+  $name: String!
+  $preview: jsonb
+  $static_link: String
+) {
+  insert_note_one(
+    object: {
+      author_id: $author_id
+      created_at: $created_at
+      draft_id: $draft_id
+      ended_at: $ended_at
+      name: $name
+      preview: $preview
+      static_link: $static_link
+    }
+  ) {
+    id
+    updated_at
+    created_at
+  }
+}
+
+mutation updateNode($id: uuid!, $ended_at: timestamptz, $name: String, $preview: jsonb, $static_link: String, $updated_at: timestamptz!) {
+  update_note_by_pk(
+    pk_columns: { id: $id }
+    _set: { ended_at: $ended_at, name: $name, preview: $preview, static_link: $static_link, updated_at: $updated_at }
+  ) {
+    id
+    updated_at
+    created_at
+  }
+}

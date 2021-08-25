@@ -116,22 +116,49 @@ export async function publishDraft(data: DraftModel) {
     }
 
     // TODO: validation: 'Upload in progress.\nPlease wait...'
-    // TODO: validation: Unsaved content
-
-    // TODO: If a draft has been already published need to set ended_at for the previous one and create a new record
-    const noteInfo = {
-      created_at: Date.now(),
-      updated_at: Date.now(),
-    };
-    if (data.notes != null && data.notes.length > 0) {
-    } else {
-    }
+    // TODO: validation: Unsaved content (e.g. image)
 
     const author = (await sdk().findAuthorByAuth0({ auth0_id: auth.userInfo.auth0Id })).author[0];
 
     if (author == null) {
       alert(MESSAGES.AUTHOR_NOT_FOUND);
       throw new Error(MESSAGES.AUTHOR_NOT_FOUND);
+    }
+
+    const noteInfo = {
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    
+    // If a draft has been already published need to set ended_at for the previous one and create a new record
+    if (data.notes != null && data.notes.length > 0) {
+      const prevNode = data.notes[0];
+      const updatedNode = (
+        await sdk().updateNode({
+          id: prevNode.id,
+          name: pageName,
+          preview: pagePreview,
+          static_link: `note/${pageName}`,
+          updated_at: noteInfo.updated_at,
+        })
+      ).update_note_by_pk;
+
+      noteInfo.created_at = updatedNode?.created_at;
+      noteInfo.created_at = updatedNode?.created_at;
+    } else {
+      const createdNode = (
+        await sdk().createNode({
+          draft_id: data.id,
+          author_id: author.id,
+          name: pageName,
+          preview: pagePreview,
+          static_link: `note/${pageName}`,
+          created_at: new Date().toISOString(),
+        })
+      ).insert_note_one;
+
+      noteInfo.created_at = createdNode?.created_at;
+      noteInfo.created_at = createdNode?.created_at;
     }
 
     const note = /*html*/ `  
@@ -158,12 +185,15 @@ export async function publishDraft(data: DraftModel) {
         <meta name="twitter:title" content="${pageTitle}">
         <meta name="twitter:description" content="${pagePreview.description}">
         <meta name="twitter:image" content="${pagePreview.image}">
+        ${document.styleSheets.item(0)?.ownerNode?.['outerHTML'] || ''}
         <link rel="shortcut icon" type="image/png" href="favicon.png">
         <link href="/css/note.css" rel="stylesheet">
         <link href="/css/custom_editor_fonts.css" rel="stylesheet">
       </head>
       <body>
-        ${pageHTML}
+        <article>
+          ${pageHTML}
+        </article>
       </body>
       <script type="text/javascript" src="/js/note.js"></script>
     </html>`;
