@@ -8,6 +8,7 @@ const Dotenv = require('dotenv-webpack');
 module.exports = function (helper) {
   return {
     module: {
+      noParse: /public\/note\/.*\.html/,
       rules: [
         {
           test: /\.m?js(x?)$/,

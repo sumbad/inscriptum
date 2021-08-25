@@ -5,6 +5,7 @@ import { DraftModel, DraftTocModel } from 'models/draft.model';
 import { NotePreview } from 'models/note.model';
 import { DRAFT_ACTION } from 'new-components/draft/draft.action';
 import { createHTMLbyContent } from 'new-components/redactor/tools/redactor';
+import { config } from 'settings';
 import { redactorContent2Preview, transliterate } from 'utils/common';
 import { authorized } from 'utils/guards';
 
@@ -129,7 +130,7 @@ export async function publishDraft(data: DraftModel) {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-    
+
     // If a draft has been already published need to set ended_at for the previous one and create a new record
     if (data.notes != null && data.notes.length > 0) {
       const prevNode = data.notes[0];
@@ -160,6 +161,8 @@ export async function publishDraft(data: DraftModel) {
       noteInfo.created_at = createdNode?.created_at;
       noteInfo.created_at = createdNode?.created_at;
     }
+
+    const noteList = (await sdk().getAllNotes()).notes;
 
     const note = /*html*/ `  
     <html>
@@ -198,12 +201,30 @@ export async function publishDraft(data: DraftModel) {
       <script type="text/javascript" src="/js/note.js"></script>
     </html>`;
 
-    const a = document.createElement('a');
-    const blob = new Blob([note], { type: 'application/octet-stream' });
+    downloadGeneratedFiles([
+      {
+        content: note,
+        name: `${pageName}.html`,
+      },
+      {
+        content: JSON.stringify(noteList, null, 2),
+        name: config.nodeListFileName,
+      },
+    ]);
+  });
+}
+
+function downloadGeneratedFiles(files: { content: string; name: string; type?: string }[]) {
+  const a = document.createElement('a');
+
+  files.forEach((file) => {
+    const blob = new Blob([file.content], { type: file.type || 'application/octet-stream' });
 
     a.href = window.URL.createObjectURL(blob);
-    a.download = `${pageName}.html`;
+    a.download = file.name;
 
     a.click();
   });
+
+  a.remove();
 }

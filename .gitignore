@@ -70,3 +70,4 @@ typings/
 # project
 build/
 backups
+src/public/note/list.dev.json

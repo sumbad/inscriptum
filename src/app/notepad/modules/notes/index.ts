@@ -10,12 +10,14 @@ import { dom } from '@fortawesome/fontawesome-svg-core';
 import 'components/list';
 import 'components/um-preloader';
 import { IListItem } from 'components/list';
+import { config } from 'settings';
+import { Note } from 'storage/api/note';
 
 const isDevMode = process.env.NODE_ENV === 'development';
 
 enum NoteAction {
   edit,
-  delete
+  delete,
 }
 
 @Define('inscriptum-notes')
@@ -27,7 +29,7 @@ export class DraftComponent extends AbstractElement {
     hasAuth: boolean;
   } = {
     isPreloader: true,
-    hasAuth: false
+    hasAuth: false,
   };
 
   constructor(private _storageService: StorageService = new StorageService(), private _authService: AuthService) {
@@ -43,15 +45,22 @@ export class DraftComponent extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this._authService.$authenticated.subscribe(hasAuth => {
+    this._authService.$authenticated.subscribe((hasAuth) => {
       this.$ = {
         ...this.$,
-        hasAuth: Boolean(hasAuth)
-      }
+        hasAuth: Boolean(hasAuth),
+      };
     });
 
-    this._storageService.api.note.getAll().then(notes => {
-      const _notes = notes.map(item => {
+    (async () => {
+      try {
+        const noteList = (await import(`public/note/${config.nodeListFileName}`)).default;
+        return noteList;
+      } catch (error) {
+        return await this._storageService.api.note.getAll();
+      }
+    })().then((notes: Note[]) => {
+      const _notes = notes.map((item) => {
         return {
           id: item.id,
           preview: item.preview,
@@ -62,17 +71,17 @@ export class DraftComponent extends AbstractElement {
               ? [
                   {
                     type: NoteAction.edit,
-                    label: 'изменить'
-                  }
+                    label: 'изменить',
+                  },
                 ]
-              : []
+              : [],
         };
       });
 
       this.$ = {
         ...this.$,
         isPreloader: false,
-        notes: _notes
+        notes: _notes,
       };
     });
 

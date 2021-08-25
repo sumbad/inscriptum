@@ -1,3 +1,20 @@
+query getAllNotes {
+  notes: note(order_by: { created_at: desc }, where: { ended_at: { _is_null: true } }) {
+    id
+    name
+    preview
+    draft_id
+    static_link
+    updated_at
+    created_at
+    author {
+      id
+      name
+      email
+    }
+  }
+}
+
 mutation createNode(
   $author_id: uuid!
   $created_at: timestamptz

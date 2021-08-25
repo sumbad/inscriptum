@@ -2413,6 +2413,21 @@ export type SaveMarginMutation = (
   )> }
 );
 
+export type GetAllNotesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllNotesQuery = (
+  { __typename?: 'query_root' }
+  & { notes: Array<(
+    { __typename?: 'note' }
+    & Pick<Note, 'id' | 'name' | 'preview' | 'draft_id' | 'static_link' | 'updated_at' | 'created_at'>
+    & { author: (
+      { __typename?: 'author' }
+      & Pick<Author, 'id' | 'name' | 'email'>
+    ) }
+  )> }
+);
+
 export type CreateNodeMutationVariables = Exact<{
   author_id: Scalars['uuid'];
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -2587,6 +2602,24 @@ export const SaveMarginDocument = gql`
   }
 }
     `;
+export const GetAllNotesDocument = gql`
+    query getAllNotes {
+  notes: note(order_by: {created_at: desc}, where: {ended_at: {_is_null: true}}) {
+    id
+    name
+    preview
+    draft_id
+    static_link
+    updated_at
+    created_at
+    author {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
 export const CreateNodeDocument = gql`
     mutation createNode($author_id: uuid!, $created_at: timestamptz, $draft_id: uuid!, $ended_at: timestamptz, $name: String!, $preview: jsonb, $static_link: String) {
   insert_note_one(
@@ -2684,6 +2717,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     saveMargin(variables: SaveMarginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SaveMarginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<SaveMarginMutation>(SaveMarginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'saveMargin');
+    },
+    getAllNotes(variables?: GetAllNotesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllNotesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllNotesQuery>(GetAllNotesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllNotes');
     },
     createNode(variables: CreateNodeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNodeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNodeMutation>(CreateNodeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNode');
