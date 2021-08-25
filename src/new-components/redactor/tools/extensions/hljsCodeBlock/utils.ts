@@ -37,7 +37,6 @@ export function generateHljsNodeJson(codeText: string) {
   const stubSchema = [StubHljsCodeBlock, Text, HljsCodeBlockRow, HljsMark];
   const stubHljsCodeBlock = document.createElement('pre');
 
-  // debugger
   for (const line of codeLineList) {
     codeRows += `<div class="l">${line || ''}</div>`;
   }
@@ -51,15 +50,14 @@ export function generateHljsNodeJson(codeText: string) {
   return codeNode.toJSON();
 }
 
-
 /**
  * Create new hljsCodeBlock with one row
- * 
+ *
  * TODO: PR with content option for nodeInputRule from '@tiptap/core';
- * @param regexp 
- * @param type 
- * @param getAttributes 
- * @returns 
+ * @param regexp
+ * @param type
+ * @param getAttributes
+ * @returns
  */
 export function hljsNodeInputRule(regexp: RegExp, type: NodeType, getAttributes?: (match: any) => any): InputRule {
   return new InputRule(regexp, (state, match, start, end) => {
@@ -75,8 +73,7 @@ export function hljsNodeInputRule(regexp: RegExp, type: NodeType, getAttributes?
   });
 }
 
-
-export function getHljsBlockText(node: ProsemirrorNode<any>) {
+export function getHljsBlockContentAsText(node: ProsemirrorNode<any>) {
   let codeText = '';
 
   node.content.forEach((c, point) => {

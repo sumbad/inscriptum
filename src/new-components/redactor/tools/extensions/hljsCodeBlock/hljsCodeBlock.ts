@@ -1,10 +1,11 @@
 import { JSONContent, Node } from '@tiptap/core';
-import { generateHljsNodeJson, getHljsBlockText, hljsNodeInputRule } from './utils';
+import { generateHljsNodeJson, getHljsBlockContentAsText, hljsNodeInputRule } from './utils';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
 interface HljsCodeBlockOptions {
   languageClassPrefix: string;
+  printContentAsHTML: boolean;
   HTMLAttributes: Record<string, any>;
 }
 
@@ -34,6 +35,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   defaultOptions: {
     languageClassPrefix: 'language-',
     HTMLAttributes: {},
+    printContentAsHTML: false
   },
 
   marks: '',
@@ -124,7 +126,9 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   },
 
   renderHTML({ HTMLAttributes, node }) {
-    return ['pre', this.options.HTMLAttributes, ['code', HTMLAttributes, getHljsBlockText(node)]];
+    const content = this.options.printContentAsHTML ? 0 : getHljsBlockContentAsText(node);
+    
+    return ['pre', this.options.HTMLAttributes, ['code', HTMLAttributes, content]];
   },
 
   addCommands() {
@@ -163,7 +167,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
 
           content.forEach((c, point) => {
             if (c.type === this.type) {
-              codeText += getHljsBlockText(c);
+              codeText += getHljsBlockContentAsText(c);
             } else {
               codeText += c.textContent;
             }
@@ -276,7 +280,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
             return false;
           }
 
-          const codeText = getHljsBlockText(updatedNode);
+          const codeText = getHljsBlockContentAsText(updatedNode);
 
           const codeNodeJson = generateHljsNodeJson(codeText);
           const newNode = editor.schema.nodeFromJSON(codeNodeJson);
