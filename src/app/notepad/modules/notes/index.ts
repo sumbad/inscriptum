@@ -54,7 +54,21 @@ export class DraftComponent extends AbstractElement {
 
     (async () => {
       try {
-        const noteList = (await import(`public/note/${config.nodeListFileName}`)).default;
+        debugger;
+        const noteList = (
+          process.env.NODE_ENV === 'development'
+            ? await import(
+                /* webpackInclude: /\.json$/ */
+                /* webpackChunkName: "notes-list" */
+                `public/note/${config.nodeListFileName}`
+              )
+            : await import(
+                /* webpackInclude: /\.json$/ */
+                /* webpackExclude: /\.dev\.json$/ */
+                /* webpackChunkName: "notes-list" */
+                `public/note/${config.nodeListFileName}`
+              )
+        ).default;
         return noteList;
       } catch (error) {
         return await this._storageService.api.note.getAll();

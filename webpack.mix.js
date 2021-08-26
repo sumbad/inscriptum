@@ -110,6 +110,10 @@ module.exports = function (helper) {
             from: helper.PATHS.src + '/public',
             to: path.join(helper.PATHS.dist, helper.PATHS.outputPath),
             toType: 'dir',
+            globOptions: {
+              dot: true,
+              gitignore: !helper.ENV.isDevMode,
+            },
           },
           {
             from: helper.PATHS.src + '/data',
