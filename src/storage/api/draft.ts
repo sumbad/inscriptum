@@ -23,6 +23,9 @@ export function draftApi(gqlClient: GraphQLClient) {
           email: string;
           name: string;
         };
+        notes: {
+          static_link?: string;
+        }[];
       }[];
     };
 
@@ -39,6 +42,9 @@ export function draftApi(gqlClient: GraphQLClient) {
             id
             email
             name
+          }
+          notes(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+            static_link
           }
         }
       }

@@ -9,48 +9,40 @@ import { takeWhile } from 'rxjs/operators';
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 
-library.add(
-  faSave
-);
+library.add(faSave);
 
 import 'components/list';
 import { IListItem } from 'components/list';
 import { quillDelta2Preview, redactorContent2Preview } from 'utils/common';
 import Delta from 'quill-delta';
-
+import { config } from 'settings';
 
 enum DraftAction {
   delete,
-  publish
+  publish,
 }
-
 
 @Define('inscriptum-drafts')
 export class DraftComponent extends AbstractElement {
   styles = html`
-  <style>
-    ${require('./style.scss')}
-  </style>
-`;
+    <style>
+      ${require('./style.scss')}
+    </style>
+  `;
 
   @state()
   $: {
     drafts?: IListItem[];
     isPreloader: boolean;
   } = {
-      isPreloader: true
-    }
+    isPreloader: true,
+  };
 
-
-  constructor(
-    private _storageService: StorageService = new StorageService(),
-    private _authService: AuthService,
-  ) {
+  constructor(private _storageService: StorageService = new StorageService(), private _authService: AuthService) {
     super(litRender, false);
 
     this._authService = new AuthService(this._storageService);
   }
-
 
   /**
    * LIFECYCLE
@@ -59,77 +51,82 @@ export class DraftComponent extends AbstractElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this._authService.$authenticated
-      .pipe(
-        takeWhile(() => this.$.drafts === undefined)
-      )
-      .subscribe(
-        (hasAuth) => {
-          if (hasAuth) {
-            this._storageService.api.draft.getAll().then(
-              drafts => {
-                const _drafts = drafts.map(
-                  item => {
-                    const content = item.pages[0].content;
-                    const { description, title, image } = content != null && 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
-                    
-                    return {
-                      id: item.id,
-                      preview: {
-                        title,
-                        description,
-                        image
-                      },
-                      linkUrl: '/draft/' + item.id,
-                      actions: [
-                        {
-                          label: 'удалить',
-                          type: DraftAction.delete
-                        }
-                      ]
-                    }
-                  }
-                );
+    this._authService.$authenticated.pipe(takeWhile(() => this.$.drafts === undefined)).subscribe((hasAuth) => {
+      if (hasAuth) {
+        this._storageService.api.draft.getAll().then((drafts) => {
+          const _drafts = drafts.map((item) => {
+            const content = item.pages[0].content;
+            const { description, title, image } =
+              content != null && 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
+            const tags =
+              item.notes.length > 0
+                ? [
+                    {
+                      code: 'note',
+                      link:
+                        item.notes[0].static_link != null
+                          ? {
+                              href: item.notes[0].static_link + (config.isDevMode ? '.html' : ''),
+                              rel: 'external',
+                            }
+                          : undefined,
+                    },
+                  ]
+                : undefined;
 
-                this.$ = {
-                  isPreloader: false,
-                  drafts: _drafts
-                };
-              }
-            );
-          } else if (hasAuth !== null) {
-            this._authService.login();
-          }
-        }
-      );
+            return {
+              id: item.id,
+              preview: {
+                title,
+                description,
+                image,
+              },
+              linkUrl: '/draft/' + item.id,
+              actions: [
+                {
+                  label: 'удалить',
+                  type: DraftAction.delete,
+                },
+              ],
+              tags,
+            };
+          });
+
+          this.$ = {
+            isPreloader: false,
+            drafts: _drafts,
+          };
+        });
+      } else if (hasAuth !== null) {
+        this._authService.login();
+      }
+    });
 
     // For fontawesome icons. Replace any existing <i> tags with <svg> and set up a MutationObserver to
     // continue doing this as the DOM changes.
     dom.watch();
   }
 
-
   /**
    * RENDER
    */
   render(): TemplateResult {
     return html`
-    ${this.styles}
-    <um-preloader ?loading=${this.$.isPreloader}>
-      <div class="row">
-        <div class="twelve columns um-drafts__submenu">
-          <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
-            <i class="far fa-save fa-2x"></i>
-          </span>
-          <button class="button" @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
+      ${this.styles}
+      <um-preloader ?loading=${this.$.isPreloader}>
+        <div class="row">
+          <div class="twelve columns um-drafts__submenu">
+            <span @click=${this.handleBtnExportAllDrafts.bind(this)} class="um-drafts__export-all">
+              <i class="far fa-save fa-2x"></i>
+            </span>
+            <button class="button" @click=${this.handleBtnCreateNewDraft.bind(this)}>Новый черновик</button>
+          </div>
         </div>
-      </div>
-    
-      <inscriptum-list @action=${this.handleAction.bind(this)} .value=${this.$.drafts}></inscriptum-list>
-    </um-preloader>
+
+        <inscriptum-list @action=${this.handleAction.bind(this)} .value=${this.$.drafts}></inscriptum-list>
+      </um-preloader>
     `;
   }
-
 
   /**
    * Create new draft
@@ -139,11 +136,10 @@ export class DraftComponent extends AbstractElement {
     page('/draft/' + newDraftId.id);
   }
 
-
   /**
    * Save all drafts as JSON file
-   * 
-   * @param event 
+   *
+   * @param event
    */
   handleBtnExportAllDrafts(event: MouseEvent) {
     event.preventDefault();
@@ -157,14 +153,13 @@ export class DraftComponent extends AbstractElement {
     a.click();
   }
 
-
   /**
    * Handle draft actions
-   * 
+   *
    * @param type - action type
    * @param id - draft id
    */
-  handleAction({ detail }: { detail: { type: DraftAction, id: string } }) {
+  handleAction({ detail }: { detail: { type: DraftAction; id: string } }) {
     switch (detail.type) {
       case DraftAction.delete:
         this._deleteDraft(detail.id);
@@ -172,21 +167,17 @@ export class DraftComponent extends AbstractElement {
     }
   }
 
-
   /**
    * Delete a draft
-   * 
+   *
    * @param id - draft id
    */
   private _deleteDraft(id: string) {
-    this._storageService.api.draft.deleteById({id})
-      .then(
-        (deletedDraft) => {
-          this.$ = {
-            ...this.$,
-            drafts: this.$.drafts && this.$.drafts.filter(d => d.id !== deletedDraft.id)
-          }
-        }
-      );
+    this._storageService.api.draft.deleteById({ id }).then((deletedDraft) => {
+      this.$ = {
+        ...this.$,
+        drafts: this.$.drafts && this.$.drafts.filter((d) => d.id !== deletedDraft.id),
+      };
+    });
   }
 }

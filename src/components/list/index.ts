@@ -14,8 +14,8 @@ library.add(faAngleDown, faSave);
 export interface IListItem {
   id: string;
   preview: {
-    title: string
-    description: string
+    title: string;
+    description: string;
     image: string;
   };
   linkUrl: string;
@@ -24,6 +24,13 @@ export interface IListItem {
   author?: string;
   createdAt?: string;
   updatedAt?: string;
+  tags?: {
+    code: string;
+    link?: {
+      href: string;
+      rel?: string;
+    };
+  }[];
 }
 
 export interface IListItemAction {
@@ -106,9 +113,8 @@ export class ListComponent extends AbstractElement {
       (i) => i.id,
       (i, index) => html`
         <div class="um-drafts__item">
-          <h6 class="docs-header">
-            ${i.preview.title}
-          </h6>
+          ${(i.tags || []).map((t) => (t.link != null ? html`<a href="/${t.link.href}" rel=${ifDefined(t.link.rel)}>${t.code}</a>` : t.code))}
+          <h6 class="docs-header">${i.preview.title}</h6>
           <div class="row">
             ${i.preview.image?.length > 0
               ? html`
@@ -130,9 +136,7 @@ export class ListComponent extends AbstractElement {
 
     return html`
       ${this.styles}
-      <div class="container">
-        ${listElements}
-      </div>
+      <div class="container">${listElements}</div>
     `;
   }
 
