@@ -54,7 +54,6 @@ export class DraftComponent extends AbstractElement {
 
     (async () => {
       try {
-        debugger;
         const noteList = (
           process.env.NODE_ENV === 'development'
             ? await import(

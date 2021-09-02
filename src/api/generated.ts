@@ -2321,37 +2321,14 @@ export type FindAuthorByAuth0QueryVariables = Exact<{
 }>;
 
 
-export type FindAuthorByAuth0Query = (
-  { __typename?: 'query_root' }
-  & { author: Array<(
-    { __typename?: 'author' }
-    & Pick<Author, 'id' | 'email' | 'name' | 'last_seen' | 'created_at'>
-  )> }
-);
+export type FindAuthorByAuth0Query = { __typename?: 'query_root', author: Array<{ __typename?: 'author', id: any, email: string, name?: Maybe<string>, last_seen: any, created_at: any }> };
 
 export type GetDraftByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetDraftByIdQuery = (
-  { __typename?: 'query_root' }
-  & { draft?: Maybe<(
-    { __typename?: 'draft' }
-    & Pick<Draft, 'id' | 'created_at' | 'updated_at' | 'table_of_contents'>
-    & { notes: Array<(
-      { __typename?: 'note' }
-      & Pick<Note, 'id'>
-    )>, pages: Array<(
-      { __typename?: 'page' }
-      & Pick<Page, 'id' | 'content' | 'order'>
-      & { margins: Array<(
-        { __typename?: 'margin' }
-        & Pick<Margin, 'id' | 'name'>
-      )> }
-    )> }
-  )> }
-);
+export type GetDraftByIdQuery = { __typename?: 'query_root', draft?: Maybe<{ __typename?: 'draft', id: any, created_at: any, updated_at: any, table_of_contents: any, notes: Array<{ __typename?: 'note', id: any }>, pages: Array<{ __typename?: 'page', id: any, content?: Maybe<any>, order: number, margins: Array<{ __typename?: 'margin', id: any, name?: Maybe<string> }> }> }> };
 
 export type UpdateDraftTocMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2360,27 +2337,14 @@ export type UpdateDraftTocMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDraftTocMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_draft_by_pk?: Maybe<(
-    { __typename?: 'draft' }
-    & Pick<Draft, 'table_of_contents' | 'updated_at' | 'id'>
-  )> }
-);
+export type UpdateDraftTocMutation = { __typename?: 'mutation_root', update_draft_by_pk?: Maybe<{ __typename?: 'draft', table_of_contents: any, updated_at: any, id: any }> };
 
 export type GetMarginByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetMarginByIdQuery = (
-  { __typename?: 'query_root' }
-  & { margin?: Maybe<(
-    { __typename?: 'margin' }
-    & Pick<Margin, 'id' | 'img' | 'imgBase64' | 'options'>
-    & { pageId: Margin['page_id'] }
-  )> }
-);
+export type GetMarginByIdQuery = { __typename?: 'query_root', margin?: Maybe<{ __typename?: 'margin', id: any, img?: Maybe<any>, imgBase64?: Maybe<string>, options?: Maybe<any>, pageId: any }> };
 
 export type CreateMarginMutationVariables = Exact<{
   page_id: Scalars['uuid'];
@@ -2388,13 +2352,7 @@ export type CreateMarginMutationVariables = Exact<{
 }>;
 
 
-export type CreateMarginMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_margin_one?: Maybe<(
-    { __typename?: 'margin' }
-    & Pick<Margin, 'id'>
-  )> }
-);
+export type CreateMarginMutation = { __typename?: 'mutation_root', insert_margin_one?: Maybe<{ __typename?: 'margin', id: any }> };
 
 export type SaveMarginMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2405,28 +2363,12 @@ export type SaveMarginMutationVariables = Exact<{
 }>;
 
 
-export type SaveMarginMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_margin_by_pk?: Maybe<(
-    { __typename?: 'margin' }
-    & Pick<Margin, 'updated_at' | 'id'>
-  )> }
-);
+export type SaveMarginMutation = { __typename?: 'mutation_root', update_margin_by_pk?: Maybe<{ __typename?: 'margin', updated_at?: Maybe<any>, id: any }> };
 
 export type GetAllNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllNotesQuery = (
-  { __typename?: 'query_root' }
-  & { notes: Array<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id' | 'name' | 'preview' | 'draft_id' | 'static_link' | 'updated_at' | 'created_at'>
-    & { author: (
-      { __typename?: 'author' }
-      & Pick<Author, 'id' | 'name' | 'email'>
-    ) }
-  )> }
-);
+export type GetAllNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'note', id: any, name: string, preview: any, draft_id?: Maybe<any>, static_link?: Maybe<string>, updated_at?: Maybe<any>, created_at: any, author: { __typename?: 'author', id: any, name?: Maybe<string>, email: string } }> };
 
 export type CreateNodeMutationVariables = Exact<{
   author_id: Scalars['uuid'];
@@ -2439,13 +2381,7 @@ export type CreateNodeMutationVariables = Exact<{
 }>;
 
 
-export type CreateNodeMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_note_one?: Maybe<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id' | 'updated_at' | 'created_at'>
-  )> }
-);
+export type CreateNodeMutation = { __typename?: 'mutation_root', insert_note_one?: Maybe<{ __typename?: 'note', id: any, updated_at?: Maybe<any>, created_at: any }> };
 
 export type UpdateNodeMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2457,13 +2393,7 @@ export type UpdateNodeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNodeMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_note_by_pk?: Maybe<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id' | 'updated_at' | 'created_at'>
-  )> }
-);
+export type UpdateNodeMutation = { __typename?: 'mutation_root', update_note_by_pk?: Maybe<{ __typename?: 'note', id: any, updated_at?: Maybe<any>, created_at: any }> };
 
 export type UpdatePageByIdMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2472,13 +2402,7 @@ export type UpdatePageByIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePageByIdMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_page_by_pk?: Maybe<(
-    { __typename?: 'page' }
-    & Pick<Page, 'id'>
-  )> }
-);
+export type UpdatePageByIdMutation = { __typename?: 'mutation_root', update_page_by_pk?: Maybe<{ __typename?: 'page', id: any }> };
 
 export type AddPageToDraftMutationVariables = Exact<{
   created_at: Scalars['timestamptz'];
@@ -2487,23 +2411,7 @@ export type AddPageToDraftMutationVariables = Exact<{
 }>;
 
 
-export type AddPageToDraftMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_page?: Maybe<(
-    { __typename?: 'page_mutation_response' }
-    & { returning: Array<(
-      { __typename?: 'page' }
-      & Pick<Page, 'id' | 'order'>
-    )> }
-  )>, insert_page_one?: Maybe<(
-    { __typename?: 'page' }
-    & Pick<Page, 'id' | 'order' | 'content'>
-    & { margins: Array<(
-      { __typename?: 'margin' }
-      & Pick<Margin, 'id'>
-    )> }
-  )> }
-);
+export type AddPageToDraftMutation = { __typename?: 'mutation_root', update_page?: Maybe<{ __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> }>, insert_page_one?: Maybe<{ __typename?: 'page', id: any, order: number, content?: Maybe<any>, margins: Array<{ __typename?: 'margin', id: any }> }> };
 
 export type DeletePageMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2513,19 +2421,7 @@ export type DeletePageMutationVariables = Exact<{
 }>;
 
 
-export type DeletePageMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_page_by_pk?: Maybe<(
-    { __typename?: 'page' }
-    & Pick<Page, 'id'>
-  )>, update_page?: Maybe<(
-    { __typename?: 'page_mutation_response' }
-    & { returning: Array<(
-      { __typename?: 'page' }
-      & Pick<Page, 'id' | 'order'>
-    )> }
-  )> }
-);
+export type DeletePageMutation = { __typename?: 'mutation_root', update_page_by_pk?: Maybe<{ __typename?: 'page', id: any }>, update_page?: Maybe<{ __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> }> };
 
 
 export const FindAuthorByAuth0Document = gql`

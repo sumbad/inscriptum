@@ -31,7 +31,6 @@ function reducer(state: AuthState, action: AuthAction): AuthState {
         isLoading: false,
       };
     case AUTH_ACTION.AUTH_FAIL:
-      debugger;
       return {
         ...state,
         error: action.payload,

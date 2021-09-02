@@ -14,18 +14,6 @@ export class RootRoute extends AbstractRoute<TRootPath> {
       rootPath,
       routers: [
         {
-          path: '/articles*',
-          callback: async (ctx: PageJS.Context, next) => {
-            if (!this.routerOutlet.hasChildNodes()) {
-              await import('components/um-preloader');
-              const posts = await import('components/posts/component');
-              this.routerOutlet.appendChild(new posts.PostsComponent());
-            }
-            ctx.handled = true;
-            next();
-          },
-        },
-        {
           path: '/conference*',
           callback: async (ctx: PageJS.Context, next) => {
             if (!this.routerOutlet.hasChildNodes()) {
@@ -75,30 +63,9 @@ export class RootRoute extends AbstractRoute<TRootPath> {
         },
         {
           path: '/drafts',
-          // callback: async (ctx, next) => {
-          //   this.runCallback.next({ path: '/drafts', ctx });
-          //   // // if (!this.routerOutlet.hasChildNodes()) {
-          //   //   await import('components/um-preloader');
-          //   //   import('../modules/drafts');
-          //   //   render(html`<inscriptum-drafts></inscriptum-drafts>`, this.routerOutlet);
-          //   // // }
-
-          //   ctx.handled = true;
-          //   // // next();
-          // },
         },
         {
           path: '/notes',
-          // callback: async (ctx, next) => {
-          //   // if (!this.routerOutlet.hasChildNodes()) {
-          //   await import('../../../components/um-preloader');
-          //   await import('../modules/notes');
-          //   render(html`<inscriptum-notes></inscriptum-notes>`, this.routerOutlet);
-          //   // }
-
-          //   ctx.handled = true;
-          //   // next();
-          // },
         },
         {
           path: '/login',
@@ -117,7 +84,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
               ctx.handled = false;
               next();
             } else {
-              page.replace('/articles');
+              page.replace('/notes');
             }
           },
         },

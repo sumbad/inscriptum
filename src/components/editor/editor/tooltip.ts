@@ -22,18 +22,20 @@ export class EditorTooltipComponent extends AbstractElement {
   $image_button: HTMLDivElement;
   $embed_button: HTMLDivElement;
 
-  linkTTOptions = {
-    padding: 7,
-    position: 'bottom',
-    depend: this.$tl_tooltip,
-    dependPadding: 10,
-  };
-
   formatTTOptions = {
     padding: 10,
     position: browser.mobile ? 'bottom' : 'top',
     minDelta: 5,
   };
+
+  get linkTTOptions() {
+    return {
+      padding: 7,
+      position: 'bottom',
+      depend: this.$tl_tooltip,
+      dependPadding: 10,
+    };
+  }
 
   constructor() {
     super(litRender, false);
