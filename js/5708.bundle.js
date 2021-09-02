@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[5708],{75708:(t,a,s)=>{s.r(a),s.d(a,{default:()=>e});var i=s(35306);const e=(t,a)=>i.dy`
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[5708],{5708:(t,a,s)=>{s.r(a),s.d(a,{default:()=>e});var i=s(5306);const e=(t,a)=>i.dy`
 ${t.styles}
 
 <loading-progress-bar .config=${t.loaderConfig} .ref=${t.loadingRef}></loading-progress-bar>
