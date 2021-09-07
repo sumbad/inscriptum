@@ -1,8 +1,3 @@
-/** @typedef {import('./types').Helper} Helper */
-
-/**
- * @param {Helper} helper
- */
 module.exports = function(helper) {
   return {
     devServer: {

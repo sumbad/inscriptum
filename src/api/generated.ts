@@ -18,7 +18,6 @@ export type Scalars = {
   uuid: any;
 };
 
-
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>;
@@ -284,7 +283,6 @@ export enum Author_Update_Column {
   /** column name */
   Name = 'name'
 }
-
 
 /** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
 export type Bytea_Comparison_Exp = {
@@ -582,7 +580,6 @@ export enum Draft_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
-
 
 /** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
 export type Jsonb_Comparison_Exp = {
@@ -2288,7 +2285,6 @@ export type Subscription_RootPage_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: Maybe<Scalars['timestamptz']>;
@@ -2301,7 +2297,6 @@ export type Timestamptz_Comparison_Exp = {
   _neq?: Maybe<Scalars['timestamptz']>;
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
 };
-
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type Uuid_Comparison_Exp = {

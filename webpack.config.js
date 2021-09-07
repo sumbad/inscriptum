@@ -1,9 +1,6 @@
-/** @typedef {import('@insum/webpack.config/types').Helper} Helper */
-
 const path = require('path');
 const { merge } = require('webpack-merge');
 
-const webpackConfigCommon = require('@insum/webpack.config/webpack.config.common.js');
 const webpackConfigDev = require('./webpack.config.dev.js');
 const webpackConfigProd = require('./webpack.config.prod.js');
 const webpackConfigMix = require('./webpack.mix.js');
@@ -28,6 +25,7 @@ let helper = {
 };
 
 const mainConfig = {
+  mode: helper.ENV.isDevMode ? 'development' : 'production',
   resolve: {
     modules: [helper.PATHS.src, helper.PATHS.node_modules],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
@@ -46,10 +44,10 @@ const mainConfig = {
 };
 
 if (helper.ENV.isDevMode) {
-  module.exports = [merge(webpackConfigCommon(helper), webpackConfigDev(helper), mainConfig)];
+  module.exports = [merge(webpackConfigDev(helper), mainConfig)];
 } else {
   module.exports = [
-    merge(webpackConfigCommon(helper), webpackConfigProd(helper), {
+    merge(webpackConfigProd(helper), {
       ...mainConfig,
       mode: 'production',
       stats: {
