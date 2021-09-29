@@ -1,6 +1,7 @@
 import auth0, { Auth0DecodedHash, Auth0Error, Auth0ParseHashError } from 'auth0-js';
 import { Auth } from '../models/auth.model';
 import { Observable } from 'rxjs';
+import { config } from 'settings';
 
 export function auth(redirectUri: string): Observable<Auth> {
   const webAuth: auth0.WebAuth = new auth0.WebAuth({
@@ -13,6 +14,21 @@ export function auth(redirectUri: string): Observable<Auth> {
   });
 
   const hash: string = sessionStorage.windowLocationHash ?? window.location.hash;
+
+  if (config.isAuthDisabled) {
+    return new Observable((subscriber) => {
+      const auth: Auth = {
+        accessToken: '',
+        idToken: '',
+        expiresAt: 1000 + new Date().getTime(),
+        userInfo: {
+          auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
+          email: 'test@test.test',
+        },
+      };
+      subscriber.next(auth);
+    });
+  }
 
   if (hash != null && hash.length > 0) {
     return handleAuthentication(webAuth);
@@ -86,7 +102,7 @@ function localLogin(err: Auth0Error | Auth0ParseHashError | null, authResult: Au
   } else {
     let errorMsg = '';
     if (err) {
-      errorMsg = 'Error: ' + err.error + '. Check the console for further details.';
+      errorMsg = 'Error: ' + err?.error + '. Check the console for further details.';
       console.warn(errorMsg);
     }
 

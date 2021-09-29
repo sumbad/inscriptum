@@ -2,6 +2,7 @@ import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
 import { authState } from 'hub/auth/auth.state';
 import { first } from 'rxjs/operators';
+import { config } from 'settings';
 import { getSdk } from './generated';
 
 /** url GraphQL api */
@@ -25,13 +26,24 @@ let graphQLClient = new GraphQLClient(graphQLClientEndpoint, graphQLClientOption
 authState.pipe(first((state) => state.data?.idToken != null && !state.isLoading)).subscribe((state) => {
   console.log('API AUTH_ACTION.AUTH_DONE');
 
-  graphQLClientOptions = {
-    ...graphQLClientOptions,
-    headers: {
-      ...graphQLClientOptions.headers,
-      Authorization: `Bearer ${state.data?.idToken}`,
-    },
-  };
+  if (config.isAuthDisabled) {
+    graphQLClientOptions = {
+      ...graphQLClientOptions,
+      headers: {
+        ...graphQLClientOptions.headers,
+        'x-hasura-user-id': String(state.data?.userInfo.auth0Id),
+      },
+    };
+  } else {
+    graphQLClientOptions = {
+      ...graphQLClientOptions,
+      headers: {
+        ...graphQLClientOptions.headers,
+        Authorization: `Bearer ${state.data?.idToken}`,
+      },
+    };
+  }
+
   graphQLClient = new GraphQLClient(graphQLClientEndpoint, graphQLClientOptions);
 });
 
