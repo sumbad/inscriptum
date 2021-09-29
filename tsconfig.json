@@ -26,8 +26,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true
   },
-  "include": ["src", "src/components/editor/register/.ts"],
-  "exclude": ["postcss.config.js", "src/public", "webpack", "webpack.config.js", "webpack.mix.js", "babel.config.js"],
+  "exclude": [ "build", "src/public", "webpack.*", "webpack", "postcss.config.js", "babel.config.js", "browser-sync.js"],
   "compileOnSave": false,
   "plugins": [
     {
