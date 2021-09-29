@@ -1,6 +1,7 @@
 @import '../../scss/skeleton/base/normalize';
 @import '../../scss/skeleton/base/variables';
 @import '../../scss/skeleton/modules/grid';
+@import '../../scss/btn';
 
 .um-drafts__submenu {
   display: flex;
@@ -53,24 +54,5 @@
 
   &:hover {
     opacity: 1;
-  }
-}
-
-.btn {
-  cursor: pointer;
-
-  &.btn_icon {
-    background: transparent;
-    border: none;
-
-    .icon-tabler {
-      transition: 0.2s;
-      stroke: var(--border-color);
-      color: var(--border-color);
-
-      &:hover {
-        stroke: var(--dark-grey);
-      }
-    }
   }
 }

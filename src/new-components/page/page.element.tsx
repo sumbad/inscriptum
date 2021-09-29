@@ -2,7 +2,7 @@ import { EG, useCallback, useEffect, useState, useReducer, useMemo } from '@web-
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { Page } from 'models/page.model';
-import { marginElement } from '../margin/margin.element';
+import { marginElement } from 'new-components/margin/margin.element';
 import { foldingElement } from '../folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';
 import { deletePageNode } from './deletePage.node';
@@ -172,6 +172,7 @@ export const pageElement = EG({
             style={css`
               display: flex;
               width: 100%;
+              min-height: ${state.data.margins.length > 0 ? '100vh': 'auto'};
             `}
           >
             <div
@@ -188,7 +189,7 @@ export const pageElement = EG({
               {pageControls}
             </div>
             {state.data.margins.length > 0 ? (
-              <MarginElement pageId={state.data.id} marginId={state.data.margins[0].id}></MarginElement>
+              <MarginElement marginId={state.data.margins[0].id}></MarginElement>
             ) : null}
           </div>
         )}

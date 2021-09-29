@@ -1,0 +1,20 @@
+@import './skeleton/base/variables';
+
+.btn {
+  cursor: pointer;
+
+  &.btn_icon {
+    background: transparent;
+    border: none;
+
+    .icon-tabler {
+      transition: 0.2s;
+      stroke: var(--border-color);
+      color: var(--border-color);
+
+      &:hover {
+        stroke: var(--dark-grey);
+      }
+    }
+  }
+}

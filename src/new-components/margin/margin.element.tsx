@@ -1,51 +1,104 @@
-import { EG, useEffect, useReducer } from '@web-companions/fc';
-import { MarginAction } from './margin.action';
-import { getMarginById } from '../../services/margin.service';
+import { EG, p } from '@web-companions/gfc';
+import { getMarginById } from './margin.service';
 import { initialState, margin$, MarginState, reducer } from './margin.state';
-import { render } from 'lit-html';
-import { sketchPadElement } from 'new-components/sketch-pad/SketchPad.element';
+import { render } from 'lit-html2';
+import { sketchPadElement } from 'new-components/sketch-pad/sketchPad.element';
 import { css } from 'utils/common';
+import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
+import { iconArrowBarRightNode } from './iconArrowBarRight.node';
+import { iconBulbNode } from './iconBulb.node';
 
 const SketchPadElement = sketchPadElement('sketch-pad');
+const IconArrowBarLeftNode = iconArrowBarLeftNode();
+const IconArrowBarRightNode = iconArrowBarRightNode();
+const IconBulbNode = iconBulbNode();
 
 export const marginElement = EG({
   props: {
-    marginId: String,
-    pageId: String,
+    marginId: p.req<string>(),
   },
-  render,
-  shadow: {
-    mode: 'open',
+})(function* (
+  this: HTMLElement & {
+    next(): Promise<void>; // TODO: add right type for the next()
   },
-})(function (this: HTMLElement, props) {
-  // TODO: fix types for useReducer
-  const [state, dispatch]: [MarginState, (action: MarginAction) => void] = useReducer(reducer, initialState) as any;
+  props
+) {
+  const $ = this.attachShadow({ mode: 'open' });
 
-  useEffect(() => {
-    const sub = margin$(props.marginId).subscribe((action) => dispatch(action as any));
+  let state: MarginState = initialState;
+  let isExpanded = false;
+  let isShow = true;
 
-    if (props.marginId != null) {
-      getMarginById(props.marginId);
+  const sub = margin$(props.marginId).subscribe((action) => {
+    state = reducer(state, action);
+    this.next();
+  });
+
+  const toggleExpand = () => {
+    isExpanded = !isExpanded;
+    if (isExpanded) {
+      ($.host as HTMLElement).style.position = 'absolute';
+    } else {
+      ($.host as HTMLElement).style.position = 'relative';
     }
 
-    return () => {
-      sub.unsubscribe();
-    };
-  }, [props.marginId]);
+    this.next();
+  };
 
-  return (
-    <>
-      <style>{require('./margin.scss')}</style>
-      {state.data ? (
-        <SketchPadElement
-          style={css`
-            width: 100%;
-          `}
-          data={state.data}
-        ></SketchPadElement>
-      ) : (
-        ''
-      )}
-    </>
-  );
+  const toggleShow = () => {
+    isShow = !isShow;
+    this.next();
+  };
+
+  try {
+    while (true) {
+      if (props.marginId !== state.data?.id) {
+        getMarginById(props.marginId);
+      }
+
+      props = yield render(
+        <>
+          <style>{require('./margin.scss')}</style>
+
+          <button
+            class="btn btn_icon btn__show"
+            onclick={toggleShow}
+            style={css`
+              visibility: ${!isExpanded ? 'visible' : 'hidden'};
+            `}
+          >
+            <IconBulbNode isOn={isShow}></IconBulbNode>
+          </button>
+
+          <button
+            class="btn btn_icon btn__expand"
+            title={`${isExpanded ? 'expand' : 'collapse'}`}
+            onclick={toggleExpand}
+            style={css`
+              visibility: ${isShow ? 'visible' : 'hidden'};
+            `}
+          >
+            {isExpanded ? <IconArrowBarRightNode></IconArrowBarRightNode> : <IconArrowBarLeftNode></IconArrowBarLeftNode>}
+          </button>
+
+          {state.data ? (
+            <SketchPadElement
+              style={css`
+                visibility: ${isShow ? 'visible' : 'hidden'};
+              `}
+              data={state.data}
+              isExpanded={isExpanded}
+            ></SketchPadElement>
+          ) : (
+            ''
+          )}
+        </>,
+        $
+      );
+    }
+  } finally {
+    // TODO: not working now on destroy element
+    debugger;
+    sub.unsubscribe();
+  }
 });
