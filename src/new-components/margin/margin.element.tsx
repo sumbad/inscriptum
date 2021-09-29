@@ -27,7 +27,7 @@ export const marginElement = EG({
 
   let state: MarginState = initialState;
   let isExpanded = false;
-  let isShow = true;
+  let isShow = false;
 
   const sub = margin$(props.marginId).subscribe((action) => {
     state = reducer(state, action);
