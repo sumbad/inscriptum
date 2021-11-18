@@ -7,7 +7,7 @@ import { Auth } from 'models/auth.model';
 export async function authorized<T>(work: (auth: Auth) => T, redirectUri: string = `${document.location.origin}/drafts`): Promise<T> {
   return new Promise((resolve) => {
     authState.pipe(take(1)).subscribe((state) => {
-      if (state.data?.idToken == null && !state.isLoading) {
+      if (state.data?.accessToken == null && !state.isLoading) {
         hub.dispatch({
           type: AUTH_ACTION.AUTH,
           payload: {

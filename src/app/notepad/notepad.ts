@@ -5,6 +5,12 @@ import litRender from 'abstract-element/render/lit';
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { TRootPath, RootRoute } from './routes/$';
+import { draftListElement } from './modules/drafts/draftList.element';
+import { menuElement } from 'new-components/menu/menu.element';
+
+
+draftListElement('inscriptum-drafts');
+menuElement('inscriptum-menu');
 
 /**
  * NotepadModule - main element
@@ -18,7 +24,7 @@ class NotepadModule extends AbstractElement<TemplateResult> {
   `;
 
   @state()
-  path: TRootPath;
+  path?: TRootPath;
 
   /**
    * NotepadModule constructor
@@ -48,17 +54,27 @@ class NotepadModule extends AbstractElement<TemplateResult> {
    * Render template
    */
   render() {
-    switch (this.path) {
+    const url = this.path?.split('?').shift();
+
+    switch (url) {
       case '/drafts':
+        return html`
+          ${this.styles}
+          <div class="container">
+            <inscriptum-menu></inscriptum-menu>
+            <inscriptum-drafts></inscriptum-drafts>
+          </div>
+        `;        
       case '/notes':
         return html`
           ${this.styles}
           <div class="container">
             <inscriptum-menu></inscriptum-menu>
-            ${this._renderList(this.path.slice(1))}
+            ${this._renderList(url.slice(1))}
           </div>
         `;
       default:
+        console.warn(`Unknown url ${url}`);
         return html``;
     }
   }
@@ -77,7 +93,7 @@ class NotepadModule extends AbstractElement<TemplateResult> {
  * Start app after load polyfills
  */
 const rootRoute = new RootRoute();
-Promise.all([import('components/um-preloader'), import('components/menu')]).then(() => {
+Promise.all([import('components/um-preloader')]).then(() => {
   const main = document.querySelector('main');
   const notepad = new NotepadModule(rootRoute);
 

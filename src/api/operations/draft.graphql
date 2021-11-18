@@ -1,3 +1,22 @@
+query getAllDrafts {
+  drafts: draft(order_by: { updated_at: desc }, where: { ended_at: { _is_null: true } }) {
+    id
+    pages(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+      content
+    }
+    created_at
+    updated_at
+    author {
+      id
+      email
+      name
+    }
+    notes(order_by: { created_at: asc }, where: { ended_at: { _is_null: true } }) {
+      static_link
+    }
+  }
+}
+
 query getDraftById($id: uuid!) {
   draft: draft_by_pk(id: $id) {
     id
@@ -23,6 +42,22 @@ mutation updateDraftTOC($id: uuid!, $table_of_contents: jsonb!, $updated_at: tim
   update_draft_by_pk(pk_columns: { id: $id }, _set: { table_of_contents: $table_of_contents, updated_at: $updated_at }) {
     table_of_contents
     updated_at
+    id
+  }
+}
+
+mutation createNewDraft($author_id: uuid, $content: jsonb) {
+  insert_draft_one(object: { author_id: $author_id, pages: { data: { content: $content } } }) {
+    id
+    pages {
+      id
+      content
+    }
+  }
+}
+
+mutation deleteDraftById($id: uuid!, $ended_at: timestamptz) {
+  update_draft_by_pk(pk_columns: { id: $id }, _set: { ended_at: $ended_at }) {
     id
   }
 }

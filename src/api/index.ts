@@ -23,7 +23,7 @@ let graphQLClientOptions: RequestInit = {
 
 let graphQLClient = new GraphQLClient(graphQLClientEndpoint, graphQLClientOptions);
 
-authState.pipe(first((state) => state.data?.idToken != null && !state.isLoading)).subscribe((state) => {
+authState.pipe(first((state) => state.data?.accessToken != null && !state.isLoading)).subscribe((state) => {
   console.log('API AUTH_ACTION.AUTH_DONE');
 
   if (config.isAuthDisabled) {
@@ -39,7 +39,7 @@ authState.pipe(first((state) => state.data?.idToken != null && !state.isLoading)
       ...graphQLClientOptions,
       headers: {
         ...graphQLClientOptions.headers,
-        Authorization: `Bearer ${state.data?.idToken}`,
+        Authorization: `Bearer ${state.data?.accessToken}`,
       },
     };
   }

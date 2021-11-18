@@ -1,72 +1,113 @@
-import auth0, { Auth0DecodedHash, Auth0Error, Auth0ParseHashError } from 'auth0-js';
+import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import { Auth } from '../models/auth.model';
-import { Observable } from 'rxjs';
 import { config } from 'settings';
 
-export function auth(redirectUri: string): Observable<Auth> {
-  const webAuth: auth0.WebAuth = new auth0.WebAuth({
-    domain: 'inscriptum.auth0.com',
-    clientID: 'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
-    redirectUri,
-    responseType: 'token id_token',
-    scope: 'openid email',
-    audience: 'https://inscriptum.js.org',
-  });
+let _auth0: Auth0Client | null = null;
 
-  const hash: string = sessionStorage.windowLocationHash ?? window.location.hash;
-
-  if (config.isAuthDisabled) {
-    return new Observable((subscriber) => {
-      const auth: Auth = {
-        accessToken: '',
-        idToken: '',
-        expiresAt: 1000 + new Date().getTime(),
-        userInfo: {
-          auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
-          email: 'test@test.test',
-        },
-      };
-      subscriber.next(auth);
-    });
+async function getAuthClient() {
+  if (_auth0 != null) {
+    return _auth0;
   }
 
-  if (hash != null && hash.length > 0) {
-    return handleAuthentication(webAuth);
+  return (_auth0 = await createAuth0Client({
+    domain: 'inscriptum.auth0.com',
+    client_id: 'sSGAFDwnRqJUsJw7v12KV8SAeuYtl3Cd',
+    audience: 'https://inscriptum.js.org',
+  }));
+}
+
+export async function auth(redirectUri: string): Promise<Auth> {
+  // Auth is disabled
+  if (config.isAuthDisabled) {
+    const date = new Date();
+    // add a day
+    const expiresAt = date.setDate(date.getDate() + 1);
+
+    const auth: Auth = {
+      accessToken: '',
+      expiresAt,
+      userInfo: {
+        auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
+        email: 'test@test.test',
+      },
+    };
+    return auth;
+  }
+
+  const query = window.location.search;
+
+  if (query.includes('code=') && query.includes('state=')) {
+    return handleAuthentication(redirectUri);
   } else {
-    return renewTokens(webAuth, redirectUri);
+    return login(redirectUri);
   }
 }
 
 /**
  * Handle token from url
  */
-function handleAuthentication(webAuth: auth0.WebAuth): Observable<Auth> {
-  const hash = sessionStorage.windowLocationHash ?? window.location.hash;
+async function handleAuthentication(redirectUri: string) {
+  // const hash = sessionStorage.windowLocationHash ?? window.location.hash;
+  const auth0 = await getAuthClient();
 
-  return new Observable((subscriber) => {
-    webAuth.parseHash({ hash }, (err, authResult) => {
-      const result = localLogin(err, authResult);
-      subscriber.next(result);
-    });
-  });
+  try {
+    const isAuthenticated = await auth0.isAuthenticated();
+
+    if (!isAuthenticated) {
+      await auth0.handleRedirectCallback();
+    }
+
+    // Use replaceState to redirect the user away and remove the querystring parameters
+    window.history.replaceState({}, document.title, redirectUri);
+  } catch (error) {
+    throw new Error(error);
+  }
+
+  return createAuthState();
+
+  // return result;
+
+  // localLogin(err, authResult);
+
+  // return new Observable(async (subscriber) => {
+  //   // Process the login state
+  //   (await auth0Client).handleRedirectCallback();
+
+  //   // webAuth.parseHash({ hash }, (err, authResult) => {
+  //   //   const result = localLogin(err, authResult);
+  //   //   subscriber.next(result);
+  //   // });
+  // });
 }
 
 /**
- * Get new token if a session is valid
+ * Get new token if a session is valid or login
  */
-function renewTokens(webAuth: auth0.WebAuth, redirectUri: string): Observable<Auth> {
-  return new Observable((subscriber) => {
-    webAuth.checkSession({}, (err, authResult) => {
-      try {
-        const result = localLogin(err, authResult);
-        subscriber.next(result);
-      } catch (error) {
-        webAuth.authorize({ redirectUri });
+async function login(redirectUri: string): Promise<Auth> {
+  const accessToken = sessionStorage.getItem('accessToken');
+  const userInfoStr = sessionStorage.getItem('userInfo');
+  const expiresAt = Number(sessionStorage.getItem('expiresAt'));
 
-        subscriber.error(error);
-      }
+  if (accessToken != null && userInfoStr != null && expiresAt > Date.now()) {
+    const userInfo: Auth['userInfo'] = JSON.parse(userInfoStr);
+
+    return {
+      accessToken,
+      userInfo,
+      expiresAt
+    };
+  }
+
+  const auth0 = await getAuthClient();
+  const isAuthenticated = await auth0.isAuthenticated();
+
+  if (!isAuthenticated) {
+    await auth0.loginWithRedirect({
+      redirect_uri: redirectUri,
     });
-  });
+  }
+
+  return createAuthState();
 }
 
 /**
@@ -74,38 +115,35 @@ function renewTokens(webAuth: auth0.WebAuth, redirectUri: string): Observable<Au
  *
  * @param authResult - auth0 request result
  */
-function localLogin(err: Auth0Error | Auth0ParseHashError | null, authResult: Auth0DecodedHash | null): Auth {
-  // check auth result
-  if (authResult?.accessToken != null && authResult?.idToken != null) {
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    // Set the time that the access token will expire at
-    const expiresAt = Number(JSON.stringify((authResult.expiresIn ?? 1) * 1000 + new Date().getTime()));
-    const accessToken = authResult.accessToken;
-    const idToken = authResult.idToken;
+async function createAuthState(): Promise<Auth> {
+  const auth0 = await getAuthClient();
 
-    if (authResult.idTokenPayload == null) {
-      alert('idTokenPayload is undefined');
-    }
+  const accessToken = await auth0.getTokenSilently();
+  const user = await auth0.getUser();
 
-    const userInfo = {
-      auth0Id: authResult.idTokenPayload['https://hasura.io/jwt/claims']['x-hasura-user-id'],
-      email: authResult.idTokenPayload.email,
-    };
-
-    return {
-      accessToken,
-      expiresAt,
-      idToken,
-      userInfo,
-    };
-  } else {
-    let errorMsg = '';
-    if (err) {
-      errorMsg = 'Error: ' + err?.error + '. Check the console for further details.';
-      console.warn(errorMsg);
-    }
-
-    throw Error(errorMsg);
+  if (user == null) {
+    throw new Error("Can't find user info");
   }
+
+  console.log(accessToken);
+  console.log(JSON.stringify(user));
+
+  const userInfo: Auth['userInfo'] = {
+    auth0Id: user.sub!,
+    email: user.email,
+  };
+
+  const date = new Date();
+  // add a day
+  const expiresAt = date.setDate(date.getDate() + 1);
+
+  sessionStorage.setItem('accessToken', accessToken);
+  sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+  sessionStorage.setItem('expiresAt', JSON.stringify(expiresAt));
+
+  return {
+    accessToken,
+    userInfo,
+    expiresAt
+  };
 }

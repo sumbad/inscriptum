@@ -8,8 +8,6 @@ interface UserInfo {
 export type Auth = {
   /** access token */
   accessToken: string;
-  /** token id */
-  idToken: string;
   /** token expiration date */
   expiresAt: number;
   /** get user info */

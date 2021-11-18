@@ -2318,6 +2318,11 @@ export type FindAuthorByAuth0QueryVariables = Exact<{
 
 export type FindAuthorByAuth0Query = { __typename?: 'query_root', author: Array<{ __typename?: 'author', id: any, email: string, name?: Maybe<string>, last_seen: any, created_at: any }> };
 
+export type GetAllDraftsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllDraftsQuery = { __typename?: 'query_root', drafts: Array<{ __typename?: 'draft', id: any, created_at: any, updated_at: any, pages: Array<{ __typename?: 'page', content?: Maybe<any> }>, author: { __typename?: 'author', id: any, email: string, name?: Maybe<string> }, notes: Array<{ __typename?: 'note', static_link?: Maybe<string> }> }> };
+
 export type GetDraftByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -2333,6 +2338,22 @@ export type UpdateDraftTocMutationVariables = Exact<{
 
 
 export type UpdateDraftTocMutation = { __typename?: 'mutation_root', update_draft_by_pk?: Maybe<{ __typename?: 'draft', table_of_contents: any, updated_at: any, id: any }> };
+
+export type CreateNewDraftMutationVariables = Exact<{
+  author_id?: Maybe<Scalars['uuid']>;
+  content?: Maybe<Scalars['jsonb']>;
+}>;
+
+
+export type CreateNewDraftMutation = { __typename?: 'mutation_root', insert_draft_one?: Maybe<{ __typename?: 'draft', id: any, pages: Array<{ __typename?: 'page', id: any, content?: Maybe<any> }> }> };
+
+export type DeleteDraftByIdMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  ended_at?: Maybe<Scalars['timestamptz']>;
+}>;
+
+
+export type DeleteDraftByIdMutation = { __typename?: 'mutation_root', update_draft_by_pk?: Maybe<{ __typename?: 'draft', id: any }> };
 
 export type GetMarginByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -2430,6 +2451,26 @@ export const FindAuthorByAuth0Document = gql`
   }
 }
     `;
+export const GetAllDraftsDocument = gql`
+    query getAllDrafts {
+  drafts: draft(order_by: {updated_at: desc}, where: {ended_at: {_is_null: true}}) {
+    id
+    pages(order_by: {created_at: asc}, where: {ended_at: {_is_null: true}}) {
+      content
+    }
+    created_at
+    updated_at
+    author {
+      id
+      email
+      name
+    }
+    notes(order_by: {created_at: asc}, where: {ended_at: {_is_null: true}}) {
+      static_link
+    }
+  }
+}
+    `;
 export const GetDraftByIdDocument = gql`
     query getDraftById($id: uuid!) {
   draft: draft_by_pk(id: $id) {
@@ -2460,6 +2501,26 @@ export const UpdateDraftTocDocument = gql`
   ) {
     table_of_contents
     updated_at
+    id
+  }
+}
+    `;
+export const CreateNewDraftDocument = gql`
+    mutation createNewDraft($author_id: uuid, $content: jsonb) {
+  insert_draft_one(
+    object: {author_id: $author_id, pages: {data: {content: $content}}}
+  ) {
+    id
+    pages {
+      id
+      content
+    }
+  }
+}
+    `;
+export const DeleteDraftByIdDocument = gql`
+    mutation deleteDraftById($id: uuid!, $ended_at: timestamptz) {
+  update_draft_by_pk(pk_columns: {id: $id}, _set: {ended_at: $ended_at}) {
     id
   }
 }
@@ -2594,11 +2655,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     findAuthorByAuth0(variables: FindAuthorByAuth0QueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindAuthorByAuth0Query> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindAuthorByAuth0Query>(FindAuthorByAuth0Document, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findAuthorByAuth0');
     },
+    getAllDrafts(variables?: GetAllDraftsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllDraftsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllDraftsQuery>(GetAllDraftsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllDrafts');
+    },
     getDraftById(variables: GetDraftByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDraftByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDraftByIdQuery>(GetDraftByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDraftById');
     },
     updateDraftTOC(variables: UpdateDraftTocMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDraftTocMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateDraftTocMutation>(UpdateDraftTocDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDraftTOC');
+    },
+    createNewDraft(variables?: CreateNewDraftMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNewDraftMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateNewDraftMutation>(CreateNewDraftDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNewDraft');
+    },
+    deleteDraftById(variables: DeleteDraftByIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDraftByIdMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteDraftByIdMutation>(DeleteDraftByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteDraftById');
     },
     getMarginById(variables: GetMarginByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetMarginByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetMarginByIdQuery>(GetMarginByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMarginById');
