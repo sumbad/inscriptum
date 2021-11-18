@@ -125,9 +125,6 @@ async function createAuthState(): Promise<Auth> {
     throw new Error("Can't find user info");
   }
 
-  console.log(accessToken);
-  console.log(JSON.stringify(user));
-
   const userInfo: Auth['userInfo'] = {
     auth0Id: user.sub!,
     email: user.email,
