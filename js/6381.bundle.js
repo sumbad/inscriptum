@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[6381],{6381:(s,i,e)=>{e.r(i),e.d(i,{default:()=>r});const r=(s,i)=>s`
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[6381],{9740:(s,i,e)=>{e.r(i),e.d(i,{default:()=>r});const r=(s,i)=>s`
 <div class="um-spinner-round">
   <svg
     class="circular"
