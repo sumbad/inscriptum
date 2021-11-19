@@ -31,7 +31,7 @@ const mainConfig = {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
   },
   entry: {
-    notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
+    notepad: path.resolve(helper.PATHS.src, 'app/notepad/index.ts'),
     note: path.resolve(helper.PATHS.src, 'app/note/note.ts'),
   },
   output: {

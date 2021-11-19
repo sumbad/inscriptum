@@ -15,7 +15,8 @@ export const AUTH_ACTION = {
 export type AuthActionAuth = {
   type: typeof AUTH_ACTION.AUTH;
   payload: {
-    redirectUri: string;
+    redirectUri?: string;
+    silent?: boolean;
   };
 };
 

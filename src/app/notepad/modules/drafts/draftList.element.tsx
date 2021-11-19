@@ -5,12 +5,15 @@ import page from 'page';
 
 import 'components/list';
 import { IListItem } from 'components/list';
-import { createNewDraft, deleteDraftById, doSubject, DraftAction, getAllDrafts } from './draftList.service';
+import { createNewDraft, deleteDraftById, DraftAction, getAllDrafts } from './draftList.service';
 import { newDraftIconNode } from './newDraftIcon.node';
 import { saveIconNode } from './saveIcon.node';
+import { menuElement } from 'new-components/menu/menu.element';
+import { supervise } from 'utils/component.tools';
 
 const NewDraftIconNode = newDraftIconNode();
 const SaveIconNode = saveIconNode();
+const MenuElement = menuElement('inscriptum-menu');
 
 export const draftListElement = EG()(function* () {
   const subs: Subscription[] = [];
@@ -48,9 +51,9 @@ export const draftListElement = EG()(function* () {
     }
   };
 
-  const { $: $getAllDrafts, _: _getAllDrafts } = doSubject(getAllDrafts);
-  const { $: $createNewDraft, _: _createNewDraft } = doSubject(createNewDraft);
-  const { $: $deleteDraftById, _: _deleteDraftById } = doSubject(deleteDraftById);
+  const { $: $getAllDrafts, _: _getAllDrafts } = supervise(getAllDrafts);
+  const { $: $createNewDraft, _: _createNewDraft } = supervise(createNewDraft);
+  const { $: $deleteDraftById, _: _deleteDraftById } = supervise(deleteDraftById);
 
   subs.push(
     $getAllDrafts.subscribe((d) => {
@@ -80,24 +83,18 @@ export const draftListElement = EG()(function* () {
   try {
     while (true) {
       yield render(
-        <>
+        <div class="container">
           <style>${require('./style.scss')}</style>
+
+          <MenuElement></MenuElement>
 
           <um-preloader loading={isPreloader}>
             <div class="row">
               <div class="twelve columns um-drafts__submenu">
-                <button
-                  class="btn btn_icon"
-                  title="Export all drafts"
-                  onclick={handleBtnExportAllDrafts}
-                >
+                <button class="btn btn_icon" title="Export all drafts" onclick={handleBtnExportAllDrafts}>
                   <SaveIconNode></SaveIconNode>
                 </button>
-                <button
-                  class="btn btn_icon"
-                  title="Create a new draft"
-                  onclick={_createNewDraft}
-                >
+                <button class="btn btn_icon" title="Create a new draft" onclick={_createNewDraft}>
                   <NewDraftIconNode></NewDraftIconNode>
                 </button>
               </div>
@@ -105,7 +102,7 @@ export const draftListElement = EG()(function* () {
 
             <inscriptum-list onaction={handleAction} value={drafts}></inscriptum-list>
           </um-preloader>
-        </>,
+        </div>,
         this
       );
     }

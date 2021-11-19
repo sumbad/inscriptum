@@ -1,11 +1,9 @@
 import { sdk } from 'api';
 import { IListItem } from 'components/list';
 import type Delta from 'quill-delta';
-import { defer, Subject } from 'rxjs';
 import { config } from 'settings';
 import { quillDelta2Preview, redactorContent2Preview } from 'utils/common';
 import { authorized } from 'utils/guards';
-import { Unpacked } from 'utils/types';
 
 const MESSAGES = {
   CANT_FIND_ID: "Can't find ID for a new draft",
@@ -98,14 +96,4 @@ export async function deleteDraftById(id: string) {
 
     return update_draft_by_pk;
   });
-}
-
-// TODO: rename and move to common utils
-export function doSubject<T extends (...args: any[]) => any>(func: T) {
-  const subject = new Subject<Unpacked<ReturnType<typeof func>>>();
-
-  return {
-    $: subject.asObservable(),
-    _: (...params: Parameters<typeof func>) => defer(() => func(...params)).subscribe(subject),
-  };
 }

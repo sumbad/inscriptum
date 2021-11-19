@@ -19,19 +19,7 @@ async function getAuthClient() {
 export async function auth(redirectUri: string): Promise<Auth> {
   // Auth is disabled
   if (config.isAuthDisabled) {
-    const date = new Date();
-    // add a day
-    const expiresAt = date.setDate(date.getDate() + 1);
-
-    const auth: Auth = {
-      accessToken: '',
-      expiresAt,
-      userInfo: {
-        auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
-        email: 'test@test.test',
-      },
-    };
-    return auth;
+    return disabledAuth();
   }
 
   const query = window.location.search;
@@ -41,6 +29,15 @@ export async function auth(redirectUri: string): Promise<Auth> {
   } else {
     return login(redirectUri);
   }
+}
+
+export async function silentAuth() {
+  // Auth is disabled
+  if (config.isAuthDisabled) {
+    return disabledAuth();
+  }
+  
+  return login(undefined, true);
 }
 
 /**
@@ -64,26 +61,12 @@ async function handleAuthentication(redirectUri: string) {
   }
 
   return createAuthState();
-
-  // return result;
-
-  // localLogin(err, authResult);
-
-  // return new Observable(async (subscriber) => {
-  //   // Process the login state
-  //   (await auth0Client).handleRedirectCallback();
-
-  //   // webAuth.parseHash({ hash }, (err, authResult) => {
-  //   //   const result = localLogin(err, authResult);
-  //   //   subscriber.next(result);
-  //   // });
-  // });
 }
 
 /**
  * Get new token if a session is valid or login
  */
-async function login(redirectUri: string): Promise<Auth> {
+async function login(redirectUri?: string, silent: boolean = false): Promise<Auth> {
   const accessToken = sessionStorage.getItem('accessToken');
   const userInfoStr = sessionStorage.getItem('userInfo');
   const expiresAt = Number(sessionStorage.getItem('expiresAt'));
@@ -101,7 +84,7 @@ async function login(redirectUri: string): Promise<Auth> {
   const auth0 = await getAuthClient();
   const isAuthenticated = await auth0.isAuthenticated();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !silent) {
     await auth0.loginWithRedirect({
       redirect_uri: redirectUri,
     });
@@ -143,4 +126,21 @@ async function createAuthState(): Promise<Auth> {
     userInfo,
     expiresAt
   };
+}
+
+function disabledAuth() {
+  const date = new Date();
+  // add a day
+  const expiresAt = date.setDate(date.getDate() + 1);
+
+  const auth: Auth = {
+    accessToken: '',
+    expiresAt,
+    userInfo: {
+      auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
+      email: 'test@test.test',
+    },
+  };
+
+  return auth;
 }

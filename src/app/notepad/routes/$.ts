@@ -48,24 +48,48 @@ export class RootRoute extends AbstractRoute<TRootPath> {
         },
         {
           path: '/draft/:id',
-          callback: async (ctx: PageJS.Context, next) => {
-            if (!this.routerOutlet.hasChildNodes()) {
-              const { draftElement } = await import('new-components/draft/draft.element');
-              const draftHTMLElement = new (draftElement('inscriptum-draft').element)();
-              draftHTMLElement.dataset['id'] = ctx.params.id;
+          callback: async (ctx: PageJS.Context) => {
+            const tag = 'inscriptum-draft';
+            let elConstructor = customElements.get(tag);
 
-              this.routerOutlet.appendChild(draftHTMLElement);
+            if (elConstructor == null) {
+              const { draftElement } = await import('new-components/draft/draft.element');
+              elConstructor = draftElement(tag).element as unknown as CustomElementConstructor;
             }
 
-            ctx.handled = true;
-            next();
+            const draftHTMLElement = new elConstructor();
+            draftHTMLElement.dataset['id'] = ctx.params.id;
+
+            this.routerOutlet.replaceChildren(draftHTMLElement);
           },
         },
         {
           path: '/drafts',
+          callback: async () => {
+            const tag = 'inscriptum-drafts';
+            let elConstructor = customElements.get(tag);
+
+            if (elConstructor == null) {
+              const { draftListElement } = await import('app/notepad/modules/drafts/draftList.element');
+              elConstructor = draftListElement(tag).element as unknown as CustomElementConstructor;
+            }
+
+            this.routerOutlet.replaceChildren(new elConstructor());
+          },
         },
         {
           path: '/notes',
+          callback: async () => {
+            const tag = 'inscriptum-notes';
+            let elConstructor = customElements.get(tag);
+
+            if (elConstructor == null) {
+              const { noteListElement } = await import('app/notepad/modules/notes/noteList.element');
+              elConstructor = noteListElement(tag).element as unknown as CustomElementConstructor;
+            }
+
+            this.routerOutlet.replaceChildren(new elConstructor());
+          },
         },
         {
           path: '/login',
@@ -92,5 +116,3 @@ export class RootRoute extends AbstractRoute<TRootPath> {
     };
   }
 }
-
-// export const rootRoute = new RootRoute();

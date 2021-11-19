@@ -2,7 +2,7 @@ import { Define, UmWebComponent } from 'components/um-web.component';
 import Tools from 'utils/tools';
 
 import template from './template';
-import { conferenceRouter } from './router';
+import { conferenceRouter } from '../../app/notepad/routes/conference.router';
 
 
 
