@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 
 /**
  * Основной компонент
+ * @deprecated
  */
 export abstract class UmWebComponent extends HTMLElement {
   private html: any;

@@ -17,6 +17,7 @@ sketch-pad {
 }
 
 .sketch-pad_frame {
+  user-select: none;
   flex-grow: 1;
   position: absolute;
   height: 100%;
@@ -25,6 +26,7 @@ sketch-pad {
 }
 
 .signature-pad {
+  user-select: none;
   position: absolute;
 }
 
@@ -188,6 +190,12 @@ sketch-pad {
   left: 2rem;
 }
 
+.btn__full {
+  position: absolute;
+  z-index: 2;
+  left: 4rem;
+}
+
 .btn__show {
   position: absolute;
   z-index: 2;
@@ -203,6 +211,6 @@ sketch-pad {
 
   &__back {
     position: relative;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);    
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
   }
 }

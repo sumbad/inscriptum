@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    "incremental": true,
     // do not transpile stuff like classes, async/await, ...
     "target": "ES2015",
     // leave imports as they are

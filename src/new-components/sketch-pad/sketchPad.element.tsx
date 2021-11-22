@@ -11,6 +11,7 @@ import { iconClearNode } from './iconClear.node';
 import { iconWightNode } from './iconWight.node';
 import { getMarginById, saveMarginById } from 'new-components/margin/margin.service';
 import { Margin } from 'models/margin.model';
+import { MarginElementMode } from 'new-components/margin/margin.element';
 
 const IconLoadNode = iconLoadNode();
 const IconSaveNode = iconSaveNode();
@@ -21,7 +22,7 @@ const IconWightNode = iconWightNode();
 export const sketchPadElement = EG({
   props: {
     data: p.req<Margin>(),
-    isExpanded: p.opt<boolean>(),
+    mode: p.opt<MarginElementMode>(), // need only to rerender this element
   },
 })(function* (this: HTMLElement & { next(): Promise<void> }, props) {
   const frameRef: Ref<HTMLDivElement> = createRef();
@@ -30,7 +31,7 @@ export const sketchPadElement = EG({
   let ctx: CanvasRenderingContext2D | null;
 
   let margin: Margin = props.data;
-  let isExpanded = props.isExpanded;
+  let mode = props.mode;
   let signaturePad: SignaturePad | undefined;
   let ratio = Math.max(window.devicePixelRatio || 1, 1);
   let height = margin.options?.height ?? 0;
@@ -215,14 +216,20 @@ export const sketchPadElement = EG({
       updateCanvasContent();
     }
 
-    if (isExpanded !== props.isExpanded) {
+    if (mode !== props.mode) {
       resizeCanvas();
-      isExpanded = props.isExpanded;
+      mode = props.mode;
     }
 
     props = yield render(
       <>
-        <div ref={ref(frameRef)} class="sketch-pad_frame">
+        <div
+          ref={ref(frameRef)}
+          class="sketch-pad_frame"
+          style={css`
+            background-color: ${mode === 'full' ? 'white' : 'transparent'};
+          `}
+        >
           <canvas ref={ref(canvasRef)} id="signature-pad" class="signature-pad"></canvas>
         </div>
         <div class="fab-container fab-container_main">

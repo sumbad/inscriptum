@@ -21,6 +21,7 @@ export const redactorElement = EG({
       default: () => {},
     },
     isTitle: Boolean,
+    disable: Boolean,
   },
   render,
 })(function (props) {
@@ -65,6 +66,11 @@ export const redactorElement = EG({
       }
     };
   }, [editorContainerEl.current, props.content, props.isTitle, props.cbOnUpdateContent]);
+
+  if (editor != null) {
+    editor.setEditable(!props.disable);
+    console.log(editor, 'editor?.setEditable(false)');
+  }
 
   return (
     <div class="redactor">

@@ -7,15 +7,22 @@ import { css } from 'utils/common';
 import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
 import { iconArrowBarRightNode } from './iconArrowBarRight.node';
 import { iconBulbNode } from './iconBulb.node';
+import { iconMaximizeNode } from './iconMaximize.node';
+import { iconMinimizeNode } from './iconMinimize.node';
 
 const SketchPadElement = sketchPadElement('sketch-pad');
 const IconArrowBarLeftNode = iconArrowBarLeftNode();
 const IconArrowBarRightNode = iconArrowBarRightNode();
 const IconBulbNode = iconBulbNode();
+const IconMaximizeNode = iconMaximizeNode();
+const IconMinimizeNode = iconMinimizeNode();
+
+export type MarginElementMode = 'hide' | 'collapse' | 'expand' | 'full';
 
 export const marginElement = EG({
   props: {
     marginId: p.req<string>(),
+    onchangeMarginMode: p.opt<(event: CustomEvent<{ mode: MarginElementMode }>) => any>(),
   },
 })(function* (
   this: HTMLElement & {
@@ -26,27 +33,32 @@ export const marginElement = EG({
   const $ = this.attachShadow({ mode: 'open' });
 
   let state: MarginState = initialState;
-  let isExpanded = false;
-  let isShow = false;
+  let mode: MarginElementMode = 'hide';
 
   const sub = margin$(props.marginId).subscribe((action) => {
     state = reducer(state, action);
     this.next();
   });
 
-  const toggleExpand = () => {
-    isExpanded = !isExpanded;
-    if (isExpanded) {
-      ($.host as HTMLElement).style.position = 'absolute';
-    } else {
-      ($.host as HTMLElement).style.position = 'relative';
+  const changeSketchPadMode = (_mode: MarginElementMode) => () => {
+    switch (_mode) {
+      case 'expand':
+        ($.host as HTMLElement).style.position = 'absolute';
+        break;
+      case 'full':
+        openFullscreen($.host as HTMLElement);
+        break;
+
+      default:
+        ($.host as HTMLElement).style.position = 'relative';
+        closeFullscreen();
+        break;
     }
 
-    this.next();
-  };
+    mode = _mode;
 
-  const toggleShow = () => {
-    isShow = !isShow;
+    this.dispatchEvent(new CustomEvent('changeMarginMode', { detail: { mode } }));
+
     this.next();
   };
 
@@ -56,38 +68,71 @@ export const marginElement = EG({
         getMarginById(props.marginId);
       }
 
+      let toolbar = <></>;
+      switch (mode as MarginElementMode) {
+        case 'hide':
+          toolbar = (
+            <>
+              <button class="btn btn_icon btn__show" onclick={changeSketchPadMode('collapse')}>
+                <IconBulbNode isOn={false}></IconBulbNode>
+              </button>
+            </>
+          );
+          break;
+        case 'collapse':
+          toolbar = (
+            <>
+              <button class="btn btn_icon btn__show" onclick={changeSketchPadMode('hide')}>
+                <IconBulbNode isOn={true}></IconBulbNode>
+              </button>
+              <button class="btn btn_icon btn__expand" title="expand" onclick={changeSketchPadMode('expand')}>
+                <IconArrowBarLeftNode></IconArrowBarLeftNode>
+              </button>
+              <button class="btn btn_icon btn__full" title="full" onclick={changeSketchPadMode('full')}>
+                <IconMaximizeNode></IconMaximizeNode>
+              </button>
+            </>
+          );
+          break;
+        case 'expand':
+          toolbar = (
+            <>
+              <button class="btn btn_icon btn__expand" title="expand" onclick={changeSketchPadMode('collapse')}>
+                <IconArrowBarRightNode></IconArrowBarRightNode>
+              </button>
+              <button class="btn btn_icon btn__full" title="full" onclick={changeSketchPadMode('full')}>
+                <IconMaximizeNode></IconMaximizeNode>
+              </button>
+            </>
+          );
+          break;
+        case 'full':
+          toolbar = (
+            <>
+              <button class="btn btn_icon btn__full" title="minimize" onclick={changeSketchPadMode('collapse')}>
+                <IconMinimizeNode></IconMinimizeNode>
+              </button>
+            </>
+          );
+          break;
+
+        default:
+          break;
+      }
+
       props = yield render(
         <>
           <style>{require('./margin.scss')}</style>
 
-          <button
-            class="btn btn_icon btn__show"
-            onclick={toggleShow}
-            style={css`
-              visibility: ${!isExpanded ? 'visible' : 'hidden'};
-            `}
-          >
-            <IconBulbNode isOn={isShow}></IconBulbNode>
-          </button>
-
-          <button
-            class="btn btn_icon btn__expand"
-            title={`${isExpanded ? 'expand' : 'collapse'}`}
-            onclick={toggleExpand}
-            style={css`
-              visibility: ${isShow ? 'visible' : 'hidden'};
-            `}
-          >
-            {isExpanded ? <IconArrowBarRightNode></IconArrowBarRightNode> : <IconArrowBarLeftNode></IconArrowBarLeftNode>}
-          </button>
+          {toolbar}
 
           {state.data ? (
             <SketchPadElement
               style={css`
-                visibility: ${isShow ? 'visible' : 'hidden'};
+                visibility: ${mode !== 'hide' ? 'visible' : 'hidden'};
               `}
               data={state.data}
-              isExpanded={isExpanded}
+              mode={mode}
             ></SketchPadElement>
           ) : (
             ''
@@ -102,3 +147,22 @@ export const marginElement = EG({
     sub.unsubscribe();
   }
 });
+
+function openFullscreen(elem: HTMLElement) {
+  if ('requestFullscreen' in elem && document.fullscreenElement == null) {
+    elem.requestFullscreen();
+  } else if ('webkitRequestFullscreen' in elem) {
+    /* Safari */
+    elem['webkitRequestFullscreen']();
+  }
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if ('exitFullscreen' in document && document.fullscreenElement != null) {
+    document.exitFullscreen();
+  } else if ('webkitExitFullscreen' in document) {
+    /* Safari */
+    document['webkitExitFullscreen']();
+  }
+}

@@ -2,7 +2,7 @@ import { EG, useCallback, useEffect, useState, useReducer, useMemo } from '@web-
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { Page } from 'models/page.model';
-import { marginElement } from 'new-components/margin/margin.element';
+import { marginElement, MarginElementMode } from 'new-components/margin/margin.element';
 import { foldingElement } from '../folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';
 import { deletePageNode } from './deletePage.node';
@@ -40,6 +40,7 @@ export const pageElement = EG({
 
   let [content, setContent] = useState(props.page.content);
   const [isFolded, setFolded] = useState(props.page.isFolded);
+  const [marginElementMode, setMarginElementMode] = useState<MarginElementMode>('hide');
 
   const [savePage$, savePage] = useSubjectEffect(savePageEffect);
   const [addNewPage$, addNewPage] = useSubjectEffect(addNewPageEffect);
@@ -120,6 +121,17 @@ export const pageElement = EG({
     }
   }, [state]);
 
+  const onChangeMarginMode = useCallback(
+    (
+      event: CustomEvent<{
+        mode: MarginElementMode;
+      }>
+    ) => {
+      setMarginElementMode(event.detail.mode);
+    },
+    [state]
+  );
+
   if (state?.data != null) {
     const pageControls = (
       <div class="page__controls">
@@ -172,7 +184,7 @@ export const pageElement = EG({
             style={css`
               display: flex;
               width: 100%;
-              min-height: ${state.data.margins.length > 0 ? '100vh': 'auto'};
+              min-height: ${state.data.margins.length > 0 ? '100vh' : 'auto'};
             `}
           >
             <div
@@ -185,11 +197,16 @@ export const pageElement = EG({
               `}
             >
               {/* <EditorElement content={content} textChangeCb={textChangeCb} isTitle={state.data.order === 0}></EditorElement> */}
-              <RedactorElement content={content} cbOnUpdateContent={cbOnUpdateContent} isTitle={state.data.order === 0}></RedactorElement>
+              <RedactorElement
+                disable={['expand', 'full'].includes(marginElementMode)}
+                content={content}
+                cbOnUpdateContent={cbOnUpdateContent}
+                isTitle={state.data.order === 0}
+              ></RedactorElement>
               {pageControls}
             </div>
             {state.data.margins.length > 0 ? (
-              <MarginElement marginId={state.data.margins[0].id}></MarginElement>
+              <MarginElement marginId={state.data.margins[0].id} onchangeMarginMode={onChangeMarginMode}></MarginElement>
             ) : null}
           </div>
         )}
