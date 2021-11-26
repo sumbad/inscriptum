@@ -9,6 +9,10 @@ import page from 'page';
 import 'components/list';
 import { menuElement } from 'new-components/menu/menu.element';
 
+// DEBUG:
+// import { marginElement } from 'new-components/margin/margin.element';
+// const MarginElement = marginElement('m-e');
+
 const MenuElement = menuElement('inscriptum-menu');
 
 export const noteListElement = EG()(function* () {
@@ -50,6 +54,15 @@ export const noteListElement = EG()(function* () {
         <style>{require('../../../../scss/skeleton/skeleton.scss')}</style>
         <div class="container">
           <MenuElement></MenuElement>
+
+          {/* 
+          // DEBUG:
+          <div style={css`
+            height: 1000px;
+            width: 800px;
+          `}>
+            <MarginElement marginId={'0'} onchangeMarginMode={() => {}}></MarginElement>
+          </div> */}
 
           <um-preloader loading={isPreloader}>
             <inscriptum-list onaction={handleAction} value={notes}></inscriptum-list>

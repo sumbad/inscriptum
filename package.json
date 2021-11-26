@@ -69,6 +69,7 @@
     "quill": "1.3.7",
     "rxjs": "6.5.4",
     "signature_pad": "^3.0.0-beta.4",
+    "vanilla-colorful": "^0.6.2",
     "velocity-animate": "^1.5.1",
     "whatwg-fetch": "^3.6.2"
   },
