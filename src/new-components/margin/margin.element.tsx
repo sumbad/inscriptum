@@ -2,15 +2,21 @@ import { EG, p } from '@web-companions/gfc';
 import { getMarginById } from './margin.service';
 import { initialState, margin$, MarginState, reducer } from './margin.state';
 import { render } from 'lit-html2';
-import { sketchPadElement } from 'new-components/sketch-pad/sketchPad.element';
+// import { sketchPadElement } from 'new-components/sketch-pad/sketchPad.element';
 import { css } from 'utils/common';
 import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
 import { iconArrowBarRightNode } from './iconArrowBarRight.node';
 import { iconBulbNode } from './iconBulb.node';
 import { iconMaximizeNode } from './iconMaximize.node';
 import { iconMinimizeNode } from './iconMinimize.node';
+import { sketchPadPanElement } from 'new-components/sketch-pad/sketchPadPan.element';
+import { Subscription } from 'rxjs';
+import hub from 'hub';
+import { filter } from 'rxjs/operators';
+import { HUB_ACTION } from 'hub/actions';
 
-const SketchPadElement = sketchPadElement('sketch-pad');
+// const SketchPadElement = sketchPadElement('sketch-pad');
+const SketchPadElement = sketchPadPanElement('sketch-pad');
 const IconArrowBarLeftNode = iconArrowBarLeftNode();
 const IconArrowBarRightNode = iconArrowBarRightNode();
 const IconBulbNode = iconBulbNode();
@@ -32,26 +38,30 @@ export const marginElement = EG({
 ) {
   const $ = this.attachShadow({ mode: 'open' });
 
+  const subs: Subscription[] = [];
+
   let state: MarginState = initialState;
   let mode: MarginElementMode = 'hide';
 
-  const sub = margin$(props.marginId).subscribe((action) => {
-    state = reducer(state, action);
-    this.next();
-  });
+  subs.push(
+    margin$(props.marginId).subscribe((action) => {
+      state = reducer(state, action);
+      this.next();
+    })
+  );
 
-  const changeSketchPadMode = (_mode: MarginElementMode) => () => {
+  const changeSketchPadMode = (_mode: MarginElementMode) => async () => {
     switch (_mode) {
       case 'expand':
         ($.host as HTMLElement).style.position = 'absolute';
         break;
       case 'full':
-        openFullscreen($.host as HTMLElement);
+        await openFullscreen($.host as HTMLElement);
         break;
 
       default:
         ($.host as HTMLElement).style.position = 'relative';
-        closeFullscreen();
+        await closeFullscreen();
         break;
     }
 
@@ -61,6 +71,22 @@ export const marginElement = EG({
 
     this.next();
   };
+
+  subs.push(
+    hub.$.pipe(filter((v) => v.type === HUB_ACTION.FULLSCREEN_CHANGED)).subscribe((d) => {
+      if (d.type === HUB_ACTION.FULLSCREEN_CHANGED) {
+        if (d.payload.isFullscreen && mode !== 'full') {
+          mode = 'full';
+          this.next();
+        }
+        if (!d.payload.isFullscreen && mode === 'full') {
+          debugger;
+          mode = 'collapse';
+          this.next();
+        }
+      }
+    })
+  );
 
   try {
     while (true) {
@@ -73,7 +99,7 @@ export const marginElement = EG({
         case 'hide':
           toolbar = (
             <>
-              <button class="btn btn_icon btn__show" onclick={changeSketchPadMode('collapse')}>
+              <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('collapse')}>
                 <IconBulbNode isOn={false}></IconBulbNode>
               </button>
             </>
@@ -82,13 +108,13 @@ export const marginElement = EG({
         case 'collapse':
           toolbar = (
             <>
-              <button class="btn btn_icon btn__show" onclick={changeSketchPadMode('hide')}>
+              <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('hide')}>
                 <IconBulbNode isOn={true}></IconBulbNode>
               </button>
-              <button class="btn btn_icon btn__expand" title="expand" onclick={changeSketchPadMode('expand')}>
+              <button class="btn btn_icon btn__second" title="expand" onclick={changeSketchPadMode('expand')}>
                 <IconArrowBarLeftNode></IconArrowBarLeftNode>
               </button>
-              <button class="btn btn_icon btn__full" title="full" onclick={changeSketchPadMode('full')}>
+              <button class="btn btn_icon btn__third" title="full" onclick={changeSketchPadMode('full')}>
                 <IconMaximizeNode></IconMaximizeNode>
               </button>
             </>
@@ -97,10 +123,10 @@ export const marginElement = EG({
         case 'expand':
           toolbar = (
             <>
-              <button class="btn btn_icon btn__expand" title="expand" onclick={changeSketchPadMode('collapse')}>
+              <button class="btn btn_icon btn__first" title="expand" onclick={changeSketchPadMode('collapse')}>
                 <IconArrowBarRightNode></IconArrowBarRightNode>
               </button>
-              <button class="btn btn_icon btn__full" title="full" onclick={changeSketchPadMode('full')}>
+              <button class="btn btn_icon btn__second" title="full" onclick={changeSketchPadMode('full')}>
                 <IconMaximizeNode></IconMaximizeNode>
               </button>
             </>
@@ -109,7 +135,7 @@ export const marginElement = EG({
         case 'full':
           toolbar = (
             <>
-              <button class="btn btn_icon btn__full" title="minimize" onclick={changeSketchPadMode('collapse')}>
+              <button class="btn btn_icon btn__first" title="minimize" onclick={changeSketchPadMode('collapse')}>
                 <IconMinimizeNode></IconMinimizeNode>
               </button>
             </>
@@ -129,7 +155,7 @@ export const marginElement = EG({
           {state.data ? (
             <SketchPadElement
               style={css`
-                visibility: ${mode !== 'hide' ? 'visible' : 'hidden'};
+                visibility: ${(mode as MarginElementMode) !== 'hide' ? 'visible' : 'hidden'};
               `}
               data={state.data}
               mode={mode}
@@ -144,25 +170,25 @@ export const marginElement = EG({
   } finally {
     // TODO: not working now on destroy element
     debugger;
-    sub.unsubscribe();
+    subs.forEach((it) => it.unsubscribe());
   }
 });
 
-function openFullscreen(elem: HTMLElement) {
+async function openFullscreen(elem: HTMLElement) {
   if ('requestFullscreen' in elem && document.fullscreenElement == null) {
-    elem.requestFullscreen();
+    await elem.requestFullscreen();
   } else if ('webkitRequestFullscreen' in elem) {
     /* Safari */
-    elem['webkitRequestFullscreen']();
+    await elem['webkitRequestFullscreen']();
   }
 }
 
 /* Close fullscreen */
-function closeFullscreen() {
+async function closeFullscreen() {
   if ('exitFullscreen' in document && document.fullscreenElement != null) {
-    document.exitFullscreen();
+    await document.exitFullscreen();
   } else if ('webkitExitFullscreen' in document) {
     /* Safari */
-    document['webkitExitFullscreen']();
+    await document['webkitExitFullscreen']();
   }
 }

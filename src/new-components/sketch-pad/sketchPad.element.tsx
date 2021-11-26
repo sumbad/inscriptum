@@ -1,6 +1,9 @@
 import { render } from 'lit-html2';
 import { ref, createRef, Ref } from 'lit-html2/directives/ref';
-import SignaturePad from 'signature_pad';
+// TODO: change to 
+// import SignaturePad from 'signature_pad' 
+// after https://github.com/szimek/signature_pad/pull/575
+import SignaturePad from '../../lib/signature_pad/signature_pad'; 
 
 import { EG, p } from '@web-companions/gfc';
 import { css } from 'utils/common';
@@ -230,7 +233,7 @@ export const sketchPadElement = EG({
             background-color: ${mode === 'full' ? 'white' : 'transparent'};
           `}
         >
-          <canvas ref={ref(canvasRef)} id="signature-pad" class="signature-pad"></canvas>
+          <canvas ref={ref(canvasRef)} class="signature-pad"></canvas>
         </div>
         <div class="fab-container fab-container_main">
           <div class="fab-container">

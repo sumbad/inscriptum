@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import { globalErrorHandle } from 'services/error.service';
 import { HubAction } from './actions';
+import { onChangeFullscreen } from './fullscreen';
 
 const actions$ = new Subject<HubAction>();
 
@@ -16,3 +17,6 @@ export default {
   $: actions$.asObservable(),
   dispatch,
 };
+
+
+onChangeFullscreen(dispatch);

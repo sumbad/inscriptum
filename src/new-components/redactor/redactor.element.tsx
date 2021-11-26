@@ -69,7 +69,6 @@ export const redactorElement = EG({
 
   if (editor != null) {
     editor.setEditable(!props.disable);
-    console.log(editor, 'editor?.setEditable(false)');
   }
 
   return (

@@ -16,6 +16,9 @@ const DRAFT_ADD_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_ADD_PAGE
 const DRAFT_DELETE_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_DELETE_PAGE_DONE`);
 ///
 const DRAFT_PUBLISH: unique symbol = Symbol(`[${namespace}] DRAFT_PUBLISH`);
+///
+const FULLSCREEN_CHANGED: unique symbol = Symbol(`[${namespace}] FULLSCREEN_CHANGED`);
+
 
 
 export const HUB_ACTION = {
@@ -26,6 +29,7 @@ export const HUB_ACTION = {
   DRAFT_ADD_PAGE_DONE,
   DRAFT_DELETE_PAGE_DONE,
   DRAFT_PUBLISH,
+  FULLSCREEN_CHANGED,
 } as const;
 
 export type HubAction =
@@ -82,5 +86,12 @@ export type HubAction =
       type: typeof HUB_ACTION.DRAFT_PUBLISH;
       payload: {
         draftId: string;
+      };
+    }
+  | {
+      type: typeof HUB_ACTION.FULLSCREEN_CHANGED;
+      payload: {
+        isFullscreen: boolean;
+        element: Element | null;
       };
     };
