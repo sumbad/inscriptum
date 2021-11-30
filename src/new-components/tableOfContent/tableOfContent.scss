@@ -10,14 +10,11 @@
   --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
 
   box-shadow: inset var(--toc-border-width) 0 0 var(--color-contrast-low);
-
   font-family: $font-family;
-
-  // position: sticky;
   top: 1.25rem;
   max-height: calc(100vh - 1.25rem);
-  // overflow: auto;
   overflow: visible;
+  padding-left: 2.5rem;
 
   ol,
   ul {
@@ -26,9 +23,9 @@
     padding: 0;
     border: 0;
   }
-  // }
 
   .toc-panel__list {
+    padding-bottom: 1rem;
     position: relative;
 
     .toc-panel__list .toc-panel__header {

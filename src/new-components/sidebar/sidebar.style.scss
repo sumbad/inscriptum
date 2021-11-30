@@ -2,7 +2,7 @@
 @import '../../scss/btn';
 
 :host {
-  --width: 240px;
+  --width: 300px;
   --toggle-size: 38px;
 
   .sidebar {
@@ -22,6 +22,12 @@
     transition: all 0.35s;
 
     .sidebar-content {
+      height: 100%;
+      overflow-y: scroll;
+      @media (#{$bp-larger-than-ipad}) {
+        overflow: initial;
+      }
+
       transition: all 0.2s;
       transform: translateX(calc(var(--width) * -1));
     }
