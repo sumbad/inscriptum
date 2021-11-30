@@ -92,7 +92,7 @@ export async function publishDraft(data: DraftModel) {
       const isTitle = page.order === 0;
       const jsonContent: JSONContent = page.content;
 
-      if (jsonContent.content == null) {
+      if (jsonContent?.content == null) {
         alert(MESSAGES.EMPTY_CONTENT);
         throw new Error(MESSAGES.EMPTY_CONTENT);
       }

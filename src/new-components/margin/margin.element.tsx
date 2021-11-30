@@ -80,7 +80,6 @@ export const marginElement = EG({
           this.next();
         }
         if (!d.payload.isFullscreen && mode === 'full') {
-          debugger;
           mode = 'collapse';
           this.next();
         }
@@ -169,7 +168,6 @@ export const marginElement = EG({
     }
   } finally {
     // TODO: not working now on destroy element
-    debugger;
     subs.forEach((it) => it.unsubscribe());
   }
 });

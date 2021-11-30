@@ -8,6 +8,8 @@ $bp-larger-than-tablet: 'min-width: 750px' !default;
 $bp-larger-than-desktop: 'min-width: 1000px' !default;
 $bp-larger-than-desktophd: 'min-width: 1200px' !default;
 
+$bp-larger-than-ipad: 'min-width: 1367px' !default;
+
 // Colors
 $light-grey: #e1e1e1 !default;
 $dark-grey: #333 !default;
@@ -42,6 +44,13 @@ $global-radius: 4px !default;
   --link-color: #{$link-color};
   --font-color: #{$font-color};
 
+  --color-contrast-low: hsl(240, 1%, 83%);
+  --color-contrast-medium: hsl(240, 1%, 48%);
+  --color-contrast-high: hsl(240, 4%, 20%);
+
   // Typography
   --font-family: #{$font-family};
+
+  // Measures
+  --ipad-min-width: 1366;
 }

@@ -1,0 +1,53 @@
+@import '../../scss/skeleton/base/variables';
+@import '../../scss/btn';
+
+:host {
+  --width: 240px;
+  --toggle-size: 38px;
+
+  .sidebar {
+    position: fixed;
+    border-right: solid 1px #e1e1e1;
+    @media (#{$bp-larger-than-ipad}) {
+      position: relative;
+      border-right: none;
+    }
+
+    width: 0;
+    visibility: hidden;
+    height: 100%;
+    background: #fff;
+    z-index: 1;
+
+    transition: all 0.35s;
+
+    .sidebar-content {
+      transition: all 0.2s;
+      transform: translateX(calc(var(--width) * -1));
+    }
+
+    .sidebar-toggle {
+      position: absolute;
+      right: calc(var(--toggle-size) * -1 - 10px);
+      padding-top: 8px;
+      visibility: visible;
+
+      :checked {
+        right: 0;
+      }
+    }
+  }
+
+  .sidebar-checkbox {
+    display: none;
+  }
+
+  .sidebar-checkbox:checked + .sidebar {
+    width: var(--width);
+    visibility: visible;
+
+    .sidebar-content {
+      transform: translateX(0);
+    }
+  }
+}

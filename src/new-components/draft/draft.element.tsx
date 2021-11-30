@@ -13,6 +13,7 @@ import { pageElement } from '../page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { DraftAction } from './draft.action';
 import { draft$, DraftState, reducer } from './draft.state';
+import { sidebarElement } from 'new-components/sidebar/sidebar.element';
 
 const css = String.raw;
 
@@ -20,6 +21,7 @@ const PageElement = pageElement('inscriptum-page');
 const LoadingProgressBarElement = loadingProgressBar('loading-progress-bar');
 const TableOfContentElement = tableOfContent('inscriptum-table-of-content');
 const ControlsPanelElement = controlsPanelElement('inscriptum-controls-panel');
+const SidebarElement = sidebarElement('inscriptum-sidebar');
 
 export const draftElement = EG({
   props: {
@@ -81,19 +83,10 @@ export const draftElement = EG({
 
       <um-preloader loading={state.isLoading}>
         <div class="draft-content">
-          <div
-            style={css`
-              display: flex;
-              flex-direction: column;
-              margin-right: 7rem;
-              margin-left: 3rem;
-              min-width: 15rem;
-            `}
-          >
+          <SidebarElement>
             <ControlsPanelElement draftId={props.id}></ControlsPanelElement>
             <TableOfContentElement items={state.data?.table_of_contents ?? []}></TableOfContentElement>
-          </div>
-
+          </SidebarElement>
           <div
             style={css`
               width: 100%;
@@ -109,7 +102,9 @@ export const draftElement = EG({
                     position: relative;
                     display: block;
                     border-bottom: 1px solid #eee;
+                    margin-left: 150px;
                   `}
+                  header={state.data?.table_of_contents[page.order]?.header}
                 ></PageElement>
               )
             )}

@@ -29,6 +29,9 @@ export const pageElement = EG({
     page: {
       type: {} as TypeConstructor<Page>,
     },
+    header: {
+      type: {} as TypeConstructor<string | undefined>,
+    },
   },
   render,
 })(function (this: HTMLElement, props) {
@@ -169,12 +172,15 @@ export const pageElement = EG({
               style={css`
                 display: flex;
                 justify-content: center;
-                font-size: 1.6rem;
                 cursor: pointer;
+                font-size: 15px;
+                line-height: 18px;
+                color: var(--color-contrast-medium);
+                padding-top: 10px;
               `}
               onclick={() => setFolded(false)}
             >
-              ...
+              {props.header && props.header.trim().length > 0 ? props.header : '...'}
             </span>
             {pageControls}
           </>

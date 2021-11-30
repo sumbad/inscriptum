@@ -25,7 +25,6 @@ export const controlsPanelElement = EG({
     yield render(
       <div
         style={css`
-          margin: 1rem 0;
           display: flex;
           flex-direction: row;
         `}
