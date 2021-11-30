@@ -1,7 +1,7 @@
 {
   "name": "inscriptum",
   "description": "blog inscriptum",
-  "version": "3.12.0",
+  "version": "3.12.1",
   "author": "Den Sumbaev @sumbad",
   "private": true,
   "scripts": {
