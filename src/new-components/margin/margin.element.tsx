@@ -17,11 +17,12 @@ import { HUB_ACTION } from 'hub/actions';
 
 // const SketchPadElement = sketchPadElement('sketch-pad');
 const SketchPadElement = sketchPadPanElement('sketch-pad');
-const IconArrowBarLeftNode = iconArrowBarLeftNode();
-const IconArrowBarRightNode = iconArrowBarRightNode();
-const IconBulbNode = iconBulbNode();
-const IconMaximizeNode = iconMaximizeNode();
-const IconMinimizeNode = iconMinimizeNode();
+
+const IconArrowBarLeftNodeStatic = iconArrowBarLeftNode({ current: null });
+const IconArrowBarRightNodeStatic = iconArrowBarRightNode({ current: null });
+const IconBulbNodeStatic = iconBulbNode({ current: null });
+const IconMaximizeNodeStatic = iconMaximizeNode({ current: null });
+const IconMinimizeNodeStatic = iconMinimizeNode({ current: null });
 
 export type MarginElementMode = 'hide' | 'collapse' | 'expand' | 'full';
 
@@ -99,7 +100,7 @@ export const marginElement = EG({
           toolbar = (
             <>
               <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('collapse')}>
-                <IconBulbNode isOn={false}></IconBulbNode>
+                <IconBulbNodeStatic isOn={false}></IconBulbNodeStatic>
               </button>
             </>
           );
@@ -108,13 +109,13 @@ export const marginElement = EG({
           toolbar = (
             <>
               <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('hide')}>
-                <IconBulbNode isOn={true}></IconBulbNode>
+                <IconBulbNodeStatic isOn={true}></IconBulbNodeStatic>
               </button>
               <button class="btn btn_icon btn__second" title="expand" onclick={changeSketchPadMode('expand')}>
-                <IconArrowBarLeftNode></IconArrowBarLeftNode>
+                <IconArrowBarLeftNodeStatic></IconArrowBarLeftNodeStatic>
               </button>
               <button class="btn btn_icon btn__third" title="full" onclick={changeSketchPadMode('full')}>
-                <IconMaximizeNode></IconMaximizeNode>
+                <IconMaximizeNodeStatic></IconMaximizeNodeStatic>
               </button>
             </>
           );
@@ -123,10 +124,10 @@ export const marginElement = EG({
           toolbar = (
             <>
               <button class="btn btn_icon btn__first" title="expand" onclick={changeSketchPadMode('collapse')}>
-                <IconArrowBarRightNode></IconArrowBarRightNode>
+                <IconArrowBarRightNodeStatic></IconArrowBarRightNodeStatic>
               </button>
               <button class="btn btn_icon btn__second" title="full" onclick={changeSketchPadMode('full')}>
-                <IconMaximizeNode></IconMaximizeNode>
+                <IconMaximizeNodeStatic></IconMaximizeNodeStatic>
               </button>
             </>
           );
@@ -135,7 +136,7 @@ export const marginElement = EG({
           toolbar = (
             <>
               <button class="btn btn_icon btn__first" title="minimize" onclick={changeSketchPadMode('collapse')}>
-                <IconMinimizeNode></IconMinimizeNode>
+                <IconMinimizeNodeStatic></IconMinimizeNodeStatic>
               </button>
             </>
           );
@@ -167,7 +168,6 @@ export const marginElement = EG({
       );
     }
   } finally {
-    // TODO: not working now on destroy element
     subs.forEach((it) => it.unsubscribe());
   }
 });

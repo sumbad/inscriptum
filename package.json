@@ -50,7 +50,7 @@
     "@tiptap/extension-task-item": "^2.0.0-beta.17",
     "@tiptap/extension-task-list": "^2.0.0-beta.17",
     "@tiptap/extension-text": "^2.0.0-beta.13",
-    "@web-companions/gfc": "^0.0.1-develop.3",
+    "@web-companions/gfc": "^1.0.0",
     "abstract-element": "^4.8.0",
     "auth0-js": "^9.16.2",
     "autosize": "^4.0.2",
