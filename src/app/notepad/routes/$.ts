@@ -71,7 +71,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
 
             if (elConstructor == null) {
               const { draftListElement } = await import('app/notepad/modules/drafts/draftList.element');
-              elConstructor = draftListElement(tag).element as unknown as CustomElementConstructor;
+              elConstructor = draftListElement(tag);
             }
 
             this.routerOutlet.replaceChildren(new elConstructor());
@@ -85,7 +85,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
 
             if (elConstructor == null) {
               const { noteListElement } = await import('app/notepad/modules/notes/noteList.element');
-              elConstructor = noteListElement(tag).element as unknown as CustomElementConstructor;
+              elConstructor = noteListElement(tag);
             }
 
             this.routerOutlet.replaceChildren(new elConstructor());
