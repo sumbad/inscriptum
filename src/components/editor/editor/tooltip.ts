@@ -22,6 +22,8 @@ export class EditorTooltipComponent extends AbstractElement {
   $image_button: HTMLDivElement;
   $embed_button: HTMLDivElement;
 
+  props: any;
+
   formatTTOptions = {
     padding: 10,
     position: browser.mobile ? 'bottom' : 'top',

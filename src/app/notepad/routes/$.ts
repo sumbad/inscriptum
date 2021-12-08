@@ -67,28 +67,28 @@ export class RootRoute extends AbstractRoute<TRootPath> {
           path: '/drafts',
           callback: async () => {
             const tag = 'inscriptum-drafts';
-            let elConstructor = customElements.get(tag);
+            let ElConstructor = customElements.get(tag);
 
-            if (elConstructor == null) {
+            if (ElConstructor == null) {
               const { draftListElement } = await import('app/notepad/modules/drafts/draftList.element');
-              elConstructor = draftListElement(tag);
+              ElConstructor = draftListElement(tag);
             }
 
-            this.routerOutlet.replaceChildren(new elConstructor());
+            this.routerOutlet.replaceChildren(new ElConstructor());
           },
         },
         {
           path: '/notes',
           callback: async () => {
             const tag = 'inscriptum-notes';
-            let elConstructor = customElements.get(tag);
+            let ElConstructor = customElements.get(tag);
 
-            if (elConstructor == null) {
+            if (ElConstructor == null) {
               const { noteListElement } = await import('app/notepad/modules/notes/noteList.element');
-              elConstructor = noteListElement(tag);
+              ElConstructor = noteListElement(tag);
             }
 
-            this.routerOutlet.replaceChildren(new elConstructor());
+            this.routerOutlet.replaceChildren(new ElConstructor());
           },
         },
         {

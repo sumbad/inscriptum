@@ -1,5 +1,5 @@
 import { render } from 'lit-html2';
-import { ref, createRef, Ref } from 'lit-html2/directives/ref';
+import { ref, createRef, Ref } from 'lit-html2/directives/ref.js';
 import { EG, p } from '@web-companions/gfc';
 
 import 'vanilla-colorful/hex-color-picker.js';

@@ -107,7 +107,6 @@ export const Figure = Node.create<FigureOptions>({
     ];
   },
 
-
   renderHTML({ HTMLAttributes }) {
     return ['figure', ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)], ['figcaption', 0]];
   },
@@ -127,10 +126,14 @@ export const Figure = Node.create<FigureOptions>({
 
   addInputRules() {
     return [
-      nodeInputRule(inputRegex, this.type, (match) => {
-        const [, alt, src, title] = match;
+      nodeInputRule({
+        find: inputRegex,
+        type: this.type,
+        getAttributes: (match) => {
+          const [, alt, src, title] = match;
 
-        return { src, alt, title };
+          return { src, alt, title };
+        },
       }),
     ];
   },
@@ -189,8 +192,8 @@ export const Figure = Node.create<FigureOptions>({
         dom: container,
         contentDOM: domCaption,
         ignoreMutation(p) {
-          if( p.type ===  'attributes' && p.attributeName != null) {
-            if(['src', 'title', 'alt'].includes(p.attributeName)) {
+          if (p.type === 'attributes' && p.attributeName != null) {
+            if (['src', 'title', 'alt'].includes(p.attributeName)) {
               node.attrs[p.attributeName] = (p.target as HTMLElement).getAttribute(p.attributeName);
             }
             return true;

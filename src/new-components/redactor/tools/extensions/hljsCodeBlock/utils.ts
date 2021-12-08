@@ -5,7 +5,7 @@ import { HljsMark } from './hljsMark';
 import { HljsCodeBlockRow } from './hljsCodeBlockRow';
 
 import { TextSelection } from 'prosemirror-state';
-import { InputRule } from 'prosemirror-inputrules';
+import { InputRule } from '@tiptap/core';
 import { NodeType, Node as ProsemirrorNode } from 'prosemirror-model';
 
 import hljs from 'highlight.js/lib/core';
@@ -60,16 +60,19 @@ export function generateHljsNodeJson(codeText: string) {
  * @returns
  */
 export function hljsNodeInputRule(regexp: RegExp, type: NodeType, getAttributes?: (match: any) => any): InputRule {
-  return new InputRule(regexp, (state, match, start, end) => {
-    const attributes = getAttributes instanceof Function ? getAttributes(match) : getAttributes;
-    const { tr } = state;
+  return new InputRule({
+    find: regexp,
+    handler: (props) => {
+      const attributes = getAttributes instanceof Function ? getAttributes(props.match) : getAttributes;
+      const { tr } = props.state;
 
-    if (match[0]) {
-      tr.replaceWith(start - 1, end, type.create(attributes, state.schema.node('hljsCodeBlockRow')));
-      tr.setSelection(TextSelection.create(tr.doc, end - 1));
-    }
+      if (props.match[0]) {
+        tr.replaceWith(props.range.from - 1, props.range.to, type.create(attributes, props.state.schema.node('hljsCodeBlockRow')));
+        tr.setSelection(TextSelection.create(tr.doc, props.range.to - 1));
+      }
 
-    return tr;
+      return tr;
+    },
   });
 }
 
