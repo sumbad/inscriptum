@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[9691],{9691:(e,s,t)=>{t.r(s),t.d(s,{PullquoteBlot:()=>a});var l=t(5039),u=t(3691);class a extends u.ZP{}a.blotName="blockPullquote",a.tagName="aside",l.Z.register(a)}}]);
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[9691],{69691:(e,s,t)=>{t.r(s),t.d(s,{PullquoteBlot:()=>a});var l=t(25039),u=t(53691);class a extends u.ZP{}a.blotName="blockPullquote",a.tagName="aside",l.Z.register(a)}}]);

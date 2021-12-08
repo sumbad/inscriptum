@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[3341],{3341:(t,o,i)=>{i.r(o),i.d(o,{default:()=>a});const a=(t,o)=>t`
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[3341],{83341:(t,o,i)=>{i.r(o),i.d(o,{default:()=>a});const a=(t,o)=>t`
 ${o.$style}
 
 <!-- <div class="the-editor"> -->
