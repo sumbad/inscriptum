@@ -7,8 +7,10 @@ import { createEditor } from './tools/redactor';
 import { Editor, JSONContent } from '@tiptap/core';
 import { bubbleMenuElement } from './bubbleMenu.element';
 import { quillInnerHtml } from './tools/fromQuill';
+import { floatingMenuElement } from './new-components/floatingMenu.element';
 
 const BubbleMenuElement = bubbleMenuElement('inscriptum-redactor-bubble-menu');
+const FloatingMenuElement = floatingMenuElement('inscriptum-redactor-floating-menu');
 
 export const redactorElement = EG({
   props: {
@@ -75,7 +77,12 @@ export const redactorElement = EG({
     <div class="redactor">
       <style>{require('./style.scss')}</style>
       <article ref={editorContainerEl.ref()} class="redactor__article"></article>
-      {editor != null && <BubbleMenuElement editor={editor}></BubbleMenuElement>}
+      {editor != null && (
+        <>
+          <FloatingMenuElement editor={editor}></FloatingMenuElement>
+          <BubbleMenuElement editor={editor}></BubbleMenuElement>
+        </>
+      )}
     </div>
   );
 });

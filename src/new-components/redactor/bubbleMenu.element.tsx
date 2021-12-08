@@ -9,6 +9,10 @@ import { Props as TippyProps } from 'tippy.js';
 import { Transaction, NodeSelection, TextSelection } from 'prosemirror-state';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableHeader from '@tiptap/extension-table-header';
+import TableCell from '@tiptap/extension-table-cell';
 
 export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
   className?: string;
@@ -18,19 +22,19 @@ export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
  * NOTE: Shadow Dom:
  * https://github.com/atomiks/tippyjs/pull/915
  */
-export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & {editor: BubbleMenuProps["editor"]}>({
+export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleMenuProps['editor'] }>({
   props: {
     editor: {} as TypeConstructor<Editor>,
     className: String,
     tippyOptions: {} as TypeConstructor<Partial<TippyProps> | undefined> | undefined,
     pluginKey: {
       type: String,
-      default: BubbleMenu.options.pluginKey
+      default: BubbleMenu.options.pluginKey,
     },
     shouldShow: {
-      type: {} as TypeConstructor<BubbleMenuProps["shouldShow"]>,
-      default: null
-    } 
+      type: {} as TypeConstructor<BubbleMenuProps['shouldShow']>,
+      default: null,
+    },
   },
   render,
   // shadow: {
@@ -55,7 +59,7 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & {editor: BubbleMe
               editor,
               element: element.current,
               pluginKey: props.pluginKey!,
-              shouldShow: props.shouldShow!
+              shouldShow: props.shouldShow!,
               // tippyOptions,
               // tippyOptions: {
               //   onShow
@@ -133,6 +137,30 @@ function prepareMenuContent(editor: Editor) {
     }
   }
 
+  if ([Table.name, TableRow.name, TableHeader.name, TableCell.name].includes(selection.$from.parent.type.name)) {
+    return (
+      <>
+        <button onclick={() => editor.chain().focus().addColumnBefore().run()}>addColumnBefore</button>
+        <button onclick={() => editor.chain().focus().addColumnAfter().run()}>addColumnAfter</button>
+        <button onclick={() => editor.chain().focus().deleteColumn().run()}>deleteColumn</button>
+        <button onclick={() => editor.chain().focus().addRowBefore().run()}>addRowBefore</button>
+        <button onclick={() => editor.chain().focus().addRowAfter().run()}>addRowAfter</button>
+        <button onclick={() => editor.chain().focus().deleteRow().run()}>deleteRow</button>
+        <button onclick={() => editor.chain().focus().deleteTable().run()}>deleteTable</button>
+        <button onclick={() => editor.chain().focus().mergeCells().run()}>mergeCells</button>
+        <button onclick={() => editor.chain().focus().splitCell().run()}>splitCell</button>
+        <button onclick={() => editor.chain().focus().toggleHeaderColumn().run()}>toggleHeaderColumn</button>
+        <button onclick={() => editor.chain().focus().toggleHeaderRow().run()}>toggleHeaderRow</button>
+        <button onclick={() => editor.chain().focus().toggleHeaderCell().run()}>toggleHeaderCell</button>
+        <button onclick={() => editor.chain().focus().mergeOrSplit().run()}>mergeOrSplit</button>
+        <button onclick={() => editor.chain().focus().setCellAttribute('colspan', 2).run()}>setCellAttribute</button>
+        <button onclick={() => editor.chain().focus().fixTables().run()}>fixTables</button>
+        <button onclick={() => editor.chain().focus().goToNextCell().run()}>goToNextCell</button>
+        <button onclick={() => editor.chain().focus().goToPreviousCell().run()}>goToPreviousCell</button>
+      </>
+    );
+  }
+
   return (
     <>
       <button onclick={() => editor.chain().focus().toggleBold().run()} class={editor.isActive('bold') ? 'is-active' : ''}>
@@ -181,7 +209,10 @@ function prepareMenuContent(editor: Editor) {
       >
         h4
       </button>
-      <button onclick={() => editor.chain().focus().toggleHljsCodeBlock().run()} class={editor.isActive('hljsCodeBlock') ? 'is-active' : ''}>
+      <button
+        onclick={() => editor.chain().focus().toggleHljsCodeBlock().run()}
+        class={editor.isActive('hljsCodeBlock') ? 'is-active' : ''}
+      >
         {'<>'}
       </button>
     </>
