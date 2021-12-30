@@ -50,14 +50,14 @@ export class RootRoute extends AbstractRoute<TRootPath> {
           path: '/draft/:id',
           callback: async (ctx: PageJS.Context) => {
             const tag = 'inscriptum-draft';
-            let elConstructor = customElements.get(tag);
+            let ElConstructor = customElements.get(tag);
 
-            if (elConstructor == null) {
+            if (ElConstructor == null) {
               const { draftElement } = await import('new-components/draft/draft.element');
-              elConstructor = draftElement(tag).element as unknown as CustomElementConstructor;
+              ElConstructor = draftElement(tag);
             }
 
-            const draftHTMLElement = new elConstructor();
+            const draftHTMLElement = new ElConstructor();
             draftHTMLElement.dataset['id'] = ctx.params.id;
 
             this.routerOutlet.replaceChildren(draftHTMLElement);
