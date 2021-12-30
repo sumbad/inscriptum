@@ -16,8 +16,6 @@ import { menuElement } from 'new-components/menu/menu.element';
 const MenuElement = menuElement('inscriptum-menu');
 
 export const noteListElement = EG()(function* () {
-  const subs: Subscription[] = [];
-
   let isPreloader = true;
   let notes: IListItem[] = [];
 
@@ -25,14 +23,12 @@ export const noteListElement = EG()(function* () {
 
   _initNoteList();
 
-  subs.push(
-    $initNoteList.subscribe((_notes) => {
-      notes = _notes;
-      isPreloader = false;
+  $initNoteList.subscribe((_notes) => {
+    notes = _notes;
+    isPreloader = false;
 
-      this.next();
-    })
-  );
+    this.next();
+  });
 
   /**
    * Handle note actions
@@ -48,14 +44,15 @@ export const noteListElement = EG()(function* () {
     }
   };
 
-  while (true) {
-    yield render(
-      <>
-        <style>{require('../../../../scss/skeleton/skeleton.scss')}</style>
-        <div class="container">
-          <MenuElement></MenuElement>
+  try {
+    while (true) {
+      yield render(
+        <>
+          <style>{require('../../../../scss/skeleton/skeleton.scss')}</style>
+          <div class="container">
+            <MenuElement></MenuElement>
 
-          {/* 
+            {/* 
           // DEBUG:
           <div style={css`
             height: 1000px;
@@ -64,12 +61,15 @@ export const noteListElement = EG()(function* () {
             <MarginElement marginId={'0'} onchangeMarginMode={() => {}}></MarginElement>
           </div> */}
 
-          <um-preloader loading={isPreloader}>
-            <inscriptum-list onaction={handleAction} value={notes}></inscriptum-list>
-          </um-preloader>
-        </div>
-      </>,
-      this
-    );
+            <um-preloader loading={isPreloader}>
+              <inscriptum-list onaction={handleAction} value={notes}></inscriptum-list>
+            </um-preloader>
+          </div>
+        </>,
+        this
+      );
+    }
+  } finally {
+    $initNoteList.complete();
   }
 });
