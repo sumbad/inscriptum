@@ -26,15 +26,17 @@ declare module '@tiptap/core' {
 export const Aside = Node.create<AsideOptions>({
   name: 'aside',
 
-  defaultOptions: {
-    HTMLAttributes: {},
-  },
-
   content: 'block*',
 
   group: 'block',
 
   defining: true,
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
 
   parseHTML() {
     return [{ tag: 'aside' }];

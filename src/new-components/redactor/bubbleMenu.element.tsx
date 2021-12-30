@@ -70,7 +70,7 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
       })
     );
 
-    const transaction$ = new Subject();
+    const transaction$ = new Subject<void>();
 
     const updateEditorState = ({ transaction }: { editor: Editor; transaction: Transaction }) => {
       if (transaction.steps.length > 0) {
@@ -84,7 +84,7 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
 
     editor.on('transaction', updateEditorState);
 
-    transaction$.pipe(debounceTime(700)).subscribe((d) => {
+    transaction$.pipe(debounceTime(700)).subscribe(() => {
       setMenuContent(prepareMenuContent(editor));
     });
 

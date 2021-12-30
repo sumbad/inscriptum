@@ -43,7 +43,9 @@ export async function initNoteList() {
 
   let auth = await authState.pipe(first()).toPromise();
 
-  if (auth.data == null && !auth.isLoading) {
+  const hasAuth = auth?.data != null;
+
+  if (!hasAuth && auth?.isLoading) {
     hub.dispatch({
       type: AUTH_ACTION.AUTH,
       payload: {
@@ -53,8 +55,6 @@ export async function initNoteList() {
 
     auth = await authState.pipe(first((state) => !state.isLoading)).toPromise();
   }
-
-  const hasAuth = auth.data != null;
 
   return notes.map((item) => {
     return {

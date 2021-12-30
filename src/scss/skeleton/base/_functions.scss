@@ -9,7 +9,7 @@
 */
 
 @function grid-column-width($n) {
-  @return $column-width * $n - ($column-margin*($total-columns - $n)/$total-columns);
+  @return $column-width * $n - calc($column-margin * ($total-columns - $n) / $total-columns);
 }
 
 @function grid-offset-length($n) {

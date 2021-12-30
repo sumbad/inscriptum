@@ -7,15 +7,17 @@ export interface HljsCodeBlockRowOptions {
 export const HljsCodeBlockRow = Node.create<HljsCodeBlockRowOptions>({
   name: 'hljsCodeBlockRow',
 
-  defaultOptions: {
-    HTMLAttributes: {},
-  },
-
   group: 'hljsCodeBlock',
 
   content: 'inline*',
 
   marks: 'hljsMark',
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
 
   addAttributes() {
     return {
