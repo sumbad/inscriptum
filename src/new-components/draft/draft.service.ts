@@ -164,6 +164,10 @@ export async function publishDraft(data: DraftModel) {
 
     const noteList = (await sdk().getAllNotes()).notes;
 
+    let inlineStyle: string = document.styleSheets.item(0)?.ownerNode?.['outerHTML'] || '';
+    // remove comments
+    inlineStyle = inlineStyle.replaceAll(/(\/\*).*(\*\/)/g, '');
+
     const note = /*html*/ `  
     <html>
       <head>
@@ -188,7 +192,7 @@ export async function publishDraft(data: DraftModel) {
         <meta name="twitter:title" content="${pageTitle}">
         <meta name="twitter:description" content="${pagePreview.description}">
         <meta name="twitter:image" content="${pagePreview.image}">
-        ${document.styleSheets.item(0)?.ownerNode?.['outerHTML'] || ''}
+        ${inlineStyle}
         <link rel="shortcut icon" type="image/png" href="favicon.png">
         <link href="/css/note.css" rel="stylesheet">
         <link href="/css/custom_editor_fonts.css" rel="stylesheet">

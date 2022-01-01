@@ -1,56 +1,84 @@
   
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Web Components. Введение</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="MobileOptimized" content="176">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
-    <meta property="og:site_name" content="inscriptum">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Web Components. Введение">
-    <meta property="og:description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
-    <meta property="og:image" content="">
-    <meta property="article:published_time" content="2019-09-11T00:34:53.000Z">
-    <meta property="article:modified_time" content="2019-09-25T11:20:32.000Z">
-    <meta property="article:author" content="test@test.test">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Web Components. Введение">
-    <meta name="twitter:description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
-    <meta name="twitter:image" content="">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-    <link href="/css/note.css" rel="stylesheet">
-    <link href="/css/custom_editor_fonts.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="tl_page_wrap">
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Web Components. Введение</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="MobileOptimized" content="176">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="robots" content="index, follow">
+        <meta name="description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
+        <meta property="og:site_name" content="inscriptum">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Web Components. Введение">
+        <meta property="og:description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
+        <meta property="og:image" content="">
+        <meta property="article:published_time" content="2019-09-11T08:34:53+00:00">
+        <meta property="article:modified_time" content="2022-01-01T11:43:31.422Z">
+        <meta property="article:author" content="test@test.test">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Web Components. Введение">
+        <meta name="twitter:description" content="Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно нативные возможности Web Components без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.">
+        <meta name="twitter:image" content="">
+        <style>/* cyrillic */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/inter/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0ZL7W0Q5n-wU.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/inter/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: "JetBrainsMono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/jetbrainsmono/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTPlOTk6OThhvAWV8.woff) format("woff");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin */
+@font-face {
+  font-family: "JetBrainsMono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/jetbrainsmono/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTOlOTk6OThhvA.woff) format("woff");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+html {
+  font-family: sans-serif;
+}
 
-    <div class="tl_page">
-      <section class="tl_article">
-        <header class="tl_article_header">
-          <h1 dir="auto">Web Components. Введение</h1>
-          <address dir="auto">
-            <a rel="author">Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно&nbsp;нативные возможности Web Components&nbsp;без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.</a>
-            <time datetime=""></time>
-          </address>
-        </header>
-        <article id="_tl_editor" class="tl_article_content ql-container ql-disabled"><div class="ql-editor" data-gramm="false" contenteditable="false" dir="auto"><h4 id="Плюсы-и-минусы">Плюсы и минусы</h4><p>Три основных вопроса, на которые вы найдете ответы:</p><ul start="null" style="counter-reset: list-0 0 null 0;"><li>Чем являются Web Components и почему они отличаются от современных web-фреймворков и библиотек?</li><li>Каким образом происходит создание Web Components?</li><li>Как можно использовать Web Components уже сегодня?</li></ul><h3 id="Причины-появления-Web-Components">Причины появления Web Components</h3><p>Идея Web Components родилась в попытках решения ряда проблем, с которыми сталкиваются web-разработчики чуть ли не с зарождения веба:</p><ol start="null" style="counter-reset: list-0 0 null 0;"><li>Изоляция стилей отдельных элементов на странице.</li><li>Переиспользование ранее созданных элементов.</li><li>Масштабируемость без ущерба понятности.</li></ol><p>Преодолевались эти и другие проблемы front-end через использование различных инструментов. Подход Java -&gt; JavaScript (к примеру,&nbsp;<a href="https://ru.wikipedia.org/wiki/Google_Web_Toolkit" target="_blank">GWT</a>) или {что-то более удобное} -&gt; JavaScript позволил использовать популярные языки для написания целых web-порталов без необходимости знаний в самом JavaScript. Библиотеки, вроде jQuery дали возможность абстрагироваться от реализации отдельных элементов. Из последних, современные JavaScript фреймворки, такие как React, Angular, Vue.js способные не просто решить все вышеописанные проблемы, но и охватить вопросы роутинга, безопасности и взаимодействия с сервером в прозрачной манере.</p><p>Каждый из этих подходов решает важные задачи, не зря все они в большей или меньшей степени используются во фронтенде уже не первый год. Но тем не менее три вышеописанных проблемы так и остались с нами. Почему же? Дело в том, что в попытках упростить и упорядочить одно, инструменты невольно усложняют и запутывают другое. Современные JavaScript фреймворки решают все три проблемы с лихвой и даже больше, но возможно в этом и проблема - они привносят свою сложность, которая сильно превышает сложность решаемой задачи.</p><p><strong>Итак, Web Components это четыре спецификации, которые позволяют создавать изолированные элементы с возможностью прозрачного переиспользования и расширения, основываясь на других таких же элементах.</strong></p><p>Сила Web Components именно в стандарте. А значит, ответственность консорциума и сообщества.</p><p>В результате следования этим стандартам появляется возможность создания и расширения элементов подобных button или input в HTML. Такой элемент будет являться компонентом, его можно использовать точно так же, как и уже существующие в браузерах. При этом отсутствие дополнительной инфраструктуры в виде библиотек или фреймворков уменьшает кодовую базу и положительно влияет на производительность. Немаловажно значение общего подхода в построении компонентов на основе спецификации. Это позволяет расширять существующие элементы и компоненты без существенного их усложнения.</p><p>В завершении вводной части скажу о двух важных особенностях. Во-первых Web Components имеют важное преимущество - они могут стать мостом между разными фреймворками и подходами во front-end, так как их удобно использовать и внутри проектов с React, и с Angular и даже рядом с “вечными плагинами” jQuery. Во-вторых, и это отнюдь не плюс Web Components - они поддерживаются не во всех современных браузерах, придется приложить усилия используя их прямо сегодня, но это все же возможно. Тем не менее, Web Components - это завтра front-end и похоже, что в этом уже никто не сомневается.</p><p><br></p><p><br></p></div></article>
-        
-        <aside class="tl_article_buttons">
-          
-          <a id="_edit_button" class="button edit_button" href="/draft/fd78595f-3a88-4402-b0d9-76b0f63f8836">Edit</a>
-          
-          
-          
-        </aside>
-      </section>
-    </div>
-  </div>
-  </body>
-  
-  <script type="text/javascript" src="/js/note.js"></script>
-</html>
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", sans-serif;
+  }
+}
+.container {
+  max-width: 800px;
+}
+</style>
+        <link rel="shortcut icon" type="image/png" href="favicon.png">
+        <link href="/css/note.css" rel="stylesheet">
+        <link href="/css/custom_editor_fonts.css" rel="stylesheet">
+      </head>
+      <body>
+        <article>
+          <section><h1 data-placeholder="Title" data-label="Title">Web Components. Введение</h1><p data-placeholder="Summary of the text" data-label="Summary" role="definition">Данная серия статей под одноименным заголовком будет посвящена технологии Web Components. Основным объектом рассмотрения являются именно&nbsp;нативные возможности Web Components&nbsp;без участия сторонних фреймворков, таких как Polymer, X-Tag или SlateJS.</p><p data-placeholder="Take a notes">Плюсы и минусы</p><p>Три основных вопроса, на которые вы найдете ответы:</p><ul><li><p>Чем являются Web Components и почему они отличаются от современных web-фреймворков и библиотек?</p></li><li><p>Каким образом происходит создание Web Components?</p></li><li><p>Как можно использовать Web Components уже сегодня?</p></li></ul><h3>Причины появления Web Components</h3><p>Идея Web Components родилась в попытках решения ряда проблем, с которыми сталкиваются web-разработчики чуть ли не с зарождения веба:</p><ol><li><p>Изоляция стилей отдельных элементов на странице.</p></li><li><p>Переиспользование ранее созданных элементов.</p></li><li><p>Масштабируемость без ущерба понятности.</p></li></ol><p>Преодолевались эти и другие проблемы front-end через использование различных инструментов. Подход Java -&gt; JavaScript (к примеру,&nbsp;<a target="_blank" rel="noopener noreferrer nofollow" href="https://ru.wikipedia.org/wiki/Google_Web_Toolkit">GWT</a>) или {что-то более удобное} -&gt; JavaScript позволил использовать популярные языки для написания целых web-порталов без необходимости знаний в самом JavaScript. Библиотеки, вроде jQuery дали возможность абстрагироваться от реализации отдельных элементов. Из последних, современные JavaScript фреймворки, такие как React, Angular, Vue.js способные не просто решить все вышеописанные проблемы, но и охватить вопросы роутинга, безопасности и взаимодействия с сервером в прозрачной манере.</p><p>Каждый из этих подходов решает важные задачи, не зря все они в большей или меньшей степени используются во фронтенде уже не первый год. Но тем не менее три вышеописанных проблемы так и остались с нами. Почему же? Дело в том, что в попытках упростить и упорядочить одно, инструменты невольно усложняют и запутывают другое. Современные JavaScript фреймворки решают все три проблемы с лихвой и даже больше, но возможно в этом и проблема - они привносят свою сложность, которая сильно превышает сложность решаемой задачи.</p><p><strong>Итак, Web Components это четыре спецификации, которые позволяют создавать изолированные элементы с возможностью прозрачного переиспользования и расширения, основываясь на других таких же элементах.</strong></p><p>Сила Web Components именно в стандарте. А значит, ответственность консорциума и сообщества.</p><p>В результате следования этим стандартам появляется возможность создания и расширения элементов подобных button или input в HTML. Такой элемент будет являться компонентом, его можно использовать точно так же, как и уже существующие в браузерах. При этом отсутствие дополнительной инфраструктуры в виде библиотек или фреймворков уменьшает кодовую базу и положительно влияет на производительность. Немаловажно значение общего подхода в построении компонентов на основе спецификации. Это позволяет расширять существующие элементы и компоненты без существенного их усложнения.</p><p>В завершении вводной части скажу о двух важных особенностях. Во-первых Web Components имеют важное преимущество - они могут стать мостом между разными фреймворками и подходами во front-end, так как их удобно использовать и внутри проектов с React, и с Angular и даже рядом с “вечными плагинами” jQuery. Во-вторых, и это отнюдь не плюс Web Components - они поддерживаются не во всех современных браузерах, придется приложить усилия используя их прямо сегодня, но это все же возможно. Тем не менее, Web Components - это завтра front-end и похоже, что в этом уже никто не сомневается.</p><p><br></p><p><br></p></section>
+        </article>
+      </body>
+      <script type="text/javascript" src="/js/note.js"></script>
+    </html>
