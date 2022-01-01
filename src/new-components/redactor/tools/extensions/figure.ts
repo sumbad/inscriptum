@@ -44,14 +44,17 @@ export const Figure = Node.create<FigureOptions>({
   draggable: true,
   defining: true,
   selectable: true,
+  
 
   content() {
     return 'text*';
   },
 
-  defaultOptions: {
-    inline: false,
-    HTMLAttributes: {},
+  addOptions() {
+    return {
+      inline: false,
+      HTMLAttributes: {},
+    }
   },
 
   inline() {

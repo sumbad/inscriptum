@@ -32,17 +32,19 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   content: '(hljsCodeBlockRow|paragraph?)+',
   isolating: true,
 
-  defaultOptions: {
-    languageClassPrefix: 'language-',
-    HTMLAttributes: {},
-    printContentAsHTML: false
-  },
-
   marks: '',
 
   group: 'block',
 
   defining: true,
+
+  addOptions() {
+    return {
+      languageClassPrefix: 'language-',
+      HTMLAttributes: {},
+      printContentAsHTML: false
+    }
+  },
 
   addAttributes() {
     return {

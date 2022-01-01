@@ -12,11 +12,6 @@ interface CodeBlockNodeOptions {
 export const CodeBlock2HljsCodeBlock = Node.create<CodeBlockNodeOptions>({
   name: 'codeBlock',
 
-  defaultOptions: {
-    languageClassPrefix: 'language-',
-    HTMLAttributes: {},
-  },
-
   content: 'text*',
 
   marks: '',
@@ -26,6 +21,13 @@ export const CodeBlock2HljsCodeBlock = Node.create<CodeBlockNodeOptions>({
   code: true,
 
   defining: true,
+
+  addOptions() {
+    return {
+      languageClassPrefix: 'language-',
+      HTMLAttributes: {},
+    }
+  },
 
   parseHTML() {
     return [

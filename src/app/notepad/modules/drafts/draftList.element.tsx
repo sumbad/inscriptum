@@ -1,6 +1,5 @@
 import { EG } from '@web-companions/gfc';
 import { render } from 'lit-html2';
-import type { Subscription } from 'rxjs';
 import page from 'page';
 
 import 'components/list';
@@ -16,7 +15,6 @@ const SaveIconNode = saveIconNode();
 const MenuElement = menuElement('inscriptum-menu');
 
 export const draftListElement = EG()(function* () {
-  const subs: Subscription[] = [];
   let drafts: IListItem[] = [];
   let isPreloader = true;
 
@@ -55,28 +53,22 @@ export const draftListElement = EG()(function* () {
   const { $: $createNewDraft, _: _createNewDraft } = supervise(createNewDraft);
   const { $: $deleteDraftById, _: _deleteDraftById } = supervise(deleteDraftById);
 
-  subs.push(
-    $getAllDrafts.subscribe((d) => {
-      drafts = d;
-      isPreloader = false;
+  $getAllDrafts.subscribe((d) => {
+    drafts = d;
+    isPreloader = false;
 
-      this.next();
-    })
-  );
+    this.next();
+  });
 
-  subs.push(
-    $createNewDraft.subscribe((d) => {
-      page('/draft/' + d.id);
-    })
-  );
+  $createNewDraft.subscribe((d) => {
+    page('/draft/' + d.id);
+  });
 
-  subs.push(
-    $deleteDraftById.subscribe((deletedDraft) => {
-      drafts = drafts.filter((d) => d.id !== deletedDraft.id);
+  $deleteDraftById.subscribe((deletedDraft) => {
+    drafts = drafts.filter((d) => d.id !== deletedDraft.id);
 
-      this.next();
-    })
-  );
+    this.next();
+  });
 
   _getAllDrafts();
 
@@ -107,6 +99,8 @@ export const draftListElement = EG()(function* () {
       );
     }
   } finally {
-    subs.forEach((it) => it.unsubscribe());
+    $getAllDrafts.complete();
+    $createNewDraft.complete();
+    $deleteDraftById.complete();
   }
 });

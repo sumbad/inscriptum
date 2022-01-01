@@ -28,7 +28,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true
   },
-  "exclude": [ "build", "src/public", "webpack.*", "webpack", "postcss.config.js", "babel.config.js", "browser-sync.js", "src/lib/**/*.js"],
+  "exclude": [ "build", "src/public", "webpack.*", "webpack", "postcss.config.js", "babel.config.js", "browser-sync.js", "src/lib"],
   "compileOnSave": false,
   "plugins": [
     {

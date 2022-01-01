@@ -48,4 +48,4 @@ export const authState: Observable<AuthState> = merge(hub.$, auth$).pipe(
   distinct(),
   publishReplay(1),
   refCount()
-);
+) as Observable<AuthState>;

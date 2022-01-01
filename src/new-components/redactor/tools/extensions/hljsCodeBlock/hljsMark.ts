@@ -10,8 +10,10 @@ export const HljsMark = Mark.create<HljsMarkOptions>({
 
   group: 'hljsCodeBlock hljsCodeBlockRow',
 
-  defaultOptions: {
-    HTMLAttributes: {},
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
   },
 
   addAttributes() {

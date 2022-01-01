@@ -1,65 +1,84 @@
   
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Stencil: компилятор Web Components и PWA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="MobileOptimized" content="176">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
-    <meta property="og:site_name" content="inscriptum">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Stencil: компилятор Web Components и PWA">
-    <meta property="og:description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
-    <meta property="og:image" content="">
-    <meta property="article:published_time" content="2019-11-05T06:14:14.000Z">
-    <meta property="article:modified_time" content="2019-12-02T11:39:21.000Z">
-    <meta property="article:author" content="test@test.test">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Stencil: компилятор Web Components и PWA">
-    <meta name="twitter:description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
-    <meta name="twitter:image" content="">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-    <link href="/css/note.css" rel="stylesheet">
-    <link href="/css/custom_editor_fonts.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="tl_page_wrap">
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Stencil: компилятор Web Components и PWA</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="MobileOptimized" content="176">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="robots" content="index, follow">
+        <meta name="description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
+        <meta property="og:site_name" content="inscriptum">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Stencil: компилятор Web Components и PWA">
+        <meta property="og:description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
+        <meta property="og:image" content="">
+        <meta property="article:published_time" content="2019-11-05T14:14:14+00:00">
+        <meta property="article:modified_time" content="2021-12-31T02:27:46.856Z">
+        <meta property="article:author" content="test@test.test">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Stencil: компилятор Web Components и PWA">
+        <meta name="twitter:description" content="Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.">
+        <meta name="twitter:image" content="">
+        <style>/* cyrillic */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/inter/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0ZL7W0Q5n-wU.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/inter/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: "JetBrainsMono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/jetbrainsmono/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTPlOTk6OThhvAWV8.woff) format("woff");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin */
+@font-face {
+  font-family: "JetBrainsMono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/jetbrainsmono/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTOlOTk6OThhvA.woff) format("woff");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+html {
+  font-family: sans-serif;
+}
 
-    <div class="tl_page">
-      <section class="tl_article">
-        <header class="tl_article_header">
-          <h1 dir="auto">Stencil: компилятор Web Components и PWA</h1>
-          <address dir="auto">
-            <a rel="author">Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.</a>
-            <time datetime=""></time>
-          </address>
-        </header>
-        <article id="_tl_editor" class="tl_article_content ql-container ql-disabled"><div class="ql-editor" data-gramm="false" contenteditable="false" dir="auto"><p><br></p><p><a href="https://stenciljs.com/" target="_blank">Stencil</a> был создан командой&nbsp;<a href="http://ionicframework.com/" target="_blank">Ionic Framework</a>&nbsp;для развития одноименной библиотеки UI компонентов. Сутью инструмента является итоговая компиляция в соответствии со спецификациями <a href="https://w3c.github.io/webcomponents/explainer/" target="_blank">Web Components</a>. Это позволяет добиться переиспользуемости и универсальности компонентов на Stencil. </p><p>Ниже кратко опишу свой опыт использования Stencil на протяжении 5-ти месяцев. За это время я создал несколько десятков UI компонентов разного уровня сложности и написал одно SPA приложение с использование Stencil. Использовал Stencil в монорепозиториях с lerna. Сразу оговорюсь, что не пробовал использовать Stencil для PWA, Web Workers и не представляю насколько хорошо работают компоненты в мобильных браузерах.</p><h3><br></h3><h3 id="Немного-механики">Немного механики</h3><p>Хотя Stencil и компилируется в Web Component, но помимо Custom Element и Shadow DOM из спецификации он использует собственный загрузчик (обертка над <code>customElements.define</code>) и virtual DOM (VDOM). Это дает возможность использовать HMR и lazy loading при написании Stencil компонентов.</p><p>Компилируется компонент с помощью TypeScript, а сборка осуществляется посредством Rollup. Нюансы этого процесса скрыты от разработчика обертками компилятора Stencil. Для стилей могут быть использованы sass, less, postcss, stylus.</p><p>Stencil сразу содержит cli и dev server. Дополнительно можно использовать плагины Rollup. Для тестов используется Jest и в качестве движка e2e тестов - puppeteer.</p><p>На выходе Stencil соберет бандлы для разных версий браузеров (с поддержкой  ES6 Module и без неё), полифилы, загрузчик и типы. Дополнительно можно автоматически сгенерировать API компонента и добавить его в README или сохранить в виде <code>json</code> файла.</p><h4 id="Особенности">Особенности</h4><p>Stencil можно воспринимать как комбайн для написания Web Component с собственным рендером через VDOM. Это накладывает ряд ограничений на изменение процесса создания компонента. К примеру, теряется гибкость настройки Rollup и среды для выполнения тестов. С другой стороны, мы сразу получаем готовую инфраструктуру разработки компонентов. Это существенно экономит время на старте и для несложных наборов UI компонентов.</p><p><br></p><h3 id="Для-чего-Stencil-хорошо-подходит">Для чего Stencil хорошо подходит</h3><p>Лучше всего Stencil подходит для создания UI компонентов низкой и средней сложности (т.е. без глобального стейта, с одним или несколькими визуальными представлениями). Собственно, так его и позиционируют разработчики Ionic. При этом неважно насколько много будет компонентов, главное, чтобы они не зависели от единого стейта.</p><p>Stencil имеет свои Lifecycle методы в дополнение к тем, что определены в стандарте Web Components. Шаблоном для компонента является JSX разметка. В компонентах активно используются декораторы. Всё это делает из Stencil хороший инструмент для создания библиотек UI компонентов.</p><h4 id="Особенности">Особенности</h4><p>Благодаря VDOM Stencil дает возможность использовать <code>ref</code> - прямая ссылка на ноду в DOM компонента. Но это же, в свою очередь, приводит к нетипичному поведению <code>this</code> внутри класса компонента. Оно ссылается не на Custom Element, а на компонент Stencil. Получить ссылку на сам элемент можно через специальный декоратор:</p><pre class="ql-syntax" spellcheck="false"><code class="hljs"><span class="l"><span class="hljs-keyword">import</span> { Element } <span class="hljs-keyword">from</span> <span class="hljs-string">'@stencil/core'</span>;</span>
-<span class="l"> </span>
-<span class="l"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TodoList { </span>
-<span class="l">  <span class="hljs-meta">@Element</span>() el: HTMLElement;</span>
-<span class="l"> </span>
-<span class="l">  getListHeight(): <span class="hljs-built_in">number</span> { </span>
-<span class="l">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.el.getBoundingClientRect().height; </span>
-<span class="l">  } </span>
-<span class="l">}</span>
-</code></pre><p><br></p><p>Ещё один нюанс - это работа с нативными событиями, если их использовать через декоратора <code>@Event()</code>, то Stencil выбросит предупреждение при компиляции. Это можно обойти, если диспатчить события самостоятельно, но тогда такое событие не будет учтено при генерации документации.</p><p>Интересным моментом является использование монорепозитория, в котором каждый компонент является независимым Stencil проектом. При создании библиотеки UI компонентов стоит учитывать, что Stencil не рассчитан на монорепозитории. К примеру, с lerna придется писать дополнительные скрипты публикации. Данный подход помимо явных плюсов независимости компонентов будет приводить к избыточности т.к. каждый компонент Stencil имеет собственный загрузчик и VDOM. На сколько это накладно и при каких объемах начнет сказываться на производительности сказать не могу. Эмпирически выявили, что при использовании до 10-ти таких компонентов в приложении проблем не возникало.</p><p><br></p><h3 id="Для-чего-лучше-выбрать-другой-инструмент">Для чего лучше выбрать другой инструмент</h3><p>Если стоит задача создания полноценного SPA приложения. Это обусловлено отсутствием или слабой развитостью инструментов необходимых при разработке масштабных приложений. </p><h4 id="Особенности">Особенности</h4><p>В экосистеме Stencil, на данный момент, нет удобного способа для управления маршрутизацией внутри SPA приложения и работой с глобальным состоянием. Команда Ionic предлагает для управления состоянием использовать Redux, но сам пакет <a href="https://github.com/ionic-team/stencil-redux" target="_blank">stencil-redux</a> давно не обновлялся и не соответствует последней версии Stencil. Помимо этого использование данного подхода сильно осложнено дополнительными связками, которые отсутствуют в React. Ситуация с роутером схожая. Команда разработчиков Stencil попыталась создать аналог React роутера, но сейчас решение очень "сырое" и не подходит для масштабных приложений.</p><p>Возможно, со временем ситуация изменится, но пока разработка SPA на Stencil связана с множеством сложностей.</p><p><br></p><h3 id="Документация">Документация</h3><p>У Stencil хорошая <a href="https://stenciljs.com/docs/introduction" target="_blank">начальная документация</a>, её вполне достаточно для старта и написания небольших или средних UI компонентов. По более глубоким вопросам ответ часто приходится искать в issue или на форумах.</p><p>Стоит отметить, что команда и сообщество Stencil периодически пишет статьи, которые частично раскрывают особенности работы.</p><p><br></p><h3 id="Кратко">Кратко</h3><p>Идеальным инструмент назвать нельзя, но он решает вполне определенные задачи и может быть использован для создания библиотек UI компонентов независимых от фреймворков. </p><p>Будущее Stencil пока не ясно, сможет ли он найти свою нишу среди популярных инструментов фронтенд разработчиков. </p><p><br></p><h3 id="Ссылки">Ссылки</h3><ol start="0" style="counter-reset: list-0 0;"><li><a href="https://stenciljs.com/" target="_blank">Стартовая страница</a>.</li><li><a href="https://github.com/ionic-team/stencil" target="_blank">Репозиторий</a>.</li><li><a href="https://github.com/ispsystem/plugin-imunify/tree/master/client" target="_blank">Открытый проект плагина, фронт на Stencil</a>.</li></ol></div></article>
-        
-        <aside class="tl_article_buttons">
-          
-          <a id="_edit_button" class="button edit_button" href="/draft/f7d154e8-eddc-4225-a827-8e18e7512c39">Edit</a>
-          
-          
-          
-        </aside>
-      </section>
-    </div>
-  </div>
-  </body>
-  
-  <script type="text/javascript" src="/js/note.js"></script>
-</html>
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", sans-serif;
+  }
+}
+.container {
+  max-width: 800px;
+}
+</style>
+        <link rel="shortcut icon" type="image/png" href="favicon.png">
+        <link href="/css/note.css" rel="stylesheet">
+        <link href="/css/custom_editor_fonts.css" rel="stylesheet">
+      </head>
+      <body>
+        <article>
+          <section><h1 data-placeholder="Title" data-label="Title">Stencil: компилятор Web Components и PWA</h1><p data-placeholder="Summary of the text" data-label="Summary" role="definition">Кратко об опыте использования Stencil, который позиционируется, как современное развитие UI фреймворков нацеленных на создание визуальных компонентов.</p><p data-placeholder="Take a notes"> </p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://stenciljs.com/">Stencil</a> был создан командой&nbsp;<a target="_blank" rel="noopener noreferrer nofollow" href="http://ionicframework.com/">Ionic Framework</a>&nbsp;для развития одноименной библиотеки UI компонентов. Сутью инструмента является итоговая компиляция в соответствии со спецификациями <a target="_blank" rel="noopener noreferrer nofollow" href="https://w3c.github.io/webcomponents/explainer/">Web Components</a>. Это позволяет добиться переиспользуемости и универсальности компонентов на Stencil.</p><p>Ниже кратко опишу свой опыт использования Stencil на протяжении 5-ти месяцев. За это время я создал несколько десятков UI компонентов разного уровня сложности и написал одно SPA приложение с использование Stencil. Использовал Stencil в монорепозиториях с lerna. Сразу оговорюсь, что не пробовал использовать Stencil для PWA, Web Workers и не представляю насколько хорошо работают компоненты в мобильных браузерах.</p><h3></h3><h3>Немного механики</h3><p>Хотя Stencil и компилируется в Web Component, но помимо Custom Element и Shadow DOM из спецификации он использует собственный загрузчик (обертка над <code>customElements.define</code>) и virtual DOM (VDOM). Это дает возможность использовать HMR и lazy loading при написании Stencil компонентов.</p><p>Компилируется компонент с помощью TypeScript, а сборка осуществляется посредством Rollup. Нюансы этого процесса скрыты от разработчика обертками компилятора Stencil. Для стилей могут быть использованы sass, less, postcss, stylus.</p><p>Stencil сразу содержит cli и dev server. Дополнительно можно использовать плагины Rollup. Для тестов используется Jest и в качестве движка e2e тестов - puppeteer.</p><p>На выходе Stencil соберет бандлы для разных версий браузеров (с поддержкой ES6 Module и без неё), полифилы, загрузчик и типы. Дополнительно можно автоматически сгенерировать API компонента и добавить его в README или сохранить в виде <code>json</code> файла.</p><h4>Особенности</h4><p>Stencil можно воспринимать как комбайн для написания Web Component с собственным рендером через VDOM. Это накладывает ряд ограничений на изменение процесса создания компонента. К примеру, теряется гибкость настройки Rollup и среды для выполнения тестов. С другой стороны, мы сразу получаем готовую инфраструктуру разработки компонентов. Это существенно экономит время на старте и для несложных наборов UI компонентов.</p><p><br></p><h3>Для чего Stencil хорошо подходит</h3><p>Лучше всего Stencil подходит для создания UI компонентов низкой и средней сложности (т.е. без глобального стейта, с одним или несколькими визуальными представлениями). Собственно, так его и позиционируют разработчики Ionic. При этом неважно насколько много будет компонентов, главное, чтобы они не зависели от единого стейта.</p><p>Stencil имеет свои Lifecycle методы в дополнение к тем, что определены в стандарте Web Components. Шаблоном для компонента является JSX разметка. В компонентах активно используются декораторы. Всё это делает из Stencil хороший инструмент для создания библиотек UI компонентов.</p><h4>Особенности</h4><p>Благодаря VDOM Stencil дает возможность использовать <code>ref</code> - прямая ссылка на ноду в DOM компонента. Но это же, в свою очередь, приводит к нетипичному поведению <code>this</code> внутри класса компонента. Оно ссылается не на Custom Element, а на компонент Stencil. Получить ссылку на сам элемент можно через специальный декоратор:</p><pre><code autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><div class="l"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Element</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@stencil/core'</span>;</div><div class="l"> </div><div class="l"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TodoList</span> { </div><div class="l">  <span class="hljs-meta">@Element</span>() <span class="hljs-attr">el</span>: <span class="hljs-title class_">HTMLElement</span>;</div><div class="l"> </div><div class="l">  <span class="hljs-title function_">getListHeight</span>(): <span class="hljs-built_in">number</span> { </div><div class="l">    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">el</span>.<span class="hljs-title function_">getBoundingClientRect</span>().<span class="hljs-property">height</span>; </div><div class="l">  } </div><div class="l">}</div></code></pre><p></p><p>Ещё один нюанс - это работа с нативными событиями, если их использовать через декоратора <code>@Event()</code>, то Stencil выбросит предупреждение при компиляции. Это можно обойти, если диспатчить события самостоятельно, но тогда такое событие не будет учтено при генерации документации.</p><p>Интересным моментом является использование монорепозитория, в котором каждый компонент является независимым Stencil проектом. При создании библиотеки UI компонентов стоит учитывать, что Stencil не рассчитан на монорепозитории. К примеру, с lerna придется писать дополнительные скрипты публикации. Данный подход помимо явных плюсов независимости компонентов будет приводить к избыточности т.к. каждый компонент Stencil имеет собственный загрузчик и VDOM. На сколько это накладно и при каких объемах начнет сказываться на производительности сказать не могу. Эмпирически выявили, что при использовании до 10-ти таких компонентов в приложении проблем не возникало.</p><p><br></p><h3>Для чего лучше выбрать другой инструмент</h3><p>Если стоит задача создания полноценного SPA приложения. Это обусловлено отсутствием или слабой развитостью инструментов необходимых при разработке масштабных приложений.</p><h4>Особенности</h4><p>В экосистеме Stencil, на данный момент, нет удобного способа для управления маршрутизацией внутри SPA приложения и работой с глобальным состоянием. Команда Ionic предлагает для управления состоянием использовать Redux, но сам пакет <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/ionic-team/stencil-redux">stencil-redux</a> давно не обновлялся и не соответствует последней версии Stencil. Помимо этого использование данного подхода сильно осложнено дополнительными связками, которые отсутствуют в React. Ситуация с роутером схожая. Команда разработчиков Stencil попыталась создать аналог React роутера, но сейчас решение очень "сырое" и не подходит для масштабных приложений.</p><p>Возможно, со временем ситуация изменится, но пока разработка SPA на Stencil связана с множеством сложностей.</p><p><br></p><h3>Документация</h3><p>У Stencil хорошая <a target="_blank" rel="noopener noreferrer nofollow" href="https://stenciljs.com/docs/introduction">начальная документация</a>, её вполне достаточно для старта и написания небольших или средних UI компонентов. По более глубоким вопросам ответ часто приходится искать в issue или на форумах.</p><p>Стоит отметить, что команда и сообщество Stencil периодически пишет статьи, которые частично раскрывают особенности работы.</p><p><br></p><h3>Кратко</h3><p>Идеальным инструмент назвать нельзя, но он решает вполне определенные задачи и может быть использован для создания библиотек UI компонентов независимых от фреймворков.</p><p>Будущее Stencil пока не ясно, сможет ли он найти свою нишу среди популярных инструментов фронтенд разработчиков.</p><p><br></p><h3>Ссылки</h3><ol start="0"><li><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://stenciljs.com/">Стартовая страница</a>.</p></li><li><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/ionic-team/stencil">Репозиторий</a>.</p></li><li><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/ispsystem/plugin-imunify/tree/master/client">Открытый проект плагина, фронт на Stencil</a>.</p></li></ol></section>
+        </article>
+      </body>
+      <script type="text/javascript" src="/js/note.js"></script>
+    </html>

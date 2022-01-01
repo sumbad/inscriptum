@@ -1,21 +1,21 @@
-import { EG, useEffect, useReducer, useRef, useState } from '@web-companions/fc';
+import { EG, p } from '@web-companions/gfc';
+import { render } from 'lit-html2';
+import { repeat } from 'lit-html2/directives/repeat.js';
+import { ref, createRef, Ref } from 'lit-html2/directives/ref.js';
+
 import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
-import { render } from 'lit-html';
-import { repeat } from 'lit-html/directives/repeat';
+
 import { loadingProgressBar, LoadingProgressBarHTMLElement } from 'loading-progress-bar';
 import { controlsPanelElement } from 'new-components/controls-panel/controlsPanel.element';
-import { PageAction } from 'new-components/page/page.action';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { getById } from 'new-components/draft/draft.service';
 import { pageElement } from '../page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
-import { DraftAction } from './draft.action';
 import { draft$, DraftState, reducer } from './draft.state';
 import { sidebarElement } from 'new-components/sidebar/sidebar.element';
-
-const css = String.raw;
+import { css } from 'utils/common';
 
 const PageElement = pageElement('inscriptum-page');
 const LoadingProgressBarElement = loadingProgressBar('loading-progress-bar');
@@ -25,102 +25,100 @@ const SidebarElement = sidebarElement('inscriptum-sidebar');
 
 export const draftElement = EG({
   props: {
-    id: {
-      type: String,
-      attribute: 'data-id',
-    },
+    id: p.req<string>('data-id'),
   },
-  render,
-})(function (props) {
-  // TODO: fix types for useReducer
-  const [state, dispatch]: [DraftState, (action: DraftAction | PageAction) => void] = useReducer(reducer, {
-    isLoading: false,
-  }) as any;
+})(function* (props) {
+  const subs: Subscription[] = [];
+  const loadingRef: Ref<LoadingProgressBarHTMLElement> = createRef();
+  let state: DraftState = {
+    isLoading: false
+  };
+  let title = state.data?.table_of_contents[0];
+  let rafId = 0;
 
-  const [subs, setSubs] = useState(new Subscription());
-  const [rafId, setRafId] = useState(0);
+  getById(props.id);
 
-  const loadingRef = useRef<LoadingProgressBarHTMLElement | null>(null);
+  subs.push(
+    draft$(props.id).subscribe(
+      (action) => {
+        state = reducer(state, action);
 
-  useEffect(() => {
-    const sub = draft$(props.id).subscribe((action) => dispatch(action as any));
-    return () => {
-      sub.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    getById(props.id);
-  }, [props.id]);
-
-  useEffect(() => {
-    cancelAnimationFrame(rafId);
-    setRafId(
-      requestAnimationFrame(() => {
-        if (loadingRef.current != null) {
-          subs.unsubscribe();
-          setSubs(savingProcessSubs(loadingRef));
-        }
-      })
-    );
-    return () => {
-      cancelAnimationFrame(rafId);
-      subs.unsubscribe();
-    };
-  }, [loadingRef.current]);
-
-  useEffect(() => {
-    const title = state.data?.table_of_contents[0];
-    if (title != null) {
-      document.title = title.header;
-    }
-  }, [state]);
-
-  return (
-    <>
-      <style>{require('./draft.scss')}</style>
-      <LoadingProgressBarElement ref={loadingRef}></LoadingProgressBarElement>
-
-      <um-preloader loading={state.isLoading}>
-        <div class="draft-content">
-          <SidebarElement>
-            <ControlsPanelElement draftId={props.id}></ControlsPanelElement>
-            <TableOfContentElement items={state.data?.table_of_contents ?? []}></TableOfContentElement>
-          </SidebarElement>
-          <div
-            style={css`
-              width: 100%;
-            `}
-          >
-            {repeat(
-              state.data?.pages ?? [],
-              (p) => `${p.id}_${p.order}`,
-              (page) => (
-                <PageElement
-                  page={page}
-                  style={css`
-                    position: relative;
-                    display: block;
-                    border-bottom: 1px solid #eee;
-                    margin-left: 150px;
-                  `}
-                  header={state.data?.table_of_contents[page.order]?.header}
-                ></PageElement>
-              )
-            )}
-          </div>
-        </div>
-      </um-preloader>
-    </>
+        this.next();
+      }
+    )
   );
+
+  rafId = requestAnimationFrame(() => {
+    if (loadingRef.value != null) {
+      subs.push(savingProcessSubs(loadingRef))
+    }
+  })
+
+  try {
+    let _props = props;
+    
+    while (true) {
+      if (_props?.id !== props.id) {
+        getById(props.id);
+      }
+
+      if (state.data != null && title !== state.data.table_of_contents[0]) {
+        title = state.data.table_of_contents[0];
+        document.title = title.header;
+      }
+
+      _props = yield render(
+        <>
+          <style>{require('./draft.scss')}</style>
+          <LoadingProgressBarElement ref={ref(loadingRef)}></LoadingProgressBarElement>
+
+          <um-preloader loading={state.isLoading}>
+            <div class="draft-content">
+              <SidebarElement>
+                <ControlsPanelElement draftId={props.id}></ControlsPanelElement>
+                <TableOfContentElement items={state.data?.table_of_contents ?? []}></TableOfContentElement>
+              </SidebarElement>
+              <div
+                style={css`
+                  width: 100%;
+                `}
+              >
+                {repeat(
+                  state.data?.pages ?? [],
+                  (p) => `${p.id}_${p.order}`,
+                  (page) => (
+                    <PageElement
+                      page={page}
+                      style={css`
+                        position: relative;
+                        display: block;
+                        border-bottom: 1px solid #eee;
+                        margin-left: 150px;
+                      `}
+                      header={state.data?.table_of_contents[page.order]?.header}
+                    ></PageElement>
+                  )
+                )}
+              </div>
+            </div>
+          </um-preloader>
+        </>,
+        this
+      );
+    }
+  } finally {
+    cancelAnimationFrame(rafId);
+
+    subs.forEach(it=>it.unsubscribe());
+  }
 });
 
-function savingProcessSubs(loadingRef: { current: LoadingProgressBarHTMLElement | null }): Subscription {
+function savingProcessSubs(loadingRef: Ref<LoadingProgressBarHTMLElement>): Subscription {
   const subs: Subscription = new Subscription();
   let originDocumentTitle = document.title;
 
-  const togglePause = loadingRef.current?.togglePause;
-  const generateProgress = loadingRef.current?.generateProgress;
+  const togglePause = loadingRef.value?.togglePause;
+  const generateProgress = loadingRef.value?.generateProgress;
 
   if (togglePause != null && generateProgress != null) {
     let savingTime = 2000;

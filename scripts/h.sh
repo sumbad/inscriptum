@@ -7,6 +7,9 @@
     # "h:metadata": "hasura metadata export --admin-secret myadminsecretkey",
     # "h:update-cli": "hasura update-cli"
 
+# Seeds
+  # hasura seed apply --admin-secret myadminsecretkey
+
 # Publish
     # git remote -v
     # git push heroku master
