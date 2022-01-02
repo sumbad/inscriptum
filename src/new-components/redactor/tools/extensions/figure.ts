@@ -1,6 +1,5 @@
 import { Command, Node, nodeInputRule, mergeAttributes } from '@tiptap/core';
-import { showError, uploadDataToBlob } from 'components/editor/editor/utils';
-import { uploadFileService } from 'components/editor/image.service';
+import { showError, uploadDataToBlob, uploadFileService } from 'services/image.service';
 import { Fragment } from 'prosemirror-model';
 
 export interface FigureOptions {

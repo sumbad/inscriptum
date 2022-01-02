@@ -1,9 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
-import { draftApi } from './api/draft';
 import { authorApi, Author } from './api/author';
-import { noteApi } from './api/note';
 import type { UserInfo } from 'auth';
-import { pageApi } from './api/page';
 
 /**
  * Singleton. Storage service with method to work with GraphQL data source
@@ -12,10 +9,7 @@ export class StorageService {
   public author: Author;
 
   public api: {
-    draft: ReturnType<typeof draftApi>,
     author: ReturnType<typeof authorApi>,
-    note: ReturnType<typeof noteApi>,
-    page: ReturnType<typeof pageApi>,
   };
 
   /** options for request data from GraphQL server */
@@ -52,10 +46,7 @@ export class StorageService {
   prepareApi() {
     const graphQLClient = new GraphQLClient(this._graphQLClientEndpoint, this._graphQLClientOptions);
     this.api = {
-      draft: draftApi(graphQLClient),
       author: authorApi(graphQLClient),
-      note: noteApi(graphQLClient),
-      page: pageApi(graphQLClient),
     };
   }
 

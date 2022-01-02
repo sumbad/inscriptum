@@ -2,7 +2,6 @@ import { JSONContent } from '@tiptap/core';
 import { FIGURE_NODE_NAME } from 'new-components/redactor/tools/extensions/figure';
 import { TOPIC_SUMMARY_NODE_NAME } from 'new-components/redactor/tools/extensions/topicSummary';
 import { TOPIC_TITLE_NODE_NAME } from 'new-components/redactor/tools/extensions/topicTitle';
-import Delta from 'quill-delta';
 
 export function hasCustomElement(tag: string): boolean {
   return typeof customElements.get(tag) !== 'undefined';
@@ -45,58 +44,6 @@ export function loadStyleFile(path: string) {
     link.media = 'all';
     head.appendChild(link);
   }
-}
-
-/**
- * Get from quill.js Delta object preview info
- *  @deprecated
- *
- * @param delta - quill.js Delta object
- */
-export function quillDelta2Preview(delta: Delta) {
-  let previewTitle = '<noname>';
-  let previewContent = '...';
-  let previewImage = '';
-  if (Array.isArray(delta?.ops) && delta.ops.length > 0) {
-    previewTitle = String(delta.ops[0].insert);
-    previewContent = String(delta.ops[2].insert);
-    const imageItem = delta.ops.find((item) => getNestedObject(item, ['insert', 'blockFigure', 'image']) !== undefined);
-    if (imageItem != undefined) {
-      previewImage = getNestedObject(imageItem, ['insert', 'blockFigure', 'image']);
-    }
-
-    if (previewContent.length < 3) {
-      for (const [index, value] of delta.ops.entries()) {
-        if (index > 2) {
-          if (previewContent.length > 100) {
-            break;
-          }
-
-          if (getNestedObject(value, ['insert', 'blockFigure', 'image']) !== undefined) {
-            previewImage = getNestedObject(value, ['insert', 'blockFigure', 'image']);
-          } else {
-            previewContent += ' ' + value.insert;
-          }
-        }
-      }
-      previewContent += '...';
-    }
-  }
-
-  previewContent = previewContent
-    .trim()
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/`/g, '&DiacriticalGrave;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-
-  return {
-    title: previewTitle,
-    description: previewContent,
-    image: previewImage,
-  };
 }
 
 /**

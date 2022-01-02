@@ -1,12 +1,10 @@
 import { EG, useEffect, useState } from '@web-companions/fc';
 import { TypeConstructor } from '@web-companions/fc/common.model';
-import Delta from 'quill-delta';
 import { render } from 'lit-html';
 import { useLitRef } from 'hooks/useLitRef';
 import { createEditor } from './tools/redactor';
 import { Editor, JSONContent } from '@tiptap/core';
 import { bubbleMenuElement } from './bubbleMenu.element';
-import { quillInnerHtml } from './tools/fromQuill';
 import { floatingMenuElement } from './new-components/floatingMenu.element';
 
 const BubbleMenuElement = bubbleMenuElement('inscriptum-redactor-bubble-menu');
@@ -15,7 +13,7 @@ const FloatingMenuElement = floatingMenuElement('inscriptum-redactor-floating-me
 export const redactorElement = EG({
   props: {
     content: {
-      type: {} as TypeConstructor<Delta | JSONContent | string | null>,
+      type: {} as TypeConstructor<JSONContent | string | null>,
       default: null,
     },
     cbOnUpdateContent: {
@@ -40,13 +38,7 @@ export const redactorElement = EG({
         const editorEl = editorContainerEl.current;
 
         if (editorEl != null) {
-          let content: JSONContent | string | null = null;
-
-          if (props.content != null && typeof props.content === 'object' && 'ops' in props.content) {
-            content = quillInnerHtml(props.content as Delta);
-          } else {
-            content = props.content;
-          }
+          const content = props.content;
 
           setEditor(
             createEditor(editorEl, content, props.isTitle, {

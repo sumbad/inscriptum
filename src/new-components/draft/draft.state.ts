@@ -2,7 +2,6 @@ import { JSONContent } from '@tiptap/core';
 import hub from 'hub';
 import { HubAction, HUB_ACTION } from 'hub/actions';
 import { DraftModel } from 'models/draft.model';
-import Delta from 'quill-delta';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { publishDraft, updateToc } from 'new-components/draft/draft.service';
@@ -174,7 +173,7 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
  * @param content : the page content;
  * @returns
  */
-function getPageHeader(content?: Delta | JSONContent) {
+function getPageHeader(content?: JSONContent) {
   let header = '...';
 
   if (content == null) {

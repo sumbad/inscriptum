@@ -1,8 +1,7 @@
 import { sdk } from 'api';
 import { IListItem } from 'components/list';
-import type Delta from 'quill-delta';
 import { config } from 'settings';
-import { quillDelta2Preview, redactorContent2Preview } from 'utils/common';
+import { redactorContent2Preview } from 'utils/common';
 import { authorized } from 'utils/guards';
 
 const MESSAGES = {
@@ -22,8 +21,7 @@ export async function getAllDrafts(): Promise<IListItem[]> {
 
     return drafts.map((item) => {
       const content = item.pages[0].content;
-      const { description, title, image } =
-        content != null && 'ops' in content ? quillDelta2Preview(content as Delta) : redactorContent2Preview(content);
+      const { description, title, image } = redactorContent2Preview(content);
       const tags =
         item.notes.length > 0
           ? [

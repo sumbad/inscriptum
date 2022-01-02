@@ -26,27 +26,6 @@ export class RootRoute extends AbstractRoute<TRootPath> {
           },
         },
         {
-          /**
-           * @deprecated
-           */
-          path: '/editor/:id/:flag?',
-          // path: '/editor*',
-          callback: async (ctx: PageJS.Context, next) => {
-            if (!this.routerOutlet.hasChildNodes()) {
-              await import('components/um-preloader');
-              const editor = await import('components/editor');
-              const editorComponent = new editor.EditorComponent();
-
-              editorComponent.dataset['id'] = ctx.params.id;
-              editorComponent.dataset['flag'] = ctx.params.flag;
-              this.routerOutlet.appendChild(editorComponent);
-            }
-
-            ctx.handled = true;
-            next();
-          },
-        },
-        {
           path: '/draft/:id',
           callback: async (ctx: PageJS.Context) => {
             const tag = 'inscriptum-draft';

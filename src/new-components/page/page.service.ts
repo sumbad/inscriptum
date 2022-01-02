@@ -3,8 +3,7 @@ import { sdk } from 'api';
 import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
 import { PageAction, PageActionSave, PAGE_ACTION } from 'new-components/page/page.action';
-import Delta from 'quill-delta';
-import { Subject, from, defer, of, throwError, EMPTY } from 'rxjs';
+import { Subject, from, defer, EMPTY } from 'rxjs';
 import { debounceTime, tap, switchMap, catchError } from 'rxjs/operators';
 import { config } from 'settings';
 import { authorized } from 'utils/guards';
@@ -41,7 +40,7 @@ export async function createMargin(pageId: string, dispatch: (action: PageAction
   });
 }
 
-async function saveChanges(pageId: string, draftId: string, content: Delta | JSONContent) {
+async function saveChanges(pageId: string, draftId: string, content: JSONContent) {
   return await authorized(async () => {
     try {
       await sdk().updatePageById({

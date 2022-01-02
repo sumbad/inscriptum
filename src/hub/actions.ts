@@ -2,7 +2,6 @@ import { JSONContent } from '@tiptap/core';
 import { Page } from 'models/page.model';
 import { DraftAction } from 'new-components/draft/draft.action';
 import { MarginAction } from 'new-components/margin/margin.action';
-import Delta from 'quill-delta';
 import { AuthAction } from './auth/auth.action';
 
 const namespace = 'HUB_ACTION' as const;
@@ -55,7 +54,7 @@ export type HubAction =
       payload: {
         draftId: string;
         pageId: string;
-        content: Delta | JSONContent;
+        content: JSONContent;
       };
     }
   | {

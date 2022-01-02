@@ -67,6 +67,29 @@ export function uploadFileService(file, onProgress): Promise<any> {
 }
 
 
+export function uploadDataToBlob(file_data) {
+  var binary = atob(file_data.base64_data);
+  var array: any[] = [];
+  for (var i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i));
+  }
+  return new Blob([new Uint8Array(array)], { type: file_data.type });
+}
+
+export function showError(error) {
+  let $error_msg = document.querySelector('#_error_msg') as HTMLElement;
+  $error_msg.textContent = error;
+  clearTimeout($error_msg['to']);
+  $error_msg.classList.add('shown');
+  $error_msg['to'] = setTimeout(
+    () => {
+      $error_msg.classList.remove('shown');
+    },
+    3000
+  );
+}
+
+
 
 
 // var cl = cloudinary.Cloudinary.new( { cloud_name: 'inscriptum'});
