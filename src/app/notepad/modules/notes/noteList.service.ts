@@ -36,9 +36,7 @@ export async function initNoteList() {
           )
     ).default;
   } catch (error) {
-    notes = await authorized(async () => {
-      return (await sdk().getAllNotes()).notes;
-    });
+    notes = (await sdk().getAllNotes()).notes;
   }
 
   let auth = await authState.pipe(first()).toPromise();

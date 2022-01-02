@@ -234,10 +234,7 @@
       - preview
       - static_link
       - updated_at
-      filter:
-        author:
-          auth0_id:
-            _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: author
     permission:

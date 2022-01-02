@@ -1,7 +1,6 @@
 import { EG } from '@web-companions/gfc';
 import { IListItem } from 'components/list';
 import { render } from 'lit-html2';
-import type { Subscription } from 'rxjs';
 import { supervise } from 'utils/component.tools';
 import { initNoteList, NoteAction } from './noteList.service';
 import page from 'page';
