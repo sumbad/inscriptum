@@ -33,7 +33,7 @@
 
             <inscriptum-list @action=${i} .value=${e}></inscriptum-list>
           </um-preloader>
-        </div>`,this)}finally{l.complete(),c.complete(),p.complete()}})))},3864:(e,t,o)=>{o.r(t),o.d(t,{ListComponent:()=>m});var n=o(745),r=o(3445),i=o(7157),a=o(6201),l=o(8947),s=o(1436),c=o(6024),d=o(577),p=o(1943),u=function(e,t,o,n){var r,i=arguments.length,a=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,o):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,o,n);else for(var l=e.length-1;l>=0;l--)(r=e[l])&&(a=(i<3?r(a):i>3?r(t,o,a):r(t,o))||a);return i>3&&a&&Object.defineProperty(t,o,a),a};l.vI.add(s.gc2,c.r6);let m=class extends n.yB{constructor(){super(a.Z,!1),this.styles=r.dy`
+        </div>`,this)}finally{l.complete(),c.complete(),p.complete()}})))},3864:(e,t,o)=>{o.r(t),o.d(t,{ListComponent:()=>d});var n=o(745),r=o(3445),i=o(7157),a=o(6201),l=o(577),s=o(1943),c=function(e,t,o,n){var r,i=arguments.length,a=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,o):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,o,n);else for(var l=e.length-1;l>=0;l--)(r=e[l])&&(a=(i<3?r(a):i>3?r(t,o,a):r(t,o))||a);return i>3&&a&&Object.defineProperty(t,o,a),a};let d=class extends n.yB{constructor(){super(a.Z,!1),this.styles=r.dy`
     <style>
       ${o(7432)}
       ${o(7880)}
@@ -55,7 +55,7 @@
             </div>
           `:"",t=(0,i.r)(this._list,(e=>e.id),((t,o)=>{var n,i;return r.dy`
         <div class="um-drafts__item">
-          ${(t.tags||[]).map((e=>null!=e.link?r.dy`<a href="/${e.link.href}" rel=${(0,d.o)(e.link.rel)}>${e.code}</a>`:e.code))}
+          ${(t.tags||[]).map((e=>null!=e.link?r.dy`<a href="/${e.link.href}" rel=${(0,l.o)(e.link.rel)}>${e.code}</a>`:e.code))}
           <h6 class="docs-header">${t.preview.title}</h6>
           <div class="row">
             ${(null===(n=t.preview.image)||void 0===n?void 0:n.length)>0?r.dy`
@@ -64,8 +64,8 @@
                   </div>
                 `:""}
             <div class=${(null===(i=t.preview.image)||void 0===i?void 0:i.length)>0?"ten columns":""}>
-              <a class="um-drafts__item-link" href=${t.linkUrl} rel=${(0,d.o)(t.linkRel)}>
-                <p class="docs-preview">${(0,p.A)(t.preview.description)}</p>
+              <a class="um-drafts__item-link" href=${t.linkUrl} rel=${(0,l.o)(t.linkRel)}>
+                <p class="docs-preview">${(0,s.A)(t.preview.description)}</p>
               </a>
               ${e(t.id,"function"==typeof t.actions?t.actions():t.actions)}
             </div>
@@ -74,7 +74,7 @@
       `}));return r.dy`
       ${this.styles}
       <div class="container">${t}</div>
-    `}dispatchAction(e){this.dispatchEvent(new CustomEvent("action",{detail:e}))}openPopover(e){var t;e.preventDefault(),this.closePopovers();const o=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,n=this.querySelector(`[id="${o}"]`);null!==n&&n.classList.add("open"),e.stopImmediatePropagation()}closePopovers(){this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))}};u([(0,n.SB)()],m.prototype,"_list",void 0),m=u([(0,n.Qr)("inscriptum-list")],m)},998:(e,t,o)=>{o.d(t,{i:()=>l});var n=o(1640),r=o(3584),i=o(3e3),a=o(5196);const l=(0,r.EG)()((function*(){let e=!1;for(i.f.pipe((0,a.P)((e=>{var t;return null!=(null===(t=e.data)||void 0===t?void 0:t.accessToken)&&!e.isLoading}))).subscribe((()=>{e=!0,this.next()}));;)yield(0,n.sY)(n.dy`
+    `}dispatchAction(e){this.dispatchEvent(new CustomEvent("action",{detail:e}))}openPopover(e){var t;e.preventDefault(),this.closePopovers();const o=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,n=this.querySelector(`[id="${o}"]`);null!==n&&n.classList.add("open"),e.stopImmediatePropagation()}closePopovers(){this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))}};c([(0,n.SB)()],d.prototype,"_list",void 0),d=c([(0,n.Qr)("inscriptum-list")],d)},998:(e,t,o)=>{o.d(t,{i:()=>l});var n=o(1640),r=o(3584),i=o(3e3),a=o(5196);const l=(0,r.EG)()((function*(){let e=!1;for(i.f.pipe((0,a.P)((e=>{var t;return null!=(null===(t=e.data)||void 0===t?void 0:t.accessToken)&&!e.isLoading}))).subscribe((()=>{e=!0,this.next()}));;)yield(0,n.sY)(n.dy`
         <style>${o(169)}</style>
 
         <div class="navbar-spacer"></div>
