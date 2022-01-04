@@ -36,8 +36,6 @@ export const draftElement = EG({
   let title = state.data?.table_of_contents[0];
   let rafId = 0;
 
-  getById(props.id);
-
   subs.push(
     draft$(props.id).subscribe(
       (action) => {
@@ -53,6 +51,8 @@ export const draftElement = EG({
       subs.push(savingProcessSubs(loadingRef))
     }
   })
+
+  getById(props.id);
 
   try {
     let _props = props;
