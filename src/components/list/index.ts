@@ -3,13 +3,8 @@ import { TemplateResult, html } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import litRender from 'abstract-element/render/lit';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-
-library.add(faAngleDown, faSave);
 
 export interface IListItem {
   id: string;
@@ -113,7 +108,9 @@ export class ListComponent extends AbstractElement {
       (i) => i.id,
       (i, index) => html`
         <div class="um-drafts__item">
-          ${(i.tags || []).map((t) => (t.link != null ? html`<a href="/${t.link.href}" rel=${ifDefined(t.link.rel)}>${t.code}</a>` : t.code))}
+          ${(i.tags || []).map((t) =>
+            t.link != null ? html`<a href="/${t.link.href}" rel=${ifDefined(t.link.rel)}>${t.code}</a>` : t.code
+          )}
           <h6 class="docs-header">${i.preview.title}</h6>
           <div class="row">
             ${i.preview.image?.length > 0
