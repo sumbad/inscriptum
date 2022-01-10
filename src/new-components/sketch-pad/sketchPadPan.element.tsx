@@ -33,7 +33,6 @@ export const sketchPadPanElement = EG({
     mode: p.opt<MarginElementMode>(), // need only to rerender this element
   },
 })(function* (this: HTMLElement & { next(): Promise<void> }, props) {
-
   const frameRef: Ref<HTMLDivElement> = createRef();
   const canvasRef: Ref<HTMLCanvasElement> = createRef();
 
@@ -150,8 +149,8 @@ export const sketchPadPanElement = EG({
   };
 
   function erase() {
-    if (ctx != null) {
-      ctx.globalCompositeOperation = 'destination-out';
+    if (sketchPad != null) {
+      sketchPad.setMode('erase');
     }
   }
 
@@ -172,6 +171,7 @@ export const sketchPadPanElement = EG({
   const setColor = (event: CustomEvent) => {
     if (sketchPad != null) {
       sketchPad.penColor = event.detail.value;
+      sketchPad.setMode('pencil');
 
       this.next();
     }
@@ -187,8 +187,8 @@ export const sketchPadPanElement = EG({
   };
 
   const setPencil = () => {
-    if (ctx != null) {
-      ctx.globalCompositeOperation = 'source-over';
+    if (sketchPad != null) {
+      sketchPad.setMode('pencil');
     }
   };
 
@@ -203,106 +203,110 @@ export const sketchPadPanElement = EG({
     updateCanvasContent();
   });
 
-  while (true) {
-    if (!Object.is(margin, props.data)) {
-      margin = props.data;
-      updateCanvasContent(false);
-    }
-
-    if (mode !== props.mode) {
-      // for fullscreen will work window.onresize
-      if (props.mode != 'full' && mode != 'full') {
-        adjustCanvas();
-        updateCanvasContent();
+  try {
+    while (true) {
+      if (!Object.is(margin, props.data)) {
+        margin = props.data;
+        updateCanvasContent(false);
       }
 
-      mode = props.mode;
-    }
+      if (mode !== props.mode) {
+        // for fullscreen will work window.onresize
+        if (props.mode != 'full' && mode != 'full') {
+          adjustCanvas();
+          updateCanvasContent();
+        }
 
-    props = yield render(
-      <>
-        <div
-          ref={ref(frameRef)}
-          class="sketch-pad_frame"
-          style={css`
-            background-color: ${mode === 'full' ? 'white' : 'transparent'};
-          `}
-        >
-          <canvas ref={ref(canvasRef)} class="signature-pad"></canvas>
-        </div>
+        mode = props.mode;
+      }
 
-        <div class="fab-container fab-container_main">
-          <div class="fab-container fab-container_vertical">
-            <hex-color-picker
-              id={`${margin.id}_colorPicker`}
-              name="colorPicker"
-              style={css`
-                cursor: pointer;
-              `}
-              value={color}
-              oncolor-changed={setColor}
-            />
+      props = yield render(
+        <>
+          <div
+            ref={ref(frameRef)}
+            class="sketch-pad_frame"
+            style={css`
+              background-color: ${mode === 'full' ? 'white' : 'transparent'};
+            `}
+          >
+            <canvas ref={ref(canvasRef)} class="signature-pad"></canvas>
           </div>
 
-          <div class="fab-container fab-container_vertical">
-            <button
-              class="fab-button fab-button_empty"
-              style={css`
-                bottom: -7px;
-                width: 20px;
-                height: 20px;
-              `}
-            >
-              <div class="sub-button">
-                <input type="range" value={penSize} min="0.5" max="10" step="0.5" oninput={setWight} />
-              </div>
-            </button>
-            <button class="fab-button" onclick={erase}>
-              <IconEraseNode></IconEraseNode>
-            </button>
-            <button class="fab-button" onclick={setPencil}>
-              <IconPencilNote></IconPencilNote>
-            </button>
-            <button class="fab-button fab-button_lg">
-              <IconToolsNote></IconToolsNote>
-            </button>
-          </div>
+          <div class="fab-container fab-container_main">
+            <div class="fab-container fab-container_vertical">
+              <hex-color-picker
+                id={`${margin.id}_colorPicker`}
+                name="colorPicker"
+                style={css`
+                  cursor: pointer;
+                `}
+                value={color}
+                oncolor-changed={setColor}
+              />
+            </div>
 
-          <div class="fab-container fab-container_vertical">
-            <button class="fab-button fab-button_empty" onclick={updateCanvasContent}>
-              <div class="sub-button">
-                <input type="range" value={globalAlpha} min="0" max="1" step="0.01" oninput={setAlpha} />
-                <div class="sub-button__back">
-                  <div
-                    style={css`
-                      width: 100%;
-                      height: 20px;
-                      background: linear-gradient(to right, rgba(255, 128, 0, 0), ${color});
-                    `}
-                  ></div>
+            <div class="fab-container fab-container_vertical">
+              <button
+                class="fab-button fab-button_empty"
+                style={css`
+                  bottom: -7px;
+                  width: 20px;
+                  height: 20px;
+                `}
+              >
+                <div class="sub-button">
+                  <input type="range" value={penSize} min="0.5" max="10" step="0.5" oninput={setWight} />
                 </div>
-              </div>
-            </button>
-            <button class="fab-button" onclick={clear}>
-              <IconClearNode></IconClearNode>
-            </button>
-            <button class="fab-button" onclick={load}>
-              <IconLoadNode></IconLoadNode>
-            </button>
-            <button class="fab-button" onclick={save}>
-              <IconSaveNode></IconSaveNode>
-            </button>
+              </button>
+              <button class="fab-button" onclick={erase}>
+                <IconEraseNode></IconEraseNode>
+              </button>
+              <button class="fab-button" onclick={setPencil}>
+                <IconPencilNote></IconPencilNote>
+              </button>
+              <button class="fab-button fab-button_lg">
+                <IconToolsNote></IconToolsNote>
+              </button>
+            </div>
+
+            <div class="fab-container fab-container_vertical">
+              <button class="fab-button fab-button_empty" onclick={updateCanvasContent}>
+                <div class="sub-button">
+                  <input type="range" value={globalAlpha} min="0" max="1" step="0.01" oninput={setAlpha} />
+                  <div class="sub-button__back">
+                    <div
+                      style={css`
+                        width: 100%;
+                        height: 20px;
+                        background: linear-gradient(to right, rgba(255, 128, 0, 0), ${color});
+                      `}
+                    ></div>
+                  </div>
+                </div>
+              </button>
+              <button class="fab-button" onclick={clear}>
+                <IconClearNode></IconClearNode>
+              </button>
+              <button class="fab-button" onclick={load}>
+                <IconLoadNode></IconLoadNode>
+              </button>
+              <button class="fab-button" onclick={save}>
+                <IconSaveNode></IconSaveNode>
+              </button>
+              <button class="fab-button fab-button_lg">
+                <IconSettingsNote></IconSettingsNote>
+              </button>
+            </div>
+
             <button class="fab-button fab-button_lg">
-              <IconSettingsNote></IconSettingsNote>
+              <IconPaletteNote></IconPaletteNote>
             </button>
           </div>
-
-          <button class="fab-button fab-button_lg">
-            <IconPaletteNote></IconPaletteNote>
-          </button>
-        </div>
-      </>,
-      this // TODO: this.attachShadow({ mode: 'open' })
-    );
+        </>,
+        this // TODO: this.attachShadow({ mode: 'open' })
+      );
+    }
+  } finally {
+    sketchPad?.destroy();
   }
 });

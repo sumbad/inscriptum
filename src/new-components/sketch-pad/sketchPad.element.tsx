@@ -1,9 +1,6 @@
 import { render } from 'lit-html2';
 import { ref, createRef, Ref } from 'lit-html2/directives/ref';
-// TODO: change to 
-// import SignaturePad from 'signature_pad' 
-// after https://github.com/szimek/signature_pad/pull/575
-import SignaturePad from '../../lib/signature_pad/signature_pad'; 
+import SignaturePad from 'signature_pad' 
 
 import { EG, p } from '@web-companions/gfc';
 import { css } from 'utils/common';
@@ -64,11 +61,12 @@ export const sketchPadElement = EG({
       signaturePad = new SignaturePad(canvas, {
         penColor: color,
         minDistance: 1,
-        onBegin: () => {
-          if (ctx != null) {
-            ctx.globalAlpha = 1;
-          }
-        },
+        // TODO: check below code
+        // onBegin: () => {
+        //   if (ctx != null) {
+        //     ctx.globalAlpha = 1;
+        //   }
+        // },
       });
     } else {
       sourceDataURL = signaturePad.toDataURL();

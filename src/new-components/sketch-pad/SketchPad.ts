@@ -25,6 +25,8 @@ export class SketchPad {
   points: Point[] = [];
   strokeHistory: Point[][] = [];
 
+  penEl: HTMLDivElement;
+
   private _defaultOptions: SketchPadOptions = {
     backgroundColor: 'rgba(0,0,0,0)',
   };
@@ -32,9 +34,24 @@ export class SketchPad {
   private lineWidth = 0;
 
   // strokeStyle
-  penColor = 'black';
+  private _penColor = 'black';
+  set penColor(value: string) {
+    this._penColor = value;
 
-  penSize = 1;
+    if (this.penEl != null) {
+      this.penEl.style.backgroundColor = this._penColor;
+    }
+  }
+
+  private _penSize = 1;
+  set penSize(value: number) {
+    this._penSize = value;
+
+    if (this.penEl != null) {
+      this.penEl.style.width = `${this._penSize}px`;
+      this.penEl.style.height = `${this._penSize}px`;
+    }
+  }
 
   get isEmpty() {
     return this.strokeHistory.length === 0;
@@ -64,6 +81,21 @@ export class SketchPad {
         this._handleTouchEvents();
       }
     }
+
+    this.canvas.addEventListener('mouseout', this._mouseout);
+
+    this.penEl = document.createElement('div');
+    this.penEl.style.width = `${this._penSize}px`;
+    this.penEl.style.height = `${this._penSize}px`;
+    this.penEl.style.border = '1px solid gray';
+    this.penEl.style.borderRadius = '50%';
+    this.penEl.style.position = 'absolute';
+    this.penEl.style.pointerEvents = 'none';
+    this.penEl.style.backgroundColor = this._penColor;
+    this.penEl.style.left = `${-100}px`;
+    this.penEl.style.top = `${-100}px`;
+
+    canvas.after(this.penEl);
   }
 
   /**
@@ -78,6 +110,21 @@ export class SketchPad {
         strokePath.push(point);
         this._draw(strokePath);
       });
+    }
+  }
+
+  setMode(mode: 'erase' | 'pencil') {
+    switch (mode) {
+      case 'erase':
+        this.context.globalCompositeOperation = 'destination-out';
+        this.penEl.style.backgroundColor = this._defaultOptions.backgroundColor;
+        break;
+      case 'pencil':
+        this.context.globalCompositeOperation = 'source-over';
+        this.penEl.style.backgroundColor = this._penColor;
+        break;
+      default:
+        break;
     }
   }
 
@@ -159,7 +206,12 @@ export class SketchPad {
     });
   }
 
-  private _startDraw(e: TouchEvent | MouseEvent | PointerEvent) {
+  private _mouseout = () => {
+    this.penEl.style.left = `${-100}px`;
+    this.penEl.style.top = `${-100}px`;
+  };
+
+  private _startDraw = (e: TouchEvent | MouseEvent | PointerEvent) => {
     const event = this._prepareEvent(e);
 
     if (event == null) {
@@ -170,19 +222,15 @@ export class SketchPad {
 
     this.isMousedown = true;
 
-    this.lineWidth = Math.log(event.pressure * this.penSize + 1) * 8;
+    this.lineWidth = Math.log(event.pressure * this._penSize + 1) * 8;
     this.context.lineWidth = this.lineWidth; // pressure * 50;
 
-    this._addPoint(event.drawEvent, this.lineWidth);
+    this.points.push(this._createPoint(event.drawEvent, this.lineWidth));
 
     this._draw(this.points);
-  }
+  };
 
-  private _continueDraw(e: TouchEvent | MouseEvent | PointerEvent) {
-    if (!this.isMousedown) {
-      return;
-    }
-
+  private _continueDraw = (e: TouchEvent | MouseEvent | PointerEvent) => {
     const event = this._prepareEvent(e);
 
     if (event == null) {
@@ -191,11 +239,20 @@ export class SketchPad {
 
     // TODO: analyze next code
     // smoothen line width
-    let lineWidth = Math.log(event.pressure * this.penSize + 1) * 8;
+    let lineWidth = Math.log(event.pressure * this._penSize + 1) * 8;
     lineWidth = lineWidth + this.lineWidth * 0.5;
     this.lineWidth = lineWidth;
 
-    this._addPoint(event.drawEvent, lineWidth);
+    const point = this._createPoint(event.drawEvent, lineWidth);
+
+    this.penEl.style.left = `${point.x - this._penSize / 2 - 1}px`;
+    this.penEl.style.top = `${point.y - this._penSize / 2 - 1}px`;
+
+    if (!this.isMousedown) {
+      return;
+    }
+
+    this.points.push(point);
 
     this._draw(this.points);
 
@@ -220,9 +277,9 @@ export class SketchPad {
     //     }
     //   }
     // });
-  }
+  };
 
-  private _stopDraw() {
+  private _stopDraw = () => {
     this.isMousedown = false;
 
     requestIdleCallback(() => {
@@ -231,7 +288,7 @@ export class SketchPad {
     });
 
     this.lineWidth = 0;
-  }
+  };
 
   /**
    * This function takes in an array of points and draws them onto the canvas.
@@ -289,7 +346,7 @@ export class SketchPad {
     }
 
     if (['direct', 'mouse', undefined].includes(deviceType) && pressure === 0) {
-      pressure = this.penSize / 5;
+      pressure = this._penSize / 5;
     }
 
     return {
@@ -299,36 +356,50 @@ export class SketchPad {
     };
   }
 
-  private _addPoint(event: PointerEvent | MouseEvent | Touch, lineWidth: number) {
+  private _createPoint(event: PointerEvent | MouseEvent | Touch, lineWidth: number) {
     const canvasRect = this.canvas.getBoundingClientRect();
 
     const x = event.clientX - canvasRect.left;
     const y = event.clientY - canvasRect.top;
 
-    this.points.push({
+    return {
       x,
       y,
       lineWidth,
-      color: this.penColor,
+      color: this._penColor,
       globalCompositeOperation: this.context.globalCompositeOperation,
-    });
+    };
   }
 
   private _handlePointerEvents(): void {
-    this.canvas.addEventListener('pointerdown', this._startDraw.bind(this));
-    this.canvas.addEventListener('pointermove', this._continueDraw.bind(this));
-    document.addEventListener('pointerup', this._stopDraw.bind(this));
+    this.canvas.addEventListener('pointerdown', this._startDraw);
+    this.canvas.addEventListener('pointermove', this._continueDraw);
+    document.addEventListener('pointerup', this._stopDraw);
   }
 
   private _handleMouseEvents(): void {
-    this.canvas.addEventListener('mousedown', this._startDraw.bind(this));
-    this.canvas.addEventListener('mousemove', this._continueDraw.bind(this));
-    document.addEventListener('mouseup', this._stopDraw.bind(this));
+    this.canvas.addEventListener('mousedown', this._startDraw);
+    this.canvas.addEventListener('mousemove', this._continueDraw);
+    document.addEventListener('mouseup', this._stopDraw);
   }
 
   private _handleTouchEvents(): void {
-    this.canvas.addEventListener('touchstart', this._startDraw.bind(this));
-    this.canvas.addEventListener('touchmove', this._continueDraw.bind(this));
-    this.canvas.addEventListener('touchend', this._stopDraw.bind(this));
+    this.canvas.addEventListener('touchstart', this._startDraw);
+    this.canvas.addEventListener('touchmove', this._continueDraw);
+    this.canvas.addEventListener('touchend', this._stopDraw);
+  }
+
+  destroy() {
+    this.canvas.removeEventListener('mouseout', this._mouseout);
+
+    this.canvas.removeEventListener('pointerdown', this._startDraw);
+    this.canvas.removeEventListener('pointermove', this._continueDraw);
+    document.removeEventListener('pointerup', this._stopDraw);
+    this.canvas.removeEventListener('mousedown', this._startDraw);
+    this.canvas.removeEventListener('mousemove', this._continueDraw);
+    document.removeEventListener('mouseup', this._stopDraw);
+    this.canvas.removeEventListener('touchstart', this._startDraw);
+    this.canvas.removeEventListener('touchmove', this._continueDraw);
+    this.canvas.removeEventListener('touchend', this._stopDraw);
   }
 }
