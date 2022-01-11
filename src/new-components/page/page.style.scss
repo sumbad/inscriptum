@@ -1,0 +1,11 @@
+@import '../../scss/skeleton/base/variables';
+
+.pageContent_collapsed {
+  display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 18px;
+  color: var(--color-contrast-medium);
+  padding: 10px 0;
+  margin-left: 1rem;
+}

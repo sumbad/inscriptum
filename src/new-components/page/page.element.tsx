@@ -24,6 +24,7 @@ const AddNewAfterNode = addNewAfterNode();
 const DeletePageNode = deletePageNode();
 const IconNewMarginNode = iconNewMarginNode();
 
+// TODO: rewrite to gfc as a component with Shadow Dom
 export const pageElement = EG({
   props: {
     page: {
@@ -160,6 +161,7 @@ export const pageElement = EG({
 
     return (
       <>
+        <style>{require('./page.style.scss')}</style>
         <FoldingElement
           label={state.data.order > 0 ? String(state.data.order) : ''}
           value={state.data.id}
@@ -168,18 +170,7 @@ export const pageElement = EG({
         ></FoldingElement>
         {isFolded ? (
           <>
-            <span
-              style={css`
-                display: flex;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 15px;
-                line-height: 18px;
-                color: var(--color-contrast-medium);
-                padding-top: 10px;
-              `}
-              onclick={() => setFolded(false)}
-            >
+            <span class="pageContent_collapsed" onclick={() => setFolded(false)}>
               {props.header && props.header.trim().length > 0 ? props.header : '...'}
             </span>
             {pageControls}
