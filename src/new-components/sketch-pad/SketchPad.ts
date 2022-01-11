@@ -27,6 +27,17 @@ export class SketchPad {
 
   penEl: HTMLDivElement;
 
+  dataUrlImage: {
+    dataUrl: string;
+    options: {
+      ratio?: number;
+      width?: number;
+      height?: number;
+      xOffset?: number;
+      yOffset?: number;
+    };
+  } | null;
+
   private _defaultOptions: SketchPadOptions = {
     backgroundColor: 'rgba(0,0,0,0)',
   };
@@ -134,6 +145,8 @@ export class SketchPad {
   }
 
   clear(): void {
+    this.dataUrlImage = null;
+
     this.context.fillStyle = this._options.backgroundColor;
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -186,6 +199,11 @@ export class SketchPad {
       image.crossOrigin = 'anonymous';
       image.src = dataUrl;
     });
+
+    this.dataUrlImage = {
+      dataUrl,
+      options,
+    };
   }
 
   /**
@@ -195,8 +213,11 @@ export class SketchPad {
     this.strokeHistory.pop();
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.strokeHistory.map((stroke) => {
+    if (this.dataUrlImage != null) {
+      this.fromDataURL(this.dataUrlImage.dataUrl, this.dataUrlImage.options);
+    }
 
+    this.strokeHistory.map((stroke) => {
       this.context.beginPath();
 
       let strokePath: Point[] = [];
@@ -354,7 +375,7 @@ export class SketchPad {
     // prevent using mouse or direct input type if the last one was pen or stylus
     if (this.inputType != null && !['pen', 'stylus'].includes(inputType)) {
       if (this.inputType != inputType) {
-        return;
+        return null;
       }
     } else {
       this.inputType = inputType;
