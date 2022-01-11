@@ -10,7 +10,7 @@ interface SketchPadOptions {
   backgroundColor: string;
 }
 
-type DeviceType = 'pen' | 'stylus' | 'mouse' | 'touch' | 'direct';
+type InputType = 'pen' | 'stylus' | 'mouse' | 'touch' | 'direct';
 
 window.requestIdleCallback =
   window.requestIdleCallback ||
@@ -21,7 +21,7 @@ window.requestIdleCallback =
 export class SketchPad {
   context: CanvasRenderingContext2D;
   isMousedown = false;
-
+  inputType: InputType;
   points: Point[] = [];
   strokeHistory: Point[][] = [];
 
@@ -48,8 +48,9 @@ export class SketchPad {
     this._penSize = value;
 
     if (this.penEl != null) {
-      this.penEl.style.width = `${this._penSize}px`;
-      this.penEl.style.height = `${this._penSize}px`;
+      const size = Math.floor(this._penSize);
+      this.penEl.style.width = `${size}px`;
+      this.penEl.style.height = `${size}px`;
     }
   }
 
@@ -84,9 +85,11 @@ export class SketchPad {
 
     this.canvas.addEventListener('mouseout', this._mouseout);
 
+    const size = Math.floor(this._penSize);
+
     this.penEl = document.createElement('div');
-    this.penEl.style.width = `${this._penSize}px`;
-    this.penEl.style.height = `${this._penSize}px`;
+    this.penEl.style.width = `${size}px`;
+    this.penEl.style.height = `${size}px`;
     this.penEl.style.border = '1px solid gray';
     this.penEl.style.borderRadius = '50%';
     this.penEl.style.position = 'absolute';
@@ -118,10 +121,12 @@ export class SketchPad {
       case 'erase':
         this.context.globalCompositeOperation = 'destination-out';
         this.penEl.style.backgroundColor = this._defaultOptions.backgroundColor;
+        this.canvas.style.cursor = 'none';
         break;
       case 'pencil':
         this.context.globalCompositeOperation = 'source-over';
         this.penEl.style.backgroundColor = this._penColor;
+        this.canvas.style.cursor = 'crosshair';
         break;
       default:
         break;
@@ -186,17 +191,13 @@ export class SketchPad {
   /**
    * Remove the previous stroke from history and repaint the entire canvas based on history
    */
-  undoDraw(context: CanvasRenderingContext2D) {
+  undoDraw() {
     this.strokeHistory.pop();
-    context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.strokeHistory.map((stroke) => {
-      // TODO: think we can remove this block
-      if (this.strokeHistory.length === 0) {
-        return;
-      }
 
-      context.beginPath();
+      this.context.beginPath();
 
       let strokePath: Point[] = [];
       stroke.map((point: Point) => {
@@ -281,13 +282,14 @@ export class SketchPad {
 
   private _stopDraw = () => {
     this.isMousedown = false;
+    this.lineWidth = 0;
 
     requestIdleCallback(() => {
-      this.strokeHistory.push([...this.points]);
-      this.points = [];
+      if (this.points.length > 0) {
+        this.strokeHistory.push([...this.points]);
+        this.points = [];
+      }
     });
-
-    this.lineWidth = 0;
   };
 
   /**
@@ -324,7 +326,7 @@ export class SketchPad {
   private _prepareEvent(event: TouchEvent | MouseEvent | PointerEvent) {
     let pressure = 0;
     let drawEvent: PointerEvent | MouseEvent | Touch;
-    let deviceType: DeviceType = 'mouse';
+    let inputType: InputType = 'mouse';
 
     if ('touches' in event) {
       if (event.touches.length === 1) {
@@ -332,7 +334,7 @@ export class SketchPad {
 
         const touch = event.touches[0];
         pressure = touch.force;
-        deviceType = touch['touchType'];
+        inputType = touch['touchType'];
         drawEvent = touch;
       } else {
         return null;
@@ -340,19 +342,28 @@ export class SketchPad {
     } else {
       if ('pressure' in event) {
         pressure = event.pressure / 2.5;
-        deviceType = event.pointerType as DeviceType;
+        inputType = event.pointerType as InputType;
       }
       drawEvent = event;
     }
 
-    if (['direct', 'mouse', undefined].includes(deviceType) && pressure === 0) {
+    if (['direct', 'mouse', undefined].includes(inputType) && pressure === 0) {
       pressure = this._penSize / 5;
+    }
+
+    // prevent using mouse or direct input type if the last one was pen or stylus
+    if (this.inputType != null && !['pen', 'stylus'].includes(inputType)) {
+      if (this.inputType != inputType) {
+        return;
+      }
+    } else {
+      this.inputType = inputType;
     }
 
     return {
       pressure,
       drawEvent,
-      deviceType,
+      inputType,
     };
   }
 

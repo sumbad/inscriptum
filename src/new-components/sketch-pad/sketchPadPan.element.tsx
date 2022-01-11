@@ -17,6 +17,7 @@ import { iconPencilNote } from './iconPencil.note';
 import { iconPaletteNote } from './iconPalette.note';
 import { iconToolsNote } from './iconTools.note';
 import { iconSettingsNote } from './iconSettings.note';
+import { iconArrowBackUpNote } from './iconArrowBackUp.note';
 
 const IconLoadNode = iconLoadNode();
 const IconSaveNode = iconSaveNode();
@@ -26,6 +27,7 @@ const IconPencilNote = iconPencilNote();
 const IconPaletteNote = iconPaletteNote();
 const IconToolsNote = iconToolsNote();
 const IconSettingsNote = iconSettingsNote();
+const IconArrowBackUpNote = iconArrowBackUpNote();
 
 export const sketchPadPanElement = EG({
   props: {
@@ -168,6 +170,12 @@ export const sketchPadPanElement = EG({
     }
   }
 
+  function undo() {
+    if (sketchPad != null) {
+      sketchPad.undoDraw();
+    }
+  }
+
   const setColor = (event: CustomEvent) => {
     if (sketchPad != null) {
       sketchPad.penColor = event.detail.value;
@@ -298,9 +306,19 @@ export const sketchPadPanElement = EG({
               </button>
             </div>
 
-            <button class="fab-button fab-button_lg">
-              <IconPaletteNote></IconPaletteNote>
-            </button>
+            <div
+              class="fab-container fab-container_vertical"
+              style={css`
+                display: block;
+              `}
+            >
+              <button class="fab-button" onclick={undo}>
+                <IconArrowBackUpNote></IconArrowBackUpNote>
+              </button>
+              <button class="fab-button fab-button_lg">
+                <IconPaletteNote></IconPaletteNote>
+              </button>
+            </div>
           </div>
         </>,
         this // TODO: this.attachShadow({ mode: 'open' })
