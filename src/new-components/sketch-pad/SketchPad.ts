@@ -110,6 +110,8 @@ export class SketchPad {
     this.penEl.style.top = `${-100}px`;
 
     canvas.after(this.penEl);
+
+    this.setMode('pencil');
   }
 
   /**
@@ -190,7 +192,12 @@ export class SketchPad {
       const yOffset = options.yOffset || 0;
 
       image.onload = (): void => {
+        const globalCompositeOperation = this.context.globalCompositeOperation;
+
+        this.context.globalCompositeOperation = 'source-over';
         this.context.drawImage(image, xOffset, yOffset, width, height);
+        this.context.globalCompositeOperation = globalCompositeOperation;
+
         resolve();
       };
       image.onerror = (error): void => {
@@ -209,12 +216,14 @@ export class SketchPad {
   /**
    * Remove the previous stroke from history and repaint the entire canvas based on history
    */
-  undoDraw() {
+  async undoDraw() {
+    const globalCompositeOperation = this.context.globalCompositeOperation;
+
     this.strokeHistory.pop();
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     if (this.dataUrlImage != null) {
-      this.fromDataURL(this.dataUrlImage.dataUrl, this.dataUrlImage.options);
+      await this.fromDataURL(this.dataUrlImage.dataUrl, this.dataUrlImage.options);
     }
 
     this.strokeHistory.map((stroke) => {
@@ -226,6 +235,8 @@ export class SketchPad {
         this._draw(strokePath);
       });
     });
+
+    this.context.globalCompositeOperation = globalCompositeOperation;
   }
 
   private _mouseout = () => {
@@ -379,6 +390,13 @@ export class SketchPad {
       }
     } else {
       this.inputType = inputType;
+
+      // hide Pen Element around cursor for stylus input type and "pencil" mode
+      if (inputType === 'stylus' && this.context.globalCompositeOperation === 'source-over') {
+        this.penEl.style.display = 'none';
+      } else {
+        this.penEl.style.display = 'block';
+      }
     }
 
     return {
