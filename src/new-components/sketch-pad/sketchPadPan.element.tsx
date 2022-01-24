@@ -9,7 +9,7 @@ import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';
 import { iconClearNode } from './iconClear.node';
-import { getMarginById, saveMarginById } from 'new-components/margin/margin.service';
+import { clearMargin, getMarginById, saveMarginById } from 'new-components/margin/margin.service';
 import { Margin } from 'models/margin.model';
 import { MarginElementMode } from 'new-components/margin/margin.element';
 import { SketchPad } from './SketchPad';
@@ -34,7 +34,7 @@ export const sketchPadPanElement = EG({
     data: p.req<Margin>(),
     mode: p.opt<MarginElementMode>(), // need only to rerender this element
   },
-})(function* (this: HTMLElement & { next(): Promise<void> }, props) {
+})(function* (props) {
   const frameRef: Ref<HTMLDivElement> = createRef();
   const canvasRef: Ref<HTMLCanvasElement> = createRef();
 
@@ -98,7 +98,7 @@ export const sketchPadPanElement = EG({
 
   const updateCanvasContent = async (isRestore = true) => {
     if (sketchPad != null) {
-      sketchPad.context.globalCompositeOperation = 'source-over'; // default value
+      sketchPad.setMode('pencil');
 
       if (margin?.imgBase64 != null && margin?.options != null) {
         const origOpt = margin.options;
@@ -111,6 +111,8 @@ export const sketchPadPanElement = EG({
           width: origOpt.width,
           ratio,
         });
+      } else {
+        sketchPad.clear();
       }
 
       sketchPad.context.globalAlpha = 1;
@@ -156,11 +158,9 @@ export const sketchPadPanElement = EG({
     }
   }
 
-  function clear() {
-    if (sketchPad != null) {
-      sketchPad.clear();
-    }
-  }
+  const clear = () => {
+    clearMargin(margin);
+  };
 
   function setAlpha(event: InputEvent) {
     if (event?.currentTarget != null && sketchPad != null) {

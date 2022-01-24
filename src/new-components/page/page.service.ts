@@ -2,43 +2,12 @@ import { JSONContent } from '@tiptap/core';
 import { sdk } from 'api';
 import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
-import { PageAction, PageActionSave, PAGE_ACTION } from 'new-components/page/page.action';
+import { PageActionSave } from 'new-components/page/page.action';
 import { Subject, from, defer, EMPTY } from 'rxjs';
 import { debounceTime, tap, switchMap, catchError } from 'rxjs/operators';
 import { config } from 'settings';
 import { authorized } from 'utils/guards';
 
-export async function createMargin(pageId: string, dispatch: (action: PageAction) => void) {
-  return await authorized(async () => {
-    const { insert_margin_one } = await sdk().createMargin({
-      page_id: pageId,
-      created_at: new Date().toISOString(),
-    });
-    
-    if (insert_margin_one?.id != null) {
-      dispatch({
-        type: PAGE_ACTION.CREATE_MARGIN_DONE,
-        payload: {
-          pageId,
-          marginId: insert_margin_one.id,
-        },
-      });
-
-      return insert_margin_one;
-    } else {
-      dispatch({
-        type: PAGE_ACTION.CREATE_MARGIN_FAIL,
-        payload: {
-          pageId,
-          error: {
-            massage: `Can not create a new Margin for Page ${pageId}!`,
-          },
-        },
-      });
-      // throw new Error(`Can not create a new Margin for Page ${pageId}!`);
-    }
-  });
-}
 
 async function saveChanges(pageId: string, draftId: string, content: JSONContent) {
   return await authorized(async () => {

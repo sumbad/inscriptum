@@ -6,10 +6,9 @@ import { marginElement, MarginElementMode } from 'new-components/margin/margin.e
 import { foldingElement } from '../folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';
 import { deletePageNode } from './deletePage.node';
-import { addNewPageEffect, createMargin, deletePageEffect, savePageEffect } from './page.service';
+import { addNewPageEffect, deletePageEffect, savePageEffect } from './page.service';
 import { PageAction } from './page.action';
 import { page$, PageState, reducer } from './page.state';
-import { iconNewMarginNode } from './iconNewMargin.node';
 import { useSubjectEffect } from 'hooks/useSubjectEffect';
 import { redactorElement } from 'new-components/redactor/redactor.element';
 import { JSONContent } from '@tiptap/core';
@@ -22,7 +21,6 @@ const MarginElement = marginElement('inscriptum-margin');
 const FoldingElement = foldingElement('inscriptum-folding');
 const AddNewAfterNode = addNewAfterNode();
 const DeletePageNode = deletePageNode();
-const IconNewMarginNode = iconNewMarginNode();
 
 // TODO: rewrite to gfc as a component with Shadow Dom
 export const pageElement = EG({
@@ -119,11 +117,6 @@ export const pageElement = EG({
     }
   }, [state.data]);
 
-  const onCreateMargin = useCallback(() => {
-    if (state?.data?.id != null) {
-      createMargin(state.data.id, dispatch);
-    }
-  }, [state]);
 
   const onChangeMarginMode = useCallback(
     (
@@ -148,13 +141,6 @@ export const pageElement = EG({
               <DeletePageNode></DeletePageNode>
             </button>
           ) : null}
-        </div>
-        <div>
-          {isFolded ? null : (
-            <button class="btn btn_icon" title="create new margin" onclick={onCreateMargin}>
-              <IconNewMarginNode></IconNewMarginNode>
-            </button>
-          )}
         </div>
       </div>
     );
@@ -202,9 +188,12 @@ export const pageElement = EG({
               ></RedactorElement>
               {pageControls}
             </div>
-            {state.data.margins.length > 0 ? (
-              <MarginElement marginId={state.data.margins[0].id} onchangeMarginMode={onChangeMarginMode}></MarginElement>
-            ) : null}
+
+            <MarginElement
+              pageId={state.data.id}
+              marginId={state.data.margins.length > 0 ? state.data.margins[0].id : undefined}
+              onchangeMarginMode={onChangeMarginMode}
+            ></MarginElement>
           </div>
         )}
       </>

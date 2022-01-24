@@ -32,14 +32,12 @@ export async function getMarginById(id: string): Promise<Margin> {
 }
 
 export async function saveMarginById(id: string, dataUri: string, options: Omit<MarginOptions, 'type'>) {
-  // debugger
   const [type, img] = dataUri.split(',');
   // const img = decodeURIComponent(atob(encodedImage));
   // const img = atob(encodedImage);
 
   // console.log(btoa(img));
-  
-  
+
   // // .split('').map(function(c) {
   // //   return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   // // }).join('');
@@ -73,6 +71,48 @@ export async function saveMarginById(id: string, dataUri: string, options: Omit<
           },
         },
       });
+    }
+  });
+}
+
+export async function clearMargin(margin: Margin) {
+  hub.dispatch({
+    type: MARGIN_ACTION.LOAD_DONE,
+    payload: {
+      id: margin.id,
+      pageId: margin.pageId,
+    },
+  });
+}
+
+export async function createNewMargin(pageId: string) {
+  return await authorized(async () => {
+    const { insert_margin_one } = await sdk().createMargin({
+      page_id: pageId,
+      created_at: new Date().toISOString(),
+    });
+
+    if (insert_margin_one?.id != null) {
+      hub.dispatch({
+        type: MARGIN_ACTION.CREATE_DONE,
+        payload: {
+          id: insert_margin_one.id,
+          pageId,
+        },
+      });
+
+      return insert_margin_one;
+    } else {
+      hub.dispatch({
+        type: MARGIN_ACTION.CREATE_FAIL,
+        payload: {
+          pageId,
+          error: {
+            massage: `Can not create a new Margin for Page ${pageId}!`,
+          },
+        },
+      });
+      // throw new Error(`Can not create a new Margin for Page ${pageId}!`);
     }
   });
 }

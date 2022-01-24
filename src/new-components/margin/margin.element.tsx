@@ -1,8 +1,7 @@
 import { EG, p } from '@web-companions/gfc';
-import { getMarginById } from './margin.service';
-import { initialState, margin$, MarginState, reducer } from './margin.state';
+import { createNewMargin, getMarginById } from './margin.service';
+import { initialState, MarginState, reducer } from './margin.state';
 import { render } from 'lit-html2';
-// import { sketchPadElement } from 'new-components/sketch-pad/sketchPad.element';
 import { css } from 'utils/common';
 import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
 import { iconArrowBarRightNode } from './iconArrowBarRight.node';
@@ -14,54 +13,64 @@ import { Subscription } from 'rxjs';
 import hub from 'hub';
 import { filter } from 'rxjs/operators';
 import { HUB_ACTION } from 'hub/actions';
+import { filterByActionsGroup } from 'utils/operators';
+import { MarginAction, MARGIN_ACTION } from './margin.action';
+import { iconNewMarginNode } from './iconNewMargin.node';
 
 // const SketchPadElement = sketchPadElement('sketch-pad');
 const SketchPadElement = sketchPadPanElement('sketch-pad');
 
-const IconArrowBarLeftNodeStatic = iconArrowBarLeftNode({ current: null });
-const IconArrowBarRightNodeStatic = iconArrowBarRightNode({ current: null });
-const IconBulbNodeStatic = iconBulbNode({ current: null });
-const IconMaximizeNodeStatic = iconMaximizeNode({ current: null });
-const IconMinimizeNodeStatic = iconMinimizeNode({ current: null });
+const IconArrowBarLeftNodeStatic = iconArrowBarLeftNode();
+const IconArrowBarRightNodeStatic = iconArrowBarRightNode();
+const IconBulbNodeStatic = iconBulbNode();
+const IconMaximizeNodeStatic = iconMaximizeNode();
+const IconMinimizeNodeStatic = iconMinimizeNode();
+const IconNewMarginNode = iconNewMarginNode();
 
-export type MarginElementMode = 'hide' | 'collapse' | 'expand' | 'full';
+export type MarginElementMode = 'empty' | 'hide' | 'collapse' | 'expand' | 'full';
 
 export const marginElement = EG({
   props: {
-    marginId: p.req<string>(),
+    pageId: p.req<string>(),
+    marginId: p.opt<string>(),
     onchangeMarginMode: p.opt<(event: CustomEvent<{ mode: MarginElementMode }>) => any>(),
   },
-})(function* (
-  this: HTMLElement & {
-    next(): Promise<void>; // TODO: add right type for the next()
-  },
-  props
-) {
+})(function* (props) {
   const $ = this.attachShadow({ mode: 'open' });
 
   const subs: Subscription[] = [];
+  let marginSub: Subscription | undefined = undefined;
 
   let state: MarginState = initialState;
-  let mode: MarginElementMode = 'hide';
+  let mode: MarginElementMode = props.marginId != null ? 'hide' : 'empty';
 
-  subs.push(
-    margin$(props.marginId).subscribe((action) => {
-      state = reducer(state, action);
-      this.next();
-    })
+  const $margin = hub.$.pipe(
+    filterByActionsGroup<MarginAction>(MARGIN_ACTION),
+    filter((action) => action.type !== MARGIN_ACTION.CREATE_FAIL && action.payload.id === props.marginId)
   );
 
   const changeSketchPadMode = (_mode: MarginElementMode) => async () => {
+    const hostEl = $.host as HTMLElement;
+    
     switch (_mode) {
       case 'expand':
-        ($.host as HTMLElement).style.position = 'absolute';
+        hostEl.style.position = 'absolute';
+        hostEl.style.borderLeft = 'none';
         break;
       case 'full':
-        await openFullscreen($.host as HTMLElement);
+        hostEl.style.borderLeft = 'none';
+        await openFullscreen(hostEl);
+        break;
+
+      case 'collapse':
+        hostEl.style.position = 'relative';
+        hostEl.style.borderLeft = 'solid 1px var(--light-grey)';
+        await closeFullscreen();
         break;
 
       default:
-        ($.host as HTMLElement).style.position = 'relative';
+        hostEl.style.borderLeft = 'none';
+        hostEl.style.position = 'relative';
         await closeFullscreen();
         break;
     }
@@ -71,6 +80,12 @@ export const marginElement = EG({
     this.dispatchEvent(new CustomEvent('changeMarginMode', { detail: { mode } }));
 
     this.next();
+  };
+
+  const createMargin = () => {
+    if (state?.data?.id == null) {
+      createNewMargin(props.pageId);
+    }
   };
 
   subs.push(
@@ -89,20 +104,36 @@ export const marginElement = EG({
   );
 
   try {
-    while (true) {
-      if (props.marginId !== state.data?.id) {
+    for (;;) {
+      if (props.marginId != null && props.marginId !== state.data?.id) {
+        marginSub?.unsubscribe();
+        marginSub = $margin.subscribe((action) => {
+          state = reducer(state, action);
+
+          this.next();
+        });
+
+        if(mode === 'empty') {
+          changeSketchPadMode('collapse')();
+        }
+
         getMarginById(props.marginId);
       }
 
       let toolbar = <></>;
       switch (mode as MarginElementMode) {
+        case 'empty':
+          toolbar = (
+            <button class="btn btn_icon btn__first" title="create new margin" onclick={createMargin}>
+              <IconNewMarginNode></IconNewMarginNode>
+            </button>
+          );
+          break;
         case 'hide':
           toolbar = (
-            <>
-              <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('collapse')}>
-                <IconBulbNodeStatic isOn={false}></IconBulbNodeStatic>
-              </button>
-            </>
+            <button class="btn btn_icon btn__first" onclick={changeSketchPadMode('collapse')}>
+              <IconBulbNodeStatic isOn={false}></IconBulbNodeStatic>
+            </button>
           );
           break;
         case 'collapse':
@@ -134,15 +165,10 @@ export const marginElement = EG({
           break;
         case 'full':
           toolbar = (
-            <>
-              <button class="btn btn_icon btn__first" title="minimize" onclick={changeSketchPadMode('collapse')}>
-                <IconMinimizeNodeStatic></IconMinimizeNodeStatic>
-              </button>
-            </>
+            <button class="btn btn_icon btn__first" title="minimize" onclick={changeSketchPadMode('collapse')}>
+              <IconMinimizeNodeStatic></IconMinimizeNodeStatic>
+            </button>
           );
-          break;
-
-        default:
           break;
       }
 
@@ -169,6 +195,7 @@ export const marginElement = EG({
     }
   } finally {
     subs.forEach((it) => it.unsubscribe());
+    marginSub?.unsubscribe();
   }
 });
 
