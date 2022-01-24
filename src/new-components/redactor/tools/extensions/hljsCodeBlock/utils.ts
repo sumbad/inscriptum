@@ -71,7 +71,7 @@ export function hljsNodeInputRule(regexp: RegExp, type: NodeType, getAttributes?
         tr.setSelection(TextSelection.create(tr.doc, props.range.to - 1));
       }
 
-      return tr;
+      // return tr;
     },
   });
 }
