@@ -228,6 +228,23 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
         return true;
       },
 
+      // insert 2 spaces by pressing Tab inside a code block
+      Tab: () => {
+        const { $anchor } = this.editor.state.selection;
+
+        if ($anchor.parent.type.name !== 'hljsCodeBlockRow') {
+          return false;
+        }
+
+        const { tr } = this.editor.state;
+        
+        this.editor.view.dispatch(
+          tr.insertText('\u00a0\u00a0')
+        )
+
+        return true;
+      },
+
       // remove code block when code block is empty
       Backspace: () => {
         const { empty, $anchor } = this.editor.state.selection;
