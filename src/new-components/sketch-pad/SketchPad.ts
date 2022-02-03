@@ -20,6 +20,7 @@ window.requestIdleCallback =
 
 export class SketchPad {
   context: CanvasRenderingContext2D;
+  canvasRect: DOMRect = this.canvas.getBoundingClientRect();
   isMousedown = false;
   inputType: InputType;
   points: Point[] = [];
@@ -258,6 +259,8 @@ export class SketchPad {
     this.lineWidth = Math.log(event.pressure * this._penSize + 1) * 8;
     this.context.lineWidth = this.lineWidth; // pressure * 50;
 
+    this.canvasRect = this.canvas.getBoundingClientRect();
+
     this.points.push(this._createPoint(event.drawEvent, this.lineWidth));
 
     this._draw(this.points);
@@ -407,10 +410,8 @@ export class SketchPad {
   }
 
   private _createPoint(event: PointerEvent | MouseEvent | Touch, lineWidth: number) {
-    const canvasRect = this.canvas.getBoundingClientRect();
-
-    const x = event.clientX - canvasRect.left;
-    const y = event.clientY - canvasRect.top;
+    const x = event.clientX - this.canvasRect.left;
+    const y = event.clientY - this.canvasRect.top;
 
     return {
       x,
