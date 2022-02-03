@@ -123,6 +123,7 @@ export function getNestedObject(object: object, pathArr: string[]): any {
   return pathArr.reduce((obj, key) => (obj && obj[key] !== 'undefined' ? obj[key] : undefined), object);
 }
 
+// TODO: replace /n, tabs and several spaces to one space
 export const css = String.raw;
 
 /**

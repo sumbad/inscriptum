@@ -3,7 +3,7 @@
   font-weight: 400;
   font-style: normal;
   font-size: 18px;
-  line-height: 1.58;
+  line-height: 1.5rem;
   color: rgba(12, 10, 10, 0.8);
 }
 
@@ -408,10 +408,23 @@
     code {
       font-family: JetBrainsMono, monospace;
       font-variant-ligatures: normal;
-      white-space: pre-wrap;
+      white-space: nowrap;
       margin-left: 2.5rem;
       display: block;
-      // line-height: 1;
+      overflow-x: auto;
+      scrollbar-color: #516363;
+      &::-webkit-scrollbar {
+        height: 0.4rem;
+      }
+      &::-webkit-scrollbar-thumb {
+        cursor: pointer;
+        background: #516363;
+        border-radius: 0.3rem;
+
+        &:hover {
+          background: darken(#516363, 5%);
+        }
+      }
     }
 
     ::selection {
