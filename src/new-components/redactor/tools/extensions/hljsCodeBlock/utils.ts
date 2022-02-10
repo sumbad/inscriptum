@@ -17,6 +17,8 @@ import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import bash from 'highlight.js/lib/languages/bash';
 import yaml from 'highlight.js/lib/languages/yaml';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+import { HighlightResult } from 'highlight.js';
 
 // Register languages
 hljs.registerLanguage('javascript', javascript);
@@ -26,11 +28,19 @@ hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('plaintext', plaintext);
 
-const HLJS_LANGUAGES = ['javascript', 'typescript', 'sql', 'xml', 'css', 'bash', 'yaml'];
+export const HLJS_LANGUAGES = ['javascript', 'typescript', 'sql', 'xml', 'css', 'bash', 'yaml', 'plaintext'];
 
-export function generateHljsNodeJson(codeText: string) {
-  const hljsResult = hljs.highlightAuto(codeText, HLJS_LANGUAGES);
+export function generateHljsNodeJson(codeText: string, language?: string) {
+  let hljsResult: HighlightResult;
+  
+  if (language != null) {
+    hljsResult = hljs.highlight(codeText, { language });
+  } else {
+    hljsResult = hljs.highlightAuto(codeText, HLJS_LANGUAGES);
+  }
+
   const codeLineList = hljsResult.value.split('\n');
 
   let codeRows: string = '';

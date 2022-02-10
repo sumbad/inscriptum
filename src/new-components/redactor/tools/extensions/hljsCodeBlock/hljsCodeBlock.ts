@@ -2,6 +2,7 @@ import { JSONContent, Node } from '@tiptap/core';
 import { generateHljsNodeJson, getHljsBlockContentAsText, hljsNodeInputRule } from './utils';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
+import { codeBlockSelectLangElement } from './codeBlockSelectLang.element';
 
 interface HljsCodeBlockOptions {
   languageClassPrefix: string;
@@ -24,6 +25,8 @@ declare module '@tiptap/core' {
   }
 }
 
+const CodeBlockSelectLangElement = codeBlockSelectLangElement('code-block-select-lang');
+
 const backtickInputRegex = /^```(?<language>[a-z]*)? $/;
 const tildeInputRegex = /^~~~(?<language>[a-z]*)? $/;
 
@@ -42,8 +45,8 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
     return {
       languageClassPrefix: 'language-',
       HTMLAttributes: {},
-      printContentAsHTML: false
-    }
+      printContentAsHTML: false,
+    };
   },
 
   addAttributes() {
@@ -65,7 +68,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
         parseHTML: (element) => {
           const classAttribute = element.firstElementChild?.getAttribute('class');
 
-          if (!classAttribute) {
+          if (classAttribute == null) {
             return null;
           }
 
@@ -73,15 +76,6 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
 
           return {
             language: classAttribute.replace(regexLanguageClassPrefix, ''),
-          };
-        },
-        renderHTML: (attributes) => {
-          if (!attributes.language) {
-            return null;
-          }
-
-          return {
-            class: this.options.languageClassPrefix + attributes.language,
           };
         },
       },
@@ -96,6 +90,10 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
         getContent(pre: HTMLPreElement, schema) {
           let textContent = '';
 
+          let language: string | undefined = undefined;
+          const codeEl = pre.querySelector('code');
+          language = codeEl?.getAttribute('language') ?? language;
+
           pre.childNodes.forEach((cn) => {
             textContent += cn.textContent;
             if (cn.nodeName === 'BR') {
@@ -103,7 +101,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
             }
           });
 
-          const codeNodeJson = generateHljsNodeJson(textContent);
+          const codeNodeJson = generateHljsNodeJson(textContent, language);
           const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
           return hljsNode.content;
         },
@@ -119,7 +117,11 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
             textContent += cn.textContent + '\n';
           });
 
-          const codeNodeJson = generateHljsNodeJson(textContent);
+          let language: string | undefined = undefined;
+          const codeEl = div.querySelector('code');
+          language = codeEl?.getAttribute('language') ?? language;
+
+          const codeNodeJson = generateHljsNodeJson(textContent, language);
           const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
           return hljsNode.content;
         },
@@ -129,7 +131,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
 
   renderHTML({ HTMLAttributes, node }) {
     const content = this.options.printContentAsHTML ? 0 : getHljsBlockContentAsText(node);
-    
+
     return ['pre', this.options.HTMLAttributes, ['code', HTMLAttributes, content]];
   },
 
@@ -146,7 +148,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           }
         });
 
-        const codeNodeJson: any = generateHljsNodeJson(codeText);
+        const codeNodeJson: any = generateHljsNodeJson(codeText, attributes?.language);
         const newNode = param.editor.schema.nodeFromJSON(codeNodeJson);
 
         const jsonContent = newNode.content.toJSON() || [];
@@ -237,10 +239,8 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
         }
 
         const { tr } = this.editor.state;
-        
-        this.editor.view.dispatch(
-          tr.insertText('\u00a0\u00a0')
-        )
+
+        this.editor.view.dispatch(tr.insertText('\u00a0\u00a0'));
 
         return true;
       },
@@ -275,33 +275,49 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
   },
 
   addNodeView() {
+    const container = new CodeBlockSelectLangElement();
+    const domCodeEl = document.createElement('code');
+    container.props.domCodeEl = domCodeEl;
+
+
     return ({ editor, node, getPos }) => {
-      const container = document.createElement('pre');
-      const domCodeEl = document.createElement('code');
+      container.props.selectedLanguage = node.attrs.language;
 
       for (const key in node.attrs) {
         domCodeEl.setAttribute(key, node.attrs[key]);
       }
 
-      if (node.content.size === 0 && typeof getPos === 'function') {
-        requestAnimationFrame(() => {
-          editor.view.dispatch(editor.view.state.tr.insert(getPos() + 1, editor.schema.node('hljsCodeBlockRow')));
-        });
+      if (node.attrs.language != null) {
+        domCodeEl.setAttribute('class', this.options.languageClassPrefix + node.attrs.language);
       }
 
-      container.appendChild(domCodeEl);
+      if (typeof getPos === 'function') {
+
+        container.props.onChange = (language) => {
+          editor.view.dispatch(editor.view.state.tr.setNodeMarkup(getPos(), undefined, {
+            language: language,
+          }))
+        };
+
+        if(node.content.size === 0) {
+          requestAnimationFrame(() => {
+            editor.view.dispatch(editor.view.state.tr.insert(getPos() + 1, editor.schema.node('hljsCodeBlockRow')));
+          });
+        }
+      }
 
       return {
         dom: container,
         contentDOM: domCodeEl,
         update: (updatedNode) => {
+          
           if (updatedNode.type !== this.type) {
             return false;
           }
 
           const codeText = getHljsBlockContentAsText(updatedNode);
 
-          const codeNodeJson = generateHljsNodeJson(codeText);
+          const codeNodeJson = generateHljsNodeJson(codeText, updatedNode.attrs.language);
           const newNode = editor.schema.nodeFromJSON(codeNodeJson);
 
           updatedNode.content = newNode.content;
