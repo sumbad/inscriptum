@@ -2317,19 +2317,19 @@ export type FindAuthorByAuth0QueryVariables = Exact<{
 }>;
 
 
-export type FindAuthorByAuth0Query = { __typename?: 'query_root', author: Array<{ __typename?: 'author', id: any, email: string, name?: string | null | undefined, last_seen: any, created_at: any }> };
+export type FindAuthorByAuth0Query = { __typename?: 'query_root', author: Array<{ __typename?: 'author', id: any, email: string, name?: string | null, last_seen: any, created_at: any }> };
 
 export type GetAllDraftsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllDraftsQuery = { __typename?: 'query_root', drafts: Array<{ __typename?: 'draft', id: any, created_at: any, updated_at: any, pages: Array<{ __typename?: 'page', content?: any | null | undefined }>, author: { __typename?: 'author', id: any, email: string, name?: string | null | undefined }, notes: Array<{ __typename?: 'note', static_link?: string | null | undefined }> }> };
+export type GetAllDraftsQuery = { __typename?: 'query_root', drafts: Array<{ __typename?: 'draft', id: any, created_at: any, updated_at: any, pages: Array<{ __typename?: 'page', content?: any | null }>, author: { __typename?: 'author', id: any, email: string, name?: string | null }, notes: Array<{ __typename?: 'note', static_link?: string | null }> }> };
 
 export type GetDraftByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetDraftByIdQuery = { __typename?: 'query_root', draft?: { __typename?: 'draft', id: any, created_at: any, updated_at: any, table_of_contents: any, notes: Array<{ __typename?: 'note', id: any }>, pages: Array<{ __typename?: 'page', id: any, content?: any | null | undefined, order: number, margins: Array<{ __typename?: 'margin', id: any, name?: string | null | undefined }> }> } | null | undefined };
+export type GetDraftByIdQuery = { __typename?: 'query_root', draft?: { __typename?: 'draft', id: any, created_at: any, updated_at: any, table_of_contents: any, notes: Array<{ __typename?: 'note', id: any }>, pages: Array<{ __typename?: 'page', id: any, content?: any | null, order: number, margins: Array<{ __typename?: 'margin', id: any, name?: string | null }> }> } | null };
 
 export type UpdateDraftTocMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2338,7 +2338,7 @@ export type UpdateDraftTocMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDraftTocMutation = { __typename?: 'mutation_root', update_draft_by_pk?: { __typename?: 'draft', table_of_contents: any, updated_at: any, id: any } | null | undefined };
+export type UpdateDraftTocMutation = { __typename?: 'mutation_root', update_draft_by_pk?: { __typename?: 'draft', table_of_contents: any, updated_at: any, id: any } | null };
 
 export type CreateNewDraftMutationVariables = Exact<{
   author_id?: InputMaybe<Scalars['uuid']>;
@@ -2346,7 +2346,7 @@ export type CreateNewDraftMutationVariables = Exact<{
 }>;
 
 
-export type CreateNewDraftMutation = { __typename?: 'mutation_root', insert_draft_one?: { __typename?: 'draft', id: any, pages: Array<{ __typename?: 'page', id: any, content?: any | null | undefined }> } | null | undefined };
+export type CreateNewDraftMutation = { __typename?: 'mutation_root', insert_draft_one?: { __typename?: 'draft', id: any, pages: Array<{ __typename?: 'page', id: any, content?: any | null }> } | null };
 
 export type DeleteDraftByIdMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2354,14 +2354,14 @@ export type DeleteDraftByIdMutationVariables = Exact<{
 }>;
 
 
-export type DeleteDraftByIdMutation = { __typename?: 'mutation_root', update_draft_by_pk?: { __typename?: 'draft', id: any } | null | undefined };
+export type DeleteDraftByIdMutation = { __typename?: 'mutation_root', update_draft_by_pk?: { __typename?: 'draft', id: any } | null };
 
 export type GetMarginByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetMarginByIdQuery = { __typename?: 'query_root', margin?: { __typename?: 'margin', id: any, img?: any | null | undefined, imgBase64?: string | null | undefined, options?: any | null | undefined, pageId: any } | null | undefined };
+export type GetMarginByIdQuery = { __typename?: 'query_root', margin?: { __typename?: 'margin', id: any, img?: any | null, imgBase64?: string | null, options?: any | null, pageId: any } | null };
 
 export type CreateMarginMutationVariables = Exact<{
   page_id: Scalars['uuid'];
@@ -2369,7 +2369,7 @@ export type CreateMarginMutationVariables = Exact<{
 }>;
 
 
-export type CreateMarginMutation = { __typename?: 'mutation_root', insert_margin_one?: { __typename?: 'margin', id: any } | null | undefined };
+export type CreateMarginMutation = { __typename?: 'mutation_root', insert_margin_one?: { __typename?: 'margin', id: any } | null };
 
 export type SaveMarginMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2380,12 +2380,12 @@ export type SaveMarginMutationVariables = Exact<{
 }>;
 
 
-export type SaveMarginMutation = { __typename?: 'mutation_root', update_margin_by_pk?: { __typename?: 'margin', updated_at?: any | null | undefined, id: any } | null | undefined };
+export type SaveMarginMutation = { __typename?: 'mutation_root', update_margin_by_pk?: { __typename?: 'margin', updated_at?: any | null, id: any } | null };
 
 export type GetAllNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'note', id: any, name: string, preview: any, draft_id?: any | null | undefined, static_link?: string | null | undefined, updated_at?: any | null | undefined, created_at: any, author: { __typename?: 'author', id: any, name?: string | null | undefined, email: string } }> };
+export type GetAllNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'note', id: any, name: string, preview: any, draft_id?: any | null, static_link?: string | null, updated_at?: any | null, created_at: any, author: { __typename?: 'author', id: any, name?: string | null, email: string } }> };
 
 export type CreateNodeMutationVariables = Exact<{
   author_id: Scalars['uuid'];
@@ -2398,7 +2398,7 @@ export type CreateNodeMutationVariables = Exact<{
 }>;
 
 
-export type CreateNodeMutation = { __typename?: 'mutation_root', insert_note_one?: { __typename?: 'note', id: any, updated_at?: any | null | undefined, created_at: any } | null | undefined };
+export type CreateNodeMutation = { __typename?: 'mutation_root', insert_note_one?: { __typename?: 'note', id: any, updated_at?: any | null, created_at: any } | null };
 
 export type UpdateNodeMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2410,7 +2410,7 @@ export type UpdateNodeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNodeMutation = { __typename?: 'mutation_root', update_note_by_pk?: { __typename?: 'note', id: any, updated_at?: any | null | undefined, created_at: any } | null | undefined };
+export type UpdateNodeMutation = { __typename?: 'mutation_root', update_note_by_pk?: { __typename?: 'note', id: any, updated_at?: any | null, created_at: any } | null };
 
 export type UpdatePageByIdMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2419,7 +2419,7 @@ export type UpdatePageByIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePageByIdMutation = { __typename?: 'mutation_root', update_page_by_pk?: { __typename?: 'page', id: any } | null | undefined };
+export type UpdatePageByIdMutation = { __typename?: 'mutation_root', update_page_by_pk?: { __typename?: 'page', id: any } | null };
 
 export type AddPageToDraftMutationVariables = Exact<{
   created_at: Scalars['timestamptz'];
@@ -2428,7 +2428,7 @@ export type AddPageToDraftMutationVariables = Exact<{
 }>;
 
 
-export type AddPageToDraftMutation = { __typename?: 'mutation_root', update_page?: { __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> } | null | undefined, insert_page_one?: { __typename?: 'page', id: any, order: number, content?: any | null | undefined, margins: Array<{ __typename?: 'margin', id: any }> } | null | undefined };
+export type AddPageToDraftMutation = { __typename?: 'mutation_root', update_page?: { __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> } | null, insert_page_one?: { __typename?: 'page', id: any, order: number, content?: any | null, margins: Array<{ __typename?: 'margin', id: any }> } | null };
 
 export type DeletePageMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -2438,7 +2438,7 @@ export type DeletePageMutationVariables = Exact<{
 }>;
 
 
-export type DeletePageMutation = { __typename?: 'mutation_root', update_page_by_pk?: { __typename?: 'page', id: any } | null | undefined, update_page?: { __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> } | null | undefined };
+export type DeletePageMutation = { __typename?: 'mutation_root', update_page_by_pk?: { __typename?: 'page', id: any } | null, update_page?: { __typename?: 'page_mutation_response', returning: Array<{ __typename?: 'page', id: any, order: number }> } | null };
 
 
 export const FindAuthorByAuth0Document = gql`
