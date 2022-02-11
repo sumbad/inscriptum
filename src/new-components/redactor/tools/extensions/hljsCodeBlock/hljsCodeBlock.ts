@@ -232,15 +232,28 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
 
       // insert 2 spaces by pressing Tab inside a code block
       Tab: () => {
-        const { $anchor } = this.editor.state.selection;
+        const { $anchor, from, to } = this.editor.state.selection;
+        const parent = $anchor.parent;
 
-        if ($anchor.parent.type.name !== 'hljsCodeBlockRow') {
+        if (parent.type.name !== 'hljsCodeBlockRow') {
           return false;
         }
 
         const { tr } = this.editor.state;
 
-        this.editor.view.dispatch(tr.insertText('\u00a0\u00a0'));
+        let lines = 0;
+        this.editor.state.doc.nodesBetween(from, to, (node, startPos) => {
+          if (node.type.name === 'hljsCodeBlockRow') {
+            const firstChild = node.firstChild;
+
+            if (firstChild != null && firstChild.isText) {
+              tr.insertText('\u00a0\u00a0', startPos + 1 + lines);
+              lines += 2;
+            }
+          }
+        });
+
+        this.editor.view.dispatch(tr);
 
         return true;
       },
@@ -278,7 +291,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
     const container = new CodeBlockSelectLangElement();
     const domCodeEl = document.createElement('code');
     container.props.domCodeEl = domCodeEl;
-
+    container.classList.add('hljs-codeblock');
 
     return ({ editor, node, getPos }) => {
       container.props.selectedLanguage = node.attrs.language;
@@ -292,14 +305,15 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
       }
 
       if (typeof getPos === 'function') {
-
         container.props.onChange = (language) => {
-          editor.view.dispatch(editor.view.state.tr.setNodeMarkup(getPos(), undefined, {
-            language: language,
-          }))
+          editor.view.dispatch(
+            editor.view.state.tr.setNodeMarkup(getPos(), undefined, {
+              language: language,
+            })
+          );
         };
 
-        if(node.content.size === 0) {
+        if (node.content.size === 0) {
           requestAnimationFrame(() => {
             editor.view.dispatch(editor.view.state.tr.insert(getPos() + 1, editor.schema.node('hljsCodeBlockRow')));
           });
@@ -310,7 +324,6 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
         dom: container,
         contentDOM: domCodeEl,
         update: (updatedNode) => {
-          
           if (updatedNode.type !== this.type) {
             return false;
           }

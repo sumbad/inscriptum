@@ -40,6 +40,28 @@
     }
 
     @include note-content;
+
+    .hljs-codeblock {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      font-family: JetBrainsMono, monospace;
+      font-variant-ligatures: normal;
+      font-size: 0.8rem;
+
+      &__select {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        opacity: 0.5;
+      }
+
+      pre {
+        display: block;
+      }
+    }
   }
 }
 

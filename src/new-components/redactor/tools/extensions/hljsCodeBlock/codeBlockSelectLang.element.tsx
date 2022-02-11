@@ -16,11 +16,10 @@ export const codeBlockSelectLangElement = EG({
   };
 
   while (true) {
-    console.log(params.selectedLanguage);
-
     yield render(
       <>
-        <select contentEditable={false} value={params.selectedLanguage} onchange={updateAttributes}>
+        <pre>{params.domCodeEl}</pre>
+        <select class='hljs-codeblock__select' contentEditable={false} value={params.selectedLanguage} onchange={updateAttributes}>
           <option value="null" selected={params.selectedLanguage == null}>
             auto
           </option>
@@ -31,7 +30,6 @@ export const codeBlockSelectLangElement = EG({
             </option>
           ))}
         </select>
-        <pre>{params.domCodeEl}</pre>
       </>,
       this
     );
