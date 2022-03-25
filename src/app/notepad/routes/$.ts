@@ -1,10 +1,20 @@
 import page from 'page';
 
 import { AbstractRoute, IRouters } from 'components/abstract.router';
-import { AuthService } from 'auth';
-import { StorageService } from 'storage/storage.service';
+import hub from 'hub';
+import { AUTH_ACTION } from 'hub/auth/auth.action';
+import 'hub/auth/auth.state';
 
-export type TRootPath = '/articles*' | '/conference*' | '/editor/:id/:flag?' | '/draft/:id' | '/drafts' | '/notes' | '/login' | '*';
+export type TRootPath =
+  | '/articles*'
+  | '/conference*'
+  | '/editor/:id/:flag?'
+  | '/draft/:id'
+  | '/drafts'
+  | '/notes'
+  | '/login'
+  | '/logout'
+  | '*';
 
 export class RootRoute extends AbstractRoute<TRootPath> {
   getRouter(): IRouters<TRootPath> {
@@ -73,9 +83,23 @@ export class RootRoute extends AbstractRoute<TRootPath> {
         {
           path: '/login',
           callback: async (ctx, next) => {
-            const _storageService = new StorageService();
-            const _authService = new AuthService(_storageService, `${document.location.origin}/notes`);
-            _authService.login();
+            hub.dispatch({
+              type: AUTH_ACTION.AUTH,
+              payload: {},
+            });
+            ctx.handled = true;
+            next();
+          },
+        },
+        {
+          path: '/logout',
+          callback: async (ctx, next) => {
+            hub.dispatch({
+              type: AUTH_ACTION.LOGOUT,
+              payload: {
+                redirectUri: `${document.location.origin}/notes`
+              },
+            });
             ctx.handled = true;
             next();
           },

@@ -60,7 +60,7 @@ export async function getAllDrafts(): Promise<IListItem[]> {
 
 export async function createNewDraft() {
   return await authorized(async (auth) => {
-    const author = (await sdk().findAuthorByAuth0({ auth0_id: auth.userInfo.auth0Id })).author[0];
+    const author = (await sdk().findAuthorByAuth0({ auth0_id: auth.userInfo.uid })).author[0];
 
     if (author == null) {
       alert(MESSAGES.AUTHOR_NOT_FOUND);

@@ -31,7 +31,7 @@ authState.pipe(first((state) => state.data?.accessToken != null && !state.isLoad
       ...graphQLClientOptions,
       headers: {
         ...graphQLClientOptions.headers,
-        'x-hasura-user-id': String(state.data?.userInfo.auth0Id),
+        'x-hasura-user-id': String(state.data?.userInfo.uid),
       },
     };
   } else {

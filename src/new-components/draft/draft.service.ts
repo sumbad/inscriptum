@@ -119,7 +119,7 @@ export async function publishDraft(data: DraftModel) {
     // TODO: validation: 'Upload in progress.\nPlease wait...'
     // TODO: validation: Unsaved content (e.g. image)
 
-    const author = (await sdk().findAuthorByAuth0({ auth0_id: auth.userInfo.auth0Id })).author[0];
+    const author = (await sdk().findAuthorByAuth0({ auth0_id: auth.userInfo.uid })).author[0];
 
     if (author == null) {
       alert(MESSAGES.AUTHOR_NOT_FOUND);

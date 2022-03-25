@@ -109,8 +109,8 @@ async function createAuthState(): Promise<Auth> {
   }
 
   const userInfo: Auth['userInfo'] = {
-    auth0Id: user.sub!,
-    email: user.email,
+    uid: user.sub!,
+    email: user.email || null,
   };
 
   const date = new Date();
@@ -137,7 +137,7 @@ function disabledAuth() {
     accessToken: '',
     expiresAt,
     userInfo: {
-      auth0Id: 'auth0|5c2b3430c12e3e5be73e5b35',
+      uid: 'Wk2PD0EhcbWeaMCSR3lHG4j9zEG2',
       email: 'test@test.test',
     },
   };

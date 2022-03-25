@@ -1,6 +1,6 @@
 import './style.inject.scss';
 import 'components/um-preloader';
-import {RootRoute} from './routes/$';
+import { RootRoute } from './routes/$';
 
 const mainElement = document.querySelector('main');
 
