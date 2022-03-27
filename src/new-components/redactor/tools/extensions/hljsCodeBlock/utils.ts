@@ -35,7 +35,7 @@ export const HLJS_LANGUAGES = ['javascript', 'typescript', 'sql', 'xml', 'css', 
 export function generateHljsNodeJson(codeText: string, language?: string) {
   let hljsResult: HighlightResult;
   
-  if (language != null) {
+  if (typeof language === 'string') {
     hljsResult = hljs.highlight(codeText, { language });
   } else {
     hljsResult = hljs.highlightAuto(codeText, HLJS_LANGUAGES);

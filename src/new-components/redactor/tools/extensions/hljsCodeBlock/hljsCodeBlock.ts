@@ -1,5 +1,5 @@
 import { JSONContent, Node } from '@tiptap/core';
-import { generateHljsNodeJson, getHljsBlockContentAsText, hljsNodeInputRule } from './utils';
+import { generateHljsNodeJson, getHljsBlockContentAsText, hljsNodeInputRule, HLJS_LANGUAGES } from './utils';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 import { codeBlockSelectLangElement } from './codeBlockSelectLang.element';
@@ -66,17 +66,13 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
       language: {
         default: null,
         parseHTML: (element) => {
-          const classAttribute = element.firstElementChild?.getAttribute('class');
+          const languageAttribute = element.firstElementChild?.getAttribute('language');
 
-          if (classAttribute == null) {
+          if (languageAttribute != null && !HLJS_LANGUAGES.includes(languageAttribute)) {
             return null;
           }
 
-          const regexLanguageClassPrefix = new RegExp(`^(${this.options.languageClassPrefix})`);
-
-          return {
-            language: classAttribute.replace(regexLanguageClassPrefix, ''),
-          };
+          return languageAttribute;
         },
       },
     };
@@ -294,14 +290,17 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
     container.classList.add('hljs-codeblock');
 
     return ({ editor, node, getPos }) => {
-      container.props.selectedLanguage = node.attrs.language;
-
       for (const key in node.attrs) {
-        domCodeEl.setAttribute(key, node.attrs[key]);
+        if (typeof node.attrs[key] === 'string') {
+          domCodeEl.setAttribute(key, node.attrs[key]);
+        }
       }
 
-      if (node.attrs.language != null) {
+      if (typeof node.attrs.language === 'string') {
+        container.props.selectedLanguage = node.attrs.language;
         domCodeEl.setAttribute('class', this.options.languageClassPrefix + node.attrs.language);
+      } else {
+        node.attrs.language = null;
       }
 
       if (typeof getPos === 'function') {
