@@ -2,17 +2,17 @@ import { EG } from '@web-companions/gfc';
 import { render } from 'lit-html2';
 import page from 'page';
 
-import 'components/list';
-import { IListItem } from 'components/list';
 import { createNewDraft, deleteDraftById, DraftAction, getAllDrafts } from './draftList.service';
 import { newDraftIconNode } from './newDraftIcon.node';
 import { saveIconNode } from './saveIcon.node';
 import { menuElement } from 'new-components/menu/menu.element';
 import { supervise } from 'utils/component.tools';
+import { IListItem, listElement } from 'new-components/list/list.element';
 
 const NewDraftIconNode = newDraftIconNode();
 const SaveIconNode = saveIconNode();
 const MenuElement = menuElement('inscriptum-menu');
+const ListElement = listElement('inscriptum-list');
 
 export const draftListElement = EG()(function* () {
   let drafts: IListItem[] = [];
@@ -92,7 +92,7 @@ export const draftListElement = EG()(function* () {
               </div>
             </div>
 
-            <inscriptum-list onaction={handleAction} value={drafts}></inscriptum-list>
+            <ListElement list={drafts} onaction={handleAction}></ListElement>
           </um-preloader>
         </div>,
         this

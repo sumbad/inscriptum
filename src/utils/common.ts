@@ -65,7 +65,14 @@ export function redactorContent2Preview(jsonContent: JSONContent | null) {
 
     const topicSummaryContent = findFirstJsonContent(jsonContent, TOPIC_SUMMARY_NODE_NAME);
     if (topicSummaryContent?.content != null) {
-      previewContent = topicSummaryContent.content[0].text ?? previewContent;
+      let summary = '';
+      topicSummaryContent.content.forEach((c) => {
+        if (c.text != null) {
+          summary += c.text;
+        }
+      });
+
+      previewContent = summary.length > 0 ? summary : previewContent;
     }
 
     const figureContent = findFirstJsonContent(jsonContent, FIGURE_NODE_NAME);

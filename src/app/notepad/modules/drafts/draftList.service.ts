@@ -1,5 +1,5 @@
+import type { IListItem } from 'new-components/list/list.element';
 import { sdk } from 'api';
-import { IListItem } from 'components/list';
 import { config } from 'settings';
 import { redactorContent2Preview } from 'utils/common';
 import { authorized } from 'utils/guards';

@@ -1,18 +1,18 @@
 import { EG } from '@web-companions/gfc';
-import { IListItem } from 'components/list';
 import { render } from 'lit-html2';
 import { supervise } from 'utils/component.tools';
 import { initNoteList, NoteAction } from './noteList.service';
 import page from 'page';
 
-import 'components/list';
 import { menuElement } from 'new-components/menu/menu.element';
+import { IListItem, listElement } from 'new-components/list/list.element';
 
 // DEBUG:
 // import { marginElement } from 'new-components/margin/margin.element';
 // const MarginElement = marginElement('m-e');
 
 const MenuElement = menuElement('inscriptum-menu');
+const ListElement = listElement('inscriptum-list');
 
 export const noteListElement = EG()(function* () {
   let isPreloader = true;
@@ -61,7 +61,7 @@ export const noteListElement = EG()(function* () {
           </div> */}
 
             <um-preloader loading={isPreloader}>
-              <inscriptum-list onaction={handleAction} value={notes}></inscriptum-list>
+              <ListElement list={notes} onaction={handleAction}></ListElement>
             </um-preloader>
           </div>
         </>,
