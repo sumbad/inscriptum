@@ -1,8 +1,9 @@
 import { JSONContent } from '@tiptap/core';
 import { Page } from 'models/page.model';
-import { DraftAction } from 'new-components/draft/draft.action';
-import { MarginAction } from 'new-components/margin/margin.action';
-import { AuthAction } from './auth/auth.action';
+import { DraftAction, DRAFT_ACTION } from 'new-components/draft/draft.action';
+import { MarginAction, MARGIN_ACTION } from 'new-components/margin/margin.action';
+import { AuthAction, AUTH_ACTION } from './auth/auth.action';
+import { NoticeAction, NOTICE_ACTION } from './notice.action';
 
 const namespace = 'HUB_ACTION' as const;
 ///
@@ -29,9 +30,14 @@ export const HUB_ACTION = {
   DRAFT_DELETE_PAGE_DONE,
   DRAFT_PUBLISH,
   FULLSCREEN_CHANGED,
+  ...NOTICE_ACTION,
+  ...AUTH_ACTION,
+  ...DRAFT_ACTION,
+  ...MARGIN_ACTION
 } as const;
 
 export type HubAction =
+  | NoticeAction
   | AuthAction
   | DraftAction
   | MarginAction

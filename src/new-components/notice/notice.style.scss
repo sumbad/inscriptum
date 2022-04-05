@@ -1,0 +1,276 @@
+////
+/// Notifications
+/// Based on CSS-only Notifications Component by Damián Muti
+/// @see https://codepen.io/damianmuti/pen/GEZoeG
+////
+
+$notification-status: (
+  'notice': (
+    color: #29b6f6,
+    icon: 'M11.016,6.984V9h1.968V6.984H11.016z M11.016,17.016h1.968v-6h-1.968V17.016z',
+  ),
+  'warning': (
+    color: #ffca28,
+    icon: 'M11.016,17.016h1.968V15h-1.968V17.016z M11.016,6.983v6.001h1.968V6.983H11.016z',
+  ),
+  'error': (
+    color: #ef5350,
+    icon:
+      'M13.406,12l2.578,2.578l-1.406,1.406L12,13.406l-2.578,2.578l-1.406-1.406L10.594,12L8.016,9.421l1.406-1.405L12,10.593 l2.578-2.577l1.406,1.405L13.406,12z',
+  ),
+  'success': (
+    color: #66bb6a,
+    icon: 'M10.477,13.136l5.085-5.085l1.406,1.406l-6.492,6.492l-3.446-3.445l1.406-1.406L10.477,13.136z',
+  ),
+  'question': (
+    color: #8d6e63,
+    icon:
+      'M12.001,6.314h-0.002c-1.996,0-3.609,1.614-3.609,3.609h1.784c0-0.977,0.85-1.784,1.826-1.784  c0.977,0,1.827,0.807,1.827,1.784c0,1.826-2.718,1.614-2.718,4.544h1.784c0-2.038,2.717-2.294,2.717-4.544  C15.609,7.928,13.997,6.314,12.001,6.314z M11.109,17.186h1.784v-1.826h-1.784V17.186z',
+  ),
+  'plain': (
+    color: #333,
+  ),
+);
+///
+$notification-toast-positions: (
+  'top left': (
+    top: 0,
+    left: 0,
+  ),
+  'top right': (
+    top: 0,
+    right: 0,
+  ),
+  'bottom right': (
+    bottom: 0,
+    right: 0,
+  ),
+  'bottom left': (
+    bottom: 0,
+    left: 0,
+  ),
+);
+///
+$notification-icon-size: 30px !default;
+///
+$notification-box-shadow: true !default;
+///
+$notification-show-icon: true !default;
+///
+$notification-toast-margin: 20px !default;
+///
+$notification-toast-max-width: 350px !default;
+///
+$notification-toast-total-width: $notification-icon-size + ($notification-toast-margin * 2) + $notification-toast-max-width;
+
+@keyframes fade-in {
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    visibility: visible;
+    opacity: 1;
+  }
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+/// URL-encode color SASS function / convert color to hex SASS function.
+/// @param {color} $color - Hex color value to convert.
+/// @return {string} URL-encode color value.
+@function encode-color($color) {
+  @if type-of($color) == 'color' {
+    $hex: str-slice(ie-hex-str($color), 4);
+    $color: unquote('#{$hex}');
+  }
+
+  $color: '%23' + $color;
+
+  @return $color;
+}
+
+/// Generates an SVG with a given fill color depending on the type of icon passed as parameter. The SVG string is scaped for cross-browser support.
+/// @param {string} $icon - Type of icon. Accepted values: `quarter`, `half`, `three-quarters` or `full`.
+/// @param {color} $color - Passes the fill color of the SVG icon that is being generated. Note: Hexa color values must be escaped for cross-browser support.
+/// @return {string} background value.
+@function get-icon($status, $icon, $color) {
+  @return url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.984c4.407 0 8.016 3.609 8.016 8.016 0 4.406-3.608 8.016-8.016 8.016S3.984 16.407 3.984 12 7.593 3.984 12 3.984m0-2C6.478 1.984 1.984 6.477 1.984 12c0 5.521 4.493 10.016 10.016 10.016S22.016 17.522 22.016 12c0-5.523-4.495-10.016-10.016-10.016zm0 2c4.407 0 8.016 3.609 8.016' fill='" + encode-color(
+        $color
+      ) + "'/%3E%3Cpath d='" + map-get(map-get($notification-status, $status), $icon) + "' fill='" + encode-color($color) + "'/%3E%3C/svg%3E")
+    center / cover no-repeat;
+}
+
+/// Component that shows two different types of notification boxes: toast and bar.
+/// @param {string} $position ['bottom right'] - Positioning for each notification box. Accepted values: `top left`, `top right`, `bottom right` or `bottom left`.
+/// @param {string} $type [toast] - Type of notification. Accepted values: `toast` or `bar`.
+/// @param {string} $animation [slide] - Animation style to show the notification. Accepted values: `slide` or `fade`.
+/// @param {number} $duration [1s] - Duration of the show/hide animation.
+@mixin c-notification($position: 'bottom right', $type: toast, $animation: slide, $duration: 1s) {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  line-height: 1.3;
+
+  @if ($notification-box-shadow) {
+    box-shadow: 0 0 15px 0 rgba(#000, 0.35);
+  }
+
+  @if $animation == fade {
+    visibility: hidden;
+    opacity: 0;
+
+    &.do-show {
+      animation: fade-in $duration ease-in-out forwards;
+    }
+    &.do-hide {
+      animation-name: fade-out;
+    }
+  }
+
+  // Toast type
+  @if $type == toast {
+    max-width: $notification-toast-max-width;
+    margin: $notification-toast-margin;
+
+    // Iterate through $notification-toast-positions map and generate the proper styling
+    @each $pos, $coords in $notification-toast-positions {
+      @if $pos == $position {
+        $separator: str-index($position, ' ');
+        $y: str-slice($position, 0, ($separator - 1));
+        $x: str-slice($position, ($separator + 1));
+
+        #{$y}: map-get($coords, $y);
+        #{$x}: map-get($coords, $x);
+
+        @if $animation == slide {
+          $translateValue: #{$notification-toast-total-width + map-get($coords, $x)};
+
+          transform: translateX(if($x == 'left', -$translateValue, $translateValue));
+
+          @at-root {
+            @keyframes slide-in-#{$x} {
+              from {
+                transform: translateX(if($x == 'left', -$translateValue, $translateValue));
+              }
+              to {
+                transform: translateX(0);
+              }
+            }
+            @keyframes slide-out-#{$x} {
+              from {
+                transform: translateX(0);
+              }
+              to {
+                transform: translateX(if($x == 'left', -$translateValue, $translateValue));
+              }
+            }
+          }
+
+          &.do-show {
+            animation: slide-in-#{$x}
+              $duration
+              ease-in-out
+              forwards;
+          }
+          &.do-hide {
+            animation-name: slide-out-#{$x};
+          }
+        }
+      }
+    }
+  }
+
+  @if $type == bar {
+    #{$position}: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+
+    @if $animation == slide {
+      $translateValue: if($position == top, -100%, 100%);
+
+      transform: translateY($translateValue);
+
+      @keyframes slide-show {
+        from {
+          transform: translateY($translateValue);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      @keyframes slide-hide {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY($translateValue);
+        }
+      }
+
+      &.do-show {
+        animation: slide-show $duration forwards;
+      }
+      &.do-hide {
+        animation-name: slide-hide;
+      }
+    }
+  }
+
+  // Iterate through $notification-status-color map and create the proper classes
+  @each $status-type, $status-data in $notification-status {
+    &[data-notification-status='#{$status-type}'] {
+      background-color: map-get($status-data, color);
+
+      @if ($notification-show-icon) and map-get($status-data, icon) {
+        &:before {
+          content: '';
+          display: block;
+          width: $notification-icon-size;
+          height: $notification-icon-size;
+          min-width: $notification-icon-size;
+          margin-right: $notification-toast-margin;
+          background: get-icon($status-type, icon, darken(map-get($status-data, color), 20%));
+        }
+      }
+    }
+  }
+}
+
+// Types of notifications
+.top-left {
+  @include c-notification($position: 'top left', $type: toast, $animation: slide, $duration: 1s);
+}
+
+.top-right {
+  @include c-notification($position: 'top right', $type: toast, $animation: fade, $duration: 1s);
+}
+
+.bottom-right {
+  @include c-notification($position: 'bottom right', $type: toast, $animation: slide, $duration: 1s);
+}
+
+.bottom-left {
+  @include c-notification($position: 'bottom left', $type: toast, $animation: fade, $duration: 1s);
+}
+
+.bar-top {
+  @include c-notification($position: 'top', $type: bar, $animation: slide, $duration: 1s);
+}
+
+.bar-bottom {
+  @include c-notification($position: 'bottom', $type: bar, $animation: fade, $duration: 1s);
+}
