@@ -1,4 +1,5 @@
 import { EG, p } from '@web-companions/gfc';
+import { ComponentFuncThis } from '@web-companions/gfc/@types';
 import { render } from 'lit-html2';
 import { createRef, ref } from 'lit-html2/directives/ref.js';
 
@@ -8,13 +9,17 @@ export interface NoticeProps {
   message: string;
 }
 
+export interface NoticeElementType extends ComponentFuncThis<NoticeProps> {
+  hide: () => void;
+}
+
 export const noticeElement = EG<NoticeProps>({
   props: {
     status: p.req('status'),
     type: p.req('type'),
     message: p.req(),
   },
-})(function* (params) {
+})(function* (this: NoticeElementType, params) {
   let _params = params;
   const notifyRef = createRef<HTMLDivElement>();
 
@@ -22,20 +27,20 @@ export const noticeElement = EG<NoticeProps>({
     event.stopPropagation();
   }
 
-  function onClickBtn(event: PointerEvent) {
-    const target = event.currentTarget as HTMLButtonElement | null;
+  // function onClickBtn(event: PointerEvent) {
+  //   const target = event.currentTarget as HTMLButtonElement | null;
 
-    if (target != null && typeof target.dataset.type === 'string' && typeof target.dataset.status === 'string' && notifyRef.value != null) {
-      show({
-        message:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, reprehenderit obcaecati itaque. Officiis libero provident perspiciatis eum fugiat laudantium sequi.',
-        status: target.dataset.status as any,
-        type: target.dataset.type as any,
-      });
-    }
+  //   if (target != null && typeof target.dataset.type === 'string' && typeof target.dataset.status === 'string' && notifyRef.value != null) {
+  //     show({
+  //       message:
+  //         'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, reprehenderit obcaecati itaque. Officiis libero provident perspiciatis eum fugiat laudantium sequi.',
+  //       status: target.dataset.status as any,
+  //       type: target.dataset.type as any,
+  //     });
+  //   }
 
-    event.stopPropagation();
-  }
+  //   event.stopPropagation();
+  // }
 
   function show(noticeProps: Partial<NoticeProps>) {
     if (noticeProps.message == null || noticeProps.status == null || noticeProps.type == null || notifyRef.value == null) {
@@ -53,7 +58,7 @@ export const noticeElement = EG<NoticeProps>({
   /**
    * Hide an opened notification
    */
-  const hide = () => {
+  this.hide = () => {
     if (notifyRef.value != null) {
       notifyRef.value.classList.add('do-hide');
     }
@@ -61,7 +66,7 @@ export const noticeElement = EG<NoticeProps>({
 
   try {
     requestAnimationFrame(() => {
-      document.addEventListener('click', hide);
+      document.addEventListener('click', this.hide);
       show(_params);
     });
 
@@ -104,6 +109,6 @@ export const noticeElement = EG<NoticeProps>({
       );
     }
   } finally {
-    document.removeEventListener('click', hide);
+    document.removeEventListener('click', this.hide);
   }
 });

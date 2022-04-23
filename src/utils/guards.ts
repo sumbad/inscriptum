@@ -18,7 +18,7 @@ export async function authorized<T>(work: (auth: Auth) => T, redirectUri: string
     });
 
     authState.pipe(first((state) => state.data != null && !state.isLoading)).subscribe((state) => {
-      console.log('authorizedWork AUTH_ACTION.AUTH_DONE');
+      console.log('Make authorized work');
       resolve(work(state.data!));
     });
   });

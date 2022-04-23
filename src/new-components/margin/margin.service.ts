@@ -1,5 +1,6 @@
 import { sdk } from 'api';
 import hub from 'hub';
+import { NOTICE_ACTION } from 'hub/notice.action';
 import { Margin, MarginOptions } from 'models/margin.model';
 import { MARGIN_ACTION } from 'new-components/margin/margin.action';
 import { authorized } from 'utils/guards';
@@ -58,6 +59,15 @@ export async function saveMarginById(id: string, dataUri: string, options: Omit<
       hub.dispatch({
         type: MARGIN_ACTION.SAVE_DONE,
         payload: update_margin_by_pk,
+      });
+
+      hub.dispatch({
+        type: NOTICE_ACTION.SHOW,
+        payload: {
+          status: 'success',
+          type: 'top-right',
+          message: 'Successfully saved',
+        },
       });
 
       return update_margin_by_pk;

@@ -23,8 +23,10 @@ let graphQLClientOptions: RequestInit = {
 
 let graphQLClient = new GraphQLClient(graphQLClientEndpoint, graphQLClientOptions);
 
-authState.pipe(first((state) => state.data?.accessToken != null && !state.isLoading)).subscribe((state) => {
-  console.log('API AUTH_ACTION.AUTH_DONE');
+authState.subscribe((state) => {
+  if (state.data?.accessToken == null || state.isLoading) {
+    return;
+  }
 
   if (config.isAuthDisabled) {
     graphQLClientOptions = {

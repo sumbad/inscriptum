@@ -3,13 +3,11 @@ import { NoticeProps } from 'new-components/notice/notice.element';
 const a = 'NOTICE_ACTION' as const;
 
 const SHOW: unique symbol = Symbol(`[${a}] SHOW`);
-const SHOW_DONE: unique symbol = Symbol(`[${a}] SHOW_DONE`);
-const SHOW_FAIL: unique symbol = Symbol(`[${a}] SHOW_FAIL`);
+const HIDE: unique symbol = Symbol(`[${a}] HIDE`);
 
 export const NOTICE_ACTION = {
   SHOW,
-  SHOW_DONE,
-  SHOW_FAIL,
+  HIDE,
 } as const;
 
 export type NoticeAction =
@@ -18,10 +16,6 @@ export type NoticeAction =
       payload: NoticeProps;
     }
   | {
-      type: typeof NOTICE_ACTION.SHOW_DONE;
+      type: typeof NOTICE_ACTION.HIDE;
       payload: null;
-    }
-  | {
-      type: typeof NOTICE_ACTION.SHOW_FAIL;
-      payload: { error: any };
     };

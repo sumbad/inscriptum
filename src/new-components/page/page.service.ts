@@ -4,27 +4,20 @@ import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
 import { PageActionSave } from 'new-components/page/page.action';
 import { Subject, from, defer, EMPTY } from 'rxjs';
-import { debounceTime, tap, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { config } from 'settings';
+import { requestErrorRetryStrategy } from 'utils/error.util';
 import { authorized } from 'utils/guards';
-
 
 async function saveChanges(pageId: string, draftId: string, content: JSONContent) {
   return await authorized(async () => {
-    try {
-      await sdk().updatePageById({
-        id: pageId,
-        content,
-        updated_at: new Date().toISOString(),
-      });
+    await sdk().updatePageById({
+      id: pageId,
+      content,
+      updated_at: new Date().toISOString(),
+    });
 
-      return { pageId, draftId, content };
-    } catch (error) {
-      throw {
-        pageId,
-        error,
-      };
-    }
+    return { pageId, draftId, content };
   });
 }
 
@@ -50,13 +43,14 @@ export function savePageEffect(subject: Subject<PageActionSave>) {
       });
     }),
     switchMap((action) =>
-      from(saveChanges(action.pageId, action.draftId, action.content)).pipe(
+      defer(() => saveChanges(action.pageId, action.draftId, action.content)).pipe(
         tap((payload) => {
           hub.dispatch({
             type: HUB_ACTION.PAGE_SAVE_DONE,
             payload,
           });
         }),
+        retryWhen(requestErrorRetryStrategy()),
         catchError((error) => {
           hub.dispatch({
             type: HUB_ACTION.PAGE_SAVE_FAIL,
@@ -135,14 +129,14 @@ export function deletePageEffect(subject: Subject<{ draftId: string; pageId: str
             draft_id: action.draftId,
             order: action.order,
           });
-  
+
           const updatedPages = update_page?.returning ?? [];
-  
+
           const deletedPage = {
             id: update_page_by_pk?.id,
             order: action.order,
           };
-  
+
           return { draftId: action.draftId, deletedPage, updatedPages };
         })
       )
@@ -158,15 +152,14 @@ export function deletePageEffect(subject: Subject<{ draftId: string; pageId: str
       });
     })
   );
-// } catch (error) {
-//   dispatch({
-//     type: DRAFT_ACTION.DELETE_PAGE_FAIL,
-//     payload: {
-//       id: draftId,
-//       pageId,
-//       error,
-//     },
-//   });
-// }
+  // } catch (error) {
+  //   dispatch({
+  //     type: DRAFT_ACTION.DELETE_PAGE_FAIL,
+  //     payload: {
+  //       id: draftId,
+  //       pageId,
+  //       error,
+  //     },
+  //   });
+  // }
 }
-

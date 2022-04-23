@@ -215,11 +215,11 @@ export type Author_Mutation_Response = {
 /** input type for inserting object relation for remote table "author" */
 export type Author_Obj_Rel_Insert_Input = {
   data: Author_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Author_On_Conflict>;
 };
 
-/** on conflict condition type for table "author" */
+/** on_conflict condition type for table "author" */
 export type Author_On_Conflict = {
   constraint: Author_Constraint;
   update_columns?: Array<Author_Update_Column>;
@@ -402,7 +402,7 @@ export type Draft_Append_Input = {
 /** input type for inserting array relation for remote table "draft" */
 export type Draft_Arr_Rel_Insert_Input = {
   data: Array<Draft_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Draft_On_Conflict>;
 };
 
@@ -506,11 +506,11 @@ export type Draft_Mutation_Response = {
 /** input type for inserting object relation for remote table "draft" */
 export type Draft_Obj_Rel_Insert_Input = {
   data: Draft_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Draft_On_Conflict>;
 };
 
-/** on conflict condition type for table "draft" */
+/** on_conflict condition type for table "draft" */
 export type Draft_On_Conflict = {
   constraint: Draft_Constraint;
   update_columns?: Array<Draft_Update_Column>;
@@ -582,8 +582,13 @@ export enum Draft_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
 export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
   /** is the column contained in the given json value */
   _contained_in?: InputMaybe<Scalars['jsonb']>;
   /** does the column contain the given json value at the top level */
@@ -612,7 +617,6 @@ export type Margin = {
   ended_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['uuid'];
   img?: Maybe<Scalars['bytea']>;
-  /** A computed field, executes function "content_img_to_base64" */
   imgBase64?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   options?: Maybe<Scalars['jsonb']>;
@@ -665,7 +669,7 @@ export type Margin_Append_Input = {
 /** input type for inserting array relation for remote table "margin" */
 export type Margin_Arr_Rel_Insert_Input = {
   data: Array<Margin_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Margin_On_Conflict>;
 };
 
@@ -771,7 +775,7 @@ export type Margin_Mutation_Response = {
   returning: Array<Margin>;
 };
 
-/** on conflict condition type for table "margin" */
+/** on_conflict condition type for table "margin" */
 export type Margin_On_Conflict = {
   constraint: Margin_Constraint;
   update_columns?: Array<Margin_Update_Column>;
@@ -784,6 +788,7 @@ export type Margin_Order_By = {
   ended_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   img?: InputMaybe<Order_By>;
+  imgBase64?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   options?: InputMaybe<Order_By>;
   page?: InputMaybe<Page_Order_By>;
@@ -1254,7 +1259,7 @@ export type Note_Append_Input = {
 /** input type for inserting array relation for remote table "note" */
 export type Note_Arr_Rel_Insert_Input = {
   data: Array<Note_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Note_On_Conflict>;
 };
 
@@ -1373,7 +1378,7 @@ export type Note_Mutation_Response = {
   returning: Array<Note>;
 };
 
-/** on conflict condition type for table "note" */
+/** on_conflict condition type for table "note" */
 export type Note_On_Conflict = {
   constraint: Note_Constraint;
   update_columns?: Array<Note_Update_Column>;
@@ -1662,7 +1667,7 @@ export type Page_Append_Input = {
 /** input type for inserting array relation for remote table "page" */
 export type Page_Arr_Rel_Insert_Input = {
   data: Array<Page_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Page_On_Conflict>;
 };
 
@@ -1786,11 +1791,11 @@ export type Page_Mutation_Response = {
 /** input type for inserting object relation for remote table "page" */
 export type Page_Obj_Rel_Insert_Input = {
   data: Page_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   on_conflict?: InputMaybe<Page_On_Conflict>;
 };
 
-/** on conflict condition type for table "page" */
+/** on_conflict condition type for table "page" */
 export type Page_On_Conflict = {
   constraint: Page_Constraint;
   update_columns?: Array<Page_Update_Column>;

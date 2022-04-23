@@ -22,13 +22,10 @@ export function authModule() {
     const user: User | null = await new Promise((resolve) => onAuthStateChanged(auth, (u) => resolve(u)));
 
     if (user == null) {
-      // TODO: refactor web-companions
-      AuthElement.props = { 
+      AuthElement.props = {
         isOpen: true,
-        message: hintMessage
-      }; // supported by JS & TS
-      // AuthElement['next']({isOpen: true}); // supported by JS
-      // AuthElement['isOpen'] = true; // supported by JS
+        message: hintMessage,
+      };
       return null;
     } else {
       const accessToken = await user.getIdToken();
@@ -77,8 +74,8 @@ export function authModule() {
     // add a day
     const expiresAt = date.setDate(date.getDate() + 1);
 
-    if(config.testUserUID == null || config.testUserEmail == null) {
-      throw new Error("Please set TEST_USER_UID and TEST_USER_EMAIL");
+    if (config.testUserUID == null || config.testUserEmail == null) {
+      throw new Error('Please set TEST_USER_UID and TEST_USER_EMAIL');
     }
 
     const auth: Auth = {

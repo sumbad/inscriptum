@@ -11,10 +11,16 @@ export function noticeModule() {
   hub.$.pipe(filterByActionsGroup(NOTICE_ACTION)).subscribe((d) => {
     switch (d.type) {
       case NOTICE_ACTION.SHOW:
-          NoticeElement.props = d.payload;
+        NoticeElement.props = d.payload;
+
+        if (d.payload.status === 'success') {
+          setTimeout(() => {
+            NoticeElement.hide();
+          }, 3500);
+        }
         break;
-    
-      default:
+      case NOTICE_ACTION.HIDE:
+        NoticeElement.hide();
         break;
     }
   });
