@@ -1,5 +1,5 @@
 /*! For license information please see 540.bundle.js.LICENSE.txt */
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[540],{2114:(e,t,a)=>{a.d(t,{S:()=>H});var i,r,d,n,o,s,p,c,l,u,m,_,g,f,h,b,v,$=a(8687),x=a(6608),y=a(5196),k=a(3135),w=a(2900);!function(e){e.AuthorAuth0UserIdKey="author_auth0UserId_key",e.AuthorPkey="author_pkey"}(i||(i={})),function(e){e.Auth0Id="auth0_id",e.CreatedAt="created_at",e.Email="email",e.Id="id",e.LastSeen="last_seen",e.Name="name"}(r||(r={})),function(e){e.Auth0Id="auth0_id",e.CreatedAt="created_at",e.Email="email",e.Id="id",e.LastSeen="last_seen",e.Name="name"}(d||(d={})),function(e){e.DraftPkey="draft_pkey"}(n||(n={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.TableOfContents="table_of_contents",e.UpdatedAt="updated_at"}(o||(o={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.TableOfContents="table_of_contents",e.UpdatedAt="updated_at"}(s||(s={})),function(e){e.MarginPkey="margin_pkey"}(p||(p={})),function(e){e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.Img="img",e.Name="name",e.Options="options",e.PageId="page_id",e.UpdatedAt="updated_at"}(c||(c={})),function(e){e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.Img="img",e.Name="name",e.Options="options",e.PageId="page_id",e.UpdatedAt="updated_at"}(l||(l={})),function(e){e.NotePkey="note_pkey",e.UqNoteDraftIdEndedAt="uq_note_draft_id_ended_at"}(u||(u={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Name="name",e.Preview="preview",e.StaticLink="static_link",e.UpdatedAt="updated_at"}(m||(m={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Name="name",e.Preview="preview",e.StaticLink="static_link",e.UpdatedAt="updated_at"}(_||(_={})),function(e){e.LastSeen="last_seen",e.Name="name"}(g||(g={})),function(e){e.Asc="asc",e.AscNullsFirst="asc_nulls_first",e.AscNullsLast="asc_nulls_last",e.Desc="desc",e.DescNullsFirst="desc_nulls_first",e.DescNullsLast="desc_nulls_last"}(f||(f={})),function(e){e.PagePkey="page_pkey"}(h||(h={})),function(e){e.Content="content",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Order="order",e.UpdatedAt="updated_at"}(b||(b={})),function(e){e.Content="content",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Order="order",e.UpdatedAt="updated_at"}(v||(v={}));const A=w.ZP`
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[540],{2114:(e,t,a)=>{a.d(t,{S:()=>G});var i,r,d,n,o,s,p,c,l,u,m,_,g,f,h,b,v,$=a(8687),x=a(6608),y=a(3135),k=a(2900);!function(e){e.AuthorAuth0UserIdKey="author_auth0UserId_key",e.AuthorPkey="author_pkey"}(i||(i={})),function(e){e.Auth0Id="auth0_id",e.CreatedAt="created_at",e.Email="email",e.Id="id",e.LastSeen="last_seen",e.Name="name"}(r||(r={})),function(e){e.Auth0Id="auth0_id",e.CreatedAt="created_at",e.Email="email",e.Id="id",e.LastSeen="last_seen",e.Name="name"}(d||(d={})),function(e){e.DraftPkey="draft_pkey"}(n||(n={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.TableOfContents="table_of_contents",e.UpdatedAt="updated_at"}(o||(o={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.TableOfContents="table_of_contents",e.UpdatedAt="updated_at"}(s||(s={})),function(e){e.MarginPkey="margin_pkey"}(p||(p={})),function(e){e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.Img="img",e.Name="name",e.Options="options",e.PageId="page_id",e.UpdatedAt="updated_at"}(c||(c={})),function(e){e.CreatedAt="created_at",e.EndedAt="ended_at",e.Id="id",e.Img="img",e.Name="name",e.Options="options",e.PageId="page_id",e.UpdatedAt="updated_at"}(l||(l={})),function(e){e.NotePkey="note_pkey",e.UqNoteDraftIdEndedAt="uq_note_draft_id_ended_at"}(u||(u={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Name="name",e.Preview="preview",e.StaticLink="static_link",e.UpdatedAt="updated_at"}(m||(m={})),function(e){e.AuthorId="author_id",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Name="name",e.Preview="preview",e.StaticLink="static_link",e.UpdatedAt="updated_at"}(_||(_={})),function(e){e.LastSeen="last_seen",e.Name="name"}(g||(g={})),function(e){e.Asc="asc",e.AscNullsFirst="asc_nulls_first",e.AscNullsLast="asc_nulls_last",e.Desc="desc",e.DescNullsFirst="desc_nulls_first",e.DescNullsLast="desc_nulls_last"}(f||(f={})),function(e){e.PagePkey="page_pkey"}(h||(h={})),function(e){e.Content="content",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Order="order",e.UpdatedAt="updated_at"}(b||(b={})),function(e){e.Content="content",e.CreatedAt="created_at",e.DraftId="draft_id",e.EndedAt="ended_at",e.Id="id",e.Order="order",e.UpdatedAt="updated_at"}(v||(v={}));const w=k.ZP`
     query findAuthorByAuth0($auth0_id: String!) {
   author(where: {auth0_id: {_eq: $auth0_id}}) {
     id
@@ -9,7 +9,7 @@
     created_at
   }
 }
-    `,O=w.ZP`
+    `,A=k.ZP`
     query getAllDrafts {
   drafts: draft(order_by: {updated_at: desc}, where: {ended_at: {_is_null: true}}) {
     id
@@ -28,7 +28,7 @@
     }
   }
 }
-    `,j=w.ZP`
+    `,j=k.ZP`
     query getDraftById($id: uuid!) {
   draft: draft_by_pk(id: $id) {
     id
@@ -49,7 +49,7 @@
     }
   }
 }
-    `,I=w.ZP`
+    `,O=k.ZP`
     mutation updateDraftTOC($id: uuid!, $table_of_contents: jsonb!, $updated_at: timestamptz!) {
   update_draft_by_pk(
     pk_columns: {id: $id}
@@ -60,7 +60,7 @@
     id
   }
 }
-    `,P=w.ZP`
+    `,I=k.ZP`
     mutation createNewDraft($author_id: uuid, $content: jsonb) {
   insert_draft_one(
     object: {author_id: $author_id, pages: {data: {content: $content}}}
@@ -72,13 +72,13 @@
     }
   }
 }
-    `,D=w.ZP`
+    `,P=k.ZP`
     mutation deleteDraftById($id: uuid!, $ended_at: timestamptz) {
   update_draft_by_pk(pk_columns: {id: $id}, _set: {ended_at: $ended_at}) {
     id
   }
 }
-    `,N=w.ZP`
+    `,D=k.ZP`
     query getMarginById($id: uuid!) {
   margin: margin_by_pk(id: $id) {
     id
@@ -88,13 +88,13 @@
     options
   }
 }
-    `,q=w.ZP`
+    `,q=k.ZP`
     mutation createMargin($page_id: uuid!, $created_at: timestamptz!) {
   insert_margin_one(object: {page_id: $page_id, created_at: $created_at}) {
     id
   }
 }
-    `,C=w.ZP`
+    `,N=k.ZP`
     mutation saveMargin($id: uuid!, $updated_at: timestamptz!, $options: jsonb!, $img: bytea!, $name: String) {
   update_margin_by_pk(
     pk_columns: {id: $id}
@@ -104,7 +104,7 @@
     id
   }
 }
-    `,E=w.ZP`
+    `,C=k.ZP`
     query getAllNotes {
   notes: note(order_by: {created_at: desc}, where: {ended_at: {_is_null: true}}) {
     id
@@ -121,7 +121,7 @@
     }
   }
 }
-    `,z=w.ZP`
+    `,z=k.ZP`
     mutation createNode($author_id: uuid!, $created_at: timestamptz, $draft_id: uuid!, $ended_at: timestamptz, $name: String!, $preview: jsonb, $static_link: String) {
   insert_note_one(
     object: {author_id: $author_id, created_at: $created_at, draft_id: $draft_id, ended_at: $ended_at, name: $name, preview: $preview, static_link: $static_link}
@@ -131,7 +131,7 @@
     created_at
   }
 }
-    `,L=w.ZP`
+    `,E=k.ZP`
     mutation updateNode($id: uuid!, $ended_at: timestamptz, $name: String, $preview: jsonb, $static_link: String, $updated_at: timestamptz!) {
   update_note_by_pk(
     pk_columns: {id: $id}
@@ -142,7 +142,7 @@
     created_at
   }
 }
-    `,T=w.ZP`
+    `,L=k.ZP`
     mutation updatePageById($id: uuid!, $content: jsonb!, $updated_at: timestamptz!) {
   update_page_by_pk(
     pk_columns: {id: $id}
@@ -151,7 +151,7 @@
     id
   }
 }
-    `,B=w.ZP`
+    `,B=k.ZP`
     mutation addPageToDraft($created_at: timestamptz!, $draft_id: uuid!, $order: Int!) {
   update_page(
     where: {draft_id: {_eq: $draft_id}, ended_at: {_is_null: true}, order: {_gte: $order}}
@@ -173,7 +173,7 @@
     }
   }
 }
-    `,S=w.ZP`
+    `,S=k.ZP`
     mutation deletePage($id: uuid!, $ended_at: timestamptz!, $draft_id: uuid!, $order: Int!) {
   update_page_by_pk(pk_columns: {id: $id}, _set: {ended_at: $ended_at}) {
     id
@@ -188,7 +188,7 @@
     }
   }
 }
-    `,Z=(e,t)=>e();const U="https://inscriptum-hasura.herokuapp.com/v1/graphql";let M={credentials:"include",mode:"cors",cache:"no-cache",method:"POST",headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*","Access-Control-Allow-Credentials":"true"}},G=new $.GraphQLClient(U,M);x.f.pipe((0,y.P)((e=>{var t;return null!=(null===(t=e.data)||void 0===t?void 0:t.accessToken)&&!e.isLoading}))).subscribe((e=>{var t,a;console.log("API AUTH_ACTION.AUTH_DONE"),M=k.v.isAuthDisabled?Object.assign(Object.assign({},M),{headers:Object.assign(Object.assign({},M.headers),{"x-hasura-user-id":String(null===(t=e.data)||void 0===t?void 0:t.userInfo.uid)})}):Object.assign(Object.assign({},M),{headers:Object.assign(Object.assign({},M.headers),{Authorization:`Bearer ${null===(a=e.data)||void 0===a?void 0:a.accessToken}`})}),G=new $.GraphQLClient(U,M)}));const H=()=>function(e,t=Z){return{findAuthorByAuth0:(a,i)=>t((t=>e.request(A,a,Object.assign(Object.assign({},i),t))),"findAuthorByAuth0"),getAllDrafts:(a,i)=>t((t=>e.request(O,a,Object.assign(Object.assign({},i),t))),"getAllDrafts"),getDraftById:(a,i)=>t((t=>e.request(j,a,Object.assign(Object.assign({},i),t))),"getDraftById"),updateDraftTOC:(a,i)=>t((t=>e.request(I,a,Object.assign(Object.assign({},i),t))),"updateDraftTOC"),createNewDraft:(a,i)=>t((t=>e.request(P,a,Object.assign(Object.assign({},i),t))),"createNewDraft"),deleteDraftById:(a,i)=>t((t=>e.request(D,a,Object.assign(Object.assign({},i),t))),"deleteDraftById"),getMarginById:(a,i)=>t((t=>e.request(N,a,Object.assign(Object.assign({},i),t))),"getMarginById"),createMargin:(a,i)=>t((t=>e.request(q,a,Object.assign(Object.assign({},i),t))),"createMargin"),saveMargin:(a,i)=>t((t=>e.request(C,a,Object.assign(Object.assign({},i),t))),"saveMargin"),getAllNotes:(a,i)=>t((t=>e.request(E,a,Object.assign(Object.assign({},i),t))),"getAllNotes"),createNode:(a,i)=>t((t=>e.request(z,a,Object.assign(Object.assign({},i),t))),"createNode"),updateNode:(a,i)=>t((t=>e.request(L,a,Object.assign(Object.assign({},i),t))),"updateNode"),updatePageById:(a,i)=>t((t=>e.request(T,a,Object.assign(Object.assign({},i),t))),"updatePageById"),addPageToDraft:(a,i)=>t((t=>e.request(B,a,Object.assign(Object.assign({},i),t))),"addPageToDraft"),deletePage:(a,i)=>t((t=>e.request(S,a,Object.assign(Object.assign({},i),t))),"deletePage")}}(G)},1775:(e,t,a)=>{a.d(t,{t:()=>l});var i=a(1640),r=a(3584),d=a(3619);const n=e=>null!=e?e:i.Ld;var o=a(3255);class s extends o.Xe{constructor(e){if(super(e),this.it=i.Ld,e.type!==o.pX.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(e){if(e===i.Ld||null==e)return this.vt=void 0,this.it=e;if(e===i.Jb)return e;if("string"!=typeof e)throw Error(this.constructor.directiveName+"() called with a non-string value");if(e===this.it)return this.vt;this.it=e;const t=[e];return t.raw=t,this.vt={_$litType$:this.constructor.resultType,strings:t,values:[]}}}s.directiveName="unsafeHTML",s.resultType=1;const p=(0,o.XM)(s);var c=a(4938);const l=(0,r.EG)({props:{list:r.p.req(),onaction:r.p.opt()}})((function*(e){const t=e=>t=>this.dispatchEvent(new CustomEvent("action",{detail:e})),r=()=>{this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))},o=e=>{var t;e.preventDefault(),r();const a=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,i=this.querySelector(`[id="${a}"]`);null!==i&&i.classList.add("open"),e.stopImmediatePropagation()};try{for(requestAnimationFrame((()=>{document.addEventListener("click",r)}));;){const r=(e,a=[])=>a.length>0?i.dy`<div class="um-drafts__item-actions">
+    `,T=(e,t)=>e();const Z="https://inscriptum-hasura.herokuapp.com/v1/graphql";let M={credentials:"include",mode:"cors",cache:"no-cache",method:"POST",headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*","Access-Control-Allow-Credentials":"true"}},U=new $.GraphQLClient(Z,M);x.f.subscribe((e=>{var t,a,i;null==(null===(t=e.data)||void 0===t?void 0:t.accessToken)||e.isLoading||(M=y.v.isAuthDisabled?Object.assign(Object.assign({},M),{headers:Object.assign(Object.assign({},M.headers),{"x-hasura-user-id":String(null===(a=e.data)||void 0===a?void 0:a.userInfo.uid)})}):Object.assign(Object.assign({},M),{headers:Object.assign(Object.assign({},M.headers),{Authorization:`Bearer ${null===(i=e.data)||void 0===i?void 0:i.accessToken}`})}),U=new $.GraphQLClient(Z,M))}));const G=()=>function(e,t=T){return{findAuthorByAuth0:(a,i)=>t((t=>e.request(w,a,Object.assign(Object.assign({},i),t))),"findAuthorByAuth0"),getAllDrafts:(a,i)=>t((t=>e.request(A,a,Object.assign(Object.assign({},i),t))),"getAllDrafts"),getDraftById:(a,i)=>t((t=>e.request(j,a,Object.assign(Object.assign({},i),t))),"getDraftById"),updateDraftTOC:(a,i)=>t((t=>e.request(O,a,Object.assign(Object.assign({},i),t))),"updateDraftTOC"),createNewDraft:(a,i)=>t((t=>e.request(I,a,Object.assign(Object.assign({},i),t))),"createNewDraft"),deleteDraftById:(a,i)=>t((t=>e.request(P,a,Object.assign(Object.assign({},i),t))),"deleteDraftById"),getMarginById:(a,i)=>t((t=>e.request(D,a,Object.assign(Object.assign({},i),t))),"getMarginById"),createMargin:(a,i)=>t((t=>e.request(q,a,Object.assign(Object.assign({},i),t))),"createMargin"),saveMargin:(a,i)=>t((t=>e.request(N,a,Object.assign(Object.assign({},i),t))),"saveMargin"),getAllNotes:(a,i)=>t((t=>e.request(C,a,Object.assign(Object.assign({},i),t))),"getAllNotes"),createNode:(a,i)=>t((t=>e.request(z,a,Object.assign(Object.assign({},i),t))),"createNode"),updateNode:(a,i)=>t((t=>e.request(E,a,Object.assign(Object.assign({},i),t))),"updateNode"),updatePageById:(a,i)=>t((t=>e.request(L,a,Object.assign(Object.assign({},i),t))),"updatePageById"),addPageToDraft:(a,i)=>t((t=>e.request(B,a,Object.assign(Object.assign({},i),t))),"addPageToDraft"),deletePage:(a,i)=>t((t=>e.request(S,a,Object.assign(Object.assign({},i),t))),"deletePage")}}(U)},1775:(e,t,a)=>{a.d(t,{t:()=>l});var i=a(1640),r=a(3584),d=a(3619);const n=e=>null!=e?e:i.Ld;var o=a(3255);class s extends o.Xe{constructor(e){if(super(e),this.it=i.Ld,e.type!==o.pX.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(e){if(e===i.Ld||null==e)return this.vt=void 0,this.it=e;if(e===i.Jb)return e;if("string"!=typeof e)throw Error(this.constructor.directiveName+"() called with a non-string value");if(e===this.it)return this.vt;this.it=e;const t=[e];return t.raw=t,this.vt={_$litType$:this.constructor.resultType,strings:t,values:[]}}}s.directiveName="unsafeHTML",s.resultType=1;const p=(0,o.XM)(s);var c=a(4938);const l=(0,r.EG)({props:{list:r.p.req(),onaction:r.p.opt()}})((function*(e){const t=e=>t=>this.dispatchEvent(new CustomEvent("action",{detail:e})),r=()=>{this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))},o=e=>{var t;e.preventDefault(),r();const a=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,i=this.querySelector(`[id="${a}"]`);null!==i&&i.classList.add("open"),e.stopImmediatePropagation()};try{for(requestAnimationFrame((()=>{document.addEventListener("click",r)}));;){const r=(e,a=[])=>a.length>0?i.dy`<div class="um-drafts__item-actions">
             <span @click=${o} class="um-drafts__item-subcontent" data-popover=${e}>
               ${e}${" "}
               <i class="fas fa-angle-down" style=${c.iv`
