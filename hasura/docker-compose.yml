@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
   graphql-engine:
-    image: hasura/graphql-engine:v2.0.3.cli-migrations-v2
+    image: hasura/graphql-engine:v2.5.1.cli-migrations-v2
     ports:
       - ${HASURA_GRAPHQL_SERVER_PORT}:${HASURA_GRAPHQL_SERVER_PORT}
     depends_on:
