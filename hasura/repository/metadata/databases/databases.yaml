@@ -1,0 +1,14 @@
+- name: d2lo74v8rggk5t
+  configuration:
+    connection_info:
+      use_prepared_statements: true
+      isolation_level: read-committed
+      database_url:
+        from_env: HASURA_GRAPHQL_DATABASE_URL
+      pool_settings:
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+        connection_lifetime: 600
+    tables: []
+    functions: []
