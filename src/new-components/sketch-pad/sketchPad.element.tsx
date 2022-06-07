@@ -3,7 +3,7 @@ import { ref, createRef, Ref } from 'lit-html2/directives/ref';
 import SignaturePad from 'signature_pad' 
 
 import { EG, p } from '@web-companions/gfc';
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
 import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';

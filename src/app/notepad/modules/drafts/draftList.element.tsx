@@ -8,11 +8,13 @@ import { saveIconNode } from './saveIcon.node';
 import { menuElement } from 'new-components/menu/menu.element';
 import { supervise } from 'utils/component.tools';
 import { IListItem, listElement } from 'new-components/list/list.element';
+import { preloaderElement } from 'new-components/preloader/preloader.element';
 
 const NewDraftIconNode = newDraftIconNode();
 const SaveIconNode = saveIconNode();
 const MenuElement = menuElement('inscriptum-menu');
 const ListElement = listElement('inscriptum-list');
+const PreloaderElement = preloaderElement('inscriptum-preloader');
 
 export const draftListElement = EG()(function* () {
   let drafts: IListItem[] = [];
@@ -80,7 +82,7 @@ export const draftListElement = EG()(function* () {
 
           <MenuElement></MenuElement>
 
-          <um-preloader loading={isPreloader}>
+          <PreloaderElement loading={isPreloader}>
             <div class="row">
               <div class="twelve columns um-drafts__submenu">
                 <button class="btn btn_icon" title="Export all drafts" onclick={handleBtnExportAllDrafts}>
@@ -93,7 +95,7 @@ export const draftListElement = EG()(function* () {
             </div>
 
             <ListElement list={drafts} onaction={handleAction}></ListElement>
-          </um-preloader>
+          </PreloaderElement>
         </div>,
         this
       );

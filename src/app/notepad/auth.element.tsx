@@ -3,7 +3,7 @@ import hub from 'hub';
 import { AUTH_ACTION } from 'hub/auth/auth.action';
 import { render } from 'lit-html2';
 import { createRef, Ref, ref } from 'lit-html2/directives/ref.js';
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
 
 export const authElement = EG({
   props: {
@@ -72,7 +72,7 @@ export const authElement = EG({
               `}
             >
               Email:
-              <input type="email" ref={ref(emailRef)} />
+              <input type="email" ref={ref(emailRef)} autocomplete="email" />
             </label>
             <label
               style={css`
@@ -82,7 +82,7 @@ export const authElement = EG({
               `}
             >
               Password:
-              <input type="password" ref={ref(passwordRef)} />
+              <input type="password" ref={ref(passwordRef)} autocomplete="current-password"/>
             </label>
           </p>
           {params.message != null ? <p>{params.message}</p> : ''}

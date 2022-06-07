@@ -1,5 +1,4 @@
 import './style.inject.scss';
-import 'components/um-preloader';
 import { RootRoute } from './routes/$';
 import { noticeModule } from 'modules/notice.module';
 import hub from 'hub';

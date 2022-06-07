@@ -3,7 +3,7 @@ import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { BubbleMenuPlugin, BubbleMenuPluginProps, BubbleMenu } from '@tiptap/extension-bubble-menu';
 import { useLitRef } from 'hooks/useLitRef';
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
 import { Editor } from '@tiptap/core';
 import { Props as TippyProps } from 'tippy.js';
 import { Transaction, NodeSelection, TextSelection } from 'prosemirror-state';

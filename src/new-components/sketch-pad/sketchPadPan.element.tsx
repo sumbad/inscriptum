@@ -4,7 +4,7 @@ import { EG, p } from '@web-companions/gfc';
 
 import 'vanilla-colorful/hex-color-picker.js';
 
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
 import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';

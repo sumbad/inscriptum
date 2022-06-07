@@ -6,6 +6,7 @@ import page from 'page';
 
 import { menuElement } from 'new-components/menu/menu.element';
 import { IListItem, listElement } from 'new-components/list/list.element';
+import { preloaderElement } from 'new-components/preloader/preloader.element';
 
 // DEBUG:
 // import { marginElement } from 'new-components/margin/margin.element';
@@ -13,6 +14,7 @@ import { IListItem, listElement } from 'new-components/list/list.element';
 
 const MenuElement = menuElement('inscriptum-menu');
 const ListElement = listElement('inscriptum-list');
+const PreloaderElement = preloaderElement('inscriptum-preloader');
 
 export const noteListElement = EG()(function* () {
   let isPreloader = true;
@@ -60,9 +62,9 @@ export const noteListElement = EG()(function* () {
             <MarginElement marginId={'0'} onchangeMarginMode={() => {}}></MarginElement>
           </div> */}
 
-            <um-preloader loading={isPreloader}>
+            <PreloaderElement loading={isPreloader}>
               <ListElement list={notes} onaction={handleAction}></ListElement>
-            </um-preloader>
+            </PreloaderElement>
           </div>
         </>,
         this

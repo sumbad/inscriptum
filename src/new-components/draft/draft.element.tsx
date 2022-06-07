@@ -15,13 +15,15 @@ import { pageElement } from '../page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { draft$, DraftState, reducer } from './draft.state';
 import { sidebarElement } from 'new-components/sidebar/sidebar.element';
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
+import { preloaderElement } from 'new-components/preloader/preloader.element';
 
 const PageElement = pageElement('inscriptum-page');
 const LoadingProgressBarElement = loadingProgressBar('loading-progress-bar');
 const TableOfContentElement = tableOfContent('inscriptum-table-of-content');
 const ControlsPanelElement = controlsPanelElement('inscriptum-controls-panel');
 const SidebarElement = sidebarElement('inscriptum-sidebar');
+const PreloaderElement = preloaderElement('inscriptum-preloader');
 
 export const draftElement = EG({
   props: {
@@ -31,32 +33,30 @@ export const draftElement = EG({
   const subs: Subscription[] = [];
   const loadingRef: Ref<LoadingProgressBarHTMLElement> = createRef();
   let state: DraftState = {
-    isLoading: false
+    isLoading: false,
   };
   let title = state.data?.table_of_contents[0];
   let rafId = 0;
 
   subs.push(
-    draft$(props.id).subscribe(
-      (action) => {
-        state = reducer(state, action);
+    draft$(props.id).subscribe((action) => {
+      state = reducer(state, action);
 
-        this.next();
-      }
-    )
+      this.next();
+    })
   );
 
   rafId = requestAnimationFrame(() => {
     if (loadingRef.value != null) {
-      subs.push(savingProcessSubs(loadingRef))
+      subs.push(savingProcessSubs(loadingRef));
     }
-  })
+  });
 
   getById(props.id);
 
   try {
     let _props = props;
-    
+
     while (true) {
       if (_props?.id !== props.id) {
         getById(props.id);
@@ -72,7 +72,7 @@ export const draftElement = EG({
           <style>{require('./draft.scss')}</style>
           <LoadingProgressBarElement ref={ref(loadingRef)}></LoadingProgressBarElement>
 
-          <um-preloader loading={state.isLoading}>
+          <PreloaderElement loading={state.isLoading}>
             <div class="draft-content">
               <SidebarElement>
                 <ControlsPanelElement draftId={props.id}></ControlsPanelElement>
@@ -101,7 +101,7 @@ export const draftElement = EG({
                 )}
               </div>
             </div>
-          </um-preloader>
+          </PreloaderElement>
         </>,
         this
       );
@@ -109,7 +109,7 @@ export const draftElement = EG({
   } finally {
     cancelAnimationFrame(rafId);
 
-    subs.forEach(it=>it.unsubscribe());
+    subs.forEach((it) => it.unsubscribe());
   }
 });
 

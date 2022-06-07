@@ -2,7 +2,7 @@ import { EG, p } from '@web-companions/gfc';
 import { createNewMargin, getMarginById } from './margin.service';
 import { initialState, MarginState, reducer } from './margin.state';
 import { render } from 'lit-html2';
-import { css } from 'utils/common';
+import { css } from 'utils/component.tools';
 import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
 import { iconArrowBarRightNode } from './iconArrowBarRight.node';
 import { iconBulbNode } from './iconBulb.node';

@@ -130,9 +130,6 @@ export function getNestedObject(object: object, pathArr: string[]): any {
   return pathArr.reduce((obj, key) => (obj && obj[key] !== 'undefined' ? obj[key] : undefined), object);
 }
 
-// TODO: replace /n, tabs and several spaces to one space
-export const css = String.raw;
-
 /**
  * Transliterate from Russian to English or vice versa
  *
@@ -156,4 +153,15 @@ export function percentToHex(p: number) {
   const intValue = Math.round((percent / 100) * 255); // map percent to nearest integer (0 - 255)
   const hexValue = intValue.toString(16); // get hexadecimal representation
   return hexValue.padStart(2, '0').toUpperCase(); // format with leading 0 and upper case characters
+}
+
+/**
+ * Create unique identifier
+ * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ */
+export function uuidv4() {
+  const hash: any = ([1e7] as any) + -1e3 + -4e3 + -8e3 + -1e11;
+  // https://stackoverflow.com/questions/44042816/what-is-wrong-with-crypto-getrandomvalues-in-internet-explorer-11
+  const crypto = window.crypto || window['msCrypto']; // for IE 11
+  return hash.replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))![0] & (15 >> (c / 4)))).toString(16));
 }
