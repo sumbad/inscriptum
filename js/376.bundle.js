@@ -1,5 +1,5 @@
 /*! For license information please see 376.bundle.js.LICENSE.txt */
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[376],{2376:(e,t,o)=>{o.r(t),o.d(t,{draftListElement:()=>C});var i=o(1640),r=o(7165),n=o(5161),a=o.n(n),l=o(2114),s=o(3135),p=o(4938),d=o(7848),c=function(e,t,o,i){return new(o||(o=Promise))((function(r,n){function a(e){try{s(i.next(e))}catch(e){n(e)}}function l(e){try{s(i.throw(e))}catch(e){n(e)}}function s(e){var t;e.done?r(e.value):(t=e.value,t instanceof o?t:new o((function(e){e(t)}))).then(a,l)}s((i=i.apply(e,t||[])).next())}))};const m="Can't find ID for a new draft",u="Author was not found",f=e=>`Can't delete draft ${e}`;var b;function h(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{drafts:e}=yield(0,l.S)().getAllDrafts();return e.map((e=>{const t=e.pages[0].content,{description:o,title:i,image:r}=(0,p.WV)(t),n=e.notes.length>0?[{code:"note",link:null!=e.notes[0].static_link?{href:e.notes[0].static_link+(s.v.isDevMode?".html":""),rel:"external"}:void 0}]:void 0;return{id:e.id,preview:{title:i,description:o,image:r},linkUrl:"/draft/"+e.id,actions:[{label:"delete",type:b.delete}],tags:n}}))}))))}))}function g(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((e=>c(this,void 0,void 0,(function*(){const t=(yield(0,l.S)().findAuthorByAuth0({auth0_id:e.userInfo.uid})).author[0];if(null==t)throw alert(u),new Error(u);const{insert_draft_one:o}=yield(0,l.S)().createNewDraft({author_id:t.id});if(null==o)throw alert(m),new Error(m);return o}))))}))}function v(e){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{update_draft_by_pk:t}=yield(0,l.S)().deleteDraftById({id:e,ended_at:(new Date).toISOString()});if(null==t)throw alert(m),new Error(f(e));return t}))))}))}!function(e){e[e.delete=0]="delete",e[e.publish=1]="publish"}(b||(b={}));var y=o(669);const x=(0,r.NG)((function*(){for(;;)yield(0,y.$)(i.YP`
+"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[376],{2376:(e,t,o)=>{o.r(t),o.d(t,{draftListElement:()=>I});var i=o(1640),r=o(7165),n=o(5161),a=o.n(n),l=o(2114),s=o(3135),p=o(4938),d=o(7848),c=function(e,t,o,i){return new(o||(o=Promise))((function(r,n){function a(e){try{s(i.next(e))}catch(e){n(e)}}function l(e){try{s(i.throw(e))}catch(e){n(e)}}function s(e){var t;e.done?r(e.value):(t=e.value,t instanceof o?t:new o((function(e){e(t)}))).then(a,l)}s((i=i.apply(e,t||[])).next())}))};const m="Can't find ID for a new draft",u="Author was not found",f=e=>`Can't delete draft ${e}`;var b;function h(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{drafts:e}=yield(0,l.S)().getAllDrafts();return e.map((e=>{const t=e.pages[0].content,{description:o,title:i,image:r}=(0,p.WV)(t),n=e.notes.length>0?[{code:"note",link:null!=e.notes[0].static_link?{href:e.notes[0].static_link+(s.v.isDevMode?".html":""),rel:"external"}:void 0}]:void 0;return{id:e.id,preview:{title:i,description:o,image:r},linkUrl:"/draft/"+e.id,actions:[{label:"delete",type:b.delete}],tags:n}}))}))))}))}function g(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((e=>c(this,void 0,void 0,(function*(){const t=(yield(0,l.S)().findAuthorByAuth0({auth0_id:e.userInfo.uid})).author[0];if(null==t)throw alert(u),new Error(u);const{insert_draft_one:o}=yield(0,l.S)().createNewDraft({author_id:t.id});if(null==o)throw alert(m),new Error(m);return o}))))}))}function v(e){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{update_draft_by_pk:t}=yield(0,l.S)().deleteDraftById({id:e,ended_at:(new Date).toISOString()});if(null==t)throw alert(m),new Error(f(e));return t}))))}))}!function(e){e[e.delete=0]="delete",e[e.publish=1]="publish"}(b||(b={}));var y=o(669);const x=(0,r.NG)((function*(){for(;;)yield(0,y.$)(i.YP`
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
           <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -15,7 +15,7 @@
           <circle cx="12" cy="14" r="2"></circle>
           <polyline points="14 4 14 8 8 8 8 4"></polyline>
         </svg>
-      `,this)}));var k=o(998),z=o(667),_=o(1775),$=o(7296);const E=x(),L=w(),C=((0,k.i)("inscriptum-menu"),(0,_.t)("inscriptum-list"),(0,$.z)("inscriptum-preloader"),(0,r.EG)()((function*(){let e=[],t=!0;const r=t=>{t.preventDefault();const o=JSON.stringify(e),i=document.createElement("a"),r=new Blob([o],{type:"application/octet-stream"});i.href=window.URL.createObjectURL(r),i.download="drafts.json",i.click()},n=({detail:e})=>{if(e.type===b.delete)m(e.id)},{$:l,_:s}=(0,z.px)(h),{$:p,_:d}=(0,z.px)(g),{$:c,_:m}=(0,z.px)(v);l.subscribe((o=>{e=o,t=!1,this.next()})),p.subscribe((e=>{a()("/draft/"+e.id)})),c.subscribe((t=>{e=e.filter((e=>e.id!==t.id)),this.next()})),s();try{for(;;)yield(0,i.sY)(i.dy`<div class="container">
+      `,this)}));var k=o(998),z=o(667),_=o(1775),$=o(7296);const E=x(),L=w(),I=((0,k.i)("inscriptum-menu"),(0,_.t)("inscriptum-list"),(0,$.z)("inscriptum-preloader"),(0,r.EG)()((function*(){let e=[],t=!0;const r=t=>{t.preventDefault();const o=JSON.stringify(e),i=document.createElement("a"),r=new Blob([o],{type:"application/octet-stream"});i.href=window.URL.createObjectURL(r),i.download="drafts.json",i.click()},n=({detail:e})=>{if(e.type===b.delete)m(e.id)},{$:l,_:s}=(0,z.px)(h),{$:p,_:d}=(0,z.px)(g),{$:c,_:m}=(0,z.px)(v);l.subscribe((o=>{e=o,t=!1,this.next()})),p.subscribe((e=>{a()("/draft/"+e.id)})),c.subscribe((t=>{e=e.filter((e=>e.id!==t.id)),this.next()})),s();try{for(;;)yield(0,i.sY)(i.dy`<div class="container">
           <style>$${o(3510)}</style>
 
           <inscriptum-menu></inscriptum-menu>
@@ -50,28 +50,28 @@
                   </li>`))}
               </ul>
             </div>
+          </div>`:"",s=({listItem:e})=>(e.tags||[]).map((e=>null!=e.link?i.dy`<a href="/${e.link.href}" .rel=${a(e.link.rel)}>
+              ${e.code}
+            </a>`:e.code)),c=({img:e})=>null!=e?i.dy`<div class="two columns draft-preview">
+            <img class="draft-preview__img" .src=${e}>
           </div>`:"";e=yield(0,i.sY)(i.dy`
           <style>
             ${o(431)}
             ${o(7187)}
           </style>
           <div class="container">
-            ${(0,n.r)(e.list,(e=>e.id),((e,t)=>{var o,n;return i.dy`<div class="um-drafts__item">
-                  ${(e.tags||[]).map((e=>null!=e.link?i.dy`<a href="/${e.link.href}" .rel=${a(e.link.rel)}>
-                        ${e.code}
-                      </a>`:e.code))}
-                  <h6 class="docs-header">${e.preview.title}</h6>
-                  <div class="row">
-                    ${(null===(o=e.preview.image)||void 0===o?void 0:o.length)>0?i.dy`<div class="two columns draft-preview">
-                        <img class="draft-preview__img" src="${e.preview.image}">
-                      </div>`:""}
-                    <div class=${(null===(n=e.preview.image)||void 0===n?void 0:n.length)>0?"ten columns":""}>
-                      <a class="um-drafts__item-link" .href=${e.linkUrl} .rel=${a(e.linkRel)}>
+            ${(0,n.r)(e.list,(e=>e.id),((e,t)=>{var o;return i.dy`<div class="um-drafts__item">
+                  ${s({listItem:e})}
+                  <a class="um-drafts__item-link" .href=${e.linkUrl} .rel=${a(e.linkRel)}>
+                    <h6 class="docs-header">${e.preview.title}</h6>
+                    <div class="row">
+                      ${c({img:e.preview.image})}
+                      <div class=${(null===(o=e.preview.image)||void 0===o?void 0:o.length)>0?"ten columns":""}>
                         <p class="docs-preview">${p(e.preview.description)}</p>
-                      </a>
-                      ${r(e.id,"function"==typeof e.actions?e.actions():e.actions)}
+                        ${r(e.id,"function"==typeof e.actions?e.actions():e.actions)}
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>`}))}
           </div>
         `,this)}}finally{document.removeEventListener("click",r)}}))},998:(e,t,o)=>{o.d(t,{i:()=>l});var i=o(1640),r=o(7165),n=o(6608),a=o(5196);const l=(0,r.EG)()((function*(){let e=!1;for(n.f.pipe((0,a.P)((e=>{var t;return null!=(null===(t=e.data)||void 0===t?void 0:t.accessToken)&&!e.isLoading}))).subscribe((()=>{e=!0,this.next()}));;)yield(0,i.sY)(i.dy`

@@ -26,28 +26,28 @@
                   </li>`))}
               </ul>
             </div>
+          </div>`:"",l=({listItem:e})=>(e.tags||[]).map((e=>null!=e.link?i.dy`<a href="/${e.link.href}" .rel=${a(e.link.rel)}>
+              ${e.code}
+            </a>`:e.code)),c=({img:e})=>null!=e?i.dy`<div class="two columns draft-preview">
+            <img class="draft-preview__img" .src=${e}>
           </div>`:"";e=yield(0,i.sY)(i.dy`
           <style>
             ${o(431)}
             ${o(7187)}
           </style>
           <div class="container">
-            ${(0,n.r)(e.list,(e=>e.id),((e,t)=>{var o,n;return i.dy`<div class="um-drafts__item">
-                  ${(e.tags||[]).map((e=>null!=e.link?i.dy`<a href="/${e.link.href}" .rel=${a(e.link.rel)}>
-                        ${e.code}
-                      </a>`:e.code))}
-                  <h6 class="docs-header">${e.preview.title}</h6>
-                  <div class="row">
-                    ${(null===(o=e.preview.image)||void 0===o?void 0:o.length)>0?i.dy`<div class="two columns draft-preview">
-                        <img class="draft-preview__img" src="${e.preview.image}">
-                      </div>`:""}
-                    <div class=${(null===(n=e.preview.image)||void 0===n?void 0:n.length)>0?"ten columns":""}>
-                      <a class="um-drafts__item-link" .href=${e.linkUrl} .rel=${a(e.linkRel)}>
+            ${(0,n.r)(e.list,(e=>e.id),((e,t)=>{var o;return i.dy`<div class="um-drafts__item">
+                  ${l({listItem:e})}
+                  <a class="um-drafts__item-link" .href=${e.linkUrl} .rel=${a(e.linkRel)}>
+                    <h6 class="docs-header">${e.preview.title}</h6>
+                    <div class="row">
+                      ${c({img:e.preview.image})}
+                      <div class=${(null===(o=e.preview.image)||void 0===o?void 0:o.length)>0?"ten columns":""}>
                         <p class="docs-preview">${p(e.preview.description)}</p>
-                      </a>
-                      ${r(e.id,"function"==typeof e.actions?e.actions():e.actions)}
+                        ${r(e.id,"function"==typeof e.actions?e.actions():e.actions)}
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>`}))}
           </div>
         `,this)}}finally{document.removeEventListener("click",r)}}))},998:(e,t,o)=>{"use strict";o.d(t,{i:()=>s});var i=o(1640),r=o(7165),n=o(6608),a=o(5196);const s=(0,r.EG)()((function*(){let e=!1;for(n.f.pipe((0,a.P)((e=>{var t;return null!=(null===(t=e.data)||void 0===t?void 0:t.accessToken)&&!e.isLoading}))).subscribe((()=>{e=!0,this.next()}));;)yield(0,i.sY)(i.dy`
