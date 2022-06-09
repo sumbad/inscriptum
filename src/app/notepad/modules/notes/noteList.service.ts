@@ -5,7 +5,6 @@ import { AUTH_ACTION } from 'hub/auth/auth.action';
 import { authState } from 'hub/auth/auth.state';
 import { first } from 'rxjs/operators';
 import { config } from 'settings';
-import { authorized } from 'utils/guards';
 
 export enum NoteAction {
   edit,
