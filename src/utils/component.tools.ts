@@ -24,22 +24,22 @@ export function supervise<T extends (...args: any[]) => any>(func: T) {
 // TODO: replace /n, tabs and several spaces to one space
 export const css = String.raw;
 
-export function setStyle(style: string, shadowRoot: ShadowRoot | Element) {
+export function setStyle(style: string, node: ShadowRoot | Element) {
   if (
     window.ShadowRoot &&
     'adoptedStyleSheets' in Document.prototype &&
     'replace' in CSSStyleSheet.prototype &&
-    shadowRoot instanceof ShadowRoot
+    node instanceof ShadowRoot
   ) {
     const sheet = new CSSStyleSheet();
     sheet['replaceSync'](style);
-    shadowRoot['adoptedStyleSheets'] = [sheet];
-  } else if (shadowRoot instanceof Element) {
-    let styleEl = shadowRoot.querySelector('style');
+    node['adoptedStyleSheets'] = [sheet];
+  } else {
+    let styleEl = node.querySelector('style');
     if (styleEl == null) {
       styleEl = document.createElement('style');
       styleEl.innerHTML = style;
-      shadowRoot.insertBefore(styleEl, shadowRoot.firstChild);
+      node.insertBefore(styleEl, node.firstChild);
     } else {
       styleEl.innerHTML = style;
     }

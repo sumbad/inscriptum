@@ -106,6 +106,26 @@ export const listElement = EG({
           ''
         );
 
+      const Tags = ({ listItem }: { listItem: IListItem }) =>
+        (listItem.tags || []).map((t) =>
+          t.link != null ? (
+            <a href="/${t.link.href}" rel={ifDefined(t.link.rel) as string}>
+              {t.code}
+            </a>
+          ) : (
+            t.code
+          )
+        );
+
+      const Image = ({ img }: { img: string }) =>
+        img != null ? (
+          <div class="two columns draft-preview">
+            <img class="draft-preview__img" src={img} />
+          </div>
+        ) : (
+          ''
+        );
+
       params = yield render(
         <>
           <style>
@@ -118,31 +138,17 @@ export const listElement = EG({
               (i) => i.id,
               (i, index) => (
                 <div class="um-drafts__item">
-                  {(i.tags || []).map((t) =>
-                    t.link != null ? (
-                      <a href="/${t.link.href}" rel={ifDefined(t.link.rel) as string}>
-                        {t.code}
-                      </a>
-                    ) : (
-                      t.code
-                    )
-                  )}
-                  <h6 class="docs-header">{i.preview.title}</h6>
-                  <div class="row">
-                    {i.preview.image?.length > 0 ? (
-                      <div class="two columns draft-preview">
-                        <img class="draft-preview__img" src="${i.preview.image}" />
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                    <div class={i.preview.image?.length > 0 ? 'ten columns' : ''}>
-                      <a class="um-drafts__item-link" href={i.linkUrl} rel={ifDefined(i.linkRel) as string}>
+                  <Tags listItem={i}></Tags>
+                  <a class="um-drafts__item-link" href={i.linkUrl} rel={ifDefined(i.linkRel) as string}>
+                    <h6 class="docs-header">{i.preview.title}</h6>
+                    <div class="row">
+                      <Image img={i.preview.image}></Image>
+                      <div class={i.preview.image?.length > 0 ? 'ten columns' : ''}>
                         <p class="docs-preview">{unsafeHTML(i.preview.description)}</p>
-                      </a>
-                      {menuElemFunc(i.id, typeof i.actions === 'function' ? i.actions() : i.actions)}
+                        {menuElemFunc(i.id, typeof i.actions === 'function' ? i.actions() : i.actions)}
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
               )
             )}
