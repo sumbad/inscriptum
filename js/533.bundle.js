@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[533],{2533:(e,s,i)=>{i.r(s),i.d(s,{PreloaderService:()=>c});var r=i(9248);class c{}c.isAppLoading=new r.x}}]);
