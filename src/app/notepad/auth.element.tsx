@@ -1,9 +1,9 @@
 import { EG, p } from '@web-companions/gfc';
+import { css } from '@web-companions/h';
 import hub from 'hub';
 import { AUTH_ACTION } from 'hub/auth/auth.action';
 import { render } from 'lit-html2';
 import { createRef, Ref, ref } from 'lit-html2/directives/ref.js';
-import { css } from 'utils/component.tools';
 
 export const authElement = EG({
   props: {

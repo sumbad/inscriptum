@@ -1,8 +1,7 @@
 import { EG, p } from '@web-companions/gfc';
-import { defMapper } from '@web-companions/gfc/utils';
+import { setProp } from '@web-companions/gfc/utils';
+import { css, setStyle } from '@web-companions/h';
 import { render } from 'lit-html2';
-import { css } from 'utils/component.tools';
-import { setStyle } from 'utils/component.tools';
 import { snippetRoundNode } from './snippetRound.node';
 
 const SnippetRoundNode = snippetRoundNode();
@@ -55,10 +54,10 @@ export const preloaderElement = EG({
   }
 });
 
-function mapper<P>(state: P, key: keyof P, value: any) {
+function mapper<P>(key: keyof P, value: any) {
   if (key === 'loading') {
     value = typeof value === 'string' ? true : Boolean(value);
   }
 
-  return defMapper(state, key, value);
+  return setProp.apply(this, [key, value]);
 }

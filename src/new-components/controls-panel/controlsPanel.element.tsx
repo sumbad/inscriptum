@@ -1,8 +1,8 @@
 import { EG, p } from '@web-companions/gfc';
+import { css } from '@web-companions/h';
 import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
 import { render } from 'lit-html2';
-import { css } from 'utils/component.tools';
 import { iconPublishNode } from './iconPublish.node';
 
 const IconPublishNode = iconPublishNode();

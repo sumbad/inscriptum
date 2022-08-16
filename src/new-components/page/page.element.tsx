@@ -12,8 +12,7 @@ import { page$, PageState, reducer } from './page.state';
 import { useSubjectEffect } from 'hooks/useSubjectEffect';
 import { redactorElement } from 'new-components/redactor/redactor.element';
 import { JSONContent } from '@tiptap/core';
-
-const css = String.raw;
+import { css } from '@web-companions/h';
 
 const RedactorElement = redactorElement('inscriptum-redactor');
 // const EditorElement = editorElement('inscriptum-editor');

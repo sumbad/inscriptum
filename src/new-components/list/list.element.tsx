@@ -3,7 +3,7 @@ import { render } from 'lit-html2';
 import { repeat } from 'lit-html2/directives/repeat.js';
 import { ifDefined } from 'lit-html2/directives/if-defined.js';
 import { unsafeHTML } from 'lit-html2/directives/unsafe-html.js';
-import { css } from 'utils/component.tools';
+import { css } from '@web-companions/h';
 
 export interface IListItem {
   id: string;

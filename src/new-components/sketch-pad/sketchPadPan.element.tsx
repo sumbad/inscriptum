@@ -4,7 +4,6 @@ import { EG, p } from '@web-companions/gfc';
 
 import 'vanilla-colorful/hex-color-picker.js';
 
-import { css } from 'utils/component.tools';
 import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';
@@ -18,6 +17,7 @@ import { iconPaletteNote } from './iconPalette.note';
 import { iconToolsNote } from './iconTools.note';
 import { iconSettingsNote } from './iconSettings.note';
 import { iconArrowBackUpNote } from './iconArrowBackUp.note';
+import { css } from '@web-companions/h';
 
 const IconLoadNode = iconLoadNode();
 const IconSaveNode = iconSaveNode();

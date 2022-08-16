@@ -1,9 +1,9 @@
 import { NG } from '@web-companions/gfc';
-import { setStyle } from 'utils/component.tools';
 import { renderNode } from 'utils/nodeRender';
 import { ref, createRef, Ref } from 'lit-html2/directives/ref.js';
 import { svg } from 'lit-html2';
 import { uuidv4 } from 'utils/common';
+import { setStyle } from '@web-companions/h';
 
 export const snippetRoundNode = NG(function* () {
   const elRef: Ref<HTMLDivElement> = createRef();

@@ -3,7 +3,6 @@ import { ref, createRef, Ref } from 'lit-html2/directives/ref';
 import SignaturePad from 'signature_pad' 
 
 import { EG, p } from '@web-companions/gfc';
-import { css } from 'utils/component.tools';
 import { iconLoadNode } from './iconLoad.node';
 import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';
@@ -12,6 +11,7 @@ import { iconWightNode } from './iconWight.node';
 import { getMarginById, saveMarginById } from 'new-components/margin/margin.service';
 import { Margin } from 'models/margin.model';
 import { MarginElementMode } from 'new-components/margin/margin.element';
+import { css } from '@web-companions/h';
 
 const IconLoadNode = iconLoadNode();
 const IconSaveNode = iconSaveNode();

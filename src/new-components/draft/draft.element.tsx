@@ -15,8 +15,8 @@ import { pageElement } from '../page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { draft$, DraftState, reducer } from './draft.state';
 import { sidebarElement } from 'new-components/sidebar/sidebar.element';
-import { css } from 'utils/component.tools';
 import { preloaderElement } from 'new-components/preloader/preloader.element';
+import { css } from '@web-companions/h';
 
 const PageElement = pageElement('inscriptum-page');
 const LoadingProgressBarElement = loadingProgressBar('loading-progress-bar');

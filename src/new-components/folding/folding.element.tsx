@@ -1,13 +1,11 @@
 import { EG, useCallback, useEffect, useState } from '@web-companions/fc';
 import { TypeConstructor } from '@web-companions/fc/common.model';
+import { css } from '@web-companions/h';
 import { render, svg } from 'lit-html';
 
 /**
  * TODO: make from this kind components common checkbox component with different views
  */
-
-const css = String.raw;
-
 export const foldingElement = EG({
   props: {
     label: String,

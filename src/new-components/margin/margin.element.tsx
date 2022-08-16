@@ -2,7 +2,6 @@ import { EG, p } from '@web-companions/gfc';
 import { createNewMargin, getMarginById } from './margin.service';
 import { initialState, MarginState, reducer } from './margin.state';
 import { render } from 'lit-html2';
-import { css } from 'utils/component.tools';
 import { iconArrowBarLeftNode } from './iconArrowBarLeft.node';
 import { iconArrowBarRightNode } from './iconArrowBarRight.node';
 import { iconBulbNode } from './iconBulb.node';
@@ -16,6 +15,7 @@ import { HUB_ACTION } from 'hub/actions';
 import { filterByActionsGroup } from 'utils/operators';
 import { MarginAction, MARGIN_ACTION } from './margin.action';
 import { iconNewMarginNode } from './iconNewMargin.node';
+import { css } from '@web-companions/h';
 
 // const SketchPadElement = sketchPadElement('sketch-pad');
 const SketchPadElement = sketchPadPanElement('sketch-pad');
