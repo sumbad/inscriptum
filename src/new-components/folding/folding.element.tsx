@@ -1,83 +1,70 @@
-import { EG, useCallback, useEffect, useState } from '@web-companions/fc';
-import { TypeConstructor } from '@web-companions/fc/common.model';
-import { css } from '@web-companions/h';
-import { render, svg } from 'lit-html';
+import { EG, p } from '@web-companions/gfc';
+import { css, setStyle } from '@web-companions/h';
+import { render, svg } from 'lit-html2';
+
+const style = css`
+  :host {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    position: absolute;
+    right: 100%;
+    font-family: var(--font-family);
+  }
+  button,
+  label {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+  }
+  button:focus {
+    outline: 0;
+  }
+  .icon-tabler,
+  label {
+    stroke: var(--border-color);
+    color: var(--border-color);
+    transition: 0.2s;
+  }
+
+  :host(:hover) .icon-tabler {
+    stroke: var(--dark-grey);
+  }
+  :host(:hover) label {
+    color: var(--dark-grey);
+  }
+`;
 
 /**
  * TODO: make from this kind components common checkbox component with different views
  */
 export const foldingElement = EG({
   props: {
-    label: String,
-    value: String,
-    isFolded: Boolean,
-    change: {} as TypeConstructor<(value: string, isFolded: boolean) => void>,
+    label: p.req<string>(),
+    value: p.req<string>(),
+    isFolded: p.req<boolean>(),
+    change: p.req<(value: string, isFolded: boolean) => void>(),
   },
-  shadow: {
-    mode: 'open',
-  },
-  render,
-})(function (this: HTMLElement, props) {
-  const [isFolded, setIsFolded] = useState(props.isFolded);
+})(function* (props) {
+  const $ = this.attachShadow({ mode: 'open' });
+  let state = props;
 
-  useEffect(()=>{
-    setIsFolded(props.isFolded);
-  }, [props.isFolded]);
+  setStyle(style, $);
 
-  const onClick = useCallback(() => {
-    setIsFolded((_) => !_);
+  const onClick = () => {
+    props.change(props.value, !state.isFolded);
+  };
 
-    props.change(props.value, !isFolded);
-  }, [isFolded, setIsFolded, props]);
-
-  useEffect(() => {
-    const style = css`
-      :host {
-        display: inline-flex;
-        align-items: center;
-        flex-direction: row;
-        position: absolute;
-        right: 100%;
-        font-family: var(--font-family);
-      }
-      button,
-      label {
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-      }
-      button:focus {
-        outline: 0;
-      }
-      .icon-tabler,
-      label {
-        stroke: var(--border-color);
-        color: var(--border-color);
-        transition: 0.2s;
-      }
-
-      :host(:hover) .icon-tabler {
-        stroke: var(--dark-grey);
-      }
-      :host(:hover) label {
-        color: var(--dark-grey);
-      }
-    `;
-
-    const c = this?.shadowRoot;
-    if (c != null && c['adoptedStyleSheets'] != null) {
-      const sheet = new CSSStyleSheet();
-      sheet['replaceSync'](style);
-      c['adoptedStyleSheets'] = [sheet];
+  while (true) {
+    if (!Object.is(props, state)) {
+      state = props;
     }
-  }, []);
-  
 
-  return (
-    <>
-      <label for={props.value}>{props.label}</label>
-      <button id={props.value} onclick={onClick}>
-        {svg/*html*/ `
+    props = yield render(
+      <>
+        <label for={state.value}>{state.label}</label>
+        <button id={state.value} onclick={onClick}>
+          {svg/*html*/ `
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon icon-tabler icon-tabler-chevron-left"
@@ -91,10 +78,12 @@ export const foldingElement = EG({
             stroke-linejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <polyline points=${isFolded ? '9 6 15 12 9 18' : '6 9 12 15 18 9'} />
+            <polyline points=${state.isFolded ? '9 6 15 12 9 18' : '6 9 12 15 18 9'} />
           </svg>        
         `}
-      </button>
-    </>
-  );
+        </button>
+      </>,
+      $
+    );
+  }
 });

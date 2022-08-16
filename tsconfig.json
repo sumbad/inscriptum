@@ -29,11 +29,5 @@
     "skipLibCheck": true
   },
   "exclude": [ "build", "src/public", "scripts", "webpack.*", "webpack", "postcss.config.js", "babel.config.js", "browser-sync.js"],
-  "compileOnSave": false,
-  "plugins": [
-    {
-      "name": "typescript-lit-html-plugin",
-      "format": { "enabled": true }
-    }
-  ]
+  "compileOnSave": false
 }
