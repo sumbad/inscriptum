@@ -49,7 +49,8 @@ export const sketchPadPanElement = EG({
 
   let globalAlpha = 1;
   let penSize = 1.2;
-  let color = '#000000';
+  let penColor = '#878787';
+  let backgroundColor = '#f0eade';
 
   // Adjust canvas coordinate space taking into account pixel ratio,
   // to make it look crisp on mobile devices.
@@ -92,6 +93,7 @@ export const sketchPadPanElement = EG({
 
     if (sketchPad == null) {
       sketchPad = new SketchPad(canvas);
+      sketchPad.penColor = penColor;
       sketchPad.penSize = penSize;
     }
   };
@@ -234,91 +236,116 @@ export const sketchPadPanElement = EG({
             ref={ref(frameRef)}
             class="sketch-pad_frame"
             style={css`
-              background-color: ${mode === 'full' ? 'white' : 'transparent'};
+              background-color: ${mode === 'full' ? backgroundColor : backgroundColor + '30'};
             `}
           >
             <canvas ref={ref(canvasRef)} class="signature-pad"></canvas>
           </div>
 
-          <div class="fab-container fab-container_main">
-            <div class="fab-container fab-container_vertical">
-              <hex-color-picker
-                id={`${margin.id}_colorPicker`}
-                name="colorPicker"
-                style={css`
-                  cursor: pointer;
-                `}
-                value={color}
-                oncolor-changed={setColor}
-              />
-            </div>
-
-            <div class="fab-container fab-container_vertical">
-              <button
-                class="fab-button fab-button_empty"
-                style={css`
-                  bottom: -7px;
-                  width: 20px;
-                  height: 20px;
-                `}
-              >
-                <div class="sub-button">
-                  <input type="range" value={penSize} min="0.5" max="10" step="0.5" oninput={setWight} />
-                </div>
-              </button>
-              <button class="fab-button" onclick={erase}>
-                <IconEraseNode></IconEraseNode>
-              </button>
-              <button class="fab-button" onclick={setPencil}>
-                <IconPencilNote></IconPencilNote>
-              </button>
-              <button class="fab-button fab-button_lg">
-                <IconToolsNote></IconToolsNote>
-              </button>
-            </div>
-
-            <div class="fab-container fab-container_vertical">
-              <button class="fab-button fab-button_empty" onclick={updateCanvasContent}>
-                <div class="sub-button">
-                  <input type="range" value={globalAlpha} min="0" max="1" step="0.01" oninput={setAlpha} />
-                  <div class="sub-button__back">
-                    <div
-                      style={css`
-                        width: 100%;
-                        height: 20px;
-                        background: linear-gradient(to right, rgba(255, 128, 0, 0), ${color});
-                      `}
-                    ></div>
-                  </div>
-                </div>
-              </button>
-              <button class="fab-button" onclick={clear}>
-                <IconClearNode></IconClearNode>
-              </button>
-              <button class="fab-button" onclick={load}>
-                <IconLoadNode></IconLoadNode>
-              </button>
-              <button class="fab-button" onclick={save}>
-                <IconSaveNode></IconSaveNode>
-              </button>
-              <button class="fab-button fab-button_lg">
-                <IconSettingsNote></IconSettingsNote>
-              </button>
-            </div>
-
+          <div
+            style={css`
+              display: flex;
+              flex-direction: column;
+              position: sticky;
+              top: 20px;
+              width: 60px;
+              margin-left: ${mode === 'expand' ? '-70px' : 0};
+            `}
+          >
             <div
-              class="fab-container fab-container_vertical"
+              class="fab-container fab-container_main"
               style={css`
-                display: block;
+                margin-top: 1rem;
               `}
             >
-              <button class="fab-button" onclick={undo}>
-                <IconArrowBackUpNote></IconArrowBackUpNote>
-              </button>
-              <button class="fab-button fab-button_lg">
-                <IconPaletteNote></IconPaletteNote>
-              </button>
+              <div class="fab-container fab-container_vertical">
+                <button class="fab-button fab-button_empty" onclick={updateCanvasContent}>
+                  <div class="sub-button">
+                    <input type="range" value={globalAlpha} min="0" max="1" step="0.01" oninput={setAlpha} />
+                    <div class="sub-button__back">
+                      <div
+                        style={css`
+                          width: 100%;
+                          height: 20px;
+                          background: linear-gradient(to right, rgba(255, 128, 0, 0), ${penColor});
+                        `}
+                      ></div>
+                    </div>
+                  </div>
+                </button>
+                <button class="fab-button" onclick={clear}>
+                  <IconClearNode></IconClearNode>
+                </button>
+                <button class="fab-button" onclick={load}>
+                  <IconLoadNode></IconLoadNode>
+                </button>
+                <button class="fab-button fab-button_lg">
+                  <IconSettingsNote></IconSettingsNote>
+                </button>
+              </div>
+
+              <div class="fab-container fab-container_vertical">
+                <button
+                  class="fab-button fab-button_empty"
+                  style={css`
+                    bottom: -7px;
+                    width: 20px;
+                    height: 20px;
+                  `}
+                >
+                  <div class="sub-button">
+                    <input type="range" value={penSize} min="0.5" max="10" step="0.5" oninput={setWight} />
+                  </div>
+                </button>
+                <button class="fab-button" onclick={erase}>
+                  <IconEraseNode></IconEraseNode>
+                </button>
+                <button class="fab-button" onclick={setPencil}>
+                  <IconPencilNote></IconPencilNote>
+                </button>
+                <button class="fab-button fab-button_lg">
+                  <IconToolsNote></IconToolsNote>
+                </button>
+              </div>
+
+              <div class="fab-container fab-container_vertical">
+                <hex-color-picker
+                  class="fab-button_static"
+                  id={`${margin.id}_colorPicker`}
+                  name="colorPicker"
+                  style={css`
+                    cursor: pointer;
+                  `}
+                  value={penColor}
+                  oncolor-changed={setColor}
+                />
+              </div>
+
+              <div class="fab-container fab-container_vertical">
+                <button class="fab-button fab-button_lg fab-button_static">
+                  <IconPaletteNote></IconPaletteNote>
+                </button>
+              </div>
             </div>
+            <button
+              class="fab-button"
+              onclick={save}
+              style={css`
+                margin-top: 0.7rem;
+              `}
+            >
+              <IconSaveNode></IconSaveNode>
+            </button>
+
+            <button
+              class="fab-button"
+              onclick={undo}
+              style={css`
+                margin-top: 0.7rem;
+              `}
+            >
+              <IconArrowBackUpNote></IconArrowBackUpNote>
+            </button>
           </div>
         </>,
         this // TODO: this.attachShadow({ mode: 'open' })

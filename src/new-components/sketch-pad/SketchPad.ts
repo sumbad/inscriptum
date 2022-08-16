@@ -3,7 +3,7 @@ type Point = {
   y: number;
   lineWidth: number;
   color: string;
-  globalCompositeOperation: string;
+  globalCompositeOperation: GlobalCompositeOperation;
 };
 
 interface SketchPadOptions {

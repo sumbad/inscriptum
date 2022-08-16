@@ -37,34 +37,31 @@ sketch-pad {
 .fab {
   &-container {
     display: inline-flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: flex-end;
 
     &_main {
-      position: sticky;
-      // top: calc(100vh - 20px);
-      top: calc(100% - 60px);
-      left: 20px;
       display: flex;
-      margin: 1em;
-      flex-direction: row;
-      height: 0;
+      flex-direction: row-reverse;
 
       & > *:not(:last-child) {
-        opacity: 0;
+        display: none;
         margin-left: 0;
         transform: translateX(10px);
       }
 
+      & > *:last-child {
+        display: flex;
+      }
+
       &:hover {
-        height: 50px;
-        top: calc(100% - 60px - 50px);
-        // top: calc(100vh - 70px);
+        height: 60px;
+        width: 500px;
         & > * {
           display: flex;
-          opacity: 1;
           transform: none;
-          margin-left: 10px;
+          transition: margin 0.08s;
+          margin-right: 12px;
         }
       }
     }
@@ -112,7 +109,7 @@ sketch-pad {
     }
 
     &_vertical {
-      flex-direction: column;
+      flex-direction: column-reverse;
       position: relative;
       margin: 0;
       display: none;
@@ -120,7 +117,7 @@ sketch-pad {
       & > *:not(:last-child) {
         opacity: 0;
         margin-top: 0;
-        transform: translateY(10px);
+        transform: translateY(-10px);
         z-index: 0;
       }
 
@@ -130,6 +127,10 @@ sketch-pad {
           opacity: 1;
           margin-top: 10px;
           transform: none;
+        }
+
+        & > .fab-button_static {
+          margin-top: 0;
         }
       }
     }
@@ -152,6 +153,11 @@ sketch-pad {
     &:not(:last-child):nth-last-child(4) {
       transition-delay: 60ms;
       background-size: contain;
+    }
+
+    &  {
+      opacity: 1;
+      margin-top: 10px;
     }
   }
 
@@ -225,6 +231,7 @@ sketch-pad {
   border-radius: 4px;
   filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.1));
   padding: 5px;
+  left: 0px;
 
   &__back {
     position: relative;
