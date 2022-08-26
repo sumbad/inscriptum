@@ -249,14 +249,12 @@ export const sketchPadPanElement = EG({
               position: sticky;
               top: 20px;
               width: 60px;
+              margin-top: 44px;
               margin-left: ${mode === 'expand' ? '-70px' : 0};
             `}
           >
             <div
               class="fab-container fab-container_main"
-              style={css`
-                margin-top: 1rem;
-              `}
             >
               <div class="fab-container fab-container_vertical">
                 <button class="fab-button fab-button_empty" onclick={updateCanvasContent}>
