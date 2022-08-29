@@ -98,7 +98,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           });
 
           const codeNodeJson = generateHljsNodeJson(textContent, language);
-          const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
+          const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode;
           return hljsNode.content;
         },
       },
@@ -118,7 +118,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           language = codeEl?.getAttribute('language') ?? language;
 
           const codeNodeJson = generateHljsNodeJson(textContent, language);
-          const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode<typeof schema>;
+          const hljsNode = schema.nodeFromJSON(codeNodeJson) as ProsemirrorNode;
           return hljsNode.content;
         },
       },
@@ -299,8 +299,14 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
       if (typeof node.attrs.language === 'string') {
         container.props.selectedLanguage = node.attrs.language;
         domCodeEl.setAttribute('class', this.options.languageClassPrefix + node.attrs.language);
-      } else {
-        node.attrs.language = null;
+      } else if (node.attrs.language != null) {
+        if (typeof getPos === 'function') {
+          editor.view.dispatch(
+            editor.view.state.tr.setNodeMarkup(getPos(), undefined, {
+              language: null,
+            })
+          );
+        }
       }
 
       if (typeof getPos === 'function') {
@@ -332,9 +338,12 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           const codeNodeJson = generateHljsNodeJson(codeText, updatedNode.attrs.language);
           const newNode = editor.schema.nodeFromJSON(codeNodeJson);
 
-          updatedNode.content = newNode.content;
+          // HACK: Attention! The next code is not documented and even more - the 'content' is readonly (so that we can's write `updatedNode.content = newNode.content`).
+          // But we don't want to make an additional update iteration with `editor.view.state.tr`. 
+          // It's needed for faster update the content inside the node.
+          Object.assign(updatedNode.content, newNode.content);
 
-          // return true;
+          return true;
         },
       };
     };

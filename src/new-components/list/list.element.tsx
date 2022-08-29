@@ -109,7 +109,7 @@ export const listElement = EG({
       const Tags = ({ listItem }: { listItem: IListItem }) =>
         (listItem.tags || []).map((t) =>
           t.link != null ? (
-            <a href="/${t.link.href}" rel={ifDefined(t.link.rel) as string}>
+            <a href={`/${t.link.href}`} rel={ifDefined(t.link.rel) as string}>
               {t.code}
             </a>
           ) : (

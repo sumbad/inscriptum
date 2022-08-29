@@ -3,7 +3,7 @@ import { Link, LinkOptions } from '@tiptap/extension-link';
 import { Mark as ProseMirrorMark } from 'prosemirror-model';
 
 interface LinkWithTooltipOptions extends LinkOptions {
-  onRenderHTML?: (props: { mark: ProseMirrorMark<any>; HTMLAttributes: Record<string, any> }) => void;
+  onRenderHTML?: (props: { mark: ProseMirrorMark; HTMLAttributes: Record<string, any> }) => void;
 }
 
 export const LinkWithTooltip = Link.extend<LinkWithTooltipOptions>({

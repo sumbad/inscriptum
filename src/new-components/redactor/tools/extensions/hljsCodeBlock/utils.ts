@@ -86,7 +86,7 @@ export function hljsNodeInputRule(regexp: RegExp, type: NodeType, getAttributes?
   });
 }
 
-export function getHljsBlockContentAsText(node: ProsemirrorNode<any>) {
+export function getHljsBlockContentAsText(node: ProsemirrorNode) {
   let codeText = '';
 
   node.content.forEach((c, point) => {

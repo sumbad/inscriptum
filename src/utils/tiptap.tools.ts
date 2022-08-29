@@ -9,7 +9,7 @@ import { Schema, DOMParser, Node as ProsemirrorNode } from 'prosemirror-model'
  * @param extensions - schema extensions
  * @returns ProsemirrorNode
  */
-export function generateNodeByDOM(dom: HTMLElement, extensions: Extensions): ProsemirrorNode<Schema<any, any>> {
+export function generateNodeByDOM(dom: HTMLElement, extensions: Extensions): ProsemirrorNode {
   const schema = getSchema(extensions);
 
   const parser = DOMParser.fromSchema(schema);

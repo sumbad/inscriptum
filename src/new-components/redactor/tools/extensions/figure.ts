@@ -97,7 +97,7 @@ export const Figure = Node.create<FigureOptions>({
         tag: 'img[src]',
         preserveWhitespace: true,
         getContent(img: HTMLImageElement, schema) {
-          const textNode: Fragment<any> = Fragment.from(schema.text(img.alt.length > 0 ? img.alt : ' '));
+          const textNode: Fragment = Fragment.from(schema.text(img.alt.length > 0 ? img.alt : ' '));
           return textNode;
         },
         getAttrs: (node: HTMLDivElement) => {
@@ -143,7 +143,9 @@ export const Figure = Node.create<FigureOptions>({
   ///////////////////////
 
   addNodeView() {
-    return ({ node, HTMLAttributes, getPos, editor }) => {
+    return ({ node, getPos, editor }) => {
+      const { view } = editor;
+
       const container = document.createElement('figure');
       container.setAttribute('draggable', 'true');
 
@@ -196,7 +198,12 @@ export const Figure = Node.create<FigureOptions>({
         ignoreMutation(p) {
           if (p.type === 'attributes' && p.attributeName != null) {
             if (['src', 'title', 'alt'].includes(p.attributeName)) {
-              node.attrs[p.attributeName] = (p.target as HTMLElement).getAttribute(p.attributeName);
+              if (typeof getPos === 'function') {
+                view.dispatch(view.state.tr.setNodeMarkup(getPos(), undefined, {
+                  [p.attributeName]: (p.target as HTMLElement).getAttribute(p.attributeName)
+                }));
+              }
+              
             }
             return true;
           }
