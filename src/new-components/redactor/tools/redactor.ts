@@ -17,6 +17,8 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import Strike from '@tiptap/extension-strike';
 import Text from '@tiptap/extension-text';
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
 
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
@@ -110,7 +112,6 @@ function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolea
     OrderedList,
     ListItem,
     HorizontalRule,
-    // CodeBlock,
     History,
     Dropcursor,
     Gapcursor,
@@ -158,5 +159,8 @@ function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolea
         }, 1);
       },
     }),
+    ////////
+    Subscript,
+    Superscript,
   ];
 }

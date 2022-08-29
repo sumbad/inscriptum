@@ -213,7 +213,30 @@ function prepareMenuContent(editor: Editor) {
         onclick={() => editor.chain().focus().toggleHljsCodeBlock().run()}
         class={editor.isActive('hljsCodeBlock') ? 'is-active' : ''}
       >
-        {'<>'}
+        {'</>'}
+      </button>
+      <button
+        onclick={() => editor.chain().focus().toggleCode().run()}
+        class={editor.isActive('code') ? 'is-active' : ''}
+      >
+        {'{}'}
+      </button>
+
+      <button onclick={() => editor.chain().focus().toggleSubscript().run()} class={editor.isActive('subscript') ? 'is-active' : ''}>
+      <span
+          style={css`
+            vertical-align: sub;
+            font-size: smaller;
+          `}
+        >s</span>
+      </button>
+      <button onclick={() => editor.chain().focus().toggleSuperscript().run()} class={editor.isActive('superscript') ? 'is-active' : ''}>
+        <span
+          style={css`
+            vertical-align: super;
+            font-size: smaller;
+          `}
+        >s</span>
       </button>
     </>
   );
