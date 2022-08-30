@@ -283,6 +283,9 @@
   }
 
   figure {
+    display: flex;
+    flex-direction: column;
+    
     margin: 0 21px 16px;
     padding: 0;
     text-align: center;
@@ -328,11 +331,15 @@
 
   .figure_wrapper {
     position: relative;
+    display: contents;
 
     img {
       opacity: 1;
       transition: opacity 0.15s ease;
       max-height: 690px;
+      object-fit: contain;
+      image-orientation: none;
+      height: 100%;
     }
 
     &.loading img {

@@ -1,6 +1,7 @@
 import { Command, Node, nodeInputRule, mergeAttributes } from '@tiptap/core';
 import { showError, uploadDataToBlob, uploadFileService } from 'services/image.service';
 import { Fragment } from 'prosemirror-model';
+import { NodeSelection } from 'prosemirror-state';
 
 export interface FigureOptions {
   inline: boolean;
@@ -8,12 +9,11 @@ export interface FigureOptions {
 }
 
 declare module '@tiptap/core' {
-  interface Commands {
+  interface Commands<ReturnType> {
     figure: {
-      /**
-       * Add an figure
-       */
+      /** Add a figure */
       setFigure: (options: { src: string; alt?: string; title?: string; caption?: string }) => Command;
+      changeFigure: (options: { figureStyle?: string }) => ReturnType;
     };
   }
 }
@@ -43,7 +43,6 @@ export const Figure = Node.create<FigureOptions>({
   draggable: true,
   defining: true,
   selectable: true,
-  
 
   content() {
     return 'text*';
@@ -53,7 +52,7 @@ export const Figure = Node.create<FigureOptions>({
     return {
       inline: false,
       HTMLAttributes: {},
-    }
+    };
   },
 
   inline() {
@@ -74,6 +73,11 @@ export const Figure = Node.create<FigureOptions>({
       },
       title: {
         default: null,
+      },
+      figure: {
+        default: {
+          style: null,
+        },
       },
     };
   },
@@ -110,7 +114,14 @@ export const Figure = Node.create<FigureOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['figure', ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)], ['figcaption', 0]];
+    const { src, alt, title, figure } = HTMLAttributes;
+    
+    return [
+      'figure',
+      { style: figure.style },
+      ['img', mergeAttributes(this.options.HTMLAttributes, { src }, { alt }, { title })],
+      ['figcaption', 0],
+    ];
   },
 
   addCommands() {
@@ -123,6 +134,18 @@ export const Figure = Node.create<FigureOptions>({
             attrs: options,
           });
         },
+      changeFigure: (options) => (param) => {
+        const { node } = param.state.selection as NodeSelection;
+
+        const attrs = {
+          ...node.attrs,
+          figure: {
+            style: options.figureStyle,
+          },
+        };
+
+        return param.chain().updateAttributes(this.name, attrs).run();
+      },
     };
   },
 
@@ -145,9 +168,14 @@ export const Figure = Node.create<FigureOptions>({
   addNodeView() {
     return ({ node, getPos, editor }) => {
       const { view } = editor;
+      let { src, alt, title, figure } = node.attrs;
 
       const container = document.createElement('figure');
       container.setAttribute('draggable', 'true');
+
+      if (typeof figure.style === 'string') {
+        container.setAttribute('style', figure.style);
+      }
 
       const domWrapper = document.createElement('div');
       const domCaption = document.createElement('figcaption');
@@ -167,11 +195,11 @@ export const Figure = Node.create<FigureOptions>({
       container.appendChild(domWrapper);
       container.appendChild(domCaption);
 
-      const img = appendImgNode(node.attrs.src, domWrapper);
-      node.attrs.alt && img.setAttribute('alt', node.attrs.alt);
-      node.attrs.title && img.setAttribute('title', node.attrs.title);
+      const img = appendImgNode(src, domWrapper);
+      alt && img.setAttribute('alt', alt);
+      title && img.setAttribute('title', title);
 
-      const uploadData = prepareUploadData(node.attrs.src);
+      const uploadData = prepareUploadData(src);
       if (uploadData != null) {
         const domProgress = document.createElement('div');
         const domProgressBar = document.createElement('div');
@@ -199,11 +227,12 @@ export const Figure = Node.create<FigureOptions>({
           if (p.type === 'attributes' && p.attributeName != null) {
             if (['src', 'title', 'alt'].includes(p.attributeName)) {
               if (typeof getPos === 'function') {
-                view.dispatch(view.state.tr.setNodeMarkup(getPos(), undefined, {
-                  [p.attributeName]: (p.target as HTMLElement).getAttribute(p.attributeName)
-                }));
+                view.dispatch(
+                  view.state.tr.setNodeMarkup(getPos(), undefined, {
+                    [p.attributeName]: (p.target as HTMLElement).getAttribute(p.attributeName),
+                  })
+                );
               }
-              
             }
             return true;
           }
@@ -214,6 +243,12 @@ export const Figure = Node.create<FigureOptions>({
           if (updatedNode.type !== this.type) {
             return false;
           }
+
+          figure = updatedNode.attrs.figure;
+
+          if (typeof figure.style === 'string') {
+            container.setAttribute('style', figure.style);
+          }    
 
           domCaption.classList.toggle('empty', updatedNode.content.size === 0);
 
@@ -232,6 +267,10 @@ function appendImgNode(src: string, domWrapper: Element) {
 }
 
 function prepareUploadData(url: string) {
+  if (typeof url !== 'string') {
+    return;
+  }
+
   const match = url.match(/^data:(image\/gif|image\/jpe?g|image\/png|video\/mp4);base64,(.*)$/);
 
   if (match != null) {

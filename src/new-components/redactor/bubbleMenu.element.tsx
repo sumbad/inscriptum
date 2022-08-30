@@ -110,7 +110,6 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
   );
 });
 
-const NODE_WITHOUT_MENU = ['figure'];
 const NODE_PARENT_WITHOUT_MENU = ['topicTitle'];
 
 /**
@@ -123,8 +122,18 @@ function prepareMenuContent(editor: Editor) {
   const selection = editor.state.selection;
 
   if (selection instanceof NodeSelection) {
-    if (NODE_WITHOUT_MENU.includes(selection.node.type.name)) {
-      return null;
+    if (selection.node.type.name === 'figure') {
+      return (
+        <>
+          <textarea
+            value={(editor.state.selection as NodeSelection).node.attrs.figure.style}
+            onchange={(e) => {
+              const value = (e.currentTarget as HTMLTextAreaElement).value;
+              editor.chain().focus().changeFigure({figureStyle: value}).run();
+            }}
+          ></textarea>
+        </>
+      );
     }
   }
 
@@ -215,20 +224,19 @@ function prepareMenuContent(editor: Editor) {
       >
         {'</>'}
       </button>
-      <button
-        onclick={() => editor.chain().focus().toggleCode().run()}
-        class={editor.isActive('code') ? 'is-active' : ''}
-      >
+      <button onclick={() => editor.chain().focus().toggleCode().run()} class={editor.isActive('code') ? 'is-active' : ''}>
         {'{}'}
       </button>
 
       <button onclick={() => editor.chain().focus().toggleSubscript().run()} class={editor.isActive('subscript') ? 'is-active' : ''}>
-      <span
+        <span
           style={css`
             vertical-align: sub;
             font-size: smaller;
           `}
-        >s</span>
+        >
+          s
+        </span>
       </button>
       <button onclick={() => editor.chain().focus().toggleSuperscript().run()} class={editor.isActive('superscript') ? 'is-active' : ''}>
         <span
@@ -236,7 +244,9 @@ function prepareMenuContent(editor: Editor) {
             vertical-align: super;
             font-size: smaller;
           `}
-        >s</span>
+        >
+          s
+        </span>
       </button>
     </>
   );
