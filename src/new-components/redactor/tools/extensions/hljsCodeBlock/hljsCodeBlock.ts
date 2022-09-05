@@ -242,7 +242,7 @@ export const HljsCodeBlock = Node.create<HljsCodeBlockOptions>({
           if (node.type.name === 'hljsCodeBlockRow') {
             const firstChild = node.firstChild;
 
-            if (firstChild != null && firstChild.isText) {
+            if (firstChild == null || firstChild.isText) {
               tr.insertText('\u00a0\u00a0', startPos + 1 + lines);
               lines += 2;
             }

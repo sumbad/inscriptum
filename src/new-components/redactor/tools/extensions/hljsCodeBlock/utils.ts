@@ -34,7 +34,7 @@ export const HLJS_LANGUAGES = ['javascript', 'typescript', 'sql', 'xml', 'css', 
 
 export function generateHljsNodeJson(codeText: string, language?: string) {
   let hljsResult: HighlightResult;
-  
+
   if (typeof language === 'string') {
     hljsResult = hljs.highlight(codeText, { language });
   } else {
@@ -47,8 +47,66 @@ export function generateHljsNodeJson(codeText: string, language?: string) {
   const stubSchema = [StubHljsCodeBlock, Text, HljsCodeBlockRow, HljsMark];
   const stubHljsCodeBlock = document.createElement('pre');
 
-  for (const line of codeLineList) {
-    codeRows += `<div class="l">${line || ''}</div>`;
+  const openedTagsReg = /<\w+/gi;
+  const closedTagsReg = /\/\w*>/gi;
+
+  let cachedLines: {
+    lines: string[];
+    openedTagsCount: number;
+    closedTagsCount: number;
+  } | null = null;
+  let openedTagsCount = 0;
+  let closedTagsCount = 0;
+  let lines: string[] = [];
+
+  for (let codeLine of codeLineList) {
+    codeLine = codeLine || '';
+    // If there is something in cached lines use it
+    if (cachedLines != null) {
+      openedTagsCount = cachedLines.openedTagsCount;
+      closedTagsCount = cachedLines.closedTagsCount;
+      cachedLines.lines.push(codeLine);
+    } else {
+      openedTagsCount = 0;
+      closedTagsCount = 0;
+      lines = [codeLine];
+    }
+
+    // Count open tags in the line
+    openedTagsCount += codeLine.match(openedTagsReg)?.length ?? 0;
+    // Count close tags in the line
+    closedTagsCount += codeLine.match(closedTagsReg)?.length ?? 0;
+
+    // If count of open tags is gether than closest, then cache current line and opened and closed counts
+    if (openedTagsCount > closedTagsCount) {
+      cachedLines = {
+        openedTagsCount,
+        closedTagsCount,
+        lines,
+      };
+    }
+    // else clear the cache and create a new code row
+    else {
+      const line = lines.join('\n');
+      const openTag = line.match(/^<.*?>/i)?.[0];
+      const closeTag = line.match(/<\/.*?>$/i)?.[0];
+
+      if (cachedLines != null && openTag != null && closeTag != null) {
+        lines.forEach((it, i) => {
+          if (i === 0) {
+            codeRows += `<div class="l">${it}${closeTag}</div>`;
+          } else if (i === lines.length - 1) {
+            codeRows += `<div class="l">${openTag}${it}</div>`;
+          } else {
+            codeRows += `<div class="l">${openTag}${it}${closeTag}</div>`;
+          }
+        });
+      } else {
+        codeRows += `<div class="l">${line}</div>`;
+      }
+
+      cachedLines = null;
+    }
   }
 
   stubHljsCodeBlock.innerHTML = codeRows;
@@ -64,6 +122,7 @@ export function generateHljsNodeJson(codeText: string, language?: string) {
  * Create new hljsCodeBlock with one row
  *
  * TODO: PR with content option for nodeInputRule from '@tiptap/core';
+ *
  * @param regexp
  * @param type
  * @param getAttributes

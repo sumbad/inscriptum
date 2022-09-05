@@ -11,7 +11,7 @@ export const snippetRoundNode = NG(function* () {
   const stroke = `url(#${uuid})`;
 
   requestAnimationFrame(() => {
-    setStyle(require('./snippetRound.scss'), elRef.value!);
+    elRef.value && setStyle(require('./snippetRound.scss'), elRef.value);
   });
 
   while (true) {

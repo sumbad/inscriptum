@@ -44,9 +44,12 @@ export const Figure = Node.create<FigureOptions>({
   defining: true,
   selectable: true,
 
-  content() {
-    return 'text*';
-  },
+  content: 'text*',
+  marks: '',
+
+  // Needed to be able to create the node without content
+  // @see for more information  https://tiptap.dev/api/schema#isolating
+  isolating: true,
 
   addOptions() {
     return {
@@ -99,10 +102,15 @@ export const Figure = Node.create<FigureOptions>({
       },
       {
         tag: 'img[src]',
-        preserveWhitespace: true,
+        // preserveWhitespace: true,
         getContent(img: HTMLImageElement, schema) {
-          const textNode: Fragment = Fragment.from(schema.text(img.alt.length > 0 ? img.alt : ' '));
-          return textNode;
+          let textNode: Fragment;
+          if (img.alt.length > 0) {
+            textNode = Fragment.from(schema.text(img.alt));
+            return textNode;
+          }
+
+          return Fragment.empty;
         },
         getAttrs: (node: HTMLDivElement) => {
           return {
@@ -115,7 +123,7 @@ export const Figure = Node.create<FigureOptions>({
 
   renderHTML({ HTMLAttributes }) {
     const { src, alt, title, figure } = HTMLAttributes;
-    
+
     return [
       'figure',
       { style: figure.style },
@@ -184,12 +192,12 @@ export const Figure = Node.create<FigureOptions>({
       domWrapper.contentEditable = 'false';
 
       domCaption.classList.add('editable_text');
-      domCaption.classList.add('empty');
       domCaption.setAttribute('data-placeholder', 'Caption (optional)');
 
       const firstChild = node.content.firstChild;
-      if (firstChild?.isText && firstChild.text != null && firstChild.text.trim().length > 0) {
-        domCaption.classList.remove('empty');
+
+      if (node.childCount === 0) {
+        domCaption.classList.add('empty');
       }
 
       container.appendChild(domWrapper);
@@ -248,7 +256,7 @@ export const Figure = Node.create<FigureOptions>({
 
           if (typeof figure.style === 'string') {
             container.setAttribute('style', figure.style);
-          }    
+          }
 
           domCaption.classList.toggle('empty', updatedNode.content.size === 0);
 
