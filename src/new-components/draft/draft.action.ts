@@ -1,5 +1,4 @@
 import { DraftModel } from 'models/draft.model';
-import { Page } from 'models/page.model';
 
 const p = 'DRAFT_ACTION' as const;
 
@@ -9,7 +8,6 @@ const LOAD_DONE: unique symbol = Symbol(`[${p}] LOAD_DONE`);
 
 const UPDATE_TOC_DONE: unique symbol = Symbol(`[${p}] UPDATE_TOC_DONE`);
 const UPDATE_TOC_ERROR: unique symbol = Symbol(`[${p}] UPDATE_TOC_ERROR`);
-
 
 export const DRAFT_ACTION = {
   LOAD,
@@ -22,14 +20,14 @@ export const DRAFT_ACTION = {
 export type DraftAction =
   | {
       type: typeof DRAFT_ACTION.LOAD;
-      payload: { 
-        id: string 
+      payload: {
+        id: string;
       };
     }
   | {
       type: typeof DRAFT_ACTION.LOADING;
-      payload: { 
-        id: string 
+      payload: {
+        id: string;
       };
     }
   | {
@@ -49,4 +47,4 @@ export type DraftAction =
         id: string;
         error: any;
       };
-    }
+    };

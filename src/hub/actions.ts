@@ -11,6 +11,7 @@ const PAGE_SAVE: unique symbol = Symbol(`[${namespace}] PAGE_SAVE`);
 const PAGE_SAVING: unique symbol = Symbol(`[${namespace}] PAGE_SAVING`);
 const PAGE_SAVE_DONE: unique symbol = Symbol(`[${namespace}] PAGE_SAVE_DONE`);
 const PAGE_SAVE_FAIL: unique symbol = Symbol(`[${namespace}] PAGE_SAVE_FAIL`);
+const PAGE_FOLDED: unique symbol = Symbol(`[${namespace}] PAGE_FOLDED`);
 ///
 const DRAFT_ADD_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_ADD_PAGE_DONE`);
 const DRAFT_DELETE_PAGE_DONE: unique symbol = Symbol(`[${namespace}] DRAFT_DELETE_PAGE_DONE`);
@@ -26,6 +27,7 @@ export const HUB_ACTION = {
   PAGE_SAVING,
   PAGE_SAVE_DONE,
   PAGE_SAVE_FAIL,
+  PAGE_FOLDED,
   DRAFT_ADD_PAGE_DONE,
   DRAFT_DELETE_PAGE_DONE,
   DRAFT_PUBLISH,
@@ -69,6 +71,13 @@ export type HubAction =
         draftId: string;
         pageId: string;
         error: any;
+      };
+    }
+  | {
+      type: typeof HUB_ACTION.PAGE_FOLDED;
+      payload: {
+        pageId: string;
+        folded: boolean;
       };
     }
   | {

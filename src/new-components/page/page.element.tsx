@@ -13,6 +13,9 @@ import { useSubjectEffect } from 'hooks/useSubjectEffect';
 import { redactorElement } from 'new-components/redactor/redactor.element';
 import { JSONContent } from '@tiptap/core';
 import { css } from '@web-companions/h';
+import hub from 'hub';
+import { filter } from 'rxjs';
+import { HUB_ACTION } from 'hub/actions';
 
 const RedactorElement = redactorElement('inscriptum-redactor');
 // const EditorElement = editorElement('inscriptum-editor');
@@ -50,6 +53,14 @@ export const pageElement = EG({
   useEffect(() => {
     const sub = page$(props.page.id).subscribe((action) => dispatch(action as any));
 
+    const subFold = hub.$.pipe(filter((it) => it.type === HUB_ACTION.PAGE_FOLDED && it.payload.pageId === state.data?.id)).subscribe(
+      (action) => {
+        if (action.type === HUB_ACTION.PAGE_FOLDED) {
+          setFolded(action.payload.folded);
+        }
+      }
+    );
+
     sub.add(
       savePage$.subscribe((d) => {
         if (state.data != null) {
@@ -60,6 +71,7 @@ export const pageElement = EG({
 
     sub.add(addNewPage$.subscribe());
     sub.add(deletePage$.subscribe());
+    sub.add(subFold);
 
     return () => {
       sub.unsubscribe();
@@ -116,7 +128,6 @@ export const pageElement = EG({
     }
   }, [state.data]);
 
-
   const onChangeMarginMode = useCallback(
     (
       event: CustomEvent<{
@@ -145,7 +156,7 @@ export const pageElement = EG({
     );
 
     return (
-      <>
+      <div id={`page_${state.data.id}`}>
         <style>{require('./page.style.scss')}</style>
         <FoldingElement
           label={state.data.order > 0 ? String(state.data.order) : ''}
@@ -195,7 +206,7 @@ export const pageElement = EG({
             ></MarginElement>
           </div>
         )}
-      </>
+      </div>
     );
   }
 });
