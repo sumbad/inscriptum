@@ -195,7 +195,6 @@ export async function publishDraft(data: DraftModel) {
         ${inlineStyle}
         <link rel="shortcut icon" type="image/png" href="favicon.png">
         <link href="/css/note.css" rel="stylesheet">
-        <link href="/css/custom_editor_fonts.css" rel="stylesheet">
       </head>
       <body>
         <article>
