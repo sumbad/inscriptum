@@ -145,7 +145,7 @@ function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolea
         //
         // I think it will be better to use a single tippy instance for all links (https://atomiks.github.io/tippyjs/v6/addons/#singleton)
         setTimeout(() => {
-          const linkElements = document.querySelectorAll('a[href]');
+          const linkElements = document.querySelectorAll('main a[href]');
 
           linkElements.forEach((el) => {
             if (el['_tippy'] == null) {

@@ -56,3 +56,13 @@
     opacity: 1;
   }
 }
+
+.page {
+  position: relative;
+  display: block;
+  margin-left: 150px;
+
+  &:not(:nth-last-child(1)) {
+    border-bottom: 1px solid #eee;
+  }
+}

@@ -1,7 +1,10 @@
 .um-drafts__item {
-  border-bottom: 1px solid #eee;
   padding: 4rem 0;
   margin-bottom: 0;
+
+  &:not(:nth-last-child(1)) {
+    border-bottom: 1px solid #eee;
+  }
 }
 
 .um-drafts__item-link {

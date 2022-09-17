@@ -89,12 +89,7 @@ export const draftElement = EG({
                   (page) => (
                     <PageElement
                       page={page}
-                      style={css`
-                        position: relative;
-                        display: block;
-                        border-bottom: 1px solid #eee;
-                        margin-left: 150px;
-                      `}
+                      class="page"
                       header={state.data?.table_of_contents[page.order]?.header}
                     ></PageElement>
                   )

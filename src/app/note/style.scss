@@ -1,3 +1,10 @@
+@import '../../scss/skeleton/base/normalize';
+@import "../../scss/skeleton/base/variables";
+@import "../../scss/skeleton/base/base-styles";
+@import '../../scss/skeleton/base/typography';
+
+@import '../../scss/navbar.scss';
+
 // @import '~highlight.js/styles/monokai-sublime';
 // @import '~highlight.js/styles/monokai';
 // @import '~highlight.js/styles/base16/monokai';

@@ -53,4 +53,7 @@ $global-radius: 4px !default;
 
   // Measures
   --ipad-min-width: 1366;
+
+  //Grid Variables
+  --container-width: #{$container-width};
 }

@@ -1,3 +1,10 @@
+@import '../../scss/skeleton/base/normalize';
+@import "../../scss/skeleton/base/variables";
+@import "../../scss/skeleton/base/base-styles";
+@import '../../scss/skeleton/base/typography';
+
+@import '../../scss/navbar.scss';
+
 @import '../../scss/fonts.scss';
 
 html {
@@ -12,4 +19,23 @@ html {
 
 .container {
   max-width: 800px;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+inscriptum-footer {
+  flex-shrink: 0;
+  margin-top: 2rem;
 }

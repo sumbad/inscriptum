@@ -15,8 +15,6 @@ export const menuElement = EG()(function* () {
   while (true) {
     yield render(
       <>
-        <style>{require('./style.scss')}</style>
-
         <div class="navbar-spacer"></div>
         <nav class="navbar">
           <div class="container">

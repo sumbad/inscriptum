@@ -1,6 +1,4 @@
-@import '../../scss/skeleton/base/normalize';
 @import '../../scss/skeleton/base/variables';
-@import '../../scss/skeleton/base/typography';
 
 .toc-panel {
   --toc-border-width: 1px;
@@ -10,11 +8,13 @@
   --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
 
   box-shadow: inset var(--toc-border-width) 0 0 var(--color-contrast-low);
-  font-family: $font-family;
-  top: 1.25rem;
-  max-height: calc(100vh - 1.25rem);
+  font-family: var(--font-family);
+  font-size: 1.57rem;
+  top: 2rem;
+  max-height: calc(100vh - 2rem);
   overflow: visible;
-  padding-left: 2.5rem;
+  padding-left: 4rem;
+  line-height: 2.2rem;
 
   ol,
   ul {
@@ -25,23 +25,23 @@
   }
 
   .toc-panel__list {
-    padding-bottom: 1rem;
+    padding-bottom: 1.6rem;
     position: relative;
 
     .toc-panel__list .toc-panel__header {
-      padding-left: calc(1.25rem * 2);
+      padding-left: calc(2rem * 2);
     }
   }
 
   .toc-panel__title {
-    padding: 0.25rem 1.25rem;
+    padding: 0.4rem 2rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: var(--text-sm);
   }
 
   .toc-panel__header {
-    padding: 0.25rem 1.25rem;
+    padding: 0.4rem 2rem;
     position: relative;
     display: inline-flex;
     color: var(--color-contrast-medium);
@@ -72,10 +72,10 @@
   }
 
   .toc-panel__page-numb {
-    width: 2rem;
+    width: 3.2rem;
     text-align: right;
-    padding-top: 0.25rem;
-    padding-right: 0.5rem;
+    padding-top: 0.4rem;
+    padding-right: 0.8rem;
     flex-shrink: 0;
 
     white-space: nowrap;
@@ -83,7 +83,7 @@
 
   .toc-panel__item {
     display: flex;
-    margin-left: -2.5rem;
+    margin-left: -4rem;
     cursor: pointer;
 
     color: var(--color-contrast-medium);

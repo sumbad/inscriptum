@@ -1,0 +1,21 @@
+@import '../../scss/skeleton/base/variables';
+
+.footer__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  position: relative;
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+
+.copyright {
+  line-height: 6.5rem;
+  color: var(--color-contrast-medium);
+  font-size: 1.4rem;
+}
