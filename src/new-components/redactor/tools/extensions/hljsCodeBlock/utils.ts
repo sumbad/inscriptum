@@ -13,6 +13,7 @@ import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import typescript from 'highlight.js/lib/languages/typescript';
 import sql from 'highlight.js/lib/languages/sql';
+import graphql from 'highlight.js/lib/languages/graphql';
 import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import bash from 'highlight.js/lib/languages/bash';
@@ -23,14 +24,15 @@ import { HighlightResult } from 'highlight.js';
 // Register languages
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
-hljs.registerLanguage('sql', sql);
-hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('xml/html', xml);
 hljs.registerLanguage('css', css);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('graphql', graphql);
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('yaml', yaml);
 hljs.registerLanguage('plaintext', plaintext);
 
-export const HLJS_LANGUAGES = ['javascript', 'typescript', 'sql', 'xml', 'css', 'bash', 'yaml', 'plaintext'];
+export const HLJS_LANGUAGES = ['javascript', 'typescript', 'xml/html', 'css', 'sql', 'graphql', 'bash', 'yaml', 'plaintext'];
 
 export function generateHljsNodeJson(codeText: string, language?: string) {
   let hljsResult: HighlightResult;
@@ -84,12 +86,11 @@ export function generateHljsNodeJson(codeText: string, language?: string) {
         closedTagsCount,
         lines,
       };
-    }
-    // else clear the cache and create a new code row
-    else {
+    } else {
+      // Clear the cache and create a new code row
       const line = lines.join('\n');
-      const openTag = line.match(/^<.*?>/i)?.[0];
-      const closeTag = line.match(/<\/.*?>$/i)?.[0];
+      const openTag = line.match(/<[^<>/]*?>/i)?.[0];
+      const closeTag = line.match(/<\/[^<>/]*?>/i)?.[0];
 
       if (cachedLines != null && openTag != null && closeTag != null) {
         lines.forEach((it, i) => {

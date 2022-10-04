@@ -155,7 +155,7 @@ sketch-pad {
       background-size: contain;
     }
 
-    &  {
+    & {
       opacity: 1;
       margin-top: 10px;
     }
@@ -206,21 +206,22 @@ sketch-pad {
   }
 }
 
-.btn__first {
+.btn {
   position: absolute;
   z-index: 2;
-}
+  top: 1rem;
 
-.btn__second {
-  position: absolute;
-  z-index: 2;
-  left: 2rem;
-}
+  &__first {
+    left: 1rem;
+  }
 
-.btn__third {
-  position: absolute;
-  z-index: 2;
-  left: 4rem;
+  &__second {
+    left: calc(30px + 2rem);
+  }
+
+  &__third {
+    left: calc(30px * 2 + 3rem);
+  }
 }
 
 .sub-button {
