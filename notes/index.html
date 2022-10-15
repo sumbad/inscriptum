@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>inscriptum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="176" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content="inscriptum">
+    <meta property="og:title" content="inscriptum">
+    <meta property="og:description" content="inscriptum.js.org is a resource for taking notes and sharing personal knowledge.">
+    <!-- <meta property="og:image" content="https://inscriptum.js.org/images/logo.png"> -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="inscriptum">
+    <meta name="twitter:description" content="inscriptum.js.org is a resource for taking notes and sharing personal knowledge.">
+    <!-- <meta name="twitter:image" content="https://inscriptum.js.org/images/logo.png"> -->
+    <!-- <link rel="shortcut icon" href="/favicon.ico?1" type="image/x-icon"> -->
+    <!-- <link rel="icon" type="image/png" href="/images/favicon.png?1" sizes="16x16"> -->
+    <!-- <link rel="icon" type="image/png" href="/images/favicon_2x.png?1" sizes="32x32"> -->
+
+    <script>
+      (function(){
+        var redirect = sessionStorage.redirect;
+        if (redirect !== undefined && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+        delete sessionStorage.redirect;
+      })();
+    </script>
+
+    <link rel="shortcut icon" href="favicon.png">
+  <script defer src="/js/notepad.js"></script></head>
+
+  <body>
+
+    <main></main>
+    
+  </body>
+
+</html>
