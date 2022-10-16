@@ -34,7 +34,7 @@
 
             <inscriptum-list .list=${e} @action=${n}></inscriptum-list>
           </inscriptum-preloader>
-        </div>`,this)}finally{a.complete(),p.complete(),c.complete()}})))},1775:(e,t,o)=>{o.d(t,{t:()=>c});var i=o(1640),r=o(9890),n=o(3619);const l=e=>null!=e?e:i.Ld;var a=o(3255);class s extends a.Xe{constructor(e){if(super(e),this.it=i.Ld,e.type!==a.pX.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(e){if(e===i.Ld||null==e)return this.vt=void 0,this.it=e;if(e===i.Jb)return e;if("string"!=typeof e)throw Error(this.constructor.directiveName+"() called with a non-string value");if(e===this.it)return this.vt;this.it=e;const t=[e];return t.raw=t,this.vt={_$litType$:this.constructor.resultType,strings:t,values:[]}}}s.directiveName="unsafeHTML",s.resultType=1;const p=(0,a.XM)(s);var d=o(3853);const c=(0,r.EG)({props:{list:r.p.req(),onaction:r.p.opt()}})((function*(e){const t=e=>t=>this.dispatchEvent(new CustomEvent("action",{detail:e})),r=()=>{this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))},a=e=>{var t;e.preventDefault(),r();const o=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,i=this.querySelector(`[id="${o}"]`);null!==i&&i.classList.add("open"),e.stopImmediatePropagation()};try{for(requestAnimationFrame((()=>{document.addEventListener("click",r)}));;){const r=(e,o=[])=>o.length>0?i.dy`<div class="um-drafts__item-actions">
+        </div>`,this)}finally{a.complete(),p.complete(),c.complete()}})))},1775:(e,t,o)=>{o.d(t,{t:()=>c});var i=o(1640),r=o(9890),n=o(3619);const l=e=>null!=e?e:i.Ld;var a=o(3255);class s extends a.Xe{constructor(e){if(super(e),this.it=i.Ld,e.type!==a.pX.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(e){if(e===i.Ld||null==e)return this.vt=void 0,this.it=e;if(e===i.Jb)return e;if("string"!=typeof e)throw Error(this.constructor.directiveName+"() called with a non-string value");if(e===this.it)return this.vt;this.it=e;const t=[e];return t.raw=t,this.vt={_$litType$:this.constructor.resultType,strings:t,values:[]}}}s.directiveName="unsafeHTML",s.resultType=1;const p=(0,a.XM)(s);var d=o(3853);const c=(0,r.EG)({props:{list:r.p.req(),onaction:r.p.opt()}})((function*(e){const t=e=>()=>this.dispatchEvent(new CustomEvent("action",{detail:e})),r=()=>{this.querySelectorAll(".popover.open").forEach((e=>{e.classList.remove("open")}))},a=e=>{var t;e.preventDefault(),r();const o=null===(t=e.target)||void 0===t?void 0:t.dataset.popover,i=this.querySelector(`[id="${o}"]`);null!==i&&i.classList.add("open"),e.stopImmediatePropagation()};try{for(requestAnimationFrame((()=>{document.addEventListener("click",r)}));;){const r=(e,o=[])=>o.length>0?i.dy`<div class="um-drafts__item-actions">
             <span @click=${a} class="um-drafts__item-subcontent" data-popover=${e}>
               ${e}${" "}
               <i class="fas fa-angle-down" style=${d.iv`
@@ -52,7 +52,7 @@
             </div>
           </div>`:"",s=({listItem:e})=>(e.tags||[]).map((e=>null!=e.link?i.dy`<a .href=${`/${e.link.href}`} .rel=${l(e.link.rel)}>
               ${e.code}
-            </a>`:e.code)),c=({img:e})=>null!=e?i.dy`<div class="two columns draft-preview">
+            </a>`:e.code)),c=({img:e})=>null!=e&&e.length>0?i.dy`<div class="two columns draft-preview">
             <img class="draft-preview__img" .src=${e}>
           </div>`:"";e=yield(0,i.sY)(i.dy`
           <style>
