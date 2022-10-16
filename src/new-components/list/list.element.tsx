@@ -38,13 +38,14 @@ export const listElement = EG({
     onaction: p.opt<(event: CustomEvent<{ type: IListItemAction['type']; id: string }>) => any>(),
   },
 })(function* (params) {
+  
   /**
    * Dispatch a list item action
    *
    * @param detail - action id and type
    */
   const dispatchAction = (detail: { type: IListItemAction['type']; id: string }) => {
-    return (e) => this.dispatchEvent(new CustomEvent('action', { detail }));
+    return () => this.dispatchEvent(new CustomEvent('action', { detail }));
   };
 
   /**
@@ -117,8 +118,8 @@ export const listElement = EG({
           )
         );
 
-      const Image = ({ img }: { img: string }) =>
-        img != null ? (
+      const Image = ({ img }: { img?: string }) =>
+        img != null && img.length > 0 ? (
           <div class="two columns draft-preview">
             <img class="draft-preview__img" src={img} />
           </div>
