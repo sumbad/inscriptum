@@ -136,19 +136,20 @@ export const listElement = EG({
           <div class="container">
             {repeat(
               params.list,
-              (i) => i.id,
-              (i, index) => (
+              (it) => it.id,
+              (it) => (
                 <div class="um-drafts__item">
-                  <Tags listItem={i}></Tags>
-                  <a class="um-drafts__item-link" href={i.linkUrl} rel={ifDefined(i.linkRel) as string}>
-                    <h6 class="docs-header">{i.preview.title}</h6>
+                  <Tags listItem={it}></Tags>
+                  <a class="um-drafts__item-link" href={it.linkUrl} rel={ifDefined(it.linkRel) as string}>
+                    <h6 class="docs-header">{it.preview.title}</h6>
                     <div class="row">
-                      <Image img={i.preview.image}></Image>
-                      <div class={i.preview.image?.length > 0 ? 'ten columns' : ''}>
-                        <p class="docs-preview">{unsafeHTML(i.preview.description)}</p>
-                        {menuElemFunc(i.id, typeof i.actions === 'function' ? i.actions() : i.actions)}
+                      <Image img={it.preview.image}></Image>
+                      <div class={it.preview.image?.length > 0 ? 'ten columns' : ''}>
+                        <p class="docs-preview">{unsafeHTML(it.preview.description)}</p>
+                        {menuElemFunc(it.id, typeof it.actions === 'function' ? it.actions() : it.actions)}
                       </div>
                     </div>
+                    <div class="row item-caption">{it.createdAt}{it.updatedAt != null ? ` · ${it.updatedAt}` : ''}</div>
                   </a>
                 </div>
               )
