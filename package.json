@@ -67,6 +67,7 @@
     "loading-progress-bar": "2.0.4",
     "page": "1.11.6",
     "presentarium": "0.0.5",
+    "prosemirror-codemark": "0.4.1",
     "rxjs": "7.5.4",
     "signature_pad": "4.0.2",
     "vanilla-colorful": "0.6.2",

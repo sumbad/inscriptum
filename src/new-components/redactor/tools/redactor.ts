@@ -1,4 +1,4 @@
-import { Content, Editor, EditorOptions, Extensions, generateHTML, JSONContent } from '@tiptap/core';
+import { Content, Editor, EditorOptions, Extension, Extensions, generateHTML, JSONContent } from '@tiptap/core';
 
 import Document from '@tiptap/extension-document';
 import Blockquote from '@tiptap/extension-blockquote';
@@ -17,16 +17,16 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import Strike from '@tiptap/extension-strike';
 import Text from '@tiptap/extension-text';
-import Subscript from '@tiptap/extension-subscript'
-import Superscript from '@tiptap/extension-superscript'
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
 
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import Highlight from '@tiptap/extension-highlight';
-import Table from '@tiptap/extension-table'
-import TableRow from '@tiptap/extension-table-row'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 
 import { Figure } from './extensions/figure';
 import { TopicDoc } from './extensions/topicDoc';
@@ -41,6 +41,7 @@ import { HljsCodeBlock } from './extensions/hljsCodeBlock/hljsCodeBlock';
 import { CodeBlock2HljsCodeBlock } from './extensions/hljsCodeBlock/codeBlock2HljsCodeBlock';
 import { HljsMark } from './extensions/hljsCodeBlock/hljsMark';
 import { HljsCodeBlockRow } from './extensions/hljsCodeBlock/hljsCodeBlockRow';
+import codemark from 'prosemirror-codemark';
 
 /**
  * Create a new TipTap Editor
@@ -103,7 +104,10 @@ function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolea
     Text,
     Bold,
     Italic,
+    //—————————
     Code,
+    codemarkPlugin,
+    //_________
     Strike,
     HardBreak,
     Heading,
@@ -164,3 +168,14 @@ function redactorExtensions(isTitle: boolean = false, printContentAsHTML: boolea
     Superscript,
   ];
 }
+
+/**
+ * A plugin for Code mark
+ * @see https://github.com/curvenote/editor/tree/main/packages/prosemirror-codemark
+ */
+const codemarkPlugin = Extension.create({
+  name: 'codemarkPlugin',
+  addProseMirrorPlugins() {
+    return codemark({ markType: this.editor.schema.marks.code });
+  },
+});
