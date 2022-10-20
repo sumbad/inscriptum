@@ -53,19 +53,26 @@
           <path d="M12 21v-13"></path>
           <path d="M9.824 15.995a3 3 0 0 1 -2.743 -3.69a2.998 2.998 0 0 1 .304 -4.833a3 3 0 0 1 4.615 -3.707a3 3 0 0 1 4.614 3.707a2.997 2.997 0 0 1 .305 4.833a3 3 0 0 1 -2.919 3.695h-4z"></path>
         </svg>
-      `,this)})),R=N(),U=L(),P=(0,A.EG)()((function*(){(0,k.A_)(s(1181),this);let t="/";switch(location.pathname.split("/")[1]){case"draft":t="/drafts";break;case"note":t="/notes"}for(;;)yield(0,I.sY)(I.dy`
+      `,this)})),R=N(),U=L(),P=(0,A.EG)()((function*(){(0,k.A_)(s(1181),this);let t=location.pathname.split("/")[1],e=null;for(m()("*",((n,r)=>{switch(t=n.pathname.split("/")[1],t){case"draft":e="/drafts";break;case"note":e="/notes";break;default:e=null}r(),this.next()}));;)yield(0,I.sY)(I.dy`
         <nav class="navbar">
           <div class="footer__container">
             <ul class="navbar-list">
               <li class="navbar-item">
-                <a class="navbar-link" .href=${t} style=${k.iv`
-                    display: flex;
-                    align-content: center;
-                    align-items: center;
-                  `}>
-                  ${"../../"}
-                  ${U({})}
-                </a>
+                ${null!=e?I.dy`<a class="navbar-link" .href=${e} style=${k.iv`
+                      display: flex;
+                      align-content: center;
+                      align-items: center;
+                    `}>
+                    ${"../../"}
+                    ${U({})}
+                  </a>`:I.dy`<div style=${k.iv`
+                      height: 6.5rem;
+                      line-height: 6.5rem;
+                      display: flex;
+                      align-items: center;
+                    `}>
+                    ${U({})}
+                  </div>`}
               </li>
             </ul>
 
