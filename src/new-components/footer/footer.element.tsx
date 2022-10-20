@@ -1,3 +1,4 @@
+import page from 'page';
 import { render } from 'lit-html2';
 import { EG } from '@web-companions/gfc';
 import { css, setStyle } from '@web-companions/h';
@@ -10,17 +11,26 @@ const IconTreeNode = iconTreeNode();
 export const footerElement = EG()(function* () {
   setStyle(require('./style.scss'), this);
 
-  const firstPath = location.pathname.split('/')[1];
-  let backUrl = '/';
+  let firstPath = location.pathname.split('/')[1];
+  let backUrl: string | null = null;
 
-  switch (firstPath) {
-    case 'draft':
-      backUrl = '/drafts';
-      break;
-    case 'note':
-      backUrl = '/notes';
-      break;
-  }
+  page('*', (ctx, next) => {
+    firstPath = ctx.pathname.split('/')[1];
+
+    switch (firstPath) {
+      case 'draft':
+        backUrl = '/drafts';
+        break;
+      case 'note':
+        backUrl = '/notes';
+        break;
+      default:
+        backUrl = null;
+    }
+
+    next(); // process next route handlers
+    this.next(); // render this element again
+  });
 
   while (true) {
     yield render(
@@ -29,18 +39,31 @@ export const footerElement = EG()(function* () {
           <div class="footer__container">
             <ul class="navbar-list">
               <li class="navbar-item">
-                <a
-                  class="navbar-link"
-                  href={backUrl}
-                  style={css`
-                    display: flex;
-                    align-content: center;
-                    align-items: center;
-                  `}
-                >
-                  {'../../'}
-                  <IconTreeNode></IconTreeNode>
-                </a>
+                {backUrl != null ? (
+                  <a
+                    class="navbar-link"
+                    href={backUrl}
+                    style={css`
+                      display: flex;
+                      align-content: center;
+                      align-items: center;
+                    `}
+                  >
+                    {'../../'}
+                    <IconTreeNode></IconTreeNode>
+                  </a>
+                ) : (
+                  <div
+                    style={css`
+                      height: 6.5rem;
+                      line-height: 6.5rem;
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    <IconTreeNode></IconTreeNode>
+                  </div>
+                )}
               </li>
             </ul>
 
