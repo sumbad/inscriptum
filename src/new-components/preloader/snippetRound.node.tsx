@@ -10,11 +10,11 @@ export const snippetRoundNode = NG(function* () {
   const uuid = uuidv4();
   const stroke = `url(#${uuid})`;
 
-  requestAnimationFrame(() => {
-    elRef.value && setStyle(require('./snippetRound.scss'), elRef.value);
-  });
-
   while (true) {
+    requestAnimationFrame(() => {
+      elRef.value && setStyle(require('./snippetRound.scss'), elRef.value);
+    });
+
     yield renderNode(
       <div ref={ref(elRef)}>
         <div class="um-spinner-round">
