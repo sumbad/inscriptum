@@ -35,10 +35,11 @@ const mainConfig = {
     note: path.resolve(helper.PATHS.src, 'app/note/note.ts'),
   },
   output: {
+    clean: true, // Clean the output directory before emit.
     path: helper.PATHS.dist,
     publicPath: '/',
-    filename: 'js/[name].js',
-    chunkFilename: 'js/[name].bundle.js',
+    filename: 'js/[name].[contenthash].js',
+    chunkFilename: 'js/[id].[contenthash].js',
   },
   ...webpackConfigMix(helper),
 };
