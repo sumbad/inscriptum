@@ -155,10 +155,10 @@ export function reducer(state: DraftState, action: DraftAction | HubAction) {
       return state;
 
     case HUB_ACTION.DRAFT_PUBLISH:
-      if(state.data != null) {
-        publishDraft(state.data)
+      if (state.data != null) {
+        publishDraft(state.data);
       } else {
-        alert('Error: the draft cannot be published. The draft state is null.')
+        alert('Error: the draft cannot be published. The draft state is null.');
       }
       return state;
 

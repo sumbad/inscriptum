@@ -127,6 +127,9 @@ export async function publishDraft(data: DraftModel) {
     }
 
     const noteInfo = {
+      name: pageName,
+      static_link: `/note/${pageName}`,
+      preview: pagePreview,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -137,10 +140,7 @@ export async function publishDraft(data: DraftModel) {
       const updatedNode = (
         await sdk().updateNode({
           id: prevNode.id,
-          name: pageName,
-          preview: pagePreview,
-          static_link: `note/${pageName}`,
-          updated_at: noteInfo.updated_at,
+          ...noteInfo,
         })
       ).update_note_by_pk;
 
@@ -151,10 +151,7 @@ export async function publishDraft(data: DraftModel) {
         await sdk().createNode({
           draft_id: data.id,
           author_id: author.id,
-          name: pageName,
-          preview: pagePreview,
-          static_link: `note/${pageName}`,
-          created_at: new Date().toISOString(),
+          ...noteInfo,
         })
       ).insert_note_one;
 

@@ -31,14 +31,14 @@ const mainConfig = {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
   },
   entry: {
-    notepad: path.resolve(helper.PATHS.src, 'app/notepad/index.ts'),
+    notepad: path.resolve(helper.PATHS.src, 'app/notepad/notepad.ts'),
     note: path.resolve(helper.PATHS.src, 'app/note/note.ts'),
   },
   output: {
     clean: true, // Clean the output directory before emit.
     path: helper.PATHS.dist,
     publicPath: '/',
-    filename: 'js/[name].[contenthash].js',
+    filename: 'js/[name].js',
     chunkFilename: 'js/[id].[contenthash].js',
   },
   ...webpackConfigMix(helper),

@@ -33,9 +33,6 @@ export const noteListElement = EG()(function* () {
 
   /**
    * Handle note actions
-   *
-   * @param type - action type
-   * @param id - note id
    */
   const handleAction = ({ detail }: { detail: { type: NoteAction; id: string } }) => {
     switch (detail.type) {

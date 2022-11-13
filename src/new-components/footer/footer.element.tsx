@@ -17,6 +17,11 @@ export const footerElement = EG()(function* () {
   page('*', (ctx, next) => {
     firstPath = ctx.pathname.split('/')[1];
 
+    next(); // process next route handlers
+    this.next(); // render this element again
+  });
+
+  while (true) {
     switch (firstPath) {
       case 'draft':
         backUrl = '/drafts';
@@ -28,11 +33,7 @@ export const footerElement = EG()(function* () {
         backUrl = null;
     }
 
-    next(); // process next route handlers
-    this.next(); // render this element again
-  });
 
-  while (true) {
     yield render(
       <>
         <nav class="navbar">
