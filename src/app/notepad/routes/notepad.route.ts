@@ -1,14 +1,14 @@
 import page from 'page';
 
-import { AbstractRoute, IRouters } from 'components/abstract.router';
+import { AbstractRoute, IRouters } from 'abstract.router';
 import hub from 'hub';
 import { AUTH_ACTION } from 'hub/auth/auth.action';
 import 'hub/auth/auth.state';
-import { SlidesRouter } from './slides.router';
+import slides from 'public/slideshow/list.json';
 
 export type TRootPath =
   | '/articles*' //
-  | '/slides*'
+  | '/slides'
   | '/editor/:id/:flag?'
   | '/draft/:id'
   | '/drafts'
@@ -27,12 +27,10 @@ export class RootRoute extends AbstractRoute<TRootPath> {
       rootPath,
       routers: [
         {
-          path: '/slides*',
+          path: '/slides',
           callback: async (ctx: PageJS.Context, next) => {
-            this.conferenceRouter = this.conferenceRouter || new SlidesRouter();
-
-            ctx.handled = true;
-            next();
+            // TODO: create a component slides
+            this.routerOutlet.innerHTML = slides.map((it) => `<a rel="external" href="/slideshow/${it.name}">${it.name}</a>`).join('<br/>');
           },
         },
         {

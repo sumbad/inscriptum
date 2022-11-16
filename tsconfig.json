@@ -26,7 +26,8 @@
 
     // Advanced
     "suppressImplicitAnyIndexErrors": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "exclude": [ "build", "src/public", "scripts", "webpack.*", "webpack", "postcss.config.js", "babel.config.js", "browser-sync.js"],
   "compileOnSave": false
