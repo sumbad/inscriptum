@@ -1,5 +1,5 @@
 import './style.inject.scss';
-import { RootRoute } from './routes/$';
+import { RootRoute } from './routes/notepad.route';
 import { noticeModule } from 'modules/notice.module';
 import hub from 'hub';
 import { globalErrorHandle } from 'utils/error.util';

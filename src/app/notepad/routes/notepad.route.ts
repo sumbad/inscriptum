@@ -1,13 +1,14 @@
 import page from 'page';
 
-import { AbstractRoute, IRouters } from 'components/abstract.router';
+import { AbstractRoute, IRouters } from 'abstract.router';
 import hub from 'hub';
 import { AUTH_ACTION } from 'hub/auth/auth.action';
 import 'hub/auth/auth.state';
+import slides from 'public/slideshow/list.json';
 
 export type TRootPath =
-  | '/articles*'
-  | '/conference*'
+  | '/articles*' //
+  | '/slides'
   | '/editor/:id/:flag?'
   | '/draft/:id'
   | '/drafts'
@@ -17,6 +18,8 @@ export type TRootPath =
   | '*';
 
 export class RootRoute extends AbstractRoute<TRootPath> {
+  conferenceRouter: AbstractRoute;
+
   getRouter(): IRouters<TRootPath> {
     const rootPath: string = '';
 
@@ -24,15 +27,10 @@ export class RootRoute extends AbstractRoute<TRootPath> {
       rootPath,
       routers: [
         {
-          path: '/conference*',
+          path: '/slides',
           callback: async (ctx: PageJS.Context, next) => {
-            if (!this.routerOutlet.hasChildNodes()) {
-              const conference = await import('components/conference/component');
-              this.routerOutlet.appendChild(new conference.ConferenceComponent());
-            }
-
-            ctx.handled = true;
-            next();
+            // TODO: create a component slides
+            this.routerOutlet.innerHTML = slides.map((it) => `<a rel="external" href="/slideshow/${it.name}">${it.name}</a>`).join('<br/>');
           },
         },
         {
@@ -97,7 +95,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             hub.dispatch({
               type: AUTH_ACTION.LOGOUT,
               payload: {
-                redirectUri: `${document.location.origin}/notes`
+                redirectUri: `${document.location.origin}/notes`,
               },
             });
             ctx.handled = true;

@@ -25,7 +25,7 @@ export const menuElement = EG()(function* () {
                 </a>
               </li>
               <li class="navbar-item">
-                <a class="navbar-link" href="/conference">
+                <a class="navbar-link" href="/slides">
                   Slides
                 </a>
               </li>
