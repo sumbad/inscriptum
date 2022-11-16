@@ -1,4 +1,4 @@
-/*! For license information please see 300.973431e0079af96445b1.js.LICENSE.txt */
+/*! For license information please see 300.2d7517109d61765d4255.js.LICENSE.txt */
 (self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[300],{3300:(e,t,o)=>{"use strict";o.r(t),o.d(t,{noteListElement:()=>v});var i,r=o(1640),n=o(9890),a=o(667),l=o(2114),s=o(9725),p=o(5467),d=o(2182),c=o(5196),m=o(3135),u=function(e,t,o,i){return new(o||(o=Promise))((function(r,n){function a(e){try{s(i.next(e))}catch(e){n(e)}}function l(e){try{s(i.throw(e))}catch(e){n(e)}}function s(e){var t;e.done?r(e.value):(t=e.value,t instanceof o?t:new o((function(e){e(t)}))).then(a,l)}s((i=i.apply(e,t||[])).next())}))};function f(){return u(this,void 0,void 0,(function*(){let e=[];try{e=(yield o(9228)(`./${m.v.nodeListFileName}`)).default}catch(t){e=(yield(0,l.S)().getAllNotes()).notes}let t=yield d.f.pipe((0,c.P)()).toPromise();const r=null!=(null==t?void 0:t.data);!r&&(null==t?void 0:t.isLoading)&&(s.Z.dispatch({type:p.C.AUTH,payload:{silent:!0}}),t=yield d.f.pipe((0,c.P)((e=>!e.isLoading))).toPromise());const n=new Intl.DateTimeFormat(void 0,{year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"numeric",hour12:!1}).format;return e.map((e=>({id:e.id,preview:e.preview,linkUrl:e.static_link+(m.v.isDevMode?".html":""),linkRel:"external",createdAt:e.created_at&&n(new Date(e.created_at)),updatedAt:e.updated_at&&n(new Date(e.updated_at)),actions:()=>r?[{type:i.edit,label:"edit"}]:[]})))}))}!function(e){e[e.edit=0]="edit",e[e.delete=1]="delete"}(i||(i={}));var b=o(5161),h=o.n(b),g=o(998),y=o(1775),x=o(7296);(0,g.i)("inscriptum-menu"),(0,y.t)("inscriptum-list"),(0,x.z)("inscriptum-preloader");const v=(0,n.EG)()((function*(){let e=!0,t=[];const{_:n,$:l}=(0,a.p)(f);n(),l.subscribe((o=>{t=o,e=!1,this.next()}));const s=({detail:e})=>{if(e.type===i.edit)h()("/draft/"+e.id)};try{for(;;)yield(0,r.sY)(r.dy`
           <style>${o(1691)}</style>
           <div class="container">
@@ -62,7 +62,7 @@
                 </a>
               </li>
               <li class="navbar-item">
-                <a class="navbar-link" href="/conference">
+                <a class="navbar-link" href="/slides">
                   Slides
                 </a>
               </li>

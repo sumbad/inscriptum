@@ -1,4 +1,4 @@
-/*! For license information please see 376.744a2fa367d6749131d9.js.LICENSE.txt */
+/*! For license information please see 376.5509c3e203e4c1abd642.js.LICENSE.txt */
 "use strict";(self.webpackChunkinscriptum=self.webpackChunkinscriptum||[]).push([[376],{43:(e,t,o)=>{o.r(t),o.d(t,{draftListElement:()=>I});var i=o(1640),r=o(9890),n=o(5161),l=o.n(n),a=o(2114),s=o(3135),p=o(4938),d=o(7848),c=function(e,t,o,i){return new(o||(o=Promise))((function(r,n){function l(e){try{s(i.next(e))}catch(e){n(e)}}function a(e){try{s(i.throw(e))}catch(e){n(e)}}function s(e){var t;e.done?r(e.value):(t=e.value,t instanceof o?t:new o((function(e){e(t)}))).then(l,a)}s((i=i.apply(e,t||[])).next())}))};const m="Can't find ID for a new draft",u="Author was not found",f=e=>`Can't delete draft ${e}`;var b;function h(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{drafts:e}=yield(0,a.S)().getAllDrafts();return e.map((e=>{const t=e.pages[0].content,{description:o,title:i,image:r}=(0,p.WV)(t),n=e.notes.length>0?[{code:"note",link:null!=e.notes[0].static_link?{href:e.notes[0].static_link+(s.v.isDevMode?".html":""),rel:"external"}:void 0}]:void 0;return{id:e.id,preview:{title:i,description:o,image:r},linkUrl:"/draft/"+e.id,actions:[{label:"delete",type:b.delete}],tags:n}}))}))))}))}function g(){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((e=>c(this,void 0,void 0,(function*(){const t=(yield(0,a.S)().findAuthorByAuth0({auth0_id:e.userInfo.uid})).author[0];if(null==t)throw alert(u),new Error(u);const{insert_draft_one:o}=yield(0,a.S)().createNewDraft({author_id:t.id});if(null==o)throw alert(m),new Error(m);return o}))))}))}function y(e){return c(this,void 0,void 0,(function*(){return yield(0,d.G)((()=>c(this,void 0,void 0,(function*(){const{update_draft_by_pk:t}=yield(0,a.S)().deleteDraftById({id:e,ended_at:(new Date).toISOString()});if(null==t)throw alert(m),new Error(f(e));return t}))))}))}!function(e){e[e.delete=0]="delete",e[e.publish=1]="publish"}(b||(b={}));var v=o(669);const x=(0,r.NG)((function*(){for(;;)yield(0,v.$)(i.YP`
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -86,7 +86,7 @@
                 </a>
               </li>
               <li class="navbar-item">
-                <a class="navbar-link" href="/conference">
+                <a class="navbar-link" href="/slides">
                   Slides
                 </a>
               </li>
