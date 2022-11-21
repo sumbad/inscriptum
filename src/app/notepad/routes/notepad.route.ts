@@ -30,7 +30,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
           path: '/slides',
           callback: async (ctx: PageJS.Context, next) => {
             // TODO: create a component slides
-            this.routerOutlet.innerHTML = slides.map((it) => `<a rel="external" href="/slideshow/${it.name}">${it.name}</a>`).join('<br/>');
+            this.routerOutlet.innerHTML = slides.map((it) => `<a rel="external" href="/slideshow/${it.name}/">${it.name}</a>`).join('<br/>');
           },
         },
         {
@@ -57,7 +57,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             let ElConstructor = customElements.get(tag);
 
             if (ElConstructor == null) {
-              const { draftListElement } = await import('app/notepad/modules/drafts/draftList.element');
+              const { draftListElement } = await import('app/notepad/containers/drafts/draftList.element');
               ElConstructor = draftListElement(tag);
             }
 
@@ -71,7 +71,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             let ElConstructor = customElements.get(tag);
 
             if (ElConstructor == null) {
-              const { noteListElement } = await import('app/notepad/modules/notes/noteList.element');
+              const { noteListElement } = await import('app/notepad/containers/notes/noteList.element');
               ElConstructor = noteListElement(tag);
             }
 
