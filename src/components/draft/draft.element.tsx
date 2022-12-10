@@ -7,15 +7,15 @@ import hub from 'hub';
 import { HUB_ACTION } from 'hub/actions';
 
 import { loadingProgressBar, LoadingProgressBarHTMLElement } from 'loading-progress-bar';
-import { controlsPanelElement } from 'new-components/controls-panel/controlsPanel.element';
+import { controlsPanelElement } from 'components/controls-panel/controlsPanel.element';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { getById } from 'new-components/draft/draft.service';
-import { pageElement } from '../page/page.element';
+import { getById } from 'components/draft/draft.service';
+import { pageElement } from '../../new-components/page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { draft$, DraftState, reducer } from './draft.state';
-import { sidebarElement } from 'new-components/sidebar/sidebar.element';
-import { preloaderElement } from 'new-components/preloader/preloader.element';
+import { sidebarElement } from 'components/sidebar/sidebar.element';
+import { preloaderElement } from 'components/preloader/preloader.element';
 import { css } from '@web-companions/h';
 
 const PageElement = pageElement('inscriptum-page');

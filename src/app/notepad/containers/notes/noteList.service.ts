@@ -3,7 +3,7 @@ import { GetAllNotesQuery } from 'api/generated';
 import hub from 'hub';
 import { AUTH_ACTION } from 'hub/auth/auth.action';
 import { authState } from 'hub/auth/auth.state';
-import { IListItem } from 'new-components/list/list.element';
+import { IListItem } from 'components/list/list.element';
 import { first } from 'rxjs/operators';
 import { config } from 'settings';
 

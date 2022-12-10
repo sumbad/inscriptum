@@ -2,7 +2,7 @@ import { sdk } from 'api';
 import hub from 'hub';
 import { NOTICE_ACTION } from 'hub/notice.action';
 import { Margin, MarginOptions } from 'models/margin.model';
-import { MARGIN_ACTION } from 'new-components/margin/margin.action';
+import { MARGIN_ACTION } from 'components/margin/margin.action';
 import { authorized } from 'utils/guards';
 
 export async function getMarginById(id: string): Promise<Margin> {

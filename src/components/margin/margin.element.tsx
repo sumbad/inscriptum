@@ -7,7 +7,7 @@ import { iconArrowBarRightNode } from './iconArrowBarRight.node';
 import { iconBulbNode } from './iconBulb.node';
 import { iconMaximizeNode } from './iconMaximize.node';
 import { iconMinimizeNode } from './iconMinimize.node';
-import { sketchPadPanElement } from 'new-components/sketch-pad/sketchPadPan.element';
+import { sketchPadPanElement } from 'components/sketch-pad/sketchPadPan.element';
 import { Subscription } from 'rxjs';
 import hub from 'hub';
 import { filter } from 'rxjs/operators';

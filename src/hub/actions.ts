@@ -1,7 +1,7 @@
 import { JSONContent } from '@tiptap/core';
 import { Page } from 'models/page.model';
-import { DraftAction, DRAFT_ACTION } from 'new-components/draft/draft.action';
-import { MarginAction, MARGIN_ACTION } from 'new-components/margin/margin.action';
+import { DraftAction, DRAFT_ACTION } from 'components/draft/draft.action';
+import { MarginAction, MARGIN_ACTION } from 'components/margin/margin.action';
 import { AuthAction, AUTH_ACTION } from './auth/auth.action';
 import { NoticeAction, NOTICE_ACTION } from './notice.action';
 

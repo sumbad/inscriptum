@@ -1,4 +1,4 @@
-import type { IListItem } from 'new-components/list/list.element';
+import type { IListItem } from 'components/list/list.element';
 import { sdk } from 'api';
 import { config } from 'settings';
 import { redactorContent2Preview } from 'utils/common';

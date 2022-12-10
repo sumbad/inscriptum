@@ -1,6 +1,6 @@
 import hub from 'hub';
 import { Page } from 'models/page.model';
-import { MarginAction, MARGIN_ACTION } from 'new-components/margin/margin.action';
+import { MarginAction, MARGIN_ACTION } from 'components/margin/margin.action';
 import { filter } from 'rxjs';
 import { filterByActionsGroup } from 'utils/operators';
 

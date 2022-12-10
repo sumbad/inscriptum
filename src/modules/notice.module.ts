@@ -1,6 +1,6 @@
 import hub from 'hub';
 import { NOTICE_ACTION } from 'hub/notice.action';
-import { noticeElement } from 'new-components/notice/notice.element';
+import { noticeElement } from 'components/notice/notice.element';
 import { filterByActionsGroup } from 'utils/operators';
 
 export function noticeModule() {

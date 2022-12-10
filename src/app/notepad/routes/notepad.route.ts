@@ -40,7 +40,7 @@ export class RootRoute extends AbstractRoute<TRootPath> {
             let ElConstructor = customElements.get(tag);
 
             if (ElConstructor == null) {
-              const { draftElement } = await import('new-components/draft/draft.element');
+              const { draftElement } = await import('components/draft/draft.element');
               ElConstructor = draftElement(tag);
             }
 

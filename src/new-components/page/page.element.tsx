@@ -2,8 +2,8 @@ import { EG, useCallback, useEffect, useState, useReducer, useMemo } from '@web-
 import { TypeConstructor } from '@web-companions/fc/common.model';
 import { render } from 'lit-html';
 import { Page } from 'models/page.model';
-import { marginElement, MarginElementMode } from 'new-components/margin/margin.element';
-import { foldingElement } from '../folding/folding.element';
+import { marginElement, MarginElementMode } from 'components/margin/margin.element';
+import { foldingElement } from '../../components/folding/folding.element';
 import { addNewAfterNode } from './addNewAfter.node';
 import { deletePageNode } from './deletePage.node';
 import { addNewPageEffect, deletePageEffect, savePageEffect } from './page.service';

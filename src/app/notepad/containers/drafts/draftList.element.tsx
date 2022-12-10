@@ -5,10 +5,10 @@ import page from 'page';
 import { createNewDraft, deleteDraftById, DraftAction, getAllDrafts } from './draftList.service';
 import { newDraftIconNode } from './newDraftIcon.node';
 import { saveIconNode } from './saveIcon.node';
-import { menuElement } from 'new-components/menu/menu.element';
+import { menuElement } from 'components/menu/menu.element';
 import { supervise } from 'utils/component.tools';
-import { IListItem, listElement } from 'new-components/list/list.element';
-import { preloaderElement } from 'new-components/preloader/preloader.element';
+import { IListItem, listElement } from 'components/list/list.element';
+import { preloaderElement } from 'components/preloader/preloader.element';
 
 const NewDraftIconNode = newDraftIconNode();
 const SaveIconNode = saveIconNode();

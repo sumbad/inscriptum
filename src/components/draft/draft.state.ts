@@ -4,7 +4,7 @@ import { HubAction, HUB_ACTION } from 'hub/actions';
 import { DraftModel } from 'models/draft.model';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { publishDraft, updateToc } from 'new-components/draft/draft.service';
+import { publishDraft, updateToc } from 'components/draft/draft.service';
 import { DraftAction, DRAFT_ACTION } from './draft.action';
 
 export interface DraftState {

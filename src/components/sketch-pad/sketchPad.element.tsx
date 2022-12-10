@@ -8,9 +8,9 @@ import { iconEraseNode } from './iconErase.node';
 import { iconSaveNode } from './iconSave.node';
 import { iconClearNode } from './iconClear.node';
 import { iconWightNode } from './iconWight.node';
-import { getMarginById, saveMarginById } from 'new-components/margin/margin.service';
+import { getMarginById, saveMarginById } from 'components/margin/margin.service';
 import { Margin } from 'models/margin.model';
-import { MarginElementMode } from 'new-components/margin/margin.element';
+import { MarginElementMode } from 'components/margin/margin.element';
 import { css } from '@web-companions/h';
 
 const IconLoadNode = iconLoadNode();

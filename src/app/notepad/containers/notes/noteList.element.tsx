@@ -4,9 +4,9 @@ import { supervise } from 'utils/component.tools';
 import { initNoteList, NoteAction } from './noteList.service';
 import page from 'page';
 
-import { menuElement } from 'new-components/menu/menu.element';
-import { IListItem, listElement } from 'new-components/list/list.element';
-import { preloaderElement } from 'new-components/preloader/preloader.element';
+import { menuElement } from 'components/menu/menu.element';
+import { IListItem, listElement } from 'components/list/list.element';
+import { preloaderElement } from 'components/preloader/preloader.element';
 
 // DEBUG:
 // import { marginElement } from 'new-components/margin/margin.element';

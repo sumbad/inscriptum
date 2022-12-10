@@ -1,4 +1,4 @@
-import { NoticeProps } from 'new-components/notice/notice.element';
+import { NoticeProps } from 'components/notice/notice.element';
 
 const a = 'NOTICE_ACTION' as const;
 
