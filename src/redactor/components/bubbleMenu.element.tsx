@@ -1,8 +1,6 @@
-import { EG, useEffect, useState } from '@web-companions/fc';
-import { TypeConstructor } from '@web-companions/fc/common.model';
-import { render } from 'lit-html';
+import { EG, p } from '@web-companions/gfc';
+import { render } from 'lit-html2';
 import { BubbleMenuPlugin, BubbleMenuPluginProps, BubbleMenu } from '@tiptap/extension-bubble-menu';
-import { useLitRef } from 'hooks/useLitRef';
 import { Editor } from '@tiptap/core';
 import { Props as TippyProps } from 'tippy.js';
 import { Transaction, NodeSelection, TextSelection } from 'prosemirror-state';
@@ -13,6 +11,7 @@ import TableRow from '@tiptap/extension-table-row';
 import TableHeader from '@tiptap/extension-table-header';
 import TableCell from '@tiptap/extension-table-cell';
 import { css } from '@web-companions/h';
+import { createRef, ref } from 'lit-html2/directives/ref.js';
 
 export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
   className?: string;
@@ -24,90 +23,94 @@ export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
  */
 export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleMenuProps['editor'] }>({
   props: {
-    editor: {} as TypeConstructor<Editor>,
-    className: String,
-    tippyOptions: {} as TypeConstructor<Partial<TippyProps> | undefined> | undefined,
-    pluginKey: {
-      type: String,
-      default: BubbleMenu.options.pluginKey,
-    },
-    shouldShow: {
-      type: {} as TypeConstructor<BubbleMenuProps['shouldShow']>,
-      default: null,
-    },
+    editor: p.req<Editor>(),
+    className: p.opt<string>(),
+    tippyOptions: p.opt<Partial<TippyProps>>(),
+    pluginKey: p.opt<string>(),
+    shouldShow: p.opt<BubbleMenuProps['shouldShow']>(),
   },
-  render,
-  // shadow: {
-  //   mode: 'open',
-  // },
-})(function (this: HTMLElement, props) {
-  const [rafId, setRafId] = useState(0);
-  const element = useLitRef();
-  const [menuContent, setMenuContent] = useState(null);
+})(function* (params) {
+  const element = createRef<HTMLDivElement>();
+  const pluginKey = params.pluginKey ?? BubbleMenu.options.pluginKey;
+  const transaction$ = new Subject<void>();
 
-  useEffect(() => {
+  let rafId = 0;
+  let menuContent = null;
+  let editor = params.editor;
+
+  const updateEditorState = ({ transaction }: { editor: Editor; transaction: Transaction }) => {
+    if (transaction.steps.length > 0) {
+      menuContent = prepareMenuContent(editor);
+      this.next();
+    } else if (transaction.selection.empty) {
+      menuContent = null;
+      this.next();
+    } else {
+      transaction$.next();
+    }
+  };
+
+  const updateParamsCb = () => {
     console.log('useEffect bubbleMenuElement');
 
     cancelAnimationFrame(rafId);
-    const { editor, tippyOptions } = props;
 
-    setRafId(
-      requestAnimationFrame(() => {
-        if (element.current != null) {
-          editor.registerPlugin(
-            BubbleMenuPlugin({
-              editor,
-              element: element.current,
-              pluginKey: props.pluginKey!,
-              shouldShow: props.shouldShow!,
-              // tippyOptions,
-              // tippyOptions: {
-              //   onShow
-              // }
-            })
-          );
-        }
-      })
-    );
-
-    const transaction$ = new Subject<void>();
-
-    const updateEditorState = ({ transaction }: { editor: Editor; transaction: Transaction }) => {
-      if (transaction.steps.length > 0) {
-        setMenuContent(prepareMenuContent(editor));
-      } else if (transaction.selection.empty) {
-        setMenuContent(null);
-      } else {
-        transaction$.next();
+    rafId = requestAnimationFrame(() => {
+      if (element.value != null) {
+        editor.registerPlugin(
+          BubbleMenuPlugin({
+            editor,
+            pluginKey,
+            element: element.value,
+            shouldShow: params.shouldShow!,
+            // tippyOptions,
+            // tippyOptions: {
+            //   onShow
+            // }
+          })
+        );
       }
-    };
+    });
 
     editor.on('transaction', updateEditorState);
 
     transaction$.pipe(debounceTime(700)).subscribe(() => {
-      setMenuContent(prepareMenuContent(editor));
+      menuContent = prepareMenuContent(editor);
+
+      this.next();
     });
+  };
 
-    return () => {
-      console.log('DESTROY bubbleMenuElement');
-      transaction$.unsubscribe();
-      editor.off('transaction', updateEditorState);
-      cancelAnimationFrame(rafId);
-      editor.unregisterPlugin(BubbleMenu.options.pluginKey);
-    };
-  }, [element.current]);
+  try {
+    const state = params;
 
-  return (
-    <div
-      ref={element.ref()}
-      class={props.className}
-      style={css`
-        visibility: 'hidden';
-      `}
-    >
-      {menuContent}
-    </div>
-  );
+    updateParamsCb();
+
+    while (true) {
+      if (!Object.is(state, params)) {
+        updateParamsCb();
+      }
+
+      params = yield render(
+        <div
+          ref={ref(element)}
+          class={params.className}
+          style={css`
+            visibility: 'hidden';
+          `}
+        >
+          {menuContent}
+        </div>,
+        this
+      );
+    }
+  } finally {
+    console.log('DESTROY bubbleMenuElement');
+    transaction$.unsubscribe();
+    editor.off('transaction', updateEditorState);
+    cancelAnimationFrame(rafId);
+    editor.unregisterPlugin(pluginKey);
+  }
 });
 
 const NODE_PARENT_WITHOUT_MENU = ['topicTitle'];
@@ -129,7 +132,7 @@ function prepareMenuContent(editor: Editor) {
             value={(editor.state.selection as NodeSelection).node.attrs.figure.style}
             onchange={(e) => {
               const value = (e.currentTarget as HTMLTextAreaElement).value;
-              editor.chain().focus().changeFigure({figureStyle: value}).run();
+              editor.chain().focus().changeFigure({ figureStyle: value }).run();
             }}
           ></textarea>
         </>

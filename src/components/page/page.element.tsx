@@ -9,10 +9,10 @@ import { deletePageNode } from './deletePage.node';
 import { addNewPageEffect, deletePageEffect, savePageEffect } from './page.service';
 import { PageActionSave } from './page.action';
 import { page$, PageState, reducer } from './page.state';
-import { redactorElement } from 'new-components/redactor/redactor.element';
+import { redactorElement } from 'redactor/redactor.element';
 import { JSONContent } from '@tiptap/core';
 import hub from 'hub';
-import { filter, reduce, Subject } from 'rxjs';
+import { filter, scan, Subject } from 'rxjs';
 import { HUB_ACTION } from 'hub/actions';
 
 const RedactorElement = redactorElement('inscriptum-redactor');
@@ -52,7 +52,7 @@ export const pageElement = EG({
 
   const subs = page$(params.page.id)
     .pipe(
-      reduce(reducer, {
+      scan(reducer, {
         data: params.page,
         isLoading: false,
       })
@@ -179,7 +179,7 @@ export const pageElement = EG({
                 >
                   <RedactorElement
                     disable={['expand', 'full'].includes(marginElementMode)}
-                    content={content}
+                    content={content ?? null}
                     cbOnUpdateContent={cbOnUpdateContent}
                     isTitle={state.data.order === 0}
                   ></RedactorElement>

@@ -51,7 +51,7 @@ export const marginElement = EG({
 
   const changeSketchPadMode = (_mode: MarginElementMode) => async () => {
     const hostEl = $.host as HTMLElement;
-    
+
     switch (_mode) {
       case 'expand':
         hostEl.style.position = 'absolute';
@@ -113,7 +113,7 @@ export const marginElement = EG({
           this.next();
         });
 
-        if(mode === 'empty') {
+        if (mode === 'empty') {
           changeSketchPadMode('collapse')();
         }
 
@@ -202,7 +202,7 @@ export const marginElement = EG({
 async function openFullscreen(elem: HTMLElement) {
   if ('requestFullscreen' in elem && document.fullscreenElement == null) {
     await elem.requestFullscreen();
-  } else if ('webkitRequestFullscreen' in elem) {
+  } else if (typeof elem['webkitRequestFullscreen'] === 'function') {
     /* Safari */
     await elem['webkitRequestFullscreen']();
   }
@@ -212,7 +212,7 @@ async function openFullscreen(elem: HTMLElement) {
 async function closeFullscreen() {
   if ('exitFullscreen' in document && document.fullscreenElement != null) {
     await document.exitFullscreen();
-  } else if ('webkitExitFullscreen' in document) {
+  } else if (typeof document['webkitExitFullscreen'] === 'function') {
     /* Safari */
     await document['webkitExitFullscreen']();
   }

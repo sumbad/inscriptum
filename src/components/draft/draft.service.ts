@@ -4,7 +4,7 @@ import hub from 'hub';
 import { DraftModel, DraftTocModel } from 'models/draft.model';
 import { NotePreview } from 'models/note.model';
 import { DRAFT_ACTION } from 'components/draft/draft.action';
-import { createHTMLbyContent } from 'new-components/redactor/tools/redactor';
+import { createHTMLbyContent } from 'redactor/tools/redactor';
 import { config } from 'settings';
 import { redactorContent2Preview, transliterate } from 'utils/common';
 import { authorized } from 'utils/guards';

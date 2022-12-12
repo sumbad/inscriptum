@@ -1,7 +1,7 @@
 import { JSONContent } from '@tiptap/core';
-import { FIGURE_NODE_NAME } from 'new-components/redactor/tools/extensions/figure';
-import { TOPIC_SUMMARY_NODE_NAME } from 'new-components/redactor/tools/extensions/topicSummary';
-import { TOPIC_TITLE_NODE_NAME } from 'new-components/redactor/tools/extensions/topicTitle';
+import { FIGURE_NODE_NAME } from 'redactor/extensions/figure';
+import { TOPIC_SUMMARY_NODE_NAME } from 'redactor/extensions/topicSummary';
+import { TOPIC_TITLE_NODE_NAME } from 'redactor/extensions/topicTitle';
 
 export function hasCustomElement(tag: string): boolean {
   return typeof customElements.get(tag) !== 'undefined';

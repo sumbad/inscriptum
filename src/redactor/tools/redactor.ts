@@ -28,19 +28,19 @@ import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 
-import { Figure } from './extensions/figure';
-import { TopicDoc } from './extensions/topicDoc';
-import { TopicTitle } from './extensions/topicTitle';
-import { TopicSummary } from './extensions/topicSummary';
-import { TopicFirstLine } from './extensions/topicFirstLine';
-import { LinkWithTooltip } from './extensions/linkWithTooltip';
+import { Figure } from '../extensions/figure';
+import { TopicDoc } from '../extensions/topicDoc';
+import { TopicTitle } from '../extensions/topicTitle';
+import { TopicSummary } from '../extensions/topicSummary';
+import { TopicFirstLine } from '../extensions/topicFirstLine';
+import { LinkWithTooltip } from '../extensions/linkWithTooltip';
 
 import tippy from 'tippy.js';
-import { Aside } from './extensions/aside';
-import { HljsCodeBlock } from './extensions/hljsCodeBlock/hljsCodeBlock';
-import { CodeBlock2HljsCodeBlock } from './extensions/hljsCodeBlock/codeBlock2HljsCodeBlock';
-import { HljsMark } from './extensions/hljsCodeBlock/hljsMark';
-import { HljsCodeBlockRow } from './extensions/hljsCodeBlock/hljsCodeBlockRow';
+import { Aside } from '../extensions/aside';
+import { HljsCodeBlock } from '../extensions/hljsCodeBlock/hljsCodeBlock';
+import { CodeBlock2HljsCodeBlock } from '../extensions/hljsCodeBlock/codeBlock2HljsCodeBlock';
+import { HljsMark } from '../extensions/hljsCodeBlock/hljsMark';
+import { HljsCodeBlockRow } from '../extensions/hljsCodeBlock/hljsCodeBlockRow';
 import codemark from 'prosemirror-codemark';
 
 /**
