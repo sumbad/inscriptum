@@ -11,7 +11,7 @@ import { controlsPanelElement } from 'components/controls-panel/controlsPanel.el
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { getById } from 'components/draft/draft.service';
-import { pageElement } from '../../new-components/page/page.element';
+import { pageElement } from 'components/page/page.element';
 import { tableOfContent } from '../tableOfContent/tableOfContent';
 import { draft$, DraftState, reducer } from './draft.state';
 import { sidebarElement } from 'components/sidebar/sidebar.element';
