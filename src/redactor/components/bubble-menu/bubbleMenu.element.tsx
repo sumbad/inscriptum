@@ -10,17 +10,12 @@ import Table from '@tiptap/extension-table';
 import TableRow from '@tiptap/extension-table-row';
 import TableHeader from '@tiptap/extension-table-header';
 import TableCell from '@tiptap/extension-table-cell';
-import { css } from '@web-companions/h';
-import { createRef, ref } from 'lit-html2/directives/ref.js';
+import { css, setStyle } from '@web-companions/h';
 
 export type BubbleMenuProps = Omit<BubbleMenuPluginProps, 'element'> & {
   className?: string;
 };
 
-/**
- * NOTE: Shadow Dom:
- * https://github.com/atomiks/tippyjs/pull/915
- */
 export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleMenuProps['editor'] }>({
   props: {
     editor: p.req<Editor>(),
@@ -30,13 +25,25 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
     shouldShow: p.opt<BubbleMenuProps['shouldShow']>(),
   },
 })(function* (params) {
-  const element = createRef<HTMLDivElement>();
   const pluginKey = params.pluginKey ?? BubbleMenu.options.pluginKey;
   const transaction$ = new Subject<void>();
 
   let rafId = 0;
   let menuContent = null;
   let editor = params.editor;
+
+  const shadowContainer = this.attachShadow({ mode: 'open' });
+  setStyle(
+    require('tippy.js/dist/tippy.css') +
+    require('tippy.js/themes/light-border.css') +
+      css`
+        .is-active {
+          background: #000;
+          color: #fff;
+        }
+      `,
+    shadowContainer
+  );
 
   const updateEditorState = ({ transaction }: { editor: Editor; transaction: Transaction }) => {
     if (transaction.steps.length > 0) {
@@ -56,25 +63,27 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
     cancelAnimationFrame(rafId);
 
     rafId = requestAnimationFrame(() => {
-      if (element.value != null) {
-        editor.registerPlugin(
-          BubbleMenuPlugin({
-            editor,
-            pluginKey,
-            element: element.value,
-            shouldShow: params.shouldShow!,
-            // tippyOptions,
-            // tippyOptions: {
-            //   onShow
-            // }
-          })
-        );
-      }
+      editor.registerPlugin(
+        BubbleMenuPlugin({
+          editor,
+          pluginKey,
+          element: this.firstElementChild as HTMLElement,
+          shouldShow: params.shouldShow!,
+          // tippyOptions,
+          tippyOptions: {
+            ...params.tippyOptions,
+            theme: 'light-border',
+            appendTo: shadowContainer as any,
+            duration: 200
+            // onShow
+          },
+        })
+      );
     });
 
     editor.on('transaction', updateEditorState);
 
-    transaction$.pipe(debounceTime(700)).subscribe(() => {
+    transaction$.pipe(debounceTime(100)).subscribe(() => {
       menuContent = prepareMenuContent(editor);
 
       this.next();
@@ -93,7 +102,6 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
 
       params = yield render(
         <div
-          ref={ref(element)}
           class={params.className}
           style={css`
             visibility: 'hidden';
@@ -107,9 +115,12 @@ export const bubbleMenuElement = EG<Partial<BubbleMenuProps> & { editor: BubbleM
   } finally {
     console.log('DESTROY bubbleMenuElement');
     transaction$.unsubscribe();
-    editor.off('transaction', updateEditorState);
     cancelAnimationFrame(rafId);
-    editor.unregisterPlugin(pluginKey);
+
+    if (editor != null) {
+      editor.off('transaction', updateEditorState);
+      editor.unregisterPlugin(pluginKey);
+    }
   }
 });
 
@@ -251,6 +262,7 @@ function prepareMenuContent(editor: Editor) {
           s
         </span>
       </button>
+      <button onclick={() => editor.commands.clearNodes()}>X</button>
     </>
   );
 }

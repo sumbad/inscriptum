@@ -2,8 +2,8 @@ import { EG, p } from '@web-companions/gfc';
 import { render } from 'lit-html2';
 import { createEditor } from './tools/redactor';
 import { Editor, JSONContent } from '@tiptap/core';
-import { bubbleMenuElement } from './components/bubbleMenu.element';
-import { floatingMenuElement } from './components/floatingMenu.element';
+import { bubbleMenuElement } from './components/bubble-menu/bubbleMenu.element';
+import { floatingMenuElement } from './components/floating-menu/floatingMenu.element';
 import { createRef, ref } from 'lit-html2/directives/ref.js';
 
 const BubbleMenuElement = bubbleMenuElement('inscriptum-redactor-bubble-menu');
