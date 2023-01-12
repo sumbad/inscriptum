@@ -93,7 +93,7 @@
     "css-loader": "6.6.0",
     "dotenv-webpack": "7.1.0",
     "es6-templates": "0.2.3",
-    "firebase-admin": "11.3.0",
+    "firebase-admin": "11.4.1",
     "gh-pages": "4.0.0",
     "html-loader": "3.1.0",
     "html-webpack-plugin": "5.5.0",
