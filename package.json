@@ -58,7 +58,7 @@
     "blueimp-load-image": "5.16.0",
     "bourbon": "7.0.0",
     "cloudinary-core": "2.12.3",
-    "firebase": "10.9.0",
+    "firebase": "10.14.1",
     "graphql-request": "4.0.0",
     "highlight.js": "11.6.0",
     "lit-html2": "npm:lit-html@2.0.2",
