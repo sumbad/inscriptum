@@ -76,9 +76,9 @@
   "devDependencies": {
     "@babel/core": "^7.18.13",
     "@graphql-codegen/cli": "2.11.8",
-    "@graphql-codegen/typescript": "2.7.3",
-    "@graphql-codegen/typescript-graphql-request": "4.5.3",
-    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript": "5.0.9",
+    "@graphql-codegen/typescript-graphql-request": "7.0.0",
+    "@graphql-codegen/typescript-operations": "5.0.9",
     "@insum/babel.config": "1.0.1",
     "@types/auth0-js": "9.14.5",
     "@types/highlight.js": "10.1.0",
