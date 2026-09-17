@@ -1,5 +1,23 @@
 [
   {
+    "id": "ca15d313-cf25-41cc-a026-f9db1f81a182",
+    "name": "Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode",
+    "preview": {
+      "image": "https://inscriptum.js.org/images/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode/image-4.png",
+      "title": "Ещё один способ использовать Edge DevTools из VSCode",
+      "description": "Если вы разрабатываете веб-приложение в VS Code, необязательно переключаться между редактором и браузером, чтобы открыть DevTools."
+    },
+    "draft_id": null,
+    "static_link": "/note/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode",
+    "updated_at": "2026-09-17T12:15:37.311Z",
+    "created_at": "2026-09-17T12:15:37.311Z",
+    "author": {
+      "id": "83f51013-2a43-4916-89da-6027f91f1190",
+      "name": null,
+      "email": "denis.sumbaev@gmail.com"
+    }
+  },
+  {
     "id": "9eb5a779-73eb-46d1-8694-5599cb768ec8",
     "name": "Sostoyanie-GraphQL-2022",
     "preview": {
