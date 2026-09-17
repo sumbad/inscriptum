@@ -72,3 +72,4 @@ build/
 backups
 src/public/note/list.dev.json
 scripts/serviceAccountKey.json
+/tsconfig.tsbuildinfo
