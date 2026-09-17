@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ещё один способ использовать Edge DevTools из VSCode</title>
+    <meta name="description" content="Если вы разрабатываете веб-приложение в VS Code, необязательно переключаться между редактором и браузером, чтобы открыть DevTools.">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ещё один способ использовать Edge DevTools из VSCode">
+    <meta property="og:description" content="Если вы разрабатываете веб-приложение в VS Code, необязательно переключаться между редактором и браузером, чтобы открыть DevTools.">
+        <meta property="og:image" content="https://inscriptum.js.org/images/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode/image-4.png">
+        <meta name="twitter:image" content="https://inscriptum.js.org/images/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode/image-4.png">
+    <meta property="article:published_time" content="2026-09-17T11:55:46.836Z">
+    <meta property="article:modified_time" content="2026-09-17T11:55:46.840Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Ещё один способ использовать Edge DevTools из VSCode">
+    <meta name="twitter:description" content="Если вы разрабатываете веб-приложение в VS Code, необязательно переключаться между редактором и браузером, чтобы открыть DevTools.">
+    <link href="/css/note-export.css" rel="stylesheet">
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Ещё один способ использовать Edge DevTools из VSCode</h1><p></p><p>Если вы разрабатываете веб-приложение в VS Code, необязательно переключаться между редактором и браузером, чтобы открыть DevTools.</p><p>Расширение <a target="_blank" rel="noopener noreferrer nofollow" href="https://marketplace.visualstudio.com/items?itemName=ms-edgedevtools.vscode-edge-devtools" data-test-id="link" title="https://marketplace.visualstudio.com/items?itemName=ms-edgedevtools.vscode-edge-devtools"><strong>Microsoft Edge Tools for VS Code</strong></a> позволяет запускать Edge и использовать DevTools прямо внутри VS Code.</p><p></p><ol><li><p>Устанавливаем <a target="_blank" rel="noopener noreferrer nofollow" href="https://marketplace.visualstudio.com/items?itemName=ms-edgedevtools.vscode-edge-devtools" data-test-id="link" title="https://marketplace.visualstudio.com/items?itemName=ms-edgedevtools.vscode-edge-devtools">расширение</a> (или из исходников <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/Microsoft/vscode-edge-devtools" data-test-id="link" title="https://github.com/Microsoft/vscode-edge-devtools">https://github.com/Microsoft/vscode-edge-devtools).</a></p></li><li><p>Добавляем конфиг <code>launch.json</code>:</p></li></ol><div class="hljs-codeblock"><pre><code autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="language-json" wrap="false"><div class="l"><span class="hljs-punctuation">{</span></div><div class="l">    <span class="hljs-attr">"version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"0.2.0"</span><span class="hljs-punctuation">,</span></div><div class="l">    <span class="hljs-attr">"configurations"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span></div><div class="l">        <span class="hljs-punctuation">{</span></div><div class="l">            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"vscode-edge-devtools.debug"</span><span class="hljs-punctuation">,</span></div><div class="l">            <span class="hljs-attr">"request"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"launch"</span><span class="hljs-punctuation">,</span></div><div class="l">            <span class="hljs-attr">"name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Launch Microsoft Edge and open DevTools"</span><span class="hljs-punctuation">,</span></div><div class="l">            <span class="hljs-attr">"url"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"http://localhost:8081/"</span><span class="hljs-punctuation">,</span></div><div class="l">            <span class="hljs-attr">"webRoot"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"${workspaceFolder}"</span></div><div class="l">        <span class="hljs-punctuation">}</span></div><div class="l">    <span class="hljs-punctuation">]</span></div><div class="l"><span class="hljs-punctuation">}</span></div></code></pre><div class="hljs-codeblock__controls"><span class="hljs-codeblock__lang">JSON</span></div><div class="hljs-codeblock__actions"><button type="button" class="hljs-codeblock__btn hljs-codeblock__btn--copy" title="Copy code" aria-label="Copy code"><span class="hljs-codeblock__btn-ico hljs-codeblock__btn-ico--copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15h-1a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1"></path></svg></span><span class="hljs-codeblock__btn-ico hljs-codeblock__btn-ico--check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"></path></svg></span></button></div></div><p><em>В примере выше приложение будет запущено на </em><code>http://localhost:8081</code> .</p><ol start="3"><li><p>Запускаем приложение и далее <code>Debugger</code>:</p></li></ol><figure style="float: left; margin: 0 1.5rem 1rem 0; width: 53%;"><img src="/images/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode/image-4.png" alt="image.png"></figure><p>При этом должна открыться страница с <code>url</code> указанным в конфигурации.</p><p></p><ol start="4"><li><p>Запускаем расширение <code>Open Browser Devtools</code>.</p></li></ol><figure style="float: left; margin: 0 1.5rem 1rem 0; width: 50%;"><img src="/images/Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode/image-5.png" alt="image.png"></figure><p>Это приводит к открытию <code>Devtools</code>, который относится к ранее запущенному приложению.</p><p></p><p></p><p>Теперь можно отлаживать код в браузере прямо из <code>VSCode</code>.</p><p></p><hr><p><strong>Примечание: </strong>Если Edge уже запущен в режиме удалённой отладки, вместо <code>launch</code> можно использовать <code>attach</code>:</p><div class="hljs-codeblock"><pre><code autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="language-json" wrap="false"><div class="l"><span class="hljs-punctuation">{</span></div><div class="l">    <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"vscode-edge-devtools.debug"</span><span class="hljs-punctuation">,</span></div><div class="l">    <span class="hljs-attr">"request"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"attach"</span><span class="hljs-punctuation">,</span></div><div class="l">    <span class="hljs-attr">"name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Attach to Microsoft Edge and open DevTools"</span><span class="hljs-punctuation">,</span></div><div class="l">    <span class="hljs-attr">"url"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"http://localhost:8081/"</span><span class="hljs-punctuation">,</span></div><div class="l">    <span class="hljs-attr">"webRoot"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"${workspaceFolder}"</span></div><div class="l"><span class="hljs-punctuation">}</span></div></code></pre><div class="hljs-codeblock__controls"><span class="hljs-codeblock__lang">JSON</span></div><div class="hljs-codeblock__actions"><button type="button" class="hljs-codeblock__btn hljs-codeblock__btn--copy" title="Copy code" aria-label="Copy code"><span class="hljs-codeblock__btn-ico hljs-codeblock__btn-ico--copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15h-1a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1"></path></svg></span><span class="hljs-codeblock__btn-ico hljs-codeblock__btn-ico--check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"></path></svg></span></button></div></div><p>Таким образом, расширение подходит как для запуска нового экземпляра Edge, так и для подключения к уже работающему браузеру.</p>
+      </section>
+    </article>
+    <script>(function () {
+  var COPIED_MS = 1500;
+  function copyText(text, done) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+    } else {
+      fallback(text, done);
+    }
+  }
+  function fallback(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    ta.remove();
+  }
+  document.addEventListener("click", function (event) {
+    var btn = event.target && event.target.closest
+      ? event.target.closest(".hljs-codeblock__btn--copy") : null;
+    if (!btn) return;
+    var block = btn.closest(".hljs-codeblock");
+    var code = block ? block.querySelector("pre code") : null;
+    if (!code) return;
+    copyText(code.innerText, function () {
+      btn.classList.add("is-copied");
+      window.setTimeout(function () { btn.classList.remove("is-copied"); }, COPIED_MS);
+    });
+  });
+})();</script>
+  </body>
+</html>
