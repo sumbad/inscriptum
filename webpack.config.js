@@ -19,7 +19,7 @@ let helper = {
   },
   ENV: {
     target: process.env.npm_lifecycle_event,
-    devServerPort: 3333,
+    devServerPort: 3334,
     isDevMode: process.env.NODE_ENV === 'development',
   },
 };

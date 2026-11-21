@@ -84,7 +84,7 @@ export const footerElement = EG()(function* () {
                 </a>
               </li>
               <li class="navbar-item">
-                <span class="copyright">© Copyright 2022 Denis Sumbaev</span>
+                <span class="copyright">© Copyright 2026 Denis Sumbaev</span>
               </li>
             </ul>
           </div>

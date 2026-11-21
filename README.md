@@ -28,8 +28,9 @@ node ./scripts/import-note.mjs <path/to/export/<slug>> [more-folders…] [--site
 The script (no dependencies, plain Node):
 
 1. writes `src/public/note/<slug>.html`, rewriting the page's asset links to
-   site paths (`/css/note-export.css`, `/images/<slug>/…`) and making the
-   `og:image` / `twitter:image` absolute (social scrapers require it);
+   site paths (`/css/note-export.css`, `/images/<slug>/…`), making the
+   `og:image` / `twitter:image` absolute (social scrapers require it) and
+   appending the site footer (`inscriptum-footer`);
 2. copies the images to `src/public/images/<slug>/`;
 3. refreshes `src/public/css/note-export.css` — the pages' shared
    stylesheet, imported by each exported page;
