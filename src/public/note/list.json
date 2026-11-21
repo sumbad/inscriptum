@@ -1,5 +1,23 @@
 [
   {
+    "id": "dcf46bb5-48e9-46dd-a2bf-2950e1a878f9",
+    "name": "Inscriptum-Obsidiand-plagin-znakomstvo",
+    "preview": {
+      "image": "https://inscriptum.js.org/images/Inscriptum-Obsidiand-plagin-znakomstvo/image-1.png",
+      "title": "Inscriptum. Obsidian плагин – знакомство",
+      "description": "Среди множества плагинов Obsidian можно найти Inscriptum — записную книжку с комфортным редактором текста, таблиц, чек-листов и многого другого. Это первая статья цикла, в которой мы начнём рассказыв…"
+    },
+    "draft_id": null,
+    "static_link": "/note/Inscriptum-Obsidiand-plagin-znakomstvo",
+    "updated_at": "2026-11-21T15:09:53.202Z",
+    "created_at": "2026-11-21T15:09:53.202Z",
+    "author": {
+      "id": "83f51013-2a43-4916-89da-6027f91f1190",
+      "name": null,
+      "email": "denis.sumbaev@gmail.com"
+    }
+  },
+  {
     "id": "ca15d313-cf25-41cc-a026-f9db1f81a182",
     "name": "Eshhyo-odin-sposob-ispol-zovat--Edge-DevTools-iz-VSCode",
     "preview": {
